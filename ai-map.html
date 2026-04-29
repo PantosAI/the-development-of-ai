@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 技术栈全景地图</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+    background: #f5f4f0;
+    color: #2c2c2a;
+    min-height: 100vh;
+    padding: 32px 16px;
+  }
+  .container { max-width: 780px; margin: 0 auto; }
+  h1 {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 6px;
+    color: #2c2c2a;
+  }
+  .subtitle {
+    font-size: 13px;
+    text-align: center;
+    color: #888780;
+    margin-bottom: 24px;
+  }
+  .tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .btn-tab {
+    padding: 6px 20px;
+    border-radius: 20px;
+    border: 1px solid #d3d1c7;
+    background: transparent;
+    color: #5f5e5a;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: inherit;
+  }
+  .btn-tab.active {
+    background: #2c2c2a;
+    color: #f5f4f0;
+    border-color: transparent;
+  }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  svg { display: block; width: 100%; }
+  #view-dynamic { display: none; }
+
+  /* tooltip */
+  .tooltip {
+    position: fixed;
+    background: #2c2c2a;
+    color: #f5f4f0;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .15s;
+    max-width: 200px;
+    line-height: 1.5;
+    z-index: 100;
+  }
+  .tooltip.show { opacity: 1; }
+
+  .node-g { cursor: pointer; }
+  .node-g:hover rect { opacity: 0.82; }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 17px; }
+    .card { padding: 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>AI 技术栈全景地图</h1>
+  <p class="subtitle">点击节点了解详情 · 切换视图查看赛道动态</p>
+
+  <div class="tabs">
+    <button class="btn-tab active" onclick="switchView('structure',this)">技术栈结构</button>
+    <button class="btn-tab" onclick="switchView('dynamic',this)">赛道动态</button>
+  </div>
+
+  <div class="card">
+
+    <!-- 结构视图 -->
+    <div id="view-structure">
+    <svg viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- L1 算力 -->
+      <rect x="40" y="20" width="600" height="64" rx="10" fill="#f1efe8" stroke="#b4b2a9" stroke-width="0.5"/>
+      <text x="340" y="46" text-anchor="middle" font-size="14" font-weight="500" fill="#444441">L1 · 算力基础设施</text>
+      <text x="340" y="64" text-anchor="middle" font-size="12" fill="#5f5e5a">NVIDIA GPU · TPU · 数据中心</text>
+
+      <!-- L2 基础模型 -->
+      <rect x="40" y="100" width="600" height="96" rx="10" fill="#eeedfe" stroke="#afa9ec" stroke-width="0.5"/>
+      <text x="340" y="124" text-anchor="middle" font-size="14" font-weight="500" fill="#3c3489">L2 · 基础模型</text>
+      <g class="node-g" onclick="showInfo('Anthropic / Claude','专注AI安全的研究公司，Claude系列模型以安全性和推理能力著称，是本图的制作工具。')">
+        <rect x="58" y="136" width="108" height="44" rx="6" fill="#eeedfe" stroke="#534ab7" stroke-width="1.5"/>
+        <text x="112" y="154" text-anchor="middle" font-size="14" font-weight="500" fill="#3c3489" dominant-baseline="central">Anthropic</text>
+        <text x="112" y="170" text-anchor="middle" font-size="12" fill="#534ab7" dominant-baseline="central">Claude系列</text>
+      </g>
+      <g class="node-g" onclick="showInfo('OpenAI / GPT','全球最知名AI公司，GPT-4o和o系列推理模型是主要产品，ChatGPT用户超2亿。')">
+        <rect x="180" y="136" width="96" height="44" rx="6" fill="#eeedfe" stroke="#afa9ec" stroke-width="0.5"/>
+        <text x="228" y="154" text-anchor="middle" font-size="14" font-weight="500" fill="#3c3489" dominant-baseline="central">OpenAI</text>
+        <text x="228" y="170" text-anchor="middle" font-size="12" fill="#534ab7" dominant-baseline="central">GPT / o系列</text>
+      </g>
+      <g class="node-g" onclick="showInfo('Google / Gemini','拥有最强基础设施和数据的科技巨头，Gemini 2.0是其最新旗舰模型，TPU自研芯片。')">
+        <rect x="290" y="136" width="96" height="44" rx="6" fill="#eeedfe" stroke="#afa9ec" stroke-width="0.5"/>
+        <text x="338" y="154" text-anchor="middle" font-size="14" font-weight="500" fill="#3c3489" dominant-baseline="central">Google</text>
+        <text x="338" y="170" text-anchor="middle" font-size="12" fill="#534ab7" dominant-baseline="central">Gemini系列</text>
+      </g>
+      <g class="node-g" onclick="showInfo('DeepSeek','幻方量化孵化，中国唯一真正在全球frontier级竞争的模型团队。R1用1/10算力达到GPT-4水平，震动全球AI圈。')">
+        <rect x="400" y="136" width="96" height="44" rx="6" fill="#faece7" stroke="#993c1d" stroke-width="1.5"/>
+        <text x="448" y="154" text-anchor="middle" font-size="14" font-weight="500" fill="#712b13" dominant-baseline="central">DeepSeek</text>
+        <text x="448" y="170" text-anchor="middle" font-size="12" fill="#993c1d" dominant-baseline="central">中国唯一</text>
+      </g>
+      <g class="node-g" onclick="showInfo('Meta / Llama','开源策略的代表，Llama系列模型可免费下载自部署，降低了全球AI开发门槛。')">
+        <rect x="510" y="136" width="112" height="44" rx="6" fill="#eeedfe" stroke="#afa9ec" stroke-width="0.5"/>
+        <text x="566" y="154" text-anchor="middle" font-size="14" font-weight="500" fill="#3c3489" dominant-baseline="central">Meta / 其他</text>
+        <text x="566" y="170" text-anchor="middle" font-size="12" fill="#534ab7" dominant-baseline="central">Llama开源</text>
+      </g>
+
+      <!-- L3 工程框架 -->
+      <rect x="40" y="212" width="600" height="96" rx="10" fill="#e1f5ee" stroke="#5dcaa5" stroke-width="0.5"/>
+      <text x="340" y="236" text-anchor="middle" font-size="14" font-weight="500" fill="#085041">L3 · 工程框架</text>
+      <g class="node-g" onclick="showInfo('RAG 检索增强','Retrieval-Augmented Generation。让模型在回答时先去检索相关文档，解决知识截止日期和幻觉问题。CaseLog的AI治疗方案就用了类似逻辑。')">
+        <rect x="58" y="248" width="76" height="44" rx="6" fill="#e1f5ee" stroke="#5dcaa5" stroke-width="0.5"/>
+        <text x="96" y="266" text-anchor="middle" font-size="14" font-weight="500" fill="#085041" dominant-baseline="central">RAG</text>
+        <text x="96" y="282" text-anchor="middle" font-size="12" fill="#0f6e56" dominant-baseline="central">检索增强</text>
+      </g>
+      <g class="node-g" onclick="showInfo('Agents 自主任务','AI从回答问题变成完成任务。能自主调用工具、写代码、浏览网页、改文件，循环执行直到目标达成。Cursor Agent就是典型。')">
+        <rect x="148" y="248" width="88" height="44" rx="6" fill="#e1f5ee" stroke="#5dcaa5" stroke-width="0.5"/>
+        <text x="192" y="266" text-anchor="middle" font-size="14" font-weight="500" fill="#085041" dominant-baseline="central">Agents</text>
+        <text x="192" y="282" text-anchor="middle" font-size="12" fill="#0f6e56" dominant-baseline="central">自主任务</text>
+      </g>
+      <g class="node-g" onclick="showInfo('MCP 工具协议','Model Context Protocol，Anthropic推出的标准协议。让AI模型能统一调用外部工具（数据库、API、文件系统），类似AI时代的USB接口。')">
+        <rect x="250" y="248" width="88" height="44" rx="6" fill="#e1f5ee" stroke="#0f6e56" stroke-width="1.5"/>
+        <text x="294" y="266" text-anchor="middle" font-size="14" font-weight="500" fill="#085041" dominant-baseline="central">MCP</text>
+        <text x="294" y="282" text-anchor="middle" font-size="12" fill="#0f6e56" dominant-baseline="central">工具协议</text>
+      </g>
+      <g class="node-g" onclick="showInfo('Context Engineering','上下文工程。如何设计发给模型的信息——system prompt、历史记录、检索内容、工具结果——让模型表现最好。是现在最核心的工程能力。')">
+        <rect x="352" y="248" width="116" height="44" rx="6" fill="#e1f5ee" stroke="#5dcaa5" stroke-width="0.5"/>
+        <text x="410" y="266" text-anchor="middle" font-size="14" font-weight="500" fill="#085041" dominant-baseline="central">Context Eng.</text>
+        <text x="410" y="282" text-anchor="middle" font-size="12" fill="#0f6e56" dominant-baseline="central">上下文设计</text>
+      </g>
+      <g class="node-g" onclick="showInfo('Fine-tuning 微调','用自己的数据继续训练模型，让它在特定领域表现更好。成本较高，一般在prompt工程解决不了问题时才考虑。医疗场景有一定价值。')">
+        <rect x="482" y="248" width="140" height="44" rx="6" fill="#e1f5ee" stroke="#5dcaa5" stroke-width="0.5"/>
+        <text x="552" y="266" text-anchor="middle" font-size="14" font-weight="500" fill="#085041" dominant-baseline="central">Fine-tuning</text>
+        <text x="552" y="282" text-anchor="middle" font-size="12" fill="#0f6e56" dominant-baseline="central">模型微调</text>
+      </g>
+
+      <!-- L4 开发工具 -->
+      <rect x="40" y="324" width="600" height="96" rx="10" fill="#e6f1fb" stroke="#85b7eb" stroke-width="0.5"/>
+      <text x="340" y="348" text-anchor="middle" font-size="14" font-weight="500" fill="#0c447c">L4 · 开发工具层</text>
+      <g class="node-g" onclick="showInfo('Cursor ✓ 你在用','AI代码编辑器。Composer/Agent模式让你用自然语言驱动代码生成，你的整个OpenClaw产品线都是用它建的。')">
+        <rect x="58" y="360" width="96" height="44" rx="6" fill="#e6f1fb" stroke="#185fa5" stroke-width="1.5"/>
+        <text x="106" y="378" text-anchor="middle" font-size="14" font-weight="500" fill="#0c447c" dominant-baseline="central">Cursor</text>
+        <text x="106" y="394" text-anchor="middle" font-size="12" fill="#185fa5" dominant-baseline="central">你在用 ✓</text>
+      </g>
+      <g class="node-g" onclick="showInfo('LangChain','最流行的AI应用编排框架，把模型调用、RAG、Agent、工具调用串联起来。适合复杂的多步骤AI工作流。')">
+        <rect x="168" y="360" width="104" height="44" rx="6" fill="#e6f1fb" stroke="#85b7eb" stroke-width="0.5"/>
+        <text x="220" y="378" text-anchor="middle" font-size="14" font-weight="500" fill="#0c447c" dominant-baseline="central">LangChain</text>
+        <text x="220" y="394" text-anchor="middle" font-size="12" fill="#185fa5" dominant-baseline="central">编排框架</text>
+      </g>
+      <g class="node-g" onclick="showInfo('向量数据库','存储文本的语义向量，支持相似度搜索。RAG的核心基础设施。代表产品：Pinecone、Weaviate、Chroma。LitRound如果做文献检索会用到。')">
+        <rect x="286" y="360" width="108" height="44" rx="6" fill="#e6f1fb" stroke="#85b7eb" stroke-width="0.5"/>
+        <text x="340" y="378" text-anchor="middle" font-size="14" font-weight="500" fill="#0c447c" dominant-baseline="central">向量数据库</text>
+        <text x="340" y="394" text-anchor="middle" font-size="12" fill="#185fa5" dominant-baseline="central">Pinecone等</text>
+      </g>
+      <g class="node-g" onclick="showInfo('Tavily ✓ 你在用','专为AI应用设计的搜索API，返回干净的结构化内容，比直接调Google搜索适合喂给LLM。你在CaseLog和ai-gossip里都用了。')">
+        <rect x="408" y="360" width="76" height="44" rx="6" fill="#e6f1fb" stroke="#185fa5" stroke-width="1.5"/>
+        <text x="446" y="378" text-anchor="middle" font-size="14" font-weight="500" fill="#0c447c" dominant-baseline="central">Tavily</text>
+        <text x="446" y="394" text-anchor="middle" font-size="12" fill="#185fa5" dominant-baseline="central">你在用 ✓</text>
+      </g>
+      <g class="node-g" onclick="showInfo('Cloudflare / Vercel ✓','静态网页和serverless函数托管平台。你的ai-gossip、ai-news都部署在CF Pages上，国内访问友好是关键优势。')">
+        <rect x="498" y="360" width="124" height="44" rx="6" fill="#e6f1fb" stroke="#185fa5" stroke-width="1.5"/>
+        <text x="560" y="378" text-anchor="middle" font-size="14" font-weight="500" fill="#0c447c" dominant-baseline="central">CF / Vercel</text>
+        <text x="560" y="394" text-anchor="middle" font-size="12" fill="#185fa5" dominant-baseline="central">你在用 ✓</text>
+      </g>
+
+      <!-- L5 应用产品 -->
+      <rect x="40" y="436" width="600" height="96" rx="10" fill="#faeeda" stroke="#fac775" stroke-width="0.5"/>
+      <text x="340" y="460" text-anchor="middle" font-size="14" font-weight="500" fill="#633806">L5 · 垂直应用产品</text>
+      <g class="node-g" onclick="showInfo('CaseLog ✓ 你做的','微信小程序，内科临床病例管理工具。AI治疗方案、出院建议、病程分析、ICD自动补全。2026年4月8日上线。这是你的起点。')">
+        <rect x="58" y="472" width="108" height="44" rx="6" fill="#faeeda" stroke="#854f0b" stroke-width="1.5"/>
+        <text x="112" y="490" text-anchor="middle" font-size="14" font-weight="500" fill="#633806" dominant-baseline="central">CaseLog</text>
+        <text x="112" y="506" text-anchor="middle" font-size="12" fill="#854f0b" dominant-baseline="central">你做的 ✓</text>
+      </g>
+      <g class="node-g" onclick="showInfo('AI医疗赛道','影像诊断、临床决策支持、电子病历、药物研发。有临床背景的人在这个赛道有天然壁垒——工程师不懂真实工作流。')">
+        <rect x="180" y="472" width="96" height="44" rx="6" fill="#faeeda" stroke="#fac775" stroke-width="0.5"/>
+        <text x="228" y="490" text-anchor="middle" font-size="14" font-weight="500" fill="#633806" dominant-baseline="central">AI医疗</text>
+        <text x="228" y="506" text-anchor="middle" font-size="12" fill="#854f0b" dominant-baseline="central">垂直赛道</text>
+      </g>
+      <g class="node-g" onclick="showInfo('AI Coding工具','Cursor、GitHub Copilot、Claude Code等。把程序员生产力提升3-10倍，也在降低非程序员的编程门槛，vibe coding就是产物。')">
+        <rect x="290" y="472" width="96" height="44" rx="6" fill="#faeeda" stroke="#fac775" stroke-width="0.5"/>
+        <text x="338" y="490" text-anchor="middle" font-size="14" font-weight="500" fill="#633806" dominant-baseline="central">AI coding</text>
+        <text x="338" y="506" text-anchor="middle" font-size="12" fill="#854f0b" dominant-baseline="central">Cursor等</text>
+      </g>
+      <g class="node-g" onclick="showInfo('AI搜索','Perplexity为代表，直接给答案而不是给链接，正在挑战Google的搜索地位。月活已超1亿。')">
+        <rect x="400" y="472" width="96" height="44" rx="6" fill="#faeeda" stroke="#fac775" stroke-width="0.5"/>
+        <text x="448" y="490" text-anchor="middle" font-size="14" font-weight="500" fill="#633806" dominant-baseline="central">AI搜索</text>
+        <text x="448" y="506" text-anchor="middle" font-size="12" fill="#854f0b" dominant-baseline="central">Perplexity等</text>
+      </g>
+      <g class="node-g" onclick="showInfo('企业AI / ToB','帮企业接入AI能力，自动化内部流程。客单价高、需求明确，但销售周期长。一人公司不太适合，除非有强行业资源。')">
+        <rect x="510" y="472" width="112" height="44" rx="6" fill="#faeeda" stroke="#fac775" stroke-width="0.5"/>
+        <text x="566" y="490" text-anchor="middle" font-size="14" font-weight="500" fill="#633806" dominant-baseline="central">企业AI</text>
+        <text x="566" y="506" text-anchor="middle" font-size="12" fill="#854f0b" dominant-baseline="central">ToB方向</text>
+      </g>
+
+      <!-- 图例 -->
+      <rect x="40" y="550" width="600" height="112" rx="8" fill="none" stroke="#d3d1c7" stroke-width="0.5"/>
+      <text x="60" y="572" font-size="12" fill="#888780">图例说明</text>
+      <rect x="60" y="584" width="12" height="12" rx="2" fill="#3c3489"/>
+      <text x="80" y="595" font-size="12" fill="#2c2c2a">基础模型 — 全球竞争，少数几个玩家</text>
+      <rect x="60" y="604" width="12" height="12" rx="2" fill="#085041"/>
+      <text x="80" y="615" font-size="12" fill="#2c2c2a">工程框架 — AI应用的技术底座</text>
+      <rect x="60" y="624" width="12" height="12" rx="2" fill="#0c447c"/>
+      <text x="80" y="635" font-size="12" fill="#2c2c2a">工具层 — 开发者直接使用，你已在此</text>
+      <rect x="360" y="584" width="12" height="12" rx="2" fill="#633806"/>
+      <text x="380" y="595" font-size="12" fill="#2c2c2a">应用层 — 你的产品所在位置</text>
+      <rect x="360" y="604" width="12" height="12" rx="2" fill="#993c1d"/>
+      <text x="380" y="615" font-size="12" fill="#2c2c2a">DeepSeek — 中国唯一frontier级模型</text>
+      <text x="360" y="635" font-size="12" fill="#888780">粗边框 = 你已在用或已做出的东西</text>
+    </svg>
+    </div>
+
+    <!-- 动态视图 -->
+    <div id="view-dynamic">
+    <svg viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- 热度图例条 -->
+      <text x="40" y="22" font-size="12" fill="#888780">竞争烈度</text>
+      <rect x="140" y="12" width="60" height="14" rx="3" fill="#C04828" opacity="0.3"/>
+      <text x="206" y="22" font-size="12" fill="#888780">极热</text>
+      <rect x="240" y="12" width="60" height="14" rx="3" fill="#EF9F27" opacity="0.3"/>
+      <text x="306" y="22" font-size="12" fill="#888780">活跃</text>
+      <rect x="340" y="12" width="60" height="14" rx="3" fill="#1D9E75" opacity="0.25"/>
+      <text x="406" y="22" font-size="12" fill="#888780">稳定</text>
+      <rect x="440" y="12" width="60" height="14" rx="3" fill="#888780" opacity="0.2"/>
+      <text x="506" y="22" font-size="12" fill="#888780">沉淀</text>
+
+      <!-- 推理模型 -->
+      <rect x="40" y="44" width="600" height="80" rx="10" fill="#C04828" opacity="0.1" stroke="#C04828" stroke-width="0.5"/>
+      <text x="60" y="70" font-size="14" font-weight="500" fill="#712b13">推理模型战争</text>
+      <text x="60" y="88" font-size="12" fill="#993c1d">OpenAI o3 · Claude 3.7 · DeepSeek R1 · Gemini 2.0</text>
+      <text x="60" y="106" font-size="12" fill="#5f5e5a">模型从"会回答"变成"会思考"，代码/数学/科学推理能力暴涨，这是L2最激烈的战场</text>
+      <g class="node-g" onclick="showInfo('推理模型是什么','Chain-of-Thought推理。模型在回答前先"想一想"，把复杂问题分解成步骤，再输出答案。o1/o3/R1/Claude 3.7都是这类。在医学诊断、文献分析这类需要多步推理的场景有很大价值。')">
+        <rect x="554" y="58" width="72" height="28" rx="14" fill="#C04828" opacity="0.15" stroke="#C04828" stroke-width="0.5"/>
+        <text x="590" y="76" text-anchor="middle" font-size="12" fill="#993c1d">深入了解 →</text>
+      </g>
+
+      <!-- Agent -->
+      <rect x="40" y="140" width="600" height="80" rx="10" fill="#C04828" opacity="0.1" stroke="#C04828" stroke-width="0.5"/>
+      <text x="60" y="166" font-size="14" font-weight="500" fill="#712b13">Agent 从概念变成产品</text>
+      <text x="60" y="184" font-size="12" fill="#993c1d">Devin · Cursor Agent · Claude Code · Manus</text>
+      <text x="60" y="202" font-size="12" fill="#5f5e5a">AI从"回答问题"变成"完成任务"，能自主写代码/调接口/改文件，vibe coding是产物</text>
+      <g class="node-g" onclick="showInfo('Agent时代意味着什么','一个Agent能接受目标→拆解步骤→调用工具→执行→检验结果→修正，循环直到完成。对你来说：PassRound可以做成一个Agent，自动出题→评估→给出薄弱点→推送相关题目，不需要你手动设计每个环节。')">
+        <rect x="554" y="154" width="72" height="28" rx="14" fill="#C04828" opacity="0.15" stroke="#C04828" stroke-width="0.5"/>
+        <text x="590" y="172" text-anchor="middle" font-size="12" fill="#993c1d">深入了解 →</text>
+      </g>
+
+      <!-- 多模态 -->
+      <rect x="40" y="236" width="600" height="80" rx="10" fill="#EF9F27" opacity="0.1" stroke="#EF9F27" stroke-width="0.5"/>
+      <text x="60" y="262" font-size="14" font-weight="500" fill="#633806">多模态全面落地</text>
+      <text x="60" y="280" font-size="12" fill="#854f0b">GPT-4o · Gemini · Claude Vision · Sora / 视频生成</text>
+      <text x="60" y="298" font-size="12" fill="#5f5e5a">文字/图像/语音/视频的边界在消失，医疗影像、病历OCR等场景直接受益</text>
+      <g class="node-g" onclick="showInfo('多模态对医疗的价值','CT/MRI影像直接喂给模型分析；手写病历拍照自动结构化；超声视频实时辅助判断。LitRound读文献时可以直接处理图表和流程图，不只是文字。这些能力现在API都有，等你去用。')">
+        <rect x="554" y="250" width="72" height="28" rx="14" fill="#EF9F27" opacity="0.15" stroke="#EF9F27" stroke-width="0.5"/>
+        <text x="590" y="268" text-anchor="middle" font-size="12" fill="#854f0b">深入了解 →</text>
+      </g>
+
+      <!-- MCP -->
+      <rect x="40" y="332" width="600" height="80" rx="10" fill="#EF9F27" opacity="0.1" stroke="#EF9F27" stroke-width="0.5"/>
+      <text x="60" y="358" font-size="14" font-weight="500" fill="#633806">MCP 正在成为标准</text>
+      <text x="60" y="376" font-size="12" fill="#854f0b">Anthropic推出 · 主流工具快速接入 · 类似AI时代的USB协议</text>
+      <text x="60" y="394" font-size="12" fill="#5f5e5a">让AI模型能统一调用外部工具，谁先接入谁先受益，OpenClaw产品可以重点关注</text>
+      <g class="node-g" onclick="showInfo('MCP和你的产品','CaseLog接入MCP后，Claude可以直接调用你的病例数据库、查HIS系统、拉检验结果，不需要用户复制粘贴。LitRound接入MCP后可以直接调PubMed、读PDF全文。这是下一步值得投入的方向。')">
+        <rect x="554" y="346" width="72" height="28" rx="14" fill="#EF9F27" opacity="0.15" stroke="#EF9F27" stroke-width="0.5"/>
+        <text x="590" y="364" text-anchor="middle" font-size="12" fill="#854f0b">深入了解 →</text>
+      </g>
+
+      <!-- 垂直赛道 -->
+      <rect x="40" y="428" width="600" height="80" rx="10" fill="#1D9E75" opacity="0.08" stroke="#1D9E75" stroke-width="0.5"/>
+      <text x="60" y="454" font-size="14" font-weight="500" fill="#085041">垂直赛道：跑马圈地期</text>
+      <text x="60" y="472" font-size="12" fill="#0f6e56">医疗 · 法律 · 教育 · 金融 · 科研</text>
+      <text x="60" y="490" font-size="12" fill="#5f5e5a">模型能力到位，真正跑出来的产品还少，有临床背景在医疗赛道有天然壁垒</text>
+      <g class="node-g" onclick="showInfo('你的壁垒在哪里','现在做医疗AI的大多数是工程师出身，他们不知道一个住院医生的真实工作流——查房节奏、病程书写习惯、交班逻辑、临床思维路径。你知道，这个认知差别人买不来，也学不快。窗口期就是现在。')">
+        <rect x="554" y="442" width="72" height="28" rx="14" fill="#1D9E75" opacity="0.15" stroke="#1D9E75" stroke-width="0.5"/>
+        <text x="590" y="460" text-anchor="middle" font-size="12" fill="#0f6e56">深入了解 →</text>
+      </g>
+
+      <!-- 算力 -->
+      <rect x="40" y="524" width="600" height="52" rx="10" fill="#888780" opacity="0.08" stroke="#888780" stroke-width="0.5"/>
+      <text x="60" y="548" font-size="14" font-weight="500" fill="#444441">算力层：英伟达独赢，格局已定</text>
+      <text x="60" y="566" font-size="12" fill="#5f5e5a">应用层开发者不用管，调API就行；中国平行生态（昇腾）正在形成</text>
+
+      <!-- 图例 -->
+      <rect x="40" y="592" width="600" height="70" rx="8" fill="none" stroke="#d3d1c7" stroke-width="0.5"/>
+      <text x="60" y="612" font-size="12" fill="#888780">图例说明</text>
+      <rect x="60" y="622" width="12" height="12" rx="3" fill="#C04828" opacity="0.4"/>
+      <text x="80" y="633" font-size="12" fill="#2c2c2a">极热 — 资金和人才高度集中，变化最快</text>
+      <rect x="380" y="622" width="12" height="12" rx="3" fill="#EF9F27" opacity="0.4"/>
+      <text x="400" y="633" font-size="12" fill="#2c2c2a">活跃 — 标准和生态正在形成</text>
+      <rect x="60" y="644" width="12" height="12" rx="3" fill="#1D9E75" opacity="0.4"/>
+      <text x="80" y="655" font-size="12" fill="#2c2c2a">稳定 — 机会窗口开着，还没人占满</text>
+      <rect x="380" y="644" width="12" height="12" rx="3" fill="#888780" opacity="0.3"/>
+      <text x="400" y="655" font-size="12" fill="#2c2c2a">沉淀 — 格局基本定型，了解即可</text>
+    </svg>
+    </div>
+
+  </div><!-- card -->
+
+  <p style="text-align:center;font-size:12px;color:#b4b2a9;margin-top:16px">点击节点查看详情 · 由 OpenClaw 制作</p>
+</div>
+
+<!-- Tooltip -->
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+function switchView(view, btn) {
+  document.getElementById('view-structure').style.display = view === 'structure' ? 'block' : 'none';
+  document.getElementById('view-dynamic').style.display = view === 'dynamic' ? 'block' : 'none';
+  document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function showInfo(title, desc) {
+  const tip = document.getElementById('tooltip');
+  tip.innerHTML = '<strong>' + title + '</strong><br>' + desc;
+  tip.classList.add('show');
+  setTimeout(() => tip.classList.remove('show'), 4000);
+}
+
+document.addEventListener('mousemove', function(e) {
+  const tip = document.getElementById('tooltip');
+  tip.style.left = (e.clientX + 12) + 'px';
+  tip.style.top = (e.clientY - 10) + 'px';
+});
+</script>
+</body>
+</html>
