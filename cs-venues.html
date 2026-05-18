@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI & CS 顶级期刊与会议速查表 — The Development of AI</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+  background: #f5f4f0;
+  color: #2c2c2a;
+  min-height: 100vh;
+  padding: 48px 24px 80px;
+}
+.container { max-width: 720px; margin: 0 auto; }
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #888780;
+  text-decoration: none;
+  margin-bottom: 40px;
+  transition: color .15s;
+}
+.back:hover { color: #534ab7; }
+h1 { font-size: 22px; font-weight: 500; margin-bottom: 8px; }
+.desc { font-size: 14px; color: #888780; margin-bottom: 32px; line-height: 1.6; }
+.stats {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.stat {
+  background: #eceae3;
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-align: center;
+}
+.stat-num { font-size: 18px; font-weight: 500; color: #2c2c2a; }
+.stat-label { font-size: 11px; color: #888780; margin-top: 2px; }
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 28px;
+}
+.filter-btn {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid #d3d1c7;
+  background: transparent;
+  color: #888780;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: inherit;
+}
+.filter-btn:hover { background: #eceae3; }
+.filter-btn.active { background: #EEEDFE; border-color: #AFA9EC; color: #3C3489; }
+.section { margin-bottom: 28px; }
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e8e6df;
+}
+.section-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.section-title { font-size: 12px; font-weight: 500; color: #888780; letter-spacing: 0.03em; }
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+}
+.card {
+  background: #fff;
+  border: 1px solid #e8e6df;
+  border-radius: 8px;
+  padding: 10px 12px;
+  transition: border-color .15s, transform .1s;
+}
+.card:hover { border-color: #b4b2a9; transform: translateY(-1px); }
+.card-abbr { font-size: 15px; font-weight: 500; color: #2c2c2a; margin-bottom: 3px; }
+.card-name { font-size: 11px; color: #888780; line-height: 1.4; }
+.badges { display: flex; gap: 4px; margin-top: 5px; flex-wrap: wrap; }
+.badge { font-size: 10px; padding: 2px 6px; border-radius: 10px; }
+.badge-conf { background: #EEEDFE; color: #3C3489; }
+.badge-jour { background: #E1F5EE; color: #085041; }
+.badge-pre  { background: #FAEEDA; color: #633806; }
+.badge-new  { background: #FAECE7; color: #712B13; }
+.tip {
+  margin-top: 40px;
+  padding: 14px 18px;
+  background: #eceae3;
+  border-radius: 8px;
+  border-left: 3px solid #AFA9EC;
+  font-size: 13px;
+  color: #5f5e5a;
+  line-height: 1.7;
+}
+.tip code {
+  background: #d3d1c7;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: "SF Mono", monospace;
+}
+footer {
+  margin-top: 64px;
+  font-size: 12px;
+  color: #d3d1c7;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back" href="index.html">← 返回</a>
+  <h1>AI & CS 顶级期刊与会议速查表</h1>
+  <p class="desc">涵盖经典 AI、机器学习、系统、安全、交叉学科等全领域，含预印本平台与综合顶刊。共收录 60+ 个主流国际期刊与会议。</p>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="total-count">—</div><div class="stat-label">当前显示</div></div>
+    <div class="stat"><div class="stat-num" id="conf-count">—</div><div class="stat-label">会议</div></div>
+    <div class="stat"><div class="stat-num" id="jour-count">—</div><div class="stat-label">期刊</div></div>
+    <div class="stat"><div class="stat-num" id="pre-count">—</div><div class="stat-label">预印本</div></div>
+  </div>
+
+  <div class="filter-row" id="filters">
+    <button class="filter-btn active" data-filter="all">全部</button>
+    <button class="filter-btn" data-filter="pre">预印本</button>
+    <button class="filter-btn" data-filter="top">综合顶刊</button>
+    <button class="filter-btn" data-filter="ai">经典 AI</button>
+    <button class="filter-btn" data-filter="ml">机器学习</button>
+    <button class="filter-btn" data-filter="cv">计算机视觉</button>
+    <button class="filter-btn" data-filter="nlp">自然语言处理</button>
+    <button class="filter-btn" data-filter="data">数据挖掘</button>
+    <button class="filter-btn" data-filter="sys">系统 & 安全</button>
+    <button class="filter-btn" data-filter="hci">人机交互</button>
+    <button class="filter-btn" data-filter="se">软件工程</button>
+    <button class="filter-btn" data-filter="pl">编程语言</button>
+    <button class="filter-btn" data-filter="bio">生物交叉</button>
+    <button class="filter-btn" data-filter="other">其他</button>
+  </div>
+
+  <div id="content"></div>
+
+  <div class="tip">
+    💡 检索技巧：<strong>会议简称 + 年份 + 关键词</strong>，如 <code>CVPR 2024 diffusion</code>。最新成果优先查 arXiv，再追溯发表会议。AI/CS 领域会议影响力通常高于期刊，录用即代表高水平。
+  </div>
+
+  <footer>pantosai.github.io/the-development-of-ai</footer>
+</div>
+
+<script>
+const data = [
+  { cat:"pre", label:"预印本平台（最快前沿）", color:"#EF9F27", venues:[
+    { abbr:"arXiv",   name:"arXiv.org — CS/AI 事实上的第一发布地", type:"pre", isnew:true },
+    { abbr:"bioRxiv", name:"bioRxiv — 生物 & 计算生物学预印本",    type:"pre" },
+    { abbr:"SSRN",    name:"SSRN — 社会科学及交叉学科预印本",      type:"pre" },
+  ]},
+  { cat:"top", label:"综合顶级期刊", color:"#7F77DD", venues:[
+    { abbr:"Nature", name:"Nature — 重磅 AI/CS 成果偶发于此",                        type:"jour" },
+    { abbr:"Science",name:"Science — 影响力最高综合期刊",                             type:"jour" },
+    { abbr:"PNAS",   name:"Proceedings of the National Academy of Sciences",          type:"jour" },
+    { abbr:"CACM",   name:"Communications of the ACM — ACM 旗舰期刊",                type:"jour", isnew:true },
+  ]},
+  { cat:"ai", label:"经典 AI", color:"#534AB7", venues:[
+    { abbr:"AAAI",  name:"AAAI Conference on Artificial Intelligence",               type:"conf" },
+    { abbr:"IJCAI", name:"International Joint Conference on Artificial Intelligence", type:"conf" },
+    { abbr:"AIJ",   name:"Artificial Intelligence Journal — 历史最悠久 AI 期刊",      type:"jour", isnew:true },
+  ]},
+  { cat:"ml", label:"机器学习", color:"#1D9E75", venues:[
+    { abbr:"NeurIPS", name:"Conference on Neural Information Processing Systems", type:"conf" },
+    { abbr:"ICML",    name:"International Conference on Machine Learning",        type:"conf" },
+    { abbr:"ICLR",    name:"International Conference on Learning Representations",type:"conf" },
+    { abbr:"JMLR",    name:"Journal of Machine Learning Research",                type:"jour", isnew:true },
+    { abbr:"TNNLS",   name:"IEEE Transactions on Neural Networks and Learning Systems", type:"jour", isnew:true },
+  ]},
+  { cat:"cv", label:"计算机视觉", color:"#D85A30", venues:[
+    { abbr:"CVPR",  name:"IEEE Conference on Computer Vision and Pattern Recognition", type:"conf" },
+    { abbr:"ICCV",  name:"IEEE International Conference on Computer Vision",           type:"conf" },
+    { abbr:"ECCV",  name:"European Conference on Computer Vision",                     type:"conf" },
+    { abbr:"TPAMI", name:"IEEE Trans. on Pattern Analysis and Machine Intelligence",   type:"jour", isnew:true },
+  ]},
+  { cat:"nlp", label:"自然语言处理", color:"#378ADD", venues:[
+    { abbr:"ACL",   name:"Annual Meeting of the Association for Computational Linguistics", type:"conf" },
+    { abbr:"EMNLP", name:"Empirical Methods in Natural Language Processing",                type:"conf" },
+    { abbr:"NAACL", name:"North American Chapter of the ACL",                              type:"conf" },
+  ]},
+  { cat:"other", label:"机器人", color:"#888780", venues:[
+    { abbr:"ICRA", name:"IEEE International Conference on Robotics and Automation",   type:"conf" },
+    { abbr:"IROS", name:"IEEE/RSJ Intelligent Robots and Systems",                    type:"conf" },
+  ]},
+  { cat:"other", label:"知识工程 & 语音", color:"#D4537E", venues:[
+    { abbr:"ISWC",   name:"International Semantic Web Conference",                              type:"conf" },
+    { abbr:"KR",     name:"Knowledge Representation and Reasoning",                             type:"conf" },
+    { abbr:"ICASSP", name:"IEEE Int'l Conference on Acoustics, Speech and Signal Processing",   type:"conf" },
+  ]},
+  { cat:"data", label:"数据挖掘 & 信息检索", color:"#BA7517", venues:[
+    { abbr:"KDD",    name:"ACM SIGKDD Knowledge Discovery and Data Mining", type:"conf" },
+    { abbr:"WSDM",   name:"ACM Web Search and Data Mining",                 type:"conf" },
+    { abbr:"SIGIR",  name:"ACM SIGIR Information Retrieval",                type:"conf" },
+    { abbr:"RecSys", name:"ACM Recommender Systems",                        type:"conf" },
+    { abbr:"WWW",    name:"International World Wide Web Conference",        type:"conf" },
+  ]},
+  { cat:"sys", label:"数据库", color:"#3B6D11", venues:[
+    { abbr:"SIGMOD", name:"ACM SIGMOD Management of Data", type:"conf" },
+    { abbr:"VLDB",   name:"Very Large Data Bases",          type:"conf" },
+  ]},
+  { cat:"hci", label:"人机交互", color:"#E24B4A", venues:[
+    { abbr:"CHI",  name:"ACM CHI Human Factors in Computing Systems",    type:"conf" },
+    { abbr:"CSCW", name:"ACM Computer-Supported Cooperative Work",       type:"conf" },
+  ]},
+  { cat:"other", label:"图形学 & 多媒体 & 可视化", color:"#5DCAA5", venues:[
+    { abbr:"SIGGRAPH", name:"ACM SIGGRAPH Conference",                              type:"conf" },
+    { abbr:"MM",       name:"ACM International Conference on Multimedia",           type:"conf" },
+    { abbr:"TVCG",     name:"IEEE Transactions on Visualization & Computer Graphics",type:"jour" },
+    { abbr:"IEEE VIS", name:"IEEE Visualization Conference",                        type:"conf" },
+  ]},
+  { cat:"sys", label:"安全与隐私", color:"#A32D2D", venues:[
+    { abbr:"CCS",       name:"ACM Conference on Computer and Communications Security", type:"conf" },
+    { abbr:"S&P",       name:"IEEE Symposium on Security and Privacy",                 type:"conf" },
+    { abbr:"USENIX Sec",name:"USENIX Security Symposium",                              type:"conf" },
+  ]},
+  { cat:"sys", label:"网络 & 操作系统 & 理论", color:"#0F6E56", venues:[
+    { abbr:"SIGCOMM", name:"ACM SIGCOMM Networking Conference",                     type:"conf" },
+    { abbr:"SOSP",    name:"ACM Symposium on Operating Systems Principles",         type:"conf" },
+    { abbr:"OSDI",    name:"USENIX OS Design and Implementation",                   type:"conf" },
+    { abbr:"STOC",    name:"ACM Symposium on Theory of Computing",                  type:"conf" },
+    { abbr:"FOCS",    name:"IEEE Foundations of Computer Science",                  type:"conf" },
+  ]},
+  { cat:"se", label:"软件工程", color:"#185FA5", venues:[
+    { abbr:"ICSE", name:"International Conference on Software Engineering", type:"conf", isnew:true },
+    { abbr:"FSE",  name:"Foundations of Software Engineering",              type:"conf", isnew:true },
+    { abbr:"ASE",  name:"Automated Software Engineering",                   type:"conf", isnew:true },
+  ]},
+  { cat:"pl", label:"编程语言", color:"#993556", venues:[
+    { abbr:"PLDI",   name:"Programming Language Design and Implementation",                    type:"conf", isnew:true },
+    { abbr:"POPL",   name:"Principles of Programming Languages",                               type:"conf", isnew:true },
+    { abbr:"OOPSLA", name:"Object-Oriented Programming, Systems, Languages & Applications",    type:"conf", isnew:true },
+  ]},
+  { cat:"bio", label:"生物信息 & 计算交叉", color:"#639922", venues:[
+    { abbr:"RECOMB",      name:"Research in Computational Molecular Biology", type:"conf", isnew:true },
+    { abbr:"ISMB",        name:"Intelligent Systems for Molecular Biology",   type:"conf", isnew:true },
+    { abbr:"Bioinformatics",name:"Bioinformatics Journal (Oxford)",           type:"jour", isnew:true },
+  ]},
+  { cat:"other", label:"芯片技术 & 物联网", color:"#5F5E5A", venues:[
+    { abbr:"ISSCC", name:"IEEE International Solid-State Circuits Conference",                type:"conf" },
+    { abbr:"DAC",   name:"Design Automation Conference",                                      type:"conf" },
+    { abbr:"FPGA",  name:"ACM/SIGDA Int'l Symposium on Field-Programmable Gate Arrays",       type:"conf" },
+    { abbr:"IoT-J", name:"IEEE Internet of Things Journal",                                   type:"jour" },
+    { abbr:"TWC",   name:"IEEE Transactions on Wireless Communications",                      type:"jour" },
+  ]},
+];
+
+function render(filter) {
+  const content = document.getElementById("content");
+  content.innerHTML = "";
+  const filtered = filter === "all" ? data : data.filter(s => s.cat === filter);
+  filtered.forEach(section => {
+    const sec = document.createElement("div");
+    sec.className = "section";
+    sec.innerHTML = `
+      <div class="section-header">
+        <div class="section-dot" style="background:${section.color}"></div>
+        <span class="section-title">${section.label}</span>
+      </div>
+      <div class="cards">
+        ${section.venues.map(v => `
+          <div class="card" title="${v.name}">
+            <div class="card-abbr">${v.abbr}</div>
+            <div class="card-name">${v.name}</div>
+            <div class="badges">
+              <span class="badge ${v.type==='conf'?'badge-conf':v.type==='pre'?'badge-pre':'badge-jour'}">${v.type==='conf'?'会议':v.type==='pre'?'预印本':'期刊'}</span>
+              ${v.isnew ? '<span class="badge badge-new">新增</span>' : ''}
+            </div>
+          </div>`).join("")}
+      </div>`;
+    content.appendChild(sec);
+  });
+  const shown = filtered.flatMap(s => s.venues);
+  document.getElementById("total-count").textContent = shown.length;
+  document.getElementById("conf-count").textContent = shown.filter(v => v.type==="conf").length;
+  document.getElementById("jour-count").textContent = shown.filter(v => v.type==="jour").length;
+  document.getElementById("pre-count").textContent  = shown.filter(v => v.type==="pre").length;
+}
+
+document.getElementById("filters").addEventListener("click", e => {
+  const btn = e.target.closest(".filter-btn");
+  if (!btn) return;
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  render(btn.dataset.filter);
+});
+
+render("all");
+</script>
+</body>
+</html>
