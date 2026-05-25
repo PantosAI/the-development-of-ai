@@ -1,0 +1,1942 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汽车系统全览 · 工程手册</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1814;
+  --ink2: #2a2620;
+  --paper: #f5f0e8;
+  --paper2: #ede8df;
+  --paper3: #e4ddd0;
+  --accent: #c8401a;       /* 朱砂红 — 动力/警示 */
+  --accent2: #2a6496;      /* 普鲁士蓝 — 底盘/检查 */
+  --green: #3a6a1a;        /* 苔绿 — 安全/通过 */
+  --purple: #6a3a96;       /* 车身 */
+  --muted: #7a7368;
+  --muted2: #9a9388;
+  --border: #d4cfc5;
+  --border-dark: #b8b0a2;
+  --gold: #b8860b;
+  --shadow: 0 1px 2px rgba(26,24,20,.08), 0 4px 16px rgba(26,24,20,.06);
+  --shadow-lg: 0 4px 12px rgba(26,24,20,.12), 0 12px 40px rgba(26,24,20,.10);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(200,64,26,.025), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(42,100,150,.025), transparent 40%);
+  color: var(--ink);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 纸张纹理：极细网点叠加 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: radial-gradient(rgba(26,24,20,.018) 1px, transparent 1px);
+  background-size: 4px 4px;
+  mix-blend-mode: multiply;
+}
+
+.wrap { max-width: 1180px; margin: 0 auto; }
+
+/* ════════ 顶部标题区 ════════ */
+header {
+  background: var(--ink);
+  color: var(--paper);
+  position: relative;
+  overflow: hidden;
+  border-bottom: 4px solid var(--accent);
+}
+header .wrap { padding: 44px 48px 36px; position: relative; z-index: 2; }
+header::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 340px; height: 100%;
+  background: repeating-linear-gradient(
+    -45deg, transparent, transparent 8px,
+    rgba(255,255,255,0.028) 8px, rgba(255,255,255,0.028) 16px);
+  z-index: 1;
+}
+header::after {
+  content: '⚙';
+  position: absolute;
+  right: 36px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 180px;
+  color: rgba(255,255,255,0.03);
+  z-index: 1;
+  line-height: 1;
+}
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 14px; font-weight: 400;
+}
+.eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--accent); }
+header h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 40px; font-weight: 900; line-height: 1.15; margin-bottom: 14px;
+  letter-spacing: 1px;
+}
+header h1 .sub { color: var(--accent); }
+header .lede { color: rgba(245,240,232,0.62); font-size: 13.5px; max-width: 560px; }
+header .meta-row {
+  display: flex; gap: 28px; margin-top: 22px; flex-wrap: wrap;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: rgba(245,240,232,0.45);
+}
+header .meta-row span { display: flex; align-items: center; gap: 7px; }
+header .meta-row b { color: var(--paper); font-weight: 500; }
+header .meta-row .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+/* ════════ 导航 ════════ */
+nav {
+  background: var(--paper2);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 1px 0 rgba(26,24,20,.04);
+}
+nav .wrap {
+  padding: 0 48px; display: flex; gap: 0; overflow-x: auto;
+  scrollbar-width: none;
+}
+nav .wrap::-webkit-scrollbar { display: none; }
+nav button {
+  background: none; border: none; border-bottom: 3px solid transparent;
+  padding: 15px 22px; font-size: 13px; font-family: 'Noto Sans SC', sans-serif;
+  color: var(--muted); cursor: pointer; white-space: nowrap;
+  transition: color .2s, border-color .2s; display: flex; align-items: center; gap: 8px;
+}
+nav button .ico { font-size: 15px; opacity: .7; }
+nav button:hover { color: var(--ink); }
+nav button.active {
+  color: var(--accent); border-bottom-color: var(--accent); font-weight: 700;
+}
+nav button.active .ico { opacity: 1; }
+
+/* ════════ 主区 ════════ */
+main .wrap { padding: 40px 48px 64px; }
+section { display: none; animation: secIn .35s ease both; }
+section.active { display: block; }
+@keyframes secIn { from { opacity: 0; } to { opacity: 1; } }
+
+.sec-head { margin-bottom: 26px; }
+.sec-head h2.section-title {
+  font-family: 'Noto Serif SC', serif; font-size: 24px; font-weight: 900;
+  display: flex; align-items: center; gap: 12px;
+}
+.sec-head h2.section-title .idx {
+  font-family: 'JetBrains Mono', monospace; font-size: 14px;
+  color: var(--accent); font-weight: 700;
+  border: 1.5px solid var(--accent); border-radius: 4px; padding: 2px 8px;
+}
+.sec-head .section-sub { color: var(--muted); font-size: 13px; margin-top: 8px; max-width: 680px; }
+
+/* ════════ 系统卡片网格 ════════ */
+.systems-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 18px;
+}
+.sys-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 3px;
+  overflow: hidden; box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+  position: relative;
+}
+.sys-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--bar, var(--accent)); opacity: .85;
+}
+.sys-card[data-cat="power"]   { --bar: var(--accent); }
+.sys-card[data-cat="chassis"] { --bar: var(--green); }
+.sys-card[data-cat="electric"]{ --bar: var(--accent2); }
+.sys-card[data-cat="body"]    { --bar: var(--purple); }
+.sys-card[data-cat="safety"]  { --bar: var(--gold); }
+.sys-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--border-dark); }
+.sys-card.flash {
+  animation: cardFlash 1.6s ease;
+}
+@keyframes cardFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(200,64,26,0); border-color: var(--border); }
+  15%  { box-shadow: 0 0 0 3px rgba(200,64,26,.55), var(--shadow-lg); border-color: var(--accent); transform: translateY(-3px); }
+  100% { box-shadow: 0 0 0 0 rgba(200,64,26,0); border-color: var(--border); }
+}
+/* 故障卡片里可点击的系统编号 */
+.sc-sys .sys-link {
+  color: var(--accent2); cursor: pointer; border-bottom: 1px dotted var(--accent2);
+  transition: color .15s, border-color .15s; padding-bottom: 1px;
+}
+.sc-sys .sys-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+.sys-card-header {
+  padding: 15px 20px 13px 22px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: baseline; gap: 10px;
+}
+.sys-card-header .num {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+  color: var(--muted2);
+}
+.sys-card-header h3 { font-family: 'Noto Serif SC', serif; font-size: 17px; font-weight: 700; }
+.sys-card-header .tag {
+  margin-left: auto; font-size: 10px; padding: 2px 9px; border-radius: 20px;
+  font-weight: 500; letter-spacing: .5px;
+}
+.tag-power   { background: #fde8e0; color: #c8401a; }
+.tag-chassis { background: #e0eed8; color: #3a6a1a; }
+.tag-electric{ background: #deeaf5; color: #2a6496; }
+.tag-body    { background: #f0e8f5; color: #6a3a96; }
+.tag-safety  { background: #fdf0d8; color: #8a5a0a; }
+
+.sys-card-body { padding: 14px 20px 16px 22px; }
+.sys-card-body .summary {
+  font-size: 12.5px; color: var(--muted); margin-bottom: 12px; line-height: 1.65;
+}
+.flow-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.flow-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  padding: 2px 8px; border-radius: 3px; border: 1px solid var(--border);
+  color: var(--muted); background: var(--paper2); display: inline-flex; gap: 5px; align-items: center;
+}
+.flow-tag b { color: var(--ink); font-weight: 500; }
+.flow-tag.in  { border-left: 2px solid var(--accent2); }
+.flow-tag.out { border-left: 2px solid var(--accent); }
+
+.sub-list { list-style: none; }
+.sub-list li {
+  display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px dashed var(--border);
+  font-size: 13px; align-items: baseline;
+}
+.sub-list li:last-child { border-bottom: none; }
+.sub-list li .sub-name { font-weight: 500; min-width: 88px; flex-shrink: 0; }
+.sub-list li .sub-name .wear { color: var(--accent); font-size: 10px; margin-left: 3px; }
+.sub-list li .sub-desc { color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+.legend {
+  display: flex; gap: 18px; flex-wrap: wrap; margin: 0 0 22px;
+  font-size: 12px; color: var(--muted); align-items: center;
+  padding: 12px 16px; background: #fff; border: 1px solid var(--border); border-radius: 3px;
+}
+.legend .li { display: flex; align-items: center; gap: 7px; }
+.legend .sw { width: 14px; height: 14px; border-radius: 3px; }
+.legend .wear-mark { color: var(--accent); font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+
+/* ════════ 能量流图 ════════ */
+.flow-canvas {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  padding: 20px; box-shadow: var(--shadow); overflow-x: auto;
+}
+.flow-canvas svg { display: block; min-width: 720px; width: 100%; height: auto; }
+.flow-legend {
+  display: flex; gap: 22px; flex-wrap: wrap; margin-top: 18px; font-size: 12px; color: var(--muted);
+}
+.flow-legend .li { display: flex; align-items: center; gap: 8px; }
+.flow-legend .line { width: 26px; height: 0; border-top: 3px solid; }
+.diagram-node { cursor: default; }
+.diagram-node rect, .diagram-node circle { transition: filter .2s; }
+.diagram-node:hover rect, .diagram-node:hover circle { filter: brightness(1.06); }
+
+/* ════════ 故障反查 ════════ */
+.diag-intro {
+  background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--accent);
+  border-radius: 3px; padding: 16px 20px; margin-bottom: 22px; font-size: 13px; color: var(--muted);
+  line-height: 1.7;
+}
+.diag-intro strong { color: var(--ink); }
+.diag-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+.diag-filters button {
+  font-family: 'Noto Sans SC', sans-serif; font-size: 12.5px;
+  padding: 7px 15px; border-radius: 30px; border: 1.5px solid var(--border-dark);
+  background: #fff; color: var(--muted); cursor: pointer; transition: all .18s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.diag-filters button .ico { font-size: 14px; }
+.diag-filters button:hover { border-color: var(--ink); color: var(--ink); }
+.diag-filters button.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+.symptom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+.symptom-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 3px;
+  box-shadow: var(--shadow); overflow: hidden; transition: opacity .25s, transform .25s;
+}
+.symptom-card.hide { display: none; }
+.symptom-card .sc-head {
+  padding: 14px 18px; display: flex; align-items: flex-start; gap: 12px;
+  border-bottom: 1px solid var(--border); background: var(--paper2);
+}
+.symptom-card .sc-ico {
+  font-size: 22px; line-height: 1; flex-shrink: 0; width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center; border-radius: 8px;
+  background: #fff; border: 1px solid var(--border);
+}
+.symptom-card .sc-title { font-family: 'Noto Serif SC', serif; font-size: 15px; font-weight: 700; }
+.symptom-card .sc-sys {
+  font-size: 10.5px; color: var(--muted); margin-top: 3px; font-family: 'JetBrains Mono', monospace;
+}
+.severity {
+  margin-left: auto; flex-shrink: 0; font-size: 10px; font-weight: 700;
+  padding: 3px 9px; border-radius: 4px; letter-spacing: .5px; white-space: nowrap;
+}
+.sev-stop  { background: var(--accent); color: #fff; }
+.sev-soon  { background: #fdf0d8; color: #8a5a0a; border: 1px solid #e8d890; }
+.sev-watch { background: #deeaf5; color: #2a6496; }
+.symptom-card .sc-body { padding: 13px 18px 16px; }
+.symptom-card .sc-row { display: flex; gap: 10px; padding: 5px 0; font-size: 12.5px; align-items: baseline; }
+.symptom-card .sc-row .k {
+  flex-shrink: 0; width: 58px; font-size: 11px; color: var(--muted); font-weight: 500;
+}
+.symptom-card .sc-row .v { color: var(--ink); line-height: 1.55; }
+.symptom-card .sc-row .v .hl { color: var(--accent); font-weight: 500; }
+
+/* ════════ 保养计算器 ════════ */
+.calc-shell { display: grid; grid-template-columns: 320px 1fr; gap: 22px; align-items: start; }
+.calc-input {
+  background: var(--ink); color: var(--paper); border-radius: 4px; padding: 24px 22px;
+  position: sticky; top: 70px; box-shadow: var(--shadow-lg);
+}
+.calc-input h3 { font-family: 'Noto Serif SC', serif; font-size: 16px; margin-bottom: 4px; }
+.calc-input .ci-sub { font-size: 11.5px; color: rgba(245,240,232,.5); margin-bottom: 20px; }
+.calc-input label {
+  display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: rgba(245,240,232,.55); margin: 16px 0 8px;
+}
+.calc-input .km-display {
+  font-family: 'JetBrains Mono', monospace; font-size: 34px; font-weight: 700;
+  color: var(--accent); line-height: 1; margin-bottom: 4px; cursor: text;
+  display: inline-flex; align-items: baseline; border-bottom: 1px dashed transparent;
+  transition: border-color .15s; padding-bottom: 2px;
+}
+.calc-input .km-display:hover { border-bottom-color: rgba(200,64,26,.5); }
+.calc-input .km-display .edit-hint {
+  font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 400;
+  color: rgba(245,240,232,.4); margin-left: 8px; align-self: center; letter-spacing: 0;
+}
+.calc-input .km-unit { font-size: 14px; color: rgba(245,240,232,.5); margin-left: 6px; }
+.calc-input .km-edit {
+  font-family: 'JetBrains Mono', monospace; font-size: 34px; font-weight: 700;
+  color: var(--accent); line-height: 1; margin-bottom: 4px; width: 100%;
+  background: rgba(245,240,232,.08); border: 1.5px solid var(--accent); border-radius: 4px;
+  padding: 4px 10px; outline: none; -moz-appearance: textfield;
+}
+.calc-input .km-edit::-webkit-outer-spin-button,
+.calc-input .km-edit::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.calc-input input[type=range] {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 4px;
+  background: rgba(245,240,232,.18); border-radius: 4px; outline: none; margin: 8px 0 4px;
+}
+.calc-input input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent); cursor: pointer; border: 3px solid var(--ink); box-shadow: 0 0 0 1px var(--accent);
+}
+.calc-input input[type=range]::-moz-range-thumb {
+  width: 16px; height: 16px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 3px solid var(--ink);
+}
+.km-scale { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: rgba(245,240,232,.35); margin-top: 4px; }
+.calc-input .km-quick { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.calc-input .km-quick button {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 4px 10px; border-radius: 4px;
+  background: rgba(245,240,232,.1); color: var(--paper); border: 1px solid rgba(245,240,232,.2); cursor: pointer; transition: all .15s;
+}
+.calc-input .km-quick button:hover { background: var(--accent); border-color: var(--accent); }
+.toggle-row { display: flex; align-items: center; gap: 10px; margin-top: 18px; }
+.toggle-row .tg { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+.toggle-row .tg input { opacity: 0; width: 0; height: 0; }
+.toggle-row .tg .sl {
+  position: absolute; inset: 0; background: rgba(245,240,232,.2); border-radius: 22px; cursor: pointer; transition: .2s;
+}
+.toggle-row .tg .sl::before {
+  content: ''; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px;
+  background: var(--paper); border-radius: 50%; transition: .2s;
+}
+.toggle-row .tg input:checked + .sl { background: var(--accent); }
+.toggle-row .tg input:checked + .sl::before { transform: translateX(18px); }
+.toggle-row .tg-label { font-size: 12px; color: rgba(245,240,232,.8); }
+
+.calc-output { min-height: 200px; }
+.calc-summary {
+  display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.calc-stat {
+  flex: 1; min-width: 120px; background: #fff; border: 1px solid var(--border); border-radius: 3px;
+  padding: 14px 16px; box-shadow: var(--shadow);
+}
+.calc-stat .n { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 700; line-height: 1; }
+.calc-stat.must .n { color: var(--accent); }
+.calc-stat.check .n { color: var(--accent2); }
+.calc-stat.cost .n { color: var(--ink); }
+.calc-stat .l { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+.calc-tier-title {
+  font-family: 'Noto Serif SC', serif; font-size: 13px; font-weight: 700; letter-spacing: 1px;
+  color: var(--muted); margin: 22px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.calc-tier-title .cnt { font-family: 'JetBrains Mono', monospace; color: var(--accent); }
+.calc-item {
+  display: flex; gap: 12px; align-items: flex-start; background: #fff;
+  border: 1px solid var(--border); border-radius: 3px; padding: 12px 16px; margin-bottom: 8px;
+  box-shadow: var(--shadow); animation: itemIn .3s ease both;
+}
+@keyframes itemIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+.calc-item .ci-badge { flex-shrink: 0; }
+.calc-item .ci-main { flex: 1; }
+.calc-item .ci-name { font-weight: 700; font-size: 13.5px; }
+.calc-item .ci-note { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+.calc-item .ci-cost { flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); text-align: right; white-space: nowrap; }
+.calc-item .ci-cost b { color: var(--ink); font-weight: 700; display: block; font-size: 14px; }
+.calc-empty { text-align: center; color: var(--muted); padding: 40px; font-size: 13px; }
+.calc-disclaimer {
+  margin-top: 20px; font-size: 11.5px; color: var(--muted2); line-height: 1.7;
+  padding: 12px 16px; background: var(--paper2); border-radius: 3px; border: 1px dashed var(--border-dark);
+}
+.next-service {
+  display: flex; gap: 12px; align-items: flex-start; margin-top: 16px;
+  background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--accent2);
+  border-radius: 3px; padding: 13px 16px; box-shadow: var(--shadow);
+}
+.next-service .ns-icon { color: var(--accent2); font-size: 16px; line-height: 1.4; flex-shrink: 0; }
+.next-service .ns-title { font-size: 13.5px; font-weight: 500; }
+.next-service .ns-title b { font-family: 'JetBrains Mono', monospace; color: var(--accent2); font-size: 15px; }
+.next-service .ns-remain {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted);
+  margin-left: 8px; background: var(--paper2); padding: 1px 8px; border-radius: 20px;
+}
+.next-service .ns-items { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* ════════ 原理课 ════════ */
+.course-wrap { max-width: 820px; }
+.course-subnav {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px;
+  position: sticky; top: 49px; z-index: 50; background: var(--paper);
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.cs-chip {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; text-decoration: none;
+  padding: 5px 13px; border-radius: 20px; border: 1.5px solid var(--border-dark);
+  color: var(--muted); background: #fff; transition: all .15s; white-space: nowrap;
+}
+.cs-chip:hover { border-color: var(--ink); color: var(--ink); }
+.cs-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+.course-lecture {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  padding: 28px 32px; margin-bottom: 22px; box-shadow: var(--shadow);
+  scroll-margin-top: 110px;
+}
+.cl-title {
+  font-family: 'Noto Serif SC', serif; font-size: 21px; font-weight: 900;
+  padding-bottom: 14px; margin-bottom: 18px; border-bottom: 2px solid var(--ink);
+  line-height: 1.35;
+}
+.course-lecture .co-sub {
+  font-family: 'Noto Serif SC', serif; font-size: 15.5px; font-weight: 700;
+  color: var(--accent); margin: 22px 0 10px; display: flex; align-items: center; gap: 9px;
+}
+.course-lecture .co-sub::before {
+  content: ''; width: 4px; height: 16px; background: var(--accent); border-radius: 2px; flex-shrink: 0;
+}
+.course-lecture p { font-size: 14px; line-height: 1.85; margin-bottom: 12px; color: var(--ink2); }
+.course-lecture .co-list { margin: 4px 0 14px; padding-left: 4px; list-style: none; }
+.course-lecture .co-list li {
+  font-size: 13.5px; line-height: 1.75; color: var(--ink2); padding: 4px 0 4px 20px;
+  position: relative;
+}
+.course-lecture .co-list li::before {
+  content: '▸'; position: absolute; left: 0; color: var(--accent2); font-size: 12px; top: 5px;
+}
+.course-lecture code {
+  font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+  background: var(--paper2); padding: 1px 6px; border-radius: 3px; color: var(--accent);
+}
+.course-lecture .co-quote {
+  font-family: 'JetBrains Mono', monospace; font-size: 15px; text-align: center;
+  background: var(--ink); color: var(--paper); padding: 16px 20px; border-radius: 4px;
+  margin: 16px 0; letter-spacing: .5px; line-height: 1.6;
+}
+.course-lecture .co-quote strong { color: #fff; font-weight: 700; }
+.course-lecture .co-formula { font-family: 'JetBrains Mono', monospace; }
+
+.co-details {
+  border: 1px solid var(--border); border-radius: 4px; margin: 16px 0 6px; overflow: hidden;
+}
+.co-details summary {
+  cursor: pointer; padding: 11px 16px; font-weight: 700; font-size: 13px;
+  font-family: 'Noto Serif SC', serif; list-style: none; display: flex; align-items: center; gap: 9px;
+  user-select: none; transition: background .15s;
+}
+.co-details summary::-webkit-details-marker { display: none; }
+.co-details summary::before {
+  content: '▶'; font-size: 9px; transition: transform .2s; flex-shrink: 0;
+}
+.co-details[open] summary::before { transform: rotate(90deg); }
+.co-points summary { background: #fde8e0; color: #c8401a; }
+.co-think  summary { background: #deeaf5; color: #2a6496; }
+.co-det-body { padding: 14px 18px; border-top: 1px solid var(--border); }
+.co-det-body .co-list li::before { content: '·'; font-size: 18px; top: 0; }
+.co-think .co-det-body .co-list { counter-reset: q; }
+.co-think .co-det-body .co-list li { padding-left: 26px; }
+.co-think .co-det-body .co-list li::before {
+  counter-increment: q; content: counter(q); color: var(--accent2); font-weight: 700;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; top: 5px;
+  background: #deeaf5; width: 17px; height: 17px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* 系统卡片 → 原理课 跳转链接 */
+.sys-course-link {
+  display: inline-flex; align-items: center; gap: 5px; margin-top: 10px;
+  font-size: 11.5px; color: var(--accent2); cursor: pointer; font-weight: 500;
+  border-bottom: 1px dotted var(--accent2); padding-bottom: 1px; transition: color .15s;
+}
+.sys-course-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+@media(max-width: 600px) {
+  .course-lecture { padding: 20px 18px; }
+  .cl-title { font-size: 18px; }
+  .course-subnav { top: 0; }
+}
+
+/* ════════ 改装栏目 ════════ */
+.mods-wrap { max-width: 880px; }
+.mod-subnav {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;
+  position: sticky; top: 49px; z-index: 50; background: var(--paper);
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.ms-chip {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; text-decoration: none;
+  padding: 5px 13px; border-radius: 20px; border: 1.5px solid var(--border-dark);
+  color: var(--muted); background: #fff; transition: all .15s; white-space: nowrap;
+}
+.ms-chip:hover { border-color: var(--accent); color: var(--accent); }
+
+.mod-intro {
+  background: var(--ink); color: var(--paper); border-radius: 4px;
+  padding: 20px 24px; font-size: 14px; line-height: 1.85; margin-bottom: 16px;
+  box-shadow: var(--shadow-lg);
+}
+.mod-intro strong { color: var(--accent); font-family: 'Noto Serif SC', serif; font-size: 15px; }
+.mod-principle {
+  background: #fffbf0; border: 1px solid #e8d890; border-radius: 4px;
+  padding: 16px 20px; margin-bottom: 28px; box-shadow: var(--shadow);
+}
+.mod-principle .mp-title {
+  font-family: 'Noto Serif SC', serif; font-weight: 700; font-size: 14px; color: var(--gold); margin-bottom: 6px;
+}
+.mod-principle p { font-size: 13px; line-height: 1.8; color: var(--ink2); }
+.mod-principle b { color: var(--accent); }
+
+.mod-section-title {
+  font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 900;
+  margin: 34px 0 6px; padding-bottom: 12px; border-bottom: 2px solid var(--ink);
+  display: flex; align-items: center; gap: 12px; scroll-margin-top: 110px;
+}
+.mod-section-title .mst-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 15px; color: #fff;
+  background: var(--accent); width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.mod-section-sub { font-size: 12.5px; color: var(--muted); margin: 10px 0 16px; line-height: 1.7; }
+.lec-ref {
+  color: var(--accent2); cursor: pointer; border-bottom: 1px dotted var(--accent2);
+  padding-bottom: 1px; transition: color .15s;
+}
+.lec-ref:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+.mod-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  margin-bottom: 14px; box-shadow: var(--shadow); overflow: hidden;
+}
+.mod-card .mc-head {
+  display: flex; align-items: center; gap: 12px; padding: 14px 20px;
+  border-bottom: 1px solid var(--border); background: var(--paper2);
+}
+.mod-card .mc-tag {
+  font-size: 11px; font-weight: 700; padding: 3px 11px; border-radius: 20px; white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace; flex-shrink: 0;
+}
+.tag-stage  { background: var(--accent); color: #fff; }
+.tag-handle { background: #e0eed8; color: #3a6a1a; }
+.tag-brake  { background: #fdf0d8; color: #8a5a0a; }
+.mod-card .mc-head h4 { font-family: 'Noto Serif SC', serif; font-size: 15.5px; font-weight: 700; }
+.mod-card .mc-body { padding: 15px 20px 17px; }
+.mod-card .mc-body > p { font-size: 13.5px; line-height: 1.8; color: var(--ink2); margin-bottom: 10px; }
+.mod-card .mc-body > p b { color: var(--accent); }
+.mod-list { list-style: none; }
+.mod-list li {
+  font-size: 13px; line-height: 1.7; color: var(--ink2); padding: 6px 0 6px 18px;
+  position: relative; border-bottom: 1px dashed var(--border);
+}
+.mod-list li:last-child { border-bottom: none; }
+.mod-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent2); font-size: 11px; top: 7px; }
+.mod-list li b { color: var(--ink); }
+
+.trap-wrap { margin-top: 4px; }
+.trap-item {
+  display: flex; gap: 14px; align-items: flex-start; background: #fff;
+  border: 1px solid var(--border); border-left: 4px solid var(--accent);
+  border-radius: 3px; padding: 14px 18px; margin-bottom: 10px; box-shadow: var(--shadow);
+}
+.trap-item .ti-num {
+  flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--ink);
+  color: var(--paper); font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.trap-item .ti-title { font-family: 'Noto Serif SC', serif; font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.trap-item .ti-desc { font-size: 12.5px; line-height: 1.7; color: var(--muted); }
+
+.mod-law {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  padding: 20px 24px; box-shadow: var(--shadow);
+}
+.mod-law .ml-head {
+  font-family: 'Noto Serif SC', serif; font-size: 16px; font-weight: 900; margin-bottom: 12px; color: var(--accent2);
+}
+.mod-law .ml-core { font-size: 13.5px; line-height: 1.85; margin-bottom: 18px; color: var(--ink2); }
+.mod-law .ml-core b { color: var(--accent); }
+.ml-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+.ml-col { border-radius: 4px; padding: 14px 16px; }
+.ml-yes { background: #eef5e8; border: 1px solid #cce0b8; }
+.ml-no  { background: #fdeae5; border: 1px solid #f0c4b8; }
+.mlc-title { font-family: 'Noto Serif SC', serif; font-weight: 700; font-size: 13.5px; margin-bottom: 8px; }
+.ml-yes .mlc-title { color: #3a6a1a; }
+.ml-no .mlc-title { color: #c8401a; }
+.ml-col ul { list-style: none; }
+.ml-col li { font-size: 12.5px; line-height: 1.55; padding: 4px 0 4px 16px; position: relative; color: var(--ink2); }
+.ml-col li::before { content: '·'; position: absolute; left: 4px; font-size: 16px; top: 2px; }
+.ml-col li b { color: var(--ink); }
+.ml-note {
+  font-size: 12px; line-height: 1.75; color: var(--muted); background: var(--paper2);
+  border-radius: 3px; padding: 12px 16px; border: 1px dashed var(--border-dark);
+}
+.ml-note b { color: var(--ink2); }
+.ml-note strong { color: var(--accent); }
+
+@media(max-width: 600px) {
+  .mod-subnav { top: 0; }
+  .ml-cols { grid-template-columns: 1fr; }
+  .mod-section-title { font-size: 17px; }
+}
+
+/* ════════ 保养手册表 ════════ */
+.maintenance-intro {
+  background: #fff; border-left: 4px solid var(--accent); border-radius: 3px;
+  padding: 16px 20px; margin-bottom: 28px; font-size: 13px; color: var(--muted); line-height: 1.8;
+  box-shadow: var(--shadow);
+}
+.maintenance-intro strong { color: var(--ink); }
+.maint-section-title {
+  font-family: 'Noto Serif SC', serif; font-size: 13px; font-weight: 700; letter-spacing: 2px;
+  color: var(--muted); text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 10px;
+}
+.maint-section-title .km { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 12px; letter-spacing: 0; }
+.maint-table {
+  width: 100%; border-collapse: collapse; font-size: 13px; background: #fff;
+  border: 1px solid var(--border); border-radius: 3px; overflow: hidden; box-shadow: var(--shadow);
+}
+.maint-table th {
+  background: var(--ink); color: var(--paper); padding: 11px 14px; text-align: left;
+  font-weight: 500; font-size: 12px; letter-spacing: 1px;
+}
+.maint-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.maint-table tr:last-child td { border-bottom: none; }
+.maint-table tr:hover td { background: var(--paper2); }
+.maint-table .item-name { font-weight: 500; }
+.maint-table .interval { color: var(--accent2); font-size: 12px; font-weight: 500; font-family: 'JetBrains Mono', monospace; }
+.maint-table .note { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.badge { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 500; white-space: nowrap; }
+.badge-must  { background: #fde8e0; color: #c8401a; }
+.badge-check { background: #deeaf5; color: #2a6496; }
+.badge-opt   { background: #f0e8f5; color: #6a3a96; }
+.badge-trap  { background: var(--ink); color: var(--paper); }
+
+.tip-box {
+  background: #fffbf0; border: 1px solid #e8d890; border-radius: 3px; padding: 16px 20px;
+  margin-top: 26px; font-size: 13px; line-height: 1.8; box-shadow: var(--shadow);
+}
+.tip-box strong { color: var(--gold); font-family: 'Noto Serif SC', serif; font-size: 14px; }
+.tip-box ul { margin-top: 8px; padding-left: 4px; list-style: none; }
+.tip-box ul li { margin-bottom: 8px; padding-left: 24px; position: relative; }
+.tip-box ul li::before {
+  content: '“'; position: absolute; left: 0; top: -2px; font-family: 'Noto Serif SC', serif;
+  font-size: 22px; color: var(--gold); font-weight: 700;
+}
+
+/* ════════ 页脚 ════════ */
+footer { border-top: 1px solid var(--border); background: var(--paper2); }
+footer .wrap {
+  padding: 22px 48px; font-size: 11.5px; color: var(--muted); display: flex;
+  justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+}
+footer .wrap .brand { color: var(--ink); font-weight: 500; }
+
+/* ════════ 卡片入场动画 ════════ */
+section.active .sys-card, section.active .symptom-card { animation: fadeUp .35s ease both; }
+section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * .03s); }
+@keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+
+/* ════════ 响应式 ════════ */
+@media(max-width: 860px) {
+  .calc-shell { grid-template-columns: 1fr; }
+  .calc-input { position: static; }
+}
+@media(max-width: 600px) {
+  header .wrap, nav .wrap, main .wrap, footer .wrap { padding-left: 20px; padding-right: 20px; }
+  header h1 { font-size: 28px; }
+  header::after { display: none; }
+  .systems-grid, .symptom-grid { grid-template-columns: 1fr; }
+  .maint-table th:nth-child(3), .maint-table td:nth-child(3) { display: none; }
+  .sec-head h2.section-title { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">燃油汽车 · 工程系统手册</div>
+    <h1>汽车各大系统<span class="sub">完整拆解</span></h1>
+    <p class="lede">12 大系统、能量传递链、故障反向定位、按里程计算的保养清单，以及一份 4S 店避坑指南。把「看懂车」和「会养车」放进同一本手册。</p>
+    <div class="meta-row">
+      <span><span class="dot"></span>系统 <b>12</b></span>
+      <span><span class="dot"></span>耗材项 <b>20+</b></span>
+      <span><span class="dot"></span>故障症状 <b>14</b></span>
+      <span><span class="dot"></span>适用：自然吸气 / 涡轮燃油车</span>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <button class="active" onclick="show('systems',this)"><span class="ico">▦</span>系统总览</button>
+    <button onclick="show('flow',this)"><span class="ico">⇄</span>能量流图</button>
+    <button onclick="show('course',this)"><span class="ico">◈</span>原理课</button>
+    <button onclick="show('mods',this)"><span class="ico">▲</span>改装</button>
+    <button onclick="show('diagnose',this)"><span class="ico">⚠</span>故障反查</button>
+    <button onclick="show('calc',this)"><span class="ico">▤</span>保养计算器</button>
+    <button onclick="show('maintenance',this)"><span class="ico">≣</span>保养手册</button>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+
+<!-- ══════════ 系统总览 ══════════ -->
+<section id="systems" class="active">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">01</span>系统总览</h2>
+    <p class="section-sub">每张卡片标注了该系统的「输入 ⇠」和「输出 ⇢」，顺着读就能看出能量和信号如何在车上流动。带 <span class="legend" style="display:inline-flex;padding:1px 6px;margin:0;border:none;background:none;"><span class="wear-mark">▲</span></span> 标记的零件是需要定期更换的耗材。</p>
+  </div>
+
+  <div class="legend">
+    <div class="li"><span class="sw" style="background:var(--accent)"></span>动力总成</div>
+    <div class="li"><span class="sw" style="background:var(--green)"></span>底盘</div>
+    <div class="li"><span class="sw" style="background:var(--accent2)"></span>电气</div>
+    <div class="li"><span class="sw" style="background:var(--purple)"></span>车身</div>
+    <div class="li"><span class="sw" style="background:var(--gold)"></span>安全</div>
+    <div class="li"><span class="wear-mark">▲</span>= 定期更换耗材</div>
+  </div>
+
+  <div class="systems-grid">
+
+    <!-- 01 发动机 -->
+    <div class="sys-card" data-cat="power" style="--i:0">
+      <div class="sys-card-header"><span class="num">01</span><h3>发动机（引擎）</h3><span class="tag tag-power">动力</span></div>
+      <div class="sys-card-body">
+        <p class="summary">将燃油化学能转换为机械能的核心，四冲程循环：进气 → 压缩 → 做功 → 排气。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 输入 <b>燃油 + 空气 + 点火</b></span>
+          <span class="flow-tag out">输出 ⇢ <b>曲轴扭矩</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">缸体 / 缸盖</span><span class="sub-desc">发动机骨架，活塞在缸内往复运动</span></li>
+          <li><span class="sub-name">活塞 / 连杆</span><span class="sub-desc">把燃烧膨胀力转为旋转力</span></li>
+          <li><span class="sub-name">曲轴</span><span class="sub-desc">把直线往复转为旋转输出</span></li>
+          <li><span class="sub-name">配气机构</span><span class="sub-desc">凸轮轴控制进排气门开闭时序</span></li>
+          <li><span class="sub-name">火花塞<span class="wear">▲</span></span><span class="sub-desc">汽油机点火；柴油机靠压燃，无火花塞</span></li>
+          <li><span class="sub-name">正时系统<span class="wear">▲</span></span><span class="sub-desc">链或皮带，同步曲轴与凸轮轴。皮带必换</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 02 燃油 -->
+    <div class="sys-card" data-cat="power" style="--i:1">
+      <div class="sys-card-header"><span class="num">02</span><h3>燃油系统</h3><span class="tag tag-power">动力</span></div>
+      <div class="sys-card-body">
+        <p class="summary">储油、供油、雾化，把燃油以接近 14.7:1 的空燃比精确送入气缸。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 输入 <b>油箱燃油</b></span>
+          <span class="flow-tag out">输出 ⇢ <b>雾化油气→气缸</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">油箱</span><span class="sub-desc">储存燃油，内置燃油泵</span></li>
+          <li><span class="sub-name">燃油泵</span><span class="sub-desc">把油泵出并维持喷射所需油压</span></li>
+          <li><span class="sub-name">燃油滤清器<span class="wear">▲</span></span><span class="sub-desc">过滤杂质，保护喷油嘴</span></li>
+          <li><span class="sub-name">喷油嘴</span><span class="sub-desc">精确喷射雾化（缸内直喷 / 歧管喷射）</span></li>
+          <li><span class="sub-name">空气滤清器<span class="wear">▲</span></span><span class="sub-desc">过滤进气灰尘，脏了进气受阻</span></li>
+          <li><span class="sub-name">节气门</span><span class="sub-desc">控制进气量，对应油门深浅</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 03 冷却 -->
+    <div class="sys-card" data-cat="power" style="--i:2">
+      <div class="sys-card-header"><span class="num">03</span><h3>冷却系统</h3><span class="tag tag-power">动力</span></div>
+      <div class="sys-card-body">
+        <p class="summary">把发动机维持在 80–95℃ 最佳区间，过热会拉缸、烧垫，是发动机的「体温调节」。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 输入 <b>燃烧废热</b></span>
+          <span class="flow-tag out">输出 ⇢ <b>热量→大气</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">水泵</span><span class="sub-desc">驱动冷却液循环流动</span></li>
+          <li><span class="sub-name">散热器</span><span class="sub-desc">把冷却液热量散到大气</span></li>
+          <li><span class="sub-name">节温器</span><span class="sub-desc">按水温切换大 / 小循环</span></li>
+          <li><span class="sub-name">冷却液<span class="wear">▲</span></span><span class="sub-desc">防冻 + 防腐 + 传热，约 2 年一换</span></li>
+          <li><span class="sub-name">电子风扇</span><span class="sub-desc">低速 / 堵车时强制散热</span></li>
+          <li><span class="sub-name">膨胀水壶</span><span class="sub-desc">补偿热胀冷缩，日常可目视液位</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 04 润滑 -->
+    <div class="sys-card" data-cat="power" style="--i:3">
+      <div class="sys-card-header"><span class="num">04</span><h3>润滑系统</h3><span class="tag tag-power">动力</span></div>
+      <div class="sys-card-body">
+        <p class="summary">减少金属摩擦、带走热量与磨屑、密封缸壁。机油是用车成本里最高频的耗材。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 输入 <b>机油泵压力</b></span>
+          <span class="flow-tag out">输出 ⇢ <b>油膜→各摩擦面</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">机油<span class="wear">▲</span></span><span class="sub-desc">润滑 + 冷却 + 清洁 + 密封，核心耗材</span></li>
+          <li><span class="sub-name">机油泵</span><span class="sub-desc">把机油泵送至各润滑点</span></li>
+          <li><span class="sub-name">机油滤清器<span class="wear">▲</span></span><span class="sub-desc">过滤金属屑，随机油同换</span></li>
+          <li><span class="sub-name">油底壳</span><span class="sub-desc">储油，底部有放油螺丝</span></li>
+          <li><span class="sub-name">油尺</span><span class="sub-desc">日常自查机油量与油色</span></li>
+          <li><span class="sub-name">机油压力传感器</span><span class="sub-desc">仪表盘机油灯的来源</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 05 排放 -->
+    <div class="sys-card" data-cat="power" style="--i:4">
+      <div class="sys-card-header"><span class="num">05</span><h3>排放系统</h3><span class="tag tag-power">动力</span></div>
+      <div class="sys-card-body">
+        <p class="summary">把废气净化后排出并降噪，决定车辆能否通过年检与国六排放。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 输入 <b>气缸废气</b></span>
+          <span class="flow-tag out">输出 ⇢ <b>净化尾气</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">排气歧管</span><span class="sub-desc">汇集各缸废气</span></li>
+          <li><span class="sub-name">三元催化器</span><span class="sub-desc">把 CO / HC / NOx 转成无害气体</span></li>
+          <li><span class="sub-name">氧传感器<span class="wear">▲</span></span><span class="sub-desc">反馈燃烧质量，闭环修正空燃比</span></li>
+          <li><span class="sub-name">GPF 颗粒捕集</span><span class="sub-desc">缸内直喷专用，国六强制</span></li>
+          <li><span class="sub-name">消音器</span><span class="sub-desc">降低排气噪音</span></li>
+          <li><span class="sub-name">EGR 系统</span><span class="sub-desc">废气再循环，压低 NOx</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 06 传动 -->
+    <div class="sys-card" data-cat="chassis" style="--i:5">
+      <div class="sys-card-header"><span class="num">06</span><h3>传动系统</h3><span class="tag tag-chassis">底盘</span></div>
+      <div class="sys-card-body">
+        <p class="summary">把发动机扭矩按合适的速比送到车轮，是动力链承上启下的一环。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 输入 <b>曲轴扭矩</b></span>
+          <span class="flow-tag out">输出 ⇢ <b>车轮驱动力</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">离合器</span><span class="sub-desc">手动挡专用，切断 / 接合动力</span></li>
+          <li><span class="sub-name">变速箱</span><span class="sub-desc">MT / AT / DCT / CVT，调节速比</span></li>
+          <li><span class="sub-name">传动轴</span><span class="sub-desc">把动力传至差速器（后驱 / 四驱）</span></li>
+          <li><span class="sub-name">差速器</span><span class="sub-desc">允许左右轮转速差，过弯关键</span></li>
+          <li><span class="sub-name">半轴 / CV 节</span><span class="sub-desc">连接差速器与车轮，含等速万向节</span></li>
+          <li><span class="sub-name">变速箱油<span class="wear">▲</span></span><span class="sub-desc">自动挡需定期换，最常被忽略</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 07 悬挂 -->
+    <div class="sys-card" data-cat="chassis" style="--i:6">
+      <div class="sys-card-header"><span class="num">07</span><h3>悬挂系统</h3><span class="tag tag-chassis">底盘</span></div>
+      <div class="sys-card-body">
+        <p class="summary">连接车身与车轮，吸收冲击、维持四轮接地与车身姿态。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 输入 <b>路面冲击</b></span>
+          <span class="flow-tag out">输出 ⇢ <b>稳定的车身</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">弹簧</span><span class="sub-desc">储存 / 释放冲击能量</span></li>
+          <li><span class="sub-name">减震器<span class="wear">▲</span></span><span class="sub-desc">阻尼弹簧振动，防止持续反弹</span></li>
+          <li><span class="sub-name">控制臂</span><span class="sub-desc">约束车轮运动轨迹</span></li>
+          <li><span class="sub-name">稳定杆</span><span class="sub-desc">连接左右轮，抑制过弯侧倾</span></li>
+          <li><span class="sub-name">衬套 / 球头<span class="wear">▲</span></span><span class="sub-desc">橡胶减振节点，老化后异响</span></li>
+          <li><span class="sub-name">轮毂轴承</span><span class="sub-desc">支撑车轮旋转，损坏有嗡嗡声</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 08 转向 -->
+    <div class="sys-card" data-cat="chassis" style="--i:7">
+      <div class="sys-card-header"><span class="num">08</span><h3>转向系统</h3><span class="tag tag-chassis">底盘</span></div>
+      <div class="sys-card-body">
+        <p class="summary">把方向盘的手部输入放大并传到前轮，决定转向手感和精准度。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 输入 <b>方向盘转角</b></span>
+          <span class="flow-tag out">输出 ⇢ <b>前轮偏转</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">方向盘</span><span class="sub-desc">输入端，内含气囊与喇叭</span></li>
+          <li><span class="sub-name">转向柱</span><span class="sub-desc">传递扭矩，带溃缩吸能设计</span></li>
+          <li><span class="sub-name">转向机</span><span class="sub-desc">齿轮齿条，把旋转转为横向位移</span></li>
+          <li><span class="sub-name">EPS 电助力</span><span class="sub-desc">电机辅助，已取代多数液压助力</span></li>
+          <li><span class="sub-name">横拉杆</span><span class="sub-desc">连接转向机与转向节</span></li>
+          <li><span class="sub-name">四轮定位</span><span class="sub-desc">前束 / 外倾，跑偏与吃胎的根源</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 09 制动 -->
+    <div class="sys-card" data-cat="chassis" style="--i:8">
+      <div class="sys-card-header"><span class="num">09</span><h3>制动系统</h3><span class="tag tag-chassis">底盘</span></div>
+      <div class="sys-card-body">
+        <p class="summary">把车辆动能通过摩擦转成热能而减速，安全冗余最关键的系统。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 输入 <b>踏板力</b></span>
+          <span class="flow-tag out">输出 ⇢ <b>车轮制动力</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">制动踏板</span><span class="sub-desc">输入端，带真空 / 电子助力</span></li>
+          <li><span class="sub-name">制动总泵</span><span class="sub-desc">把踏板力转成液压</span></li>
+          <li><span class="sub-name">制动液<span class="wear">▲</span></span><span class="sub-desc">传递液压，吸水后沸点下降</span></li>
+          <li><span class="sub-name">刹车盘 / 鼓<span class="wear">▲</span></span><span class="sub-desc">被摩擦件，到最小厚度必换</span></li>
+          <li><span class="sub-name">刹车片 / 蹄<span class="wear">▲</span></span><span class="sub-desc">主动摩擦件，&lt; 3mm 必换</span></li>
+          <li><span class="sub-name">ABS / ESP</span><span class="sub-desc">防抱死 + 车身稳定的电子辅助</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 10 电气 -->
+    <div class="sys-card" data-cat="electric" style="--i:9">
+      <div class="sys-card-header"><span class="num">10</span><h3>电气系统</h3><span class="tag tag-electric">电气</span></div>
+      <div class="sys-card-body">
+        <p class="summary">为全车供电，覆盖启动、点火、照明、控制。它是贯穿所有系统的「神经网络」。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 输入 <b>发电机充电</b></span>
+          <span class="flow-tag out">输出 ⇢ <b>全车用电</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">蓄电池 12V<span class="wear">▲</span></span><span class="sub-desc">启动电源，3–5 年寿命</span></li>
+          <li><span class="sub-name">发电机</span><span class="sub-desc">行驶时给电池充电并供电</span></li>
+          <li><span class="sub-name">起动机</span><span class="sub-desc">点火启动，大电流短时工作</span></li>
+          <li><span class="sub-name">ECU / 控制模块</span><span class="sub-desc">发动机、变速箱、车身控制单元</span></li>
+          <li><span class="sub-name">线束</span><span class="sub-desc">全车神经，老化易短路</span></li>
+          <li><span class="sub-name">保险丝 / 继电器</span><span class="sub-desc">电路保护，故障排查第一站</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 11 车身 -->
+    <div class="sys-card" data-cat="body" style="--i:10">
+      <div class="sys-card-header"><span class="num">11</span><h3>车身系统</h3><span class="tag tag-body">车身</span></div>
+      <div class="sys-card-body">
+        <p class="summary">提供乘员空间与碰撞保护，并集成空调、灯光、座舱等舒适性配置。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 输入 <b>乘员需求</b></span>
+          <span class="flow-tag out">输出 ⇢ <b>空间 + 舒适</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">车身结构</span><span class="sub-desc">承载式车身，高强钢吸能区</span></li>
+          <li><span class="sub-name">空调系统</span><span class="sub-desc">压缩机 + 蒸发器 + 冷凝器</span></li>
+          <li><span class="sub-name">空调滤芯<span class="wear">▲</span></span><span class="sub-desc">过滤进风，影响车内空气质量</span></li>
+          <li><span class="sub-name">车灯</span><span class="sub-desc">LED / 卤素 / 氙气大灯</span></li>
+          <li><span class="sub-name">雨刮片<span class="wear">▲</span></span><span class="sub-desc">橡胶老化后出现条纹与异响</span></li>
+          <li><span class="sub-name">中控 / 仪表台</span><span class="sub-desc">人机交互，集成娱乐导航</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 12 安全 -->
+    <div class="sys-card" data-cat="safety" style="--i:11">
+      <div class="sys-card-header"><span class="num">12</span><h3>主被动安全</h3><span class="tag tag-safety">安全</span></div>
+      <div class="sys-card-body">
+        <p class="summary">碰撞前主动规避（主动安全），碰撞时减轻伤害（被动安全），横跨多个系统的保护层。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 输入 <b>传感器数据</b></span>
+          <span class="flow-tag out">输出 ⇢ <b>规避 / 缓冲</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">安全气囊 SRS</span><span class="sub-desc">碰撞触发，前 / 侧 / 帘式</span></li>
+          <li><span class="sub-name">安全带预紧</span><span class="sub-desc">碰撞时瞬间收紧固定乘员</span></li>
+          <li><span class="sub-name">AEB 自动制动</span><span class="sub-desc">前向预警 + 紧急自动刹车</span></li>
+          <li><span class="sub-name">盲区监测 BSM</span><span class="sub-desc">后向雷达探测变道风险</span></li>
+          <li><span class="sub-name">车道保持 LKA</span><span class="sub-desc">偏离车道时辅助修正</span></li>
+          <li><span class="sub-name">TPMS 胎压监测</span><span class="sub-desc">实时胎压，防爆胎</span></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ 能量流图 ══════════ -->
+<section id="flow">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">02</span>能量流图</h2>
+    <p class="section-sub">汽车不是零件的堆叠，而是一条能量传递链。下图把「燃油→燃烧→曲轴→变速箱→车轮」的主动力链，与冷却、润滑、电气三条辅助回路画在一起——看懂这张图，12 个系统就串成了一个整体。</p>
+  </div>
+
+  <div class="flow-canvas">
+    <svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans SC, sans-serif">
+      <defs>
+        <marker id="arrPower" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L7,3 L0,6 Z" fill="#c8401a"/>
+        </marker>
+        <marker id="arrCool" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L7,3 L0,6 Z" fill="#2a6496"/>
+        </marker>
+        <marker id="arrElec" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L7,3 L0,6 Z" fill="#b8860b"/>
+        </marker>
+        <marker id="arrLube" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L7,3 L0,6 Z" fill="#3a6a1a"/>
+        </marker>
+      </defs>
+
+      <!-- 标题带 -->
+      <text x="20" y="26" font-size="12" font-weight="700" fill="#7a7368" letter-spacing="2">主动力链 — POWERTRAIN</text>
+      <line x1="20" y1="34" x2="740" y2="34" stroke="#d4cfc5" stroke-width="1"/>
+
+      <!-- ===== 主动力链节点（横向）===== -->
+      <!-- 燃油 -->
+      <g class="diagram-node">
+        <rect x="20" y="62" width="100" height="58" rx="4" fill="#fde8e0" stroke="#c8401a" stroke-width="1.5"/>
+        <text x="70" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#c8401a">燃油 + 空气</text>
+        <text x="70" y="104" text-anchor="middle" font-size="10" fill="#a8503a">02 燃油系统</text>
+      </g>
+      <!-- 发动机 -->
+      <g class="diagram-node">
+        <rect x="170" y="56" width="110" height="70" rx="4" fill="#1a1814" stroke="#c8401a" stroke-width="2"/>
+        <text x="225" y="84" text-anchor="middle" font-size="14" font-weight="700" fill="#f5f0e8">发动机</text>
+        <text x="225" y="102" text-anchor="middle" font-size="10" fill="#c8a89a">01 燃烧做功</text>
+      </g>
+      <!-- 变速箱 -->
+      <g class="diagram-node">
+        <rect x="330" y="62" width="100" height="58" rx="4" fill="#e0eed8" stroke="#3a6a1a" stroke-width="1.5"/>
+        <text x="380" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#3a6a1a">变速箱</text>
+        <text x="380" y="104" text-anchor="middle" font-size="10" fill="#5a7a3a">06 调速比</text>
+      </g>
+      <!-- 差速器/半轴 -->
+      <g class="diagram-node">
+        <rect x="480" y="62" width="100" height="58" rx="4" fill="#e0eed8" stroke="#3a6a1a" stroke-width="1.5"/>
+        <text x="530" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#3a6a1a">差速器</text>
+        <text x="530" y="104" text-anchor="middle" font-size="10" fill="#5a7a3a">06 分配扭矩</text>
+      </g>
+      <!-- 车轮 -->
+      <g class="diagram-node">
+        <circle cx="670" cy="91" r="36" fill="#1a1814" stroke="#3a6a1a" stroke-width="2"/>
+        <circle cx="670" cy="91" r="14" fill="none" stroke="#5a7a3a" stroke-width="2"/>
+        <text x="670" y="95" text-anchor="middle" font-size="13" font-weight="700" fill="#f5f0e8">车轮</text>
+      </g>
+
+      <!-- 主链箭头 -->
+      <line x1="122" y1="91" x2="166" y2="91" stroke="#c8401a" stroke-width="2.5" marker-end="url(#arrPower)"/>
+      <line x1="282" y1="91" x2="326" y2="91" stroke="#c8401a" stroke-width="2.5" marker-end="url(#arrPower)"/>
+      <line x1="432" y1="91" x2="476" y2="91" stroke="#c8401a" stroke-width="2.5" marker-end="url(#arrPower)"/>
+      <line x1="582" y1="91" x2="630" y2="91" stroke="#c8401a" stroke-width="2.5" marker-end="url(#arrPower)"/>
+      <text x="144" y="84" text-anchor="middle" font-size="9" fill="#a8503a">油气</text>
+      <text x="304" y="84" text-anchor="middle" font-size="9" fill="#a8503a">扭矩</text>
+      <text x="454" y="84" text-anchor="middle" font-size="9" fill="#5a7a3a">动力</text>
+      <text x="606" y="84" text-anchor="middle" font-size="9" fill="#5a7a3a">驱动</text>
+
+      <!-- ===== 辅助回路标题 ===== -->
+      <text x="20" y="186" font-size="12" font-weight="700" fill="#7a7368" letter-spacing="2">辅助回路 — 围绕发动机的三个支持系统</text>
+      <line x1="20" y1="194" x2="740" y2="194" stroke="#d4cfc5" stroke-width="1"/>
+
+      <!-- 冷却回路（上方循环回发动机）-->
+      <g class="diagram-node">
+        <rect x="170" y="214" width="110" height="52" rx="4" fill="#deeaf5" stroke="#2a6496" stroke-width="1.5"/>
+        <text x="225" y="236" text-anchor="middle" font-size="12" font-weight="700" fill="#2a6496">冷却系统</text>
+        <text x="225" y="252" text-anchor="middle" font-size="9.5" fill="#4a749a">03 控温 80–95℃</text>
+      </g>
+      <!-- 发动机 → 冷却 → 发动机 (废热) -->
+      <path d="M 205 126 Q 165 158 200 214" fill="none" stroke="#2a6496" stroke-width="2" marker-end="url(#arrCool)"/>
+      <path d="M 248 214 Q 268 160 245 130" fill="none" stroke="#2a6496" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrCool)"/>
+      <text x="150" y="160" font-size="9" fill="#2a6496">废热↓</text>
+      <text x="270" y="158" font-size="9" fill="#2a6496">↑冷却液</text>
+
+      <!-- 润滑回路 -->
+      <g class="diagram-node">
+        <rect x="330" y="214" width="110" height="52" rx="4" fill="#e0eed8" stroke="#3a6a1a" stroke-width="1.5"/>
+        <text x="385" y="236" text-anchor="middle" font-size="12" font-weight="700" fill="#3a6a1a">润滑系统</text>
+        <text x="385" y="252" text-anchor="middle" font-size="9.5" fill="#5a7a3a">04 油膜+带走磨屑</text>
+      </g>
+      <path d="M 280 110 Q 360 150 380 214" fill="none" stroke="#3a6a1a" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrLube)"/>
+      <text x="350" y="150" font-size="9" fill="#3a6a1a">机油循环</text>
+
+      <!-- 电气回路：发电机由发动机带动，反过来供电全车 -->
+      <g class="diagram-node">
+        <rect x="490" y="214" width="110" height="52" rx="4" fill="#fdf0d8" stroke="#b8860b" stroke-width="1.5"/>
+        <text x="545" y="236" text-anchor="middle" font-size="12" font-weight="700" fill="#8a5a0a">电气系统</text>
+        <text x="545" y="252" text-anchor="middle" font-size="9.5" fill="#a8760a">10 发电+储电+供电</text>
+      </g>
+      <path d="M 270 122 Q 420 175 510 214" fill="none" stroke="#b8860b" stroke-width="2" marker-end="url(#arrElec)"/>
+      <text x="400" y="180" font-size="9" fill="#b8860b">皮带带动发电机</text>
+
+      <!-- ===== 电气向全车分发 ===== -->
+      <text x="20" y="318" font-size="12" font-weight="700" fill="#7a7368" letter-spacing="2">电气分发 — 12V 电网喂养全车</text>
+      <line x1="20" y1="326" x2="740" y2="326" stroke="#d4cfc5" stroke-width="1"/>
+
+      <g class="diagram-node">
+        <rect x="300" y="348" width="160" height="44" rx="4" fill="#1a1814" stroke="#b8860b" stroke-width="1.5"/>
+        <text x="380" y="368" text-anchor="middle" font-size="12" font-weight="700" fill="#fdf0d8">12V 蓄电池 + 发电机</text>
+        <text x="380" y="383" text-anchor="middle" font-size="9" fill="#c8a86a">电源中枢</text>
+      </g>
+      <line x1="545" y1="266" x2="430" y2="346" stroke="#b8860b" stroke-width="1.5" stroke-dasharray="3 3" marker-end="url(#arrElec)"/>
+
+      <!-- 分发到四类负载 -->
+      <g class="diagram-node"><rect x="40" y="418" width="140" height="32" rx="4" fill="#fff" stroke="#d4cfc5"/><text x="110" y="438" text-anchor="middle" font-size="11" fill="#1a1814">起动 / 点火</text></g>
+      <g class="diagram-node"><rect x="220" y="418" width="140" height="32" rx="4" fill="#fff" stroke="#d4cfc5"/><text x="290" y="438" text-anchor="middle" font-size="11" fill="#1a1814">ECU / 各控制器</text></g>
+      <g class="diagram-node"><rect x="400" y="418" width="140" height="32" rx="4" fill="#fff" stroke="#d4cfc5"/><text x="470" y="438" text-anchor="middle" font-size="11" fill="#1a1814">照明 / 车身电器</text></g>
+      <g class="diagram-node"><rect x="580" y="418" width="140" height="32" rx="4" fill="#fff" stroke="#d4cfc5"/><text x="650" y="438" text-anchor="middle" font-size="11" fill="#1a1814">安全 / 娱乐系统</text></g>
+
+      <line x1="340" y1="392" x2="120" y2="416" stroke="#b8860b" stroke-width="1.2" marker-end="url(#arrElec)"/>
+      <line x1="365" y1="392" x2="295" y2="416" stroke="#b8860b" stroke-width="1.2" marker-end="url(#arrElec)"/>
+      <line x1="395" y1="392" x2="465" y2="416" stroke="#b8860b" stroke-width="1.2" marker-end="url(#arrElec)"/>
+      <line x1="420" y1="392" x2="640" y2="416" stroke="#b8860b" stroke-width="1.2" marker-end="url(#arrElec)"/>
+    </svg>
+  </div>
+
+  <div class="flow-legend">
+    <div class="li"><span class="line" style="border-color:#c8401a"></span>主动力链（扭矩传递）</div>
+    <div class="li"><span class="line" style="border-color:#2a6496"></span>冷却回路（带走废热）</div>
+    <div class="li"><span class="line" style="border-color:#3a6a1a"></span>润滑回路（机油循环）</div>
+    <div class="li"><span class="line" style="border-color:#b8860b"></span>电气分发（12V 电网）</div>
+  </div>
+
+  <div class="maintenance-intro" style="margin-top:24px;border-left-color:var(--accent2)">
+    <strong>一句话读懂：</strong>发动机是整辆车的心脏。燃油系统给它「喂料」，冷却和润滑系统让它「不发烧、不磨损」，它一边输出扭矩驱动车轮，一边通过皮带带动发电机给整车「供血」。任何一条辅助回路出问题，最终都会反映到发动机的状态上——这也是为什么机油、冷却液、皮带的保养优先级最高。
+  </div>
+</section>
+
+<!-- ══════════ 原理课 ══════════ -->
+<section id="course">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">★</span>原理课 · 搞懂每一个「为什么」</h2>
+    <p class="section-sub">前面几栏是「查」，这一栏是「学」。一套工程视角的内燃机课程，用「能量」和「权衡」两把尺子，讲清汽车为什么这样设计。点下方标签跳到对应讲；「工程要点」和「思考题」可展开。完整版也可下载为 Word 或喂给 NotebookLM 生成音频课。</p>
+  </div>
+  <div class="course-wrap">
+<div class="course-subnav"><a href="#lec-0" class="cs-chip">导读</a><a href="#lec-1" class="cs-chip">第一讲</a><a href="#lec-2" class="cs-chip">第二讲</a><a href="#lec-3" class="cs-chip">第三讲</a><a href="#lec-4" class="cs-chip">第四讲</a><a href="#lec-5" class="cs-chip">第五讲</a><a href="#lec-6" class="cs-chip">第六讲</a><a href="#lec-7" class="cs-chip">第七讲</a><a href="#lec-8" class="cs-chip">结课</a></div>
+<div class="course-lecture" id="lec-0"><h3 class="cl-title">课程地图：用「能量与权衡」两把尺子看汽车</h3><p>普通科普讲「汽车有哪些系统」。工程课讲的是两件事：</p><p><strong>第一把尺子：能量。</strong> 汽车的一切都是能量的转换、传递、与耗散。汽油的化学能 → 热能 → 机械能 → 最终大部分变成热散掉。理解任何一个系统，先问：它在能量链的哪个环节？它的效率是多少？损失去哪了？</p><p><strong>第二把尺子：权衡（trade-off）。</strong> 工程里几乎没有「最优解」，只有「在约束下的妥协」。压缩比想高（更高效）但受爆震限制；冷却想强（更安全）但太凉会牺牲效率；变速箱想平顺（CVT）但扛不住大扭矩。<strong>每一个设计参数，都是在两个互相打架的目标之间找的平衡点。</strong> 看懂这些权衡，你才算真正理解了工程。</p><p>带着这两把尺子，我们走七讲：</p><ul class="co-list"><li><strong>第一讲</strong>：能量账本——一箱油的能量到底花在哪了（效率全景）</li><li><strong>第二讲</strong>：内燃机原理——奥托循环、压缩比、爆震，热效率的物理天花板</li><li><strong>第三讲</strong>：进气与燃烧——空燃比、节气门、涡轮增压的工程逻辑</li><li><strong>第四讲</strong>：热管理与润滑——为什么是 90℃，摩擦学的权衡</li><li><strong>第五讲</strong>：传动系统——扭矩、转速、功率的数学，以及变速箱的取舍</li><li><strong>第六讲</strong>：制动与操控——能量耗散、热衰减、重心转移、轮胎的物理极限</li><li><strong>第七讲</strong>：从原理到保养——用工程逻辑判断每一项保养的必要性</li></ul><p>---</p></div>
+<div class="course-lecture" id="lec-1"><h3 class="cl-title">第一讲：能量账本——一箱油的能量花在哪了</h3><p>工程思维的起点是「算账」。在讲任何零件之前，先看这张能量账单——它会颠覆很多直觉。</p><h4 class="co-sub">一升汽油有多少能量</h4><p>汽油的低热值约 <strong>43–44 MJ/kg</strong>，密度约 0.74 kg/L，所以一升汽油约含 <strong>32 MJ</strong> 能量。换算一下：一箱 50 升油 ≈ 1600 MJ ≈ 444 度电的能量。听起来巨大。但问题是——这些能量真正推动你前进的，只是很小一部分。</p><h4 class="co-sub">能量去哪了：典型乘用车的能量流</h4><p>以城市工况的汽油车为例，从燃油化学能到「真正驱动车轮」，大致是这样流失的：</p><ul class="co-list"><li><strong>约 60–62% 直接变成废热散掉</strong>：一半从排气管走（高温废气），一半被冷却系统带走。这是热机的宿命，不是设计失误（下一讲会讲为什么逃不掉）。</li><li><strong>约 5% 是发动机自身的「泵气损失 + 摩擦损失」</strong>：活塞环、轴承的摩擦，以及进排气的阻力。</li><li><strong>约 5% 是怠速和附件消耗</strong>：等红灯时白烧的油、空调压缩机、发电机、水泵等。</li><li><strong>剩下约 12–30% 才到达车轮</strong>（工况差异很大，城市工况低、高速工况高）。</li></ul><p>而到达车轮的这点能量，又要对抗三种行驶阻力：</p><ul class="co-list"><li><strong>空气阻力</strong>：F_drag = ½·ρ·v²·Cd·A。ρ 是空气密度（约 1.2 kg/m³），Cd 是风阻系数（家用车约 0.28–0.35），A 是迎风面积（约 2.2 m²）。它与速度的<strong>平方</strong>成正比——速度提到 1.5 倍，风阻是 2.25 倍。</li><li><strong>滚动阻力</strong>：F_roll = Crr·m·g。Crr 是滚阻系数（约 0.01），与车重成正比、与速度基本无关。低速时它占主导。</li><li><strong>加速 / 爬坡</strong>：克服惯性（F=ma）和重力分量（mg·sinθ），走走停停的市区这部分很大。</li></ul><p><strong>算一笔账你就有感觉了。</strong> 一辆 1.5 吨、Cd·A ≈ 0.7 的车，在平直路上匀速 100 km/h（约 27.8 m/s）：</p><ul class="co-list"><li>风阻 ≈ ½×1.2×27.8²×0.7 ≈ <strong>325 N</strong></li><li>滚阻 ≈ 0.01×1500×9.8 ≈ <strong>147 N</strong></li><li>合计约 472 N。功率 P = F×v ≈ 472×27.8 ≈ <strong>13 kW</strong>。</li></ul><p>也就是说，匀速跑 100 码，<strong>真正用来克服阻力的功率只有约 13 kW（不到 18 马力）</strong>。但发动机此刻可能输出 30–40 kW——多出来的全损失在了热机效率（约 30%）和传动上。这条账解释了一个反直觉的事实：一台标称 150 马力的车，巡航时其实只用到零头，那些马力是留给加速和爬坡的<strong>储备</strong>。</p><p>注意一个关键点：阻力功率 P = F×v，而风阻 F 本身又 ∝ v²，所以<strong>风阻消耗的功率 ∝ v³</strong>。100 提到 130（1.3 倍），风阻功率变成 1.3³ ≈ 2.2 倍。这就是高速油耗为什么涨得这么凶。</p><h4 class="co-sub">这张账本告诉你的第一个工程真相</h4><p><strong>内燃机车的综合热效率（油箱到车轮）只有 20–30%。</strong> 七成多的汽油，你是花钱买来发热的。</p><p>这不是厂家偷工减料，而是<strong>热力学第二定律划下的硬上限</strong>——任何热机都不可能把热全变成功。理解这一点，你才能理解后面所有的设计：工程师拼命抠的，就是这 20–30% 里面的每一个百分点。一项技术能把热效率从 38% 提到 41%（发动机自身的指示热效率，注意和整车效率不是一回事），就是了不起的突破。</p><details class="co-details co-points"><summary>工程要点</summary><div class="co-det-body"><ul class="co-list"><li>能量守恒在汽车上表现为「燃烧的能量 = 驱动功 + 各种损失」，而损失项远大于驱动项。</li><li>风阻与速度<strong>平方</strong>成正比，功率消耗与速度<strong>立方</strong>成正比——高速油耗暴涨的根源。</li><li>整车热效率 20–30% 是常态，根因是热力学第二定律，不是工艺问题。</li></ul></div></details><details class="co-details co-think"><summary>思考题</summary><div class="co-det-body"><ul class="co-list"><li>如果你把车速从 100 提到 130 km/h，仅风阻一项，所需功率大约变成原来的几倍？（提示：功率 ∝ v³）</li><li>为什么市区油耗通常比高速差，但风阻在市区反而不是主因？</li><li>「整车热效率只有 25%」和「发动机热效率 40%」这两个说法矛盾吗？差在哪？</li></ul><p>---</p></div></details></div>
+<div class="course-lecture" id="lec-2"><h3 class="cl-title">第二讲：内燃机原理——奥托循环、压缩比、爆震</h3><p>这是全课工程含量最高的一讲。我们要回答：发动机凭什么把热变成功？它的效率上限由什么决定？为什么这个上限这么难突破？</p><h4 class="co-sub">奥托循环：汽油机的理论模型</h4><p>汽油机的工作可以理想化为<strong>奥托循环（Otto cycle）</strong>，四个热力学过程：</p><ul class="co-list"><li><strong>绝热压缩</strong>：活塞上行，压缩混合气，温度压力都升高（不与外界换热）。</li><li><strong>等容加热</strong>：火花塞点火，混合气瞬间燃烧——近似认为体积不变、热量瞬间加入。</li><li><strong>绝热膨胀</strong>：高温高压气体推动活塞下行做功（这是唯一对外输出功的冲程）。</li><li><strong>等容放热</strong>：排气，把废气的热量「排」掉，回到起点。</li></ul><h4 class="co-sub">决定效率的唯一关键参数：压缩比</h4><p>奥托循环的理想热效率公式，简洁得惊人：</p><blockquote class="co-quote"><strong>η = 1 − 1/r^(γ−1)</strong></blockquote><p>其中 <strong>r 是压缩比</strong>（气缸最大容积 ÷ 最小容积），<strong>γ 是气体的比热比</strong>（空气约 1.4）。</p><p>这个公式告诉你一件颠覆直觉的事：<strong>理论热效率只取决于压缩比，跟你烧多少油、发动机多大都无关。</strong> 压缩比越高，效率越高。代入数值感受一下：</p><ul class="co-list"><li>压缩比 r = 8：η = 1 − 1/8^0.4 ≈ <strong>56.5%</strong></li><li>压缩比 r = 10：η ≈ <strong>60.2%</strong></li><li>压缩比 r = 12：η ≈ <strong>63%</strong></li></ul><p>所以工程师的本能就是——<strong>把压缩比往死里提</strong>。但现实中汽油机压缩比常年卡在 10–12 之间，上不去。为什么？</p><h4 class="co-sub">等一下：理论 60%，实际怎么只有 35–40%？</h4><p>你可能立刻发现矛盾：上面算出理论效率 60%，但第一讲说发动机实际指示热效率才 38–40%，整车更是只有 20–30%。这 20 个百分点蒸发到哪了？这恰恰是理解真实发动机的关键，损失来自四处：</p><ul class="co-list"><li><strong>传热损失</strong>：燃烧时缸壁、活塞顶在吸热（这正是冷却系统要带走的那部分），理想奥托循环假设绝热，现实做不到。</li><li><strong>不完全燃烧</strong>：总有少量燃料没烧干净就被排出。</li><li><strong>燃烧不是「瞬间等容」</strong>：理想循环假设点火瞬间完成燃烧，实际燃烧要持续十几到几十个曲轴角度，一部分做功时机不理想。</li><li><strong>泵气损失与摩擦</strong>：进排气的阻力、活塞环与轴承的摩擦（下一讲细讲）。</li></ul><p>所以那个公式给的是<strong>上限</strong>，不是实际值。工程师抠的就是这上限和实际值之间的差——每缩小一点，就是一项技术突破。理解「理论给上限、现实充满损失」这个落差，比记住公式本身更重要。</p><h4 class="co-sub">爆震：压缩比的物理天花板</h4><p>这就是关键的工程约束。压缩比越高，压缩末端混合气的温度压力越高。当温度高到一定程度，混合气会在火花塞点火<strong>之前</strong>就自己「轰」地自燃——而且是多点同时自燃，产生剧烈的压力冲击波，发出「哐哐」的金属敲击声。这就是<strong>爆震（knock）</strong>。</p><p>爆震的危害是毁灭性的：冲击波会击穿活塞、打坏轴承、烧蚀缸壁。所以压缩比的上限，本质上是<strong>「在爆震发生之前，能压到多高」</strong>。</p><p>这一下就解释了好几件你熟悉的事：</p><ul class="co-list"><li><strong>为什么有 92/95/98 号汽油</strong>：标号是「抗爆性」（辛烷值），不是「干净程度」也不是「劲大」。高压缩比发动机必须用高标号油，否则爆震。低压缩比车加 98 号纯属浪费——它需要的抗爆性 92 就够了。</li><li><strong>为什么涡轮增压车通常要加 95</strong>：增压把更多空气压进缸内，等效提高了压力，更容易爆震。</li><li><strong>为什么发动机有「爆震传感器」</strong>：实时监听爆震，一旦检测到就推迟点火时刻来抑制——代价是损失一点动力。</li></ul><h4 class="co-sub">点火提前角：一个被忽略却天天在变的参数</h4><p>刚才提到「推迟点火」，这里要专门讲。火花塞<strong>不是在活塞到达最高点时才点火</strong>，而是提前一点点（在压缩行程末、活塞还没到顶时就点）。为什么？因为混合气从点燃到完全燃烧、压力峰值出现，需要一小段时间。工程师希望这个压力峰值正好出现在活塞刚过最高点、开始下行的时刻——这样推力作用在最有效的角度上。</p><p>这个「提前量」叫<strong>点火提前角</strong>，单位是曲轴转角度数。它不是固定的：</p><ul class="co-list"><li><strong>转速越高</strong>，留给燃烧的实际时间越短，就要点得<strong>更早</strong>（提前角更大）。</li><li><strong>负荷越大</strong>（混合气越浓密），燃烧越快，提前角反而要适当<strong>回收</strong>。</li><li><strong>检测到爆震</strong>，ECU 立刻<strong>推迟</strong>点火（减小提前角）来灭爆震，代价是损失一点动力和效率。</li></ul><p>所以你加了低标号油容易爆震时，ECU 的应对就是悄悄推迟点火——车不会坏，但你会觉得「这车怎么变肉了、还更费油」。这就是点火提前角在背后调节的结果。理解了它，你就理解了发动机 ECU 每一毫秒都在做的核心决策之一。</p><h4 class="co-sub">阿特金森循环：用「不对称」换效率</h4><p>混动车上常听到的「阿特金森循环」，是个绝妙的工程巧思。它的核心是让<strong>膨胀行程比压缩行程更长</strong>（通过晚关进气门，把一部分吸进的气又吐回去）。这样实际压缩比不高（避免爆震），但膨胀比很高（充分榨取做功）——热效率能冲到 40%+。代价是低转速扭矩弱、动力肉，所以纯燃油性能车不用它，但混动车有电机补扭矩，正好扬长避短。<strong>这就是典型的工程权衡：牺牲动力，换效率。</strong></p><details class="co-details co-points"><summary>工程要点</summary><div class="co-det-body"><ul class="co-list"><li>奥托循环理想效率 η = 1 − 1/r^(γ−1)，<strong>只由压缩比决定</strong>。</li><li>压缩比的上限是<strong>爆震</strong>，这是个物理化学约束，不是材料问题。</li><li>汽油标号 = 抗爆性（辛烷值），高压缩比/增压发动机才需要高标号。</li><li>阿特金森循环用「膨胀比 &gt; 压缩比」换高效率，代价是低扭，靠电机弥补。</li></ul></div></details><details class="co-details co-think"><summary>思考题</summary><div class="co-det-body"><ul class="co-list"><li>用 η = 1 − 1/r^(γ−1)，压缩比从 10 提到 11，理论效率提升约几个百分点？这点提升为什么仍值得工程师拼命去争？</li><li>一辆压缩比 10 的自吸车，加 98 号油会不会更有劲、更省油？为什么？</li><li>阿特金森循环效率更高，为什么纯燃油运动车不用它，混动车却爱用？</li></ul><p>---</p></div></details></div>
+<div class="course-lecture" id="lec-3"><h3 class="cl-title">第三讲：进气与燃烧——空燃比、节气门、增压</h3><p>上一讲讲了「压缩到燃烧」的热力学。这一讲往前一步：<strong>进多少气、配多少油、烧得好不好</strong>，这决定了发动机的动力、油耗和排放。</p><h4 class="co-sub">空燃比 14.7：一个化学当量数</h4><p>空气和汽油的混合比例，用<strong>空燃比（AFR）</strong>表示——多少质量的空气配 1 份汽油。有一个魔法数字：<strong>14.7:1</strong>。</p><p>这不是工程师拍脑袋定的，而是<strong>化学当量比（stoichiometric ratio）</strong>：理论上让汽油完全燃烧、既不剩油也不剩氧的精确配比。它由汽油的化学式（约 C₈H₁₈）和燃烧方程式算出来。</p><p>为什么死守 14.7 这么重要？因为<strong>三元催化器只在 14.7 附近才能同时净化三种污染物</strong>（CO、HC、NOx）。偏了就有一类净化不掉。所以氧传感器实时测排气含氧量，ECU 据此微调喷油，把空燃比死死锁在 14.7 附近反复横跳——这叫<strong>闭环控制</strong>。</p><p>但 14.7 不总是最优，工程上会主动偏离：</p><ul class="co-list"><li><strong>要最大动力时</strong>：偏「浓」（如 12.5–13），多喷油，让燃烧更猛、更凉（多余汽油蒸发吸热，保护排气部件）。全油门加速时 ECU 就会加浓。</li><li><strong>要最省油时</strong>：偏「稀」（&gt;14.7），少喷油。但太稀会失火、且 NOx 升高，所以普通三元车不敢太稀（稀薄燃烧发动机是另一套技术）。</li></ul><h4 class="co-sub">节气门：汽油机的「枷锁」与泵气损失</h4><p>汽油机靠一个<strong>节气门</strong>（一片可转动的阀板）控制进气量——你踩油门，本质是开大这片阀板。问题来了：当你轻踩油门（小负荷），节气门几乎关闭，活塞下行吸气时要「使劲吸」一个接近真空的腔，这个克服真空的功白白损失了——这叫<strong>泵气损失（pumping loss）</strong>。</p><p>这是汽油机在市区低负荷工况下效率低的一大元凶。柴油机没有节气门（靠喷油量控制功率），所以泵气损失小，这是柴油机更省油的重要原因之一。</p><p>工程上的对策：<strong>可变气门、闭缸技术</strong>（低负荷时关掉几个缸，让工作的缸负荷更高、节气门更开）——都是为了减少泵气损失。</p><h4 class="co-sub">可变气门正时（VVT）：让发动机「换张脸」</h4><p>上面说气门开闭必须和活塞配合，但「最佳的配合时机」其实随转速变化——低转速和高转速想要的进气门开闭时刻是冲突的：</p><ul class="co-list"><li><strong>低转速</strong>想要进气门早关，避免已吸入的气被活塞回压吐出，保证低速扭矩；</li><li><strong>高转速</strong>想要进气门晚关，利用气流惯性「多灌」一点进去（惯性增压），榨出高速功率。</li></ul><p>固定正时的发动机只能取折中，低速高速都不够好。<strong>VVT</strong> 用液压或电控机构，根据转速实时调整凸轮轴相位（甚至气门升程），让发动机在低转速时是「省油顾家」的脸、高转速时切换成「动力凶猛」的脸。这就是为什么现代发动机能同时做到低扭好、高功率足、还相对省油——本田的 VTEC、丰田的 VVT-i 都是这套思路的不同实现。它本质是用「可变」破解「固定参数只能折中」的工程困境，和阿特金森循环（晚关进气门）其实是同一类手段的延伸。</p><h4 class="co-sub">自然吸气 vs 涡轮增压：功率从哪来</h4><p>发动机的功率，根子上取决于<strong>单位时间能烧掉多少油</strong>，而烧油又取决于<strong>能进多少空气</strong>。所以「增加进气量」就是增加功率的核心思路。</p><ul class="co-list"><li><strong>自然吸气（NA）</strong>：靠活塞下行的负压「吸」气，进气量受大气压限制，约等于 1 个大气压。线性、可靠，但功率密度有上限。</li><li><strong>涡轮增压（Turbo）</strong>：用排气的废热能量驱动涡轮，反过来把空气<strong>压缩</strong>后塞进气缸——相当于把更多空气「硬塞」进同样大的缸。这是<strong>废物利用</strong>（否则排气能量全浪费了），所以涡轮既增功率又相对省油，成了主流。</li></ul><p>涡轮的工程代价：</p><ul class="co-list"><li><strong>涡轮迟滞（turbo lag）</strong>：排气量小时涡轮转不快，踩油门到动力涌出有延迟。小涡轮、双涡管、电子涡轮都是为了治这个。</li><li><strong>更高的热负荷和爆震倾向</strong>：所以增压车压缩比通常比自吸低，且建议高标号油。</li></ul><h4 class="co-sub">缸内直喷：为什么新车都用它</h4><p>把汽油直接高压喷进气缸（而非喷在进气歧管），好处是雾化更细、可分层燃烧、汽油蒸发吸热还能抑制爆震（允许更高压缩比）。代价是进气门背面容易积碳（因为没有汽油冲刷），且颗粒物排放高——所以国六直喷车强制加装<strong>GPF 颗粒捕集器</strong>。</p><details class="co-details co-points"><summary>工程要点</summary><div class="co-det-body"><ul class="co-list"><li>14.7:1 是化学当量比，是三元催化器高效工作的前提，靠闭环控制锁定。</li><li>动力优先时加浓、经济优先时偏稀，是主动偏离 14.7 的工程策略。</li><li>节气门带来泵气损失，是汽油机低负荷效率差的主因；柴油机无此问题。</li><li>功率本质受进气量限制，涡轮增压是「废气能量回收 + 强制进气」的双赢方案，代价是迟滞与热负荷。</li></ul></div></details><details class="co-details co-think"><summary>思考题</summary><div class="co-det-body"><ul class="co-list"><li>为什么三元催化器要求空燃比死守 14.7，而全油门加速时 ECU 反而故意加浓到 12.5？这两件事矛盾吗？</li><li>用「泵气损失」解释：为什么同一台车，市区轻踩油门的效率，反而不如高速中等负荷？</li><li>涡轮增压为什么既能增加功率又相对省油？它「免费」吗，代价在哪？</li></ul><p>---</p></div></details></div>
+<div class="course-lecture" id="lec-4"><h3 class="cl-title">第四讲：热管理与润滑——为什么是 90℃，摩擦学的权衡</h3><p>发动机是个热机，怎么管理热、怎么对付摩擦，全是权衡。这一讲拆两个被严重低估的系统。</p><h4 class="co-sub">为什么偏偏控制在 90℃，不是越凉越好</h4><p>直觉觉得发动机越凉越安全，错。冷却系统的目标不是「最低温」，而是<strong>把温度稳定在一个最优窗口（约 88–95℃）</strong>。这是好几个矛盾目标的平衡点：</p><ul class="co-list"><li><strong>太凉的坏处</strong>：①热效率低（缸壁吸走太多热，本该做功的能量被冷却液带走了）；②燃油雾化差、易在缸壁结露、稀释机油；③排放控制差（催化器要够热才工作）。</li><li><strong>太热的坏处</strong>：①爆震倾向增大；②机油黏度下降、油膜变薄，磨损加剧；③极端情况下金属热变形「拉缸」。</li></ul><p>所以 90℃ 左右是「效率够高、又离危险区有安全余量」的甜点。<strong>节温器</strong>就是实现这个控温的关键——水温低时它关闭大循环，让发动机快速暖机；到温后打开，引冷却液去散热器。冷启动后那几分钟油耗高、动力肉，正是因为还没到这个最优温度。</p><h4 class="co-sub">为什么冷却液要加压、要用乙二醇</h4><p>纯水沸点 100℃，但发动机局部热点会超过它，水一沸腾产生气泡就丧失换热能力（气阻），很危险。两个对策：</p><ul class="co-list"><li><strong>加压</strong>：冷却系统密闭加压到约 1.1–1.5 bar，把水的沸点提到 120℃以上。这就是为什么水箱盖热时绝不能开——高压高温液体会喷出烫伤。</li><li><strong>乙二醇冷却液</strong>：不只为防冻（冰点降到 −40℃），同时提高沸点、防腐蚀、防水垢。所以它是「防冻液」也是「防沸液」，且本身会老化失效，约两年一换。</li></ul><h4 class="co-sub">摩擦学：机油黏度的核心权衡</h4><p>机油的核心使命是在金属件之间维持一层<strong>油膜</strong>，让金属不直接接触。这里有个精妙的权衡，全压缩在机油标号里（如 5W-30）：</p><ul class="co-list"><li><strong>黏度太高</strong>：油膜厚、保护好，但流动阻力大、泵油费功、冷启动时流不动（磨损反而大）——费油。</li><li><strong>黏度太低</strong>：流动顺畅、省油，但高温高负荷下油膜可能被「挤破」，金属接触磨损。</li></ul><p>标号 <strong>5W-30</strong> 的含义：「5W」是低温流动性（W=Winter，数字越小越冬天越稀、越好启动）；「30」是 100℃ 时的高温黏度（越大高温保护越强）。所以现代车用 0W-20 这类低黏度油，是在「省油」和「保护」之间，靠材料和加工进步把天平往省油挪了一点。</p><p>理想的润滑状态叫<strong>流体动压润滑</strong>——轴转起来后，油被「楔」进缝隙形成高压油膜，把轴整个托起来，金属完全不接触。这也是为什么<strong>冷启动瞬间磨损最大</strong>：还没建立油压、油膜，干摩擦。发动机大部分磨损发生在启动那几秒，不是在高速行驶时。</p><h4 class="co-sub">润滑的三种状态：油膜不是「有」或「无」那么简单</h4><p>摩擦学里，两个金属面之间的润滑其实是一个连续光谱，按油膜厚度分三段，这解释了很多现象：</p><ul class="co-list"><li><strong>流体动压润滑</strong>：油膜完全隔开两个金属面（油膜厚度 &gt; 表面粗糙度），摩擦极小，磨损几乎为零。曲轴主轴承在正常运转时就处于这个状态——轴「浮」在油膜上。</li><li><strong>混合润滑</strong>：油膜变薄到和表面微观凸起差不多，部分凸起开始接触。低速、重载、或油膜不足时进入这个区，开始有磨损。</li><li><strong>边界润滑</strong>：油膜几乎被挤没，主要靠机油里的「抗磨添加剂」（如 ZDDP）在金属表面形成的化学保护膜顶着。冷启动、活塞环换向的瞬间（活塞到上下止点时速度为零，无法形成动压油膜）就处于边界润滑——这正是磨损集中点。</li></ul><p>这就是为什么机油不只是「油」，里面那一成多的添加剂（抗磨、抗氧、清净、分散剂）才是技术核心。也是为什么不能拿便宜油糊弄——基础油可能差不多，但添加剂配方决定了边界润滑下的保护能力。</p><h4 class="co-sub">机油为什么会「越用越稀」</h4><p>机油的黏度会在使用中下降，主因是<strong>剪切变稀</strong>：多级机油（如 5W-30）靠「黏度指数改进剂」这种长链聚合物来兼顾低温和高温性能，但这些长链分子在轴承等高剪切区被反复「剪断」，黏度逐渐永久性下降。再加上燃油稀释（少量汽油窜入油底壳）、高温氧化，机油保护能力随里程衰减——这就是为什么它必须按周期换，而不是「看起来不脏就继续用」。换机油换的是它衰减掉的性能，不只是脏污。</p><details class="co-details co-points"><summary>工程要点</summary><div class="co-det-body"><ul class="co-list"><li>90℃ 是效率、抗爆、润滑、排放多个目标的平衡点，不是越凉越好；节温器负责锁定它。</li><li>冷却系统加压是为了提高沸点防气阻，故热车绝不可开水箱盖。</li><li>机油黏度是「省油」与「油膜保护」的权衡，标号 XW-Y 编码了低温和高温两端的特性。</li><li>流体动压润滑让金属不接触；冷启动尚未建立油膜，是磨损最集中的时刻。</li></ul></div></details><details class="co-details co-think"><summary>思考题</summary><div class="co-det-body"><ul class="co-list"><li>既然「越凉越安全」是错的，请用效率和排放两个角度说明：发动机长期低于最优水温运行有什么坏处？</li><li>为什么把冷却系统加压，就能用同样的水换来更高的安全裕度？</li><li>一台标 0W-20 的车，车主自作主张换更稠的 10W-40「加强保护」，可能带来什么负面后果？</li></ul><p>---</p></div></details></div>
+<div class="course-lecture" id="lec-5"><h3 class="cl-title">第五讲：传动系统——扭矩、转速、功率的数学</h3><p>很多人分不清「扭矩」和「功率」，销售也爱含糊其辞。这一讲用一个公式把它们彻底讲清，再讲变速箱为什么必须存在、各种变速箱在权衡什么。</p><h4 class="co-sub">一个公式串起三个概念</h4><blockquote class="co-quote"><strong>功率 = 扭矩 × 角速度</strong>，工程上常用 <strong>P (kW) ≈ T (N·m) × n (rpm) / 9550</strong></blockquote><ul class="co-list"><li><strong>扭矩（Torque）</strong>：旋转的「力气」，决定你<strong>加速有多猛、能不能拉重物爬陡坡</strong>。单位 N·m。</li><li><strong>转速（rpm）</strong>：每分钟转多少圈。</li><li><strong>功率（Power）</strong>：扭矩和转速的乘积，决定你的<strong>极速和高速再加速能力</strong>。单位 kW 或马力（1 马力 ≈ 0.735 kW）。</li></ul><p>这个公式解释了一个常见困惑：<strong>为什么大货车扭矩巨大但极速很慢，跑车功率巨大但未必能拉货？</strong> 因为货车是「大扭矩、低转速」（适合拉重物），跑车是「靠高转速把功率堆上去」（适合飙速）。同样的功率，可以是「大扭矩×低转速」也可以是「小扭矩×高转速」。</p><h4 class="co-sub">发动机的「脾气」：为什么需要变速箱</h4><p>内燃机有个致命特点：<strong>它不能从 0 转速输出扭矩</strong>（熄火状态没有力），而且只在某个转速区间（比如 2000–4000 rpm）才有好的扭矩和效率。但车轮的需求是从 0（起步）到很高（高速）连续变化的。</p><p>这个矛盾必须靠变速箱解决。变速箱本质是一组<strong>齿轮速比</strong>，作用是「扭矩 × 速比 = 输出扭矩，转速 ÷ 速比 = 输出转速」：</p><ul class="co-list"><li><strong>低挡（大速比）</strong>：把发动机扭矩<strong>放大</strong>（代价是输出转速低）——起步、爬坡用，力大。</li><li><strong>高挡（小速比）</strong>：让车轮转得快（代价是扭矩小）——高速巡航用，省转速、省油。</li></ul><p>所以「换挡」就是在不同速比之间切换，让发动机始终待在它「舒服」的转速区间，同时满足车轮多变的需求。这跟自行车变速器是同一个数学。</p><h4 class="co-sub">四种变速箱：各自在权衡什么</h4><ul class="co-list"><li><strong>MT 手动</strong>：结构简单、传递效率最高（~95%+）、成本低。代价是操作累、换挡有动力中断。</li><li><strong>AT 液力自动</strong>：靠液力变矩器传递动力，平顺、可靠、能扛大扭矩。代价是变矩器有打滑损耗（虽然锁止离合器已大幅改善），结构复杂。</li></ul><p>  这里要专门讲讲<strong>液力变矩器</strong>，因为它的名字里藏着精髓——它不只「传递」扭矩，还能「<strong>变</strong>」（放大）扭矩。内部有三个关键部件泡在油里：<strong>泵轮</strong>（连发动机，搅动油）、<strong>涡轮</strong>（连变速箱，被油推动）、以及夹在中间的<strong>导轮</strong>。起步时发动机转、车轮不动，油被泵轮甩出去冲击涡轮，再经导轮折返——导轮的巧妙之处在于它把回流油的方向「掰」回来助推泵轮，于是涡轮得到的扭矩<strong>大于</strong>发动机输出扭矩（最高可放大约 2 倍）。这就是为什么自动挡起步那一下很「绵」却很有劲，不需要像手动挡那样精细控制离合。等车速跟上来，泵轮涡轮转速接近，变矩作用消失，这时<strong>锁止离合器</strong>直接把两者机械锁死，消除打滑损耗——这是现代 AT 油耗能追平手动挡的关键改进。</p><ul class="co-list"><li><strong>CVT 无级变速</strong>：用钢带在两个可变直径的锥轮间滑动，实现<strong>连续无级</strong>的速比——理论上能让发动机永远待在最优转速，最省油、最平顺。<strong>但有个硬伤：靠摩擦传力，扛不住大扭矩</strong>（钢带会打滑），所以多用于中小排量经济车，性能车不用。这是「平顺经济」和「扭矩上限」之间的硬权衡。</li><li><strong>DCT 双离合</strong>：两套离合器分管奇偶挡，换挡时下一挡已预备好，<strong>换挡极快</strong>、效率高。代价是低速蠕行、拥堵跟车时离合器频繁结合易顿挫、发热。</li></ul><p>看出规律了吗？没有「最好的变速箱」，只有<strong>「平顺、效率、扭矩能力、成本、换挡速度」这五个目标里，你优先要哪几个</strong>。这又是工程权衡。</p><h4 class="co-sub">差速器：过弯的几何必然</h4><p>车过弯时，外侧车轮的轨迹半径比内侧大，<strong>走的路程更长</strong>，所以外轮必须转得比内轮快。如果左右轮被硬连在一根轴上（同转速），过弯时必有一个轮要「拖滑」，既磨胎又不稳。<strong>差速器</strong>用一组行星齿轮，允许左右轮在获得动力的同时保持不同转速——这是个纯粹由「转弯几何」逼出来的装置。</p><p>代价是普通开放式差速器在单轮打滑时（如一轮陷冰）会把动力全送给打滑的轮，所以越野/性能车需要<strong>限滑差速器（LSD）</strong>来矫正。</p><details class="co-details co-points"><summary>工程要点</summary><div class="co-det-body"><ul class="co-list"><li>P ≈ T×n/9550 是核心：扭矩管加速和爬坡，功率管极速，二者由转速联系。</li><li>内燃机不能零转速输出扭矩、只在窄转速区高效，这个「脾气」是变速箱存在的根本原因。</li><li>四种变速箱是在平顺/效率/扭矩能力/成本/换挡速度间的不同取舍，CVT 的硬伤是扭矩上限。</li><li>差速器是转弯几何的必然产物，开放式的代价是单轮打滑失效。</li></ul></div></details><details class="co-details co-think"><summary>思考题</summary><div class="co-det-body"><ul class="co-list"><li>两台车功率相同，A 是「高扭矩低转速」，B 是「低扭矩高转速」，哪台更适合拖挂重物？用公式解释。</li><li>CVT 理论上能让发动机始终处于最优转速、最省油，为什么高性能车几乎不用它？</li><li>为什么开放式差速器在一个驱动轮陷入冰面时，车反而动不了？</li></ul><p>---</p></div></details></div>
+<div class="course-lecture" id="lec-6"><h3 class="cl-title">第六讲：制动与操控——能量耗散与物理极限</h3><p>开得快是动力的事，停得住、控得住是这一讲的事。核心视角依然是能量与物理约束。</p><h4 class="co-sub">刹车的本质：把动能转成热，然后扔掉</h4><p>车以速度 v 行驶，动能 <strong>E = ½mv²</strong>。刹车做的事，是通过摩擦把这份动能转成热能，再散到空气里。注意那个<strong>平方</strong>：速度翻倍，动能是 4 倍，刹车要耗散的能量也是 4 倍——这是为什么高速刹车距离远不止「长一点」。</p><p>一次急刹，刹车盘温度可瞬间升到 500–700℃。于是引出关键问题：</p><h4 class="co-sub">热衰减（brake fade）：刹车的物理极限</h4><p>连续重刹（如长下坡、赛道），热量来不及散，刹车系统过热后会<strong>热衰减</strong>：</p><ul class="co-list"><li><strong>片热衰减</strong>：摩擦材料过热后摩擦系数下降，踩下去「不够力」。</li><li><strong>气阻</strong>：制动液过热沸腾产生气泡，气体可压缩，踏板「踩到底却软绵绵」——最危险。</li></ul><p>这就把第五讲埋的伏笔接上了：<strong>为什么制动液要定期换？</strong> 因为制动液吸水（DOT4 长期使用含水率会从 0 升到 3%+），含水后沸点从约 230℃ 暴跌到 150℃ 左右，热衰减门槛大大降低。换制动液换的不是「脏」，是被吸进去的水。</p><p>工程对策：通风盘（盘内有散热风道）、打孔/划线盘（排热排气）、长下坡用<strong>发动机制动</strong>（降挡用发动机阻力减速，省下刹车）而非一脚踩死。</p><h4 class="co-sub">重心转移：为什么前刹车比后刹车大</h4><p>刹车时车「点头」——这是<strong>重心转移</strong>：减速产生的惯性力使载荷向前轮转移。前轮压得越重，能提供的抓地力（也即制动力）就越大。所以厂家把前刹车做得比后刹车强（前盘更大、多为通风盘），制动力分配也是前 60–70% / 后 30–40%。如果后轮制动力过大，会先于前轮抱死 → 后轮失去横向抓地 → <strong>甩尾</strong>，非常危险。<strong>EBD（电子制动力分配）</strong>就是动态调节前后比例的电子系统。</p><h4 class="co-sub">轮胎：一切的物理终点</h4><p>这是最反直觉、也最重要的一点：<strong>发动机、刹车、转向，所有的力最终都要通过四个巴掌大的轮胎接触面传给地面。</strong> 这四块接地面积加起来不过一张 A4 纸。</p><p>轮胎能提供的抓地力有上限，由<strong>摩擦圆（friction circle）</strong>描述：纵向（加速/刹车）和横向（转弯）的抓地力共享同一个总量上限。所以——</p><ul class="co-list"><li>你不能「一边全力刹车一边全力转弯」：刹车用光了抓地力，转弯就没份了，结果是推头（转不进去）。</li><li>赛车手的「慢进快出」、先刹直再转弯，本质都是在管理这个有限的摩擦圆。</li><li><strong>ABS</strong> 的意义：抱死的轮胎是「滑动摩擦」，抓地力反而比「滚动+轻微滑移」低，且完全丧失转向能力。ABS 让车轮在最佳滑移率（约 10–20%）附近点放，既保留最大制动力又保住转向。</li></ul><h4 class="co-sub">为什么是「滑移率 10–20%」：抓地力曲线的真相</h4><p>这个数字不是经验拍的，背后是一条<strong>轮胎抓地力 vs 滑移率曲线</strong>。先定义滑移率：0% 表示纯滚动（不刹车），100% 表示完全抱死（轮子锁死拖行）。轮胎能提供的纵向抓地力（摩擦系数 μ）随滑移率这样变化：</p><ul class="co-list"><li>从 0% 开始，μ 随滑移率快速上升；</li><li>在约 <strong>10–20%</strong> 滑移率处达到<strong>峰值</strong>（μ 最大，制动力最强）；</li><li>越过峰值后，μ 反而<strong>下降</strong>——一路滑到 100%（抱死）时，μ 掉到只剩峰值的 70–80%。</li></ul><p>这条曲线一次性解释了三件事：①为什么抱死刹车距离反而更长（掉到了曲线右端的低 μ 区）；②为什么抱死后无法转向（轮胎在纯滑动，横向抓地几乎归零）；③ABS 在干什么——它高频地「松一点、夹一点」，把滑移率死死控制在那个峰值附近（曲线顶点），既榨出最大制动力，又因为没抱死而保住了转向能力。所以 ABS 不是为了「刹得更短」（干燥路面熟练驾驶员甚至可能比 ABS 短一点），它真正的价值是<strong>让你在全力刹车的同时还能打方向避障</strong>。</p><p>胎压、胎温、花纹深度全都直接影响这块接触面，所以它们是安全的根，不是小事。</p><details class="co-details co-points"><summary>工程要点</summary><div class="co-det-body"><ul class="co-list"><li>动能 ∝ v²，刹车耗散的能量随速度平方增长；制动是能量从动能到热的转换。</li><li>热衰减（片衰减 + 制动液气阻）是刹车的物理极限；换制动液本质是除水、恢复沸点。</li><li>重心转移使前轮载荷大，故前刹车更强、制动力前大后小，防止后轮先抱死甩尾。</li><li>轮胎接触面（约一张 A4 纸）是所有力的终点；摩擦圆决定了加速/刹车/转弯共享抓地上限。</li></ul></div></details><details class="co-details co-think"><summary>思考题</summary><div class="co-det-body"><ul class="co-list"><li>用 E=½mv² 说明：120 km/h 和 60 km/h 刹停，需要耗散的能量差几倍？刹车距离呢？</li><li>制动液「看起来很干净」，为什么仍建议两年一换？换的到底是什么？</li><li>用「摩擦圆」解释：为什么过弯中途猛踩刹车容易失控推头？</li></ul><p>---</p></div></details></div>
+<div class="course-lecture" id="lec-7"><h3 class="cl-title">第七讲：从原理到保养——用工程逻辑做判断</h3><p>前六讲建立了原理。这一讲不再列保养清单，而是教你用<strong>工程因果</strong>去推断每一项保养「为什么必要、不做会怎样」——这样你面对任何修理工都能自己判断。</p><h4 class="co-sub">把保养项还原成「它防止哪种失效」</h4><p>每一个保养项，本质都在对抗某个具体的工程失效模式。学会这样反推，你就不需要背表了：</p><ul class="co-list"><li><strong>机油</strong>：维持流体动压油膜。劣化后黏度和油膜强度下降 → 进入混合甚至边界润滑 → 缸壁、轴承磨损。<strong>这是为什么它最高频</strong>——它直接关系到第四讲讲的三种润滑状态。劣化由「剪切变稀 + 氧化 + 燃油稀释」三股力量驱动，里程和时间都会推动，所以两个周期都卡。</li><li><strong>冷却液</strong>：防冻防沸 + 防腐。失效后果有一条清晰的因果链：缓蚀剂耗尽 → 水道腐蚀、产生水垢 → 换热效率下降、局部热点 → 第四讲讲的最优温度窗口被打破 → 爆震倾向上升、油膜变薄、极端时拉缸。</li><li><strong>火花塞</strong>：电极在每次放电中被微量烧蚀 → 电极间隙变大 → 需要更高电压才能跳火、点火能量下降 → 燃烧不完全或失火 → 油耗升、动力降、未燃混合气进入排气还会烧坏三元催化器。</li><li><strong>空气滤芯</strong>：堵塞 → 进气阻力增大、进气量下降。回到第三讲：功率受进气量限制，所以直接表现为动力下降；同时进气减少会让混合气偏浓 → 油耗升、积碳增。</li><li><strong>制动液</strong>：吸水后沸点暴跌（230℃ → 150℃，见第六讲）→ 高温重刹时沸腾产生气泡 → 气体可压缩 → 踏板行程变长、制动力下降（气阻）→ 关键时刻刹不住。换的是水，不是脏。</li><li><strong>正时皮带</strong>：橡胶承受周期性张力，疲劳老化 → 齿面磨损或整体断裂 → 曲轴与凸轮轴瞬间失去同步（第二讲的正时）→ 在「干涉式发动机」上，活塞会撞上还没关闭的气门 → 气门顶弯、活塞损伤、严重时缸盖报废。<strong>这是后果最严重的预防性更换</strong>，因为失效是突发性的、且代价是发动机大修。</li><li><strong>变速箱油</strong>：劣化后润滑性和液压控制性能下降 → 换挡逻辑紊乱、离合器片打滑磨损、油温升高 → 顿挫、异响，长期导致变速箱损坏（维修费仅次于发动机）。</li></ul><h4 class="co-sub">用「先到为准」的工程理由</h4><p>为什么保养按「公里或时间，先到为准」？因为失效有两个独立的驱动因素：</p><ul class="co-list"><li><strong>里程驱动</strong>：磨损类（机油剪切劣化、刹车片磨损、皮带疲劳）——开得越多越严重。</li><li><strong>时间驱动</strong>：化学劣化类（机油氧化、冷却液/制动液变质、橡胶老化）——即使不开，放着也会坏。</li></ul><p>所以一辆一年只开 3000 公里的车，机油照样要按时间换——因为氧化和水分侵入跟你开不开没关系。这不是 4S 忽悠，是化学劣化的客观规律。</p><h4 class="co-sub">用工程逻辑识破套路</h4><ul class="co-list"><li><strong>「燃油宝/清洗能提升动力」</strong>：现代电喷+闭环控制下，正常用车积碳有限，常规清洗收益很小。除非已有明确症状（怠速抖、明显积碳），否则收益不抵成本。</li><li><strong>「机油越稠越保护」</strong>：错。第四讲讲过，超出厂家规格的高黏度会增加泵油损耗、冷启动供油迟缓，反而可能增加磨损和油耗。按厂家规格来。</li><li><strong>「变速箱油终身免换」</strong>：油品会热劣化是客观事实，「终身」是营销话术。按工况 4–6 万公里换是稳妥的。</li><li><strong>「高标号油更好」</strong>：第二讲讲过，标号是抗爆性。低压缩比发动机加高标号毫无收益，纯浪费钱。</li></ul><h4 class="co-sub">一个判断框架</h4><p>面对任何一个被推荐的保养项，问自己三个工程问题：</p><ul class="co-list"><li><strong>它防止哪种失效？</strong> 答不上来的，多半是套路。</li><li><strong>这种失效是里程驱动还是时间驱动？</strong> 据此判断该不该到期了。</li><li><strong>失效的后果有多严重？</strong> 越严重越值得预防（如正时皮带），越轻微越可以观察（如轻微异响）。</li></ul><details class="co-details co-points"><summary>工程要点</summary><div class="co-det-body"><ul class="co-list"><li>每个保养项都对抗一个具体失效模式，理解机理就不必背表。</li><li>失效分里程驱动（磨损）和时间驱动（化学劣化），故「先到为准」有客观依据。</li><li>用「防什么失效 / 何种驱动 / 后果多重」三问，可独立判断任何保养建议的必要性。</li></ul></div></details><details class="co-details co-think"><summary>思考题</summary><div class="co-det-body"><ul class="co-list"><li>用本讲的「三问框架」分析「更换正时皮带」：它防什么失效？里程还是时间驱动？后果多严重？</li><li>为什么一辆几乎不开的车，机油和制动液仍要按时间更换？根因是什么？</li><li>销售推荐你「换更稠的机油加强保护」，结合第四讲，你如何用一句话回应？</li></ul><p>---</p></div></details></div>
+<div class="course-lecture" id="lec-8"><h3 class="cl-title">结课：你获得的是一套「可迁移的工程直觉」</h3><p>这门课没让你背任何零件清单。它给你的是两把尺子和一串因果：</p><ul class="co-list"><li><strong>能量的尺子</strong>：任何系统先问它在能量链的位置、效率、损失去向。你现在知道一箱油 70% 在发热，知道风阻随速度平方涨，知道刹车是把动能扔成热。</li><li><strong>权衡的尺子</strong>：你理解了压缩比 vs 爆震、冷却强度 vs 效率、机油黏度 vs 保护、CVT 平顺 vs 扭矩上限——<strong>工程没有最优解，只有约束下的最佳妥协</strong>。</li></ul><p>更重要的是，这套思维方式是可迁移的。等你将来看电动车，你会自然地问：它的能量链怎么走（电池→电机→车轮，少了热机那 70% 的损失，所以效率碾压）？它在权衡什么（电池能量密度 vs 成本 vs 充电速度 vs 寿命）？同一套尺子，照样能用。</p><p>你不需要会拧螺丝。你拥有的是——<strong>透过任何一个机械系统，看见它背后的物理约束与工程取舍的能力</strong>。这比记住一万个零件名都值钱。</p><h4 class="co-sub">想继续往下走</h4><ul class="co-list"><li><strong>想补数学</strong>：奥托循环、布雷顿循环的完整推导（工程热力学教材）；轮胎力学的 Pacejka 魔术公式。</li><li><strong>想看下一个领域</strong>：用同样的「能量 + 权衡」框架做一份电动车/混动篇——能量链完全不同，权衡也换了一批，对比着学最透。</li><li><strong>想动手验证</strong>：用 OBD 读取实时数据（水温、点火提前角、空燃比、负荷），亲眼看到本课讲的参数在你车上怎么变化。</li></ul><p>---</p><p>*本讲稿为工程原理科普，数值为典型量级仅供建立直觉，具体设计与保养以厂家资料和专业诊断为准。*</p></div>
+  </div>
+</section>
+
+<!-- ══════════ 改装 ══════════ -->
+<section id="mods">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">▲</span>改装 · 重新选择工程权衡</h2>
+    <p class="section-sub">原厂车的每个参数都是妥协出来的保守平衡点。改装，就是为了某个目标把平衡点挪到你想要的一边——代价是放弃原厂照顾到的另一些东西。这一栏从零讲清改装的逻辑、原理、坑和法规，处处挂钩前面的「原理课」。</p>
+  </div>
+  <div class="mods-wrap">
+<div class="mod-subnav">
+  <a href="#mod-power" class="ms-chip">动力改装</a>
+  <a href="#mod-handling" class="ms-chip">操控改装</a>
+  <a href="#mod-brake" class="ms-chip">制动升级</a>
+  <a href="#mod-trap" class="ms-chip">避坑真相</a>
+  <a href="#mod-law" class="ms-chip">合法性</a>
+</div>
+
+<div class="mod-intro">
+  <strong>改装的本质，是去动「原厂的工程权衡」。</strong> 原厂车的每一个参数——压缩比、增压值、悬挂软硬、刹车大小——都是在动力、油耗、耐久、舒适、成本、法规之间妥协出来的「保守平衡点」。原厂要照顾全国的路况、油品、气候和千万车主的平均需求，所以一定留足了安全余量。改装，就是为了某个明确目标（通常是性能或个性），把这个平衡点重新挪到你想要的那一边——代价是放弃原厂照顾到的另一些东西。
+</div>
+<div class="mod-principle">
+  <div class="mp-title">先记住一个「木桶原理」</div>
+  <p>一台发动机能放出多少马力，取决于最短的那块木板。按行业经验，阻碍动力的短板从易到难依次是：<b>排气 → 进气 → 点火 → ECU 调校 → 配气正时 → 发动机内部强度</b>。真正懂行的玩法是顺着这块短板补，而不是一上来就刷 ECU。「一阶二阶三阶」之所以流行，很大程度是因为改装店把这套复杂的搭配打包成了「套餐」，方便不懂的人按价格买——但这也给了浑水摸鱼的空间（后面「避坑」会讲）。</p>
+</div>
+
+<h3 class="mod-section-title" id="mod-power"><span class="mst-num">A</span>动力改装 · 一阶 / 二阶 / 三阶</h3>
+<p class="mod-section-sub">这套「阶」的说法源自改装品牌把「程序+硬件」打包成套餐。本质是顺着木桶短板，一步步解放发动机的潜力。挂钩 <span class="lec-ref" data-lec="lec-2">第二讲发动机</span>、<span class="lec-ref" data-lec="lec-3">第三讲进气增压</span>。</p>
+<div class="mod-card">
+      <div class="mc-head"><span class="mc-tag tag-stage">一阶 · Stage 1</span><h4>纯刷 ECU，不动硬件</h4></div>
+      <div class="mc-body"><p>在原厂硬件能承受的范围内，通过改写程序压榨动力。涡轮车提升可达 <b>20–30%</b>，自吸车只有 <b>5–15%</b>（自吸进气量没变，单加油只会过浓伤机器）。</p><ul class="mod-list"><li><b>挂钩原理：</b>本质是把原厂留的安全余量吃掉：提高涡轮增压值 → 进气更多 → 配套加大喷油（第三讲）；同时优化点火提前角（第二讲）。</li><li><b>代价：</b>对油品要求提高（必须用够标号的油，否则爆震）、发动机和散热的负荷上升、寿命余量变薄。</li><li><b>为什么原厂不直接干到顶：</b>因为原厂要兼顾不同地区路况、气候、油品、驾驶习惯，还要管油耗和排放，只能妥协出保守程序。</li></ul></div>
+    </div>
+<div class="mod-card">
+      <div class="mc-head"><span class="mc-tag tag-stage">二阶 · Stage 2</span><h4>刷程序 + 改进排气、中冷等</h4></div>
+      <div class="mc-body"><p>提升幅度约 <b>20–30%</b>，需要配套升级硬件让发动机「呼吸」跟得上。这是改装爱好者最常选的档位。</p><ul class="mod-list"><li><b>要动什么：</b>高流量进气、直通或高流量排气头段、有些车要加大中冷（降低进气温度、抑制爆震）、配套升级刹车。</li><li><b>挂钩原理：</b>增大的进气量需要更顺畅的进排气通道（第三讲的进气是功率之根）；中冷对应「降低进气温度→抗爆震」。</li><li><b>关键风险：</b>进排气如果搭配不到位，反而丢低扭、进气温度高引发爆震、甚至伤发动机。</li><li><b>被忽略的薄弱环节：</b>变速箱。原厂变速箱的扭矩冗余通常只有约 15%，扭矩加太多它扛不住，但市面程序极少强化变速箱。</li></ul></div>
+    </div>
+<div class="mod-card">
+      <div class="mc-head"><span class="mc-tag tag-stage">三阶 · Stage 3</span><h4>强化发动机本体 + 加大涡轮</h4></div>
+      <div class="mc-body"><p>提升 <b>30–100%</b>，要对发动机「开膛」——更换活塞、连杆、曲轴等，加大涡轮，甚至上水/甲醇喷射。</p><ul class="mod-list"><li><b>要动什么：</b>发动机内部强化件、更大号涡轮、加大水箱/中冷/油冷来压住激增的热负荷。</li><li><b>挂钩原理：</b>排气温度才是涡轮的头号杀手——马力上去排温飙升，超过极限涡轮就坏，所以散热系统必须同步强化。</li><li><b>适合谁：</b>对油品要求最高、对油耗排放最不友好、出行实用性差。基本是赛道/狂热发烧友的领域，普通人没必要。</li></ul></div>
+    </div>
+<h3 class="mod-section-title" id="mod-handling"><span class="mst-num">B</span>操控改装 · 让车「贴地」「不晃」</h3>
+<p class="mod-section-sub">动力是「跑得快」，操控是「控得住、过弯稳」。挂钩 <span class="lec-ref" data-lec="lec-5">第五讲传动</span>、<span class="lec-ref" data-lec="lec-6">第六讲制动与操控</span>。</p>
+<div class="mod-card">
+      <div class="mc-head"><span class="mc-tag tag-handle">操控</span><h4>避震器 + 弹簧 · 操控提升最直接的部件</h4></div>
+      <div class="mc-body"><p>弹簧负责支撑车重、吸收冲击；避震桶（阻尼）负责抑制弹簧吸震后的反弹。两者是一对搭档。</p><ul class="mod-list"><li><b>短弹簧：</b>最便宜，降低车身重心、视觉更低趴，但对操控提升有限，主要满足外观诉求。</li><li><b>可调避震（如 KYB 蓝桶、Tein）：</b>比原厂阀门更复杂，高低速阻尼可调，能改善很多车「过于生硬」的滤震感。</li><li><b>绞牙避震：</b>车身高度、阻尼力都可精细调节，不同路况都能调到最佳——进阶玩家的主流选择。</li><li><b>挂钩原理：</b>对应第五讲悬挂的「弹簧+减震器」搭档，以及『舒适 vs 支撑』那个权衡——你是在重新选择这个平衡点。</li></ul></div>
+    </div>
+<div class="mod-card">
+      <div class="mc-head"><span class="mc-tag tag-handle">操控</span><h4>防倾杆 · 只在过弯时起作用</h4></div>
+      <div class="mc-body"><p>一个常见误区：防倾杆<b>只在左右悬挂动作不同步时（即侧倾）才起作用</b>，对高速直线的「漂浮感」毫无帮助。</p><ul class="mod-list"><li><b>什么时候该换它：</b>如果你的车直线够稳、但过弯/变线侧倾让你不安，先换防倾杆。</li><li><b>什么时候不该指望它：</b>如果直线就发飘，那是避震和弹簧的事，换防倾杆是心理作用。</li><li><b>一个铁律：</b>绝不能靠『加硬避震弹簧』来抑制侧倾——那会严重牺牲舒适性和颠簸路面的循迹性，应该交给防倾杆。</li></ul></div>
+    </div>
+<div class="mod-card">
+      <div class="mc-head"><span class="mc-tag tag-handle">操控</span><h4>轮毂 + 轮胎 · 抓地力的物理终点</h4></div>
+      <div class="mc-body"><p>所有的力最终都通过四个巴掌大的接地面传给地面（第六讲的「摩擦圈」）。升级轮胎是提升抓地上限最直接的方式，但有代价。</p><ul class="mod-list"><li><b>升级好处：</b>更宽、更好的轮胎直接抬高摩擦圈上限——加速、刹车、过弯都受益。</li><li><b>低扁平比的代价：</b>胎壁变薄→缓冲变差→恶劣路况或激烈驾驶时轮毂更容易被磕出裂纹。</li><li><b>法规红线：</b>国内年检<b>不允许改变轮胎规格</b>，轮毂样式可换但尺寸要与原厂一致。</li></ul></div>
+    </div>
+<h3 class="mod-section-title" id="mod-brake"><span class="mst-num">C</span>制动升级 · 跑得快必须刹得住</h3>
+
+<div class="mod-card">
+  <div class="mc-head"><span class="mc-tag tag-brake">制动</span><h4>刹车升级：为高温工况留余量</h4></div>
+  <div class="mc-body">
+    <p>动力改装后车更快了，原厂刹车可能就不够用。升级刹车不是为了「日常刹得更狠」，而是为了在<b>连续重刹（山路、赛道）下不热衰减</b>——这正是第六讲讲的核心：刹车的物理极限是过热。</p>
+    <ul class="mod-list">
+      <li><b>大尺寸刹车盘 / 通风盘：</b>更大的散热面积和热容，更扛得住连续制动的高温。</li>
+      <li><b>多活塞卡钳：</b>更大、更均匀的夹紧力，制动力更线性可控。</li>
+      <li><b>高温刹车片 + 高沸点刹车液：</b>提高热衰减和气阻的发生门槛（对应第六讲：刹车液吸水后沸点暴跌）。</li>
+      <li><b>顺序很重要：</b>升级动力的同时就该考虑刹车，「跑得快」和「刹得住」必须匹配，这是安全底线。</li>
+    </ul>
+  </div>
+</div>
+
+<h3 class="mod-section-title" id="mod-trap"><span class="mst-num">D</span>避坑 · 改装店不会主动告诉你的真相</h3>
+<div class="trap-wrap"><div class="trap-item"><div class="ti-num">1</div><div class="ti-body"><div class="ti-title">「二阶」可能是硬件提升冒充的</div><div class="ti-desc">有些商家的『二阶』只比一阶多十几二十马力，却要你改进排气——很可能程序本体还是一阶，多出的马力是硬件带来的，但你被收了『硬件+软件升级』两份钱。</div></div></div><div class="trap-item"><div class="ti-num">2</div><div class="ti-body"><div class="ti-title">变速箱才是隐藏短板</div><div class="ti-desc">刷程序加大扭矩，但原厂变速箱扭矩冗余只有约 15%，市面程序极少强化它。真上赛道往往跑两圈就『变速箱保护』，而很多人误以为是『原厂硬件垃圾』继续往上改，治标不治本。</div></div></div><div class="trap-item"><div class="ti-num">3</div><div class="ti-body"><div class="ti-title">涡轮的真正杀手是排温</div><div class="ti-desc">不是增压值本身，而是排气温度。马力上去排温飙升，超过极限涡轮就损坏——这是为什么三阶要大力强化散热。</div></div></div><div class="trap-item"><div class="ti-num">4</div><div class="ti-body"><div class="ti-title">「罐头程序」是流水线产品</div><div class="ti-desc">针对车型预先做好、批量卖的通用程序叫『罐头』，稳定但提升不是最大；真正榨干潜力的是技师在场、按你的车和油品现场写的『特调』，但贵得多、风险也高。</div></div></div><div class="trap-item"><div class="ti-num">5</div><div class="ti-body"><div class="ti-title">自吸车刷 ECU 收益很小</div><div class="ti-desc">自吸发动机进气量是物理上限，刷程序提升通常只有 5–15%，远不如涡轮车。别被『直增 XX 匹』的宣传忽悠。</div></div></div></div>
+<h3 class="mod-section-title" id="mod-law"><span class="mst-num">E</span>合法性 · 上路前必看</h3>
+
+<div class="mod-law">
+  <div class="ml-head">⚖ 合法性：最该先搞懂的一栏</div>
+  <p class="ml-core">一句话点破核心矛盾：<b>改装本身不违法，违法的是「擅自改装后还合法上路」。</b> 你关起门自己改、或只在赛道上开，没问题；但要挂牌上路、要过年检、要能过户，就必须守规矩。</p>
+  <div class="ml-cols">
+    <div class="ml-col ml-yes">
+      <div class="mlc-title">✓ 一般允许（多数需备案）</div>
+      <ul>
+        <li>更换轮毂样式（<b>尺寸须与原厂一致</b>）</li>
+        <li>升级刹车卡钳/盘（须符合原厂制动性能）</li>
+        <li>更换避震器（车身高度调整<b>不超过 ±10%</b>）</li>
+        <li>车身贴花（面积<b>不超过 30%</b> 免备案）</li>
+        <li>悬浮车顶、双色车漆（需车管所备案）</li>
+        <li>换内饰座椅材质（数量不能改、保留气囊）</li>
+      </ul>
+    </div>
+    <div class="ml-col ml-no">
+      <div class="mlc-title">✗ 明确禁止 / 高风险</div>
+      <ul>
+        <li>改变<b>轮胎规格</b>（年检过不了）</li>
+        <li>改发动机、变速箱、<b>排气声浪</b>（属改变结构）</li>
+        <li>加装尾翼/宽体等<b>改变外形尺寸</b>的套件</li>
+        <li>灯光改成蓝/红等非标准颜色</li>
+        <li>擅改车架号、发动机号、车辆识别代号</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ml-note">
+    <b>2025 年的变化值得关注：</b>《机动车安全技术检验规程》（GA801-2025）和中汽协《汽车改装技术规范指引》正在推动改装规范化，传闻开放 16 项合法改装（含 ECU 调校，但要求通过 OBD 上传数据、排放仍须达国六）。方向是「放活+管好」，但<b>核心法规（道交法、检验规程）才是决定能否上路的真正依据</b>，地方执行差异大。<strong>动手前务必查你所在地的最新规定，并优先考虑可备案、可恢复的改装。</strong>
+  </div>
+</div>
+
+  </div>
+</section>
+
+<!-- ══════════ 故障反查 ══════════ -->
+<section id="diagnose">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">03</span>故障反查</h2>
+    <p class="section-sub">前面是「正着学」，这里是「反着查」。车出了状况，你感觉到的往往是症状——异响、抖动、灯亮、漏液。这一栏从症状出发，反向定位到系统和零件，并告诉你能不能继续开。</p>
+  </div>
+
+  <div class="diag-intro">
+    <strong>严重度说明：</strong>
+    <span class="severity sev-stop" style="margin:0 4px;">立即停车</span>= 继续开有安全或重大损坏风险；
+    <span class="severity sev-soon" style="margin:0 4px;">尽快检修</span>= 可低速短途行驶，但别拖；
+    <span class="severity sev-watch" style="margin:0 4px;">留意观察</span>= 记录现象，下次保养处理。
+    <br>本栏为通用判断，不能替代实际诊断——拿不准时就停车找救援。
+  </div>
+
+  <div class="diag-filters" id="diagFilters">
+    <button class="active" data-f="all"><span class="ico">◉</span>全部</button>
+    <button data-f="noise"><span class="ico">🔊</span>异响</button>
+    <button data-f="shake"><span class="ico">〰</span>抖动 / 跑偏</button>
+    <button data-f="light"><span class="ico">💡</span>仪表灯亮</button>
+    <button data-f="leak"><span class="ico">💧</span>漏液 / 异味</button>
+    <button data-f="start"><span class="ico">🔑</span>启动 / 动力</button>
+  </div>
+
+  <div class="symptom-grid" id="symptomGrid">
+
+    <!-- 异响类 -->
+    <div class="symptom-card" data-cat="noise">
+      <div class="sc-head">
+        <div class="sc-ico">⚙</div>
+        <div><div class="sc-title">冷启动后金属敲击声</div><div class="sc-sys">→ 04 润滑 / 01 发动机</div></div>
+        <span class="severity sev-soon">尽快检修</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v">机油不足或太稀，<span class="hl">液压挺杆</span>缺油；或正时附件松动。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">熄火静置 5 分钟拔油尺，看油位是否在上下刻度间、油色是否乌黑。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">先补到标准油位；声音不消失尽快进店，别长途。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="noise">
+      <div class="sc-head">
+        <div class="sc-ico">🛞</div>
+        <div><div class="sc-title">行驶中持续"嗡嗡"声，随车速升高</div><div class="sc-sys">→ 07 悬挂 / 轮胎</div></div>
+        <span class="severity sev-soon">尽快检修</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v"><span class="hl">轮毂轴承</span>磨损，或轮胎偏磨形成锯齿状花纹。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">转弯时声音变大→偏轴承；摸胎面有规律凸起→偏磨。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">轴承属于安全件，确认后尽快更换，别拖到异响很大。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="noise">
+      <div class="sc-head">
+        <div class="sc-ico">🔩</div>
+        <div><div class="sc-title">过减速带时"咯噔咯噔"</div><div class="sc-sys">→ 07 悬挂</div></div>
+        <span class="severity sev-watch">留意观察</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v"><span class="hl">衬套 / 球头 / 稳定杆</span>胶套老化或平衡杆胶套旷量。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">原地用力压车头一角，松手听是否有"咯吱"。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">不影响行车安全，但会越来越响，趁保养一并处理。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="noise">
+      <div class="sc-head">
+        <div class="sc-ico">🛑</div>
+        <div><div class="sc-title">刹车时尖锐"吱——"声</div><div class="sc-sys">→ 09 制动</div></div>
+        <span class="severity sev-soon">尽快检修</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v"><span class="hl">刹车片</span>磨到报警片，金属簧片刮盘提示该换了。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">透过轮毂看片厚，&lt; 3mm 或听到持续金属声即换。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">尽快换片；拖到磨穿会一并伤刹车盘，费用翻倍。</span></div>
+      </div>
+    </div>
+
+    <!-- 抖动 / 跑偏 -->
+    <div class="symptom-card" data-cat="shake">
+      <div class="sc-head">
+        <div class="sc-ico">〰</div>
+        <div><div class="sc-title">怠速时方向盘 / 车身轻微抖</div><div class="sc-sys">→ 01 发动机 / 02 燃油</div></div>
+        <span class="severity sev-watch">留意观察</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v"><span class="hl">火花塞</span>老化、节气门积碳，或发动机脚胶老化。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">挂 N/P 怠速看转速表是否上下跳动。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">先查火花塞和清节气门，最便宜；脚胶最后考虑。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="shake">
+      <div class="sc-head">
+        <div class="sc-ico">🎯</div>
+        <div><div class="sc-title">高速时方向盘抖动</div><div class="sc-sys">→ 07 轮胎 / 悬挂</div></div>
+        <span class="severity sev-soon">尽快检修</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v">车轮<span class="hl">动平衡</span>失衡，或轮胎鼓包、变形。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">特定车速（如 90–110）出现、平路也抖→多为动平衡。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">做四轮动平衡；先检查胎侧有无鼓包，鼓包必须立即换胎。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="shake">
+      <div class="sc-head">
+        <div class="sc-ico">↗</div>
+        <div><div class="sc-title">松手时车辆向一侧跑偏</div><div class="sc-sys">→ 08 转向 / 轮胎</div></div>
+        <span class="severity sev-soon">尽快检修</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v"><span class="hl">四轮定位</span>参数偏差，或两侧胎压 / 磨损不一致。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">先对照四轮胎压表充到一致，看跑偏是否消失。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">胎压排除后做四轮定位；长期跑偏会加速吃胎。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="shake">
+      <div class="sc-head">
+        <div class="sc-ico">🛑</div>
+        <div><div class="sc-title">刹车时方向盘 / 踏板抖动</div><div class="sc-sys">→ 09 制动</div></div>
+        <span class="severity sev-soon">尽快检修</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v"><span class="hl">刹车盘</span>热变形或厚度不均（盘面"翘曲"）。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">只在踩刹车时抖、速度越高越明显，基本是盘的问题。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">测量盘厚，超差则换盘或光盘；关乎刹车距离别拖。</span></div>
+      </div>
+    </div>
+
+    <!-- 仪表灯 -->
+    <div class="symptom-card" data-cat="light">
+      <div class="sc-head">
+        <div class="sc-ico">🔧</div>
+        <div><div class="sc-title">发动机故障灯（黄色机器图标）常亮</div><div class="sc-sys">→ 01 / 02 / 05 多系统</div></div>
+        <span class="severity sev-soon">尽快检修</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v">范围很广：氧传感器、缸压、点火、<span class="hl">油箱盖没拧紧</span>都可能触发。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">先把油箱盖拧到"咔哒"声，开几次或许自动消除。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">黄灯常亮可低速行驶；闪烁则代表缺缸，立即降速进店读码。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="light">
+      <div class="sc-head">
+        <div class="sc-ico">🛢</div>
+        <div><div class="sc-title">机油壶 / 红色油滴灯亮</div><div class="sc-sys">→ 04 润滑</div></div>
+        <span class="severity sev-stop">立即停车</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v">机油压力过低——可能严重缺油或机油泵故障。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">不要继续行驶；安全处熄火，凉一会拔油尺看油位。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">缺油会几分钟内拉缸报废发动机。补油后灯不灭就叫救援。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="light">
+      <div class="sc-head">
+        <div class="sc-ico">🌡</div>
+        <div><div class="sc-title">水温灯亮 / 表针进红区</div><div class="sc-sys">→ 03 冷却</div></div>
+        <span class="severity sev-stop">立即停车</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v">冷却液不足、水泵失效、节温器卡死或散热风扇不转。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v"><span class="hl">切勿立即开盖</span>——高温高压会喷出烫伤；等彻底冷却。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">靠边熄火散热，开暖风可临时降温；持续高温叫救援。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="light">
+      <div class="sc-head">
+        <div class="sc-ico">🔋</div>
+        <div><div class="sc-title">红色电瓶图标常亮</div><div class="sc-sys">→ 10 电气</div></div>
+        <span class="severity sev-soon">尽快检修</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v"><span class="hl">发电机不发电</span>或皮带打滑/断裂，全靠电瓶硬撑。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">看是否伴随大灯变暗、动力下降；电瓶电量有限。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">尽量关闭空调/音响减少耗电，就近进店；电耗尽会熄火。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="light">
+      <div class="sc-head">
+        <div class="sc-ico">📉</div>
+        <div><div class="sc-title">胎压报警（黄色感叹号）</div><div class="sc-sys">→ 12 安全 / 轮胎</div></div>
+        <span class="severity sev-soon">尽快检修</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v">某胎<span class="hl">缓慢漏气</span>（扎钉）、急剧掉压，或仅是冬季低温。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">下车绕一圈看是否有明显瘪胎或扎入异物。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">明显瘪胎别再开，换备胎或补胎；冬季轻微掉压可先补气观察。</span></div>
+      </div>
+    </div>
+
+    <!-- 漏液 / 异味 -->
+    <div class="symptom-card" data-cat="leak">
+      <div class="sc-head">
+        <div class="sc-ico">💧</div>
+        <div><div class="sc-title">停车位下方有彩色液体</div><div class="sc-sys">→ 03 冷却 / 04 润滑</div></div>
+        <span class="severity sev-soon">尽快检修</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v">绿/粉色=<span class="hl">冷却液</span>；棕黑油状=机油；红色=变速箱/转向液。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">空调下方滴清水属正常冷凝水，不用担心。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">按颜色判断系统，检查对应液位；漏冷却液别长途以防过热。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="leak">
+      <div class="sc-head">
+        <div class="sc-ico">👃</div>
+        <div><div class="sc-title">车内有焦糊 / 橡胶烧焦味</div><div class="sc-sys">→ 09 制动 / 10 电气</div></div>
+        <span class="severity sev-stop">立即停车</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v">刹车<span class="hl">长时间拖磨</span>过热，或线路过载、皮带打滑。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">确认手刹是否没完全松开；看是否有冒烟。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">电气焦味伴冒烟有起火风险，立即停车断电检查。</span></div>
+      </div>
+    </div>
+
+    <!-- 启动 / 动力 -->
+    <div class="symptom-card" data-cat="start">
+      <div class="sc-head">
+        <div class="sc-ico">🔑</div>
+        <div><div class="sc-title">打火时"咔哒咔哒"打不着</div><div class="sc-sys">→ 10 电气</div></div>
+        <span class="severity sev-soon">尽快检修</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v"><span class="hl">蓄电池亏电</span>（最常见），或起动机故障。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">大灯昏暗、喇叭无力→基本是电瓶；冬天更易发生。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">搭电或换电瓶；3–5 年的旧电瓶到寿命就直接换。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="start">
+      <div class="sc-head">
+        <div class="sc-ico">🐢</div>
+        <div><div class="sc-title">提速明显变肉、油耗升高</div><div class="sc-sys">→ 02 燃油 / 05 排放</div></div>
+        <span class="severity sev-watch">留意观察</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">可能</span><span class="v"><span class="hl">空气滤芯堵塞</span>、火花塞老化、三元/氧传感器效率下降。</span></div>
+        <div class="sc-row"><span class="k">自查</span><span class="v">取出空滤对光看堵塞程度，这是最便宜的排查起点。</span></div>
+        <div class="sc-row"><span class="k">应对</span><span class="v">按"空滤→火花塞→清节气门"顺序由便宜到贵逐项排查。</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ 保养计算器 ══════════ -->
+<section id="calc">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">04</span>保养计算器</h2>
+    <p class="section-sub">表格告诉你"每个项目多久换一次"，但你真正想问的是"我现在该换什么"。拖动里程，下面自动算出本次到期的项目，并区分必换、必查和可以拒绝的推销项。</p>
+  </div>
+
+  <div class="calc-shell">
+    <div class="calc-input">
+      <h3>当前里程</h3>
+      <p class="ci-sub">按"先到为准"——里程和时间哪个先到都算到期</p>
+      <div class="km-display" id="kmDisplay" title="点击可手动输入精确里程">60,000<span class="km-unit">km</span><span class="edit-hint">✎ 点击输入</span></div>
+      <input type="number" class="km-edit" id="kmEdit" style="display:none" min="0" max="500000" step="1000" inputmode="numeric">
+      <input type="range" id="kmSlider" min="0" max="200000" step="5000" value="60000">
+      <div class="km-scale"><span>0</span><span>5万</span><span>10万</span><span>15万</span><span>20万</span></div>
+      <div class="km-quick">
+        <button onclick="setKm(20000)">2万</button>
+        <button onclick="setKm(40000)">4万</button>
+        <button onclick="setKm(60000)">6万</button>
+        <button onclick="setKm(80000)">8万</button>
+        <button onclick="setKm(100000)">10万</button>
+      </div>
+
+      <label>车辆配置（影响判断）</label>
+      <div class="toggle-row">
+        <label class="tg"><input type="checkbox" id="cfgBelt"><span class="sl"></span></label>
+        <span class="tg-label">皮带正时（非链条）</span>
+      </div>
+      <div class="toggle-row">
+        <label class="tg"><input type="checkbox" id="cfgAuto" checked><span class="sl"></span></label>
+        <span class="tg-label">自动变速箱</span>
+      </div>
+      <div class="toggle-row">
+        <label class="tg"><input type="checkbox" id="cfgFull" checked><span class="sl"></span></label>
+        <span class="tg-label">使用全合成机油（1万公里周期）</span>
+      </div>
+    </div>
+
+    <div class="calc-output">
+      <div class="calc-summary">
+        <div class="calc-stat must"><div class="n" id="statMust">0</div><div class="l">项 · 到期必换</div></div>
+        <div class="calc-stat check"><div class="n" id="statCheck">0</div><div class="l">项 · 需要检查</div></div>
+        <div class="calc-stat cost"><div class="n" id="statCost">¥0</div><div class="l">参考材料 + 工时</div></div>
+      </div>
+      <div id="calcResult"></div>
+      <div class="calc-disclaimer">
+        费用为通用 4S / 连锁店参考区间（材料 + 工时），不同车型、品牌、地区差异很大，仅用于建立"该花多少钱"的预期。豪华品牌、进口件可能高出 1–2 倍。<strong style="color:var(--ink)">这是估算，不是报价单。</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 保养手册 ══════════ -->
+<section id="maintenance">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">05</span>保养手册</h2>
+    <p class="section-sub">完整的耗材对照表，按保养层级排列。最后两块是"4S 常见推销项"和"进店三句话"——知道哪些该花、哪些能拒绝，才不会被牵着走。</p>
+  </div>
+
+  <div class="maintenance-intro">
+    <strong>如何读这张表：</strong>
+    <span class="badge badge-must">必换</span> 到期必须更换的耗材；
+    <span class="badge badge-check">必查</span> 每次必须检查、酌情更换；
+    <span class="badge badge-opt">选查</span> 视情况，4S 会主动推销。
+    <br>里程以"先到为准"计算——公里数和时间哪个先到就按哪个。
+  </div>
+
+  <div class="maint-section-title">每次保养 <span class="km">5,000–10,000 km / 半年</span></div>
+  <table class="maint-table">
+    <thead><tr><th style="width:18%">项目</th><th style="width:12%">类型</th><th style="width:22%">更换周期</th><th>说明 / 判断依据</th></tr></thead>
+    <tbody>
+      <tr><td class="item-name">机油</td><td><span class="badge badge-must">必换</span></td><td class="interval">5k–10k km<br>或 6–12 月</td><td class="note">矿物油 5000、半合成 7500、全合成 10000 km。变黑变稀必换，机油灯亮立即停车。</td></tr>
+      <tr><td class="item-name">机油滤清器</td><td><span class="badge badge-must">必换</span></td><td class="interval">随机油同换</td><td class="note">每次换机油一并换，单价低，没有省的理由。</td></tr>
+      <tr><td class="item-name">整车检查</td><td><span class="badge badge-check">必查</span></td><td class="interval">每次</td><td class="note">灯光、刹车/冷却液位、胎压与磨损。目视即可，自己也能做。</td></tr>
+    </tbody>
+  </table>
+
+  <div class="maint-section-title">小保养 <span class="km">20,000 km / 1 年</span></div>
+  <table class="maint-table">
+    <thead><tr><th style="width:18%">项目</th><th style="width:12%">类型</th><th style="width:22%">更换周期</th><th>说明 / 判断依据</th></tr></thead>
+    <tbody>
+      <tr><td class="item-name">空气滤清器</td><td><span class="badge badge-must">必换</span></td><td class="interval">15k–20k km</td><td class="note">脏了进气不足、油耗升高。拿出来对光看，严重堵塞就换。</td></tr>
+      <tr><td class="item-name">空调滤清器</td><td><span class="badge badge-must">必换</span></td><td class="interval">10k–15k km<br>或 1 年</td><td class="note">影响车内空气质量，南方/城市更频繁。自己换成本极低。</td></tr>
+      <tr><td class="item-name">制动液 DOT</td><td><span class="badge badge-must">必换</span></td><td class="interval">2 年 / 40k km</td><td class="note">吸水后沸点降低，高温刹车踏板会发软（气阻）。DOT4 主流。</td></tr>
+      <tr><td class="item-name">刹车片</td><td><span class="badge badge-check">必查</span></td><td class="interval">30k–60k km<br>视驾驶习惯</td><td class="note">厚度 &lt; 3mm 或报警音出现必换。让技师夹尺测给你看。</td></tr>
+      <tr><td class="item-name">轮胎</td><td><span class="badge badge-check">必查</span></td><td class="interval">50k–80k km<br>或 5 年</td><td class="note">磨损标记 TWI 露出必换；侧壁鼓包、裂纹立即换。</td></tr>
+      <tr><td class="item-name">雨刮片</td><td><span class="badge badge-check">必查</span></td><td class="interval">1–2 年</td><td class="note">出现条纹、抖动或异响时换。自己换 30–100 元。</td></tr>
+    </tbody>
+  </table>
+
+  <div class="maint-section-title">大保养 <span class="km">40,000–60,000 km / 2–3 年</span></div>
+  <table class="maint-table">
+    <thead><tr><th style="width:18%">项目</th><th style="width:12%">类型</th><th style="width:22%">更换周期</th><th>说明 / 判断依据</th></tr></thead>
+    <tbody>
+      <tr><td class="item-name">冷却液</td><td><span class="badge badge-must">必换</span></td><td class="interval">2 年 / 40k km</td><td class="note">含缓蚀剂，老化后腐蚀水泵。颜色变深浑浊就该换。</td></tr>
+      <tr><td class="item-name">火花塞</td><td><span class="badge badge-must">必换</span></td><td class="interval">铱金 60k–100k<br>普通 20k–30k km</td><td class="note">磨损后点火能量下降，油耗增、抖动。铱金贵但耐用。</td></tr>
+      <tr><td class="item-name">变速箱油 ATF</td><td><span class="badge badge-must">必换</span></td><td class="interval">40k–60k km</td><td class="note">很多厂标"终身免换"，实际建议 4–6 万换，堵车多更勤。</td></tr>
+      <tr><td class="item-name">正时皮带</td><td><span class="badge badge-must">必换</span></td><td class="interval">60k–100k km<br>（皮带车才有）</td><td class="note">断了直接打烂发动机，最贵的预防性维修。先确认你是皮带还是链条。</td></tr>
+      <tr><td class="item-name">刹车盘</td><td><span class="badge badge-check">必查</span></td><td class="interval">80k–120k km<br>视厚度</td><td class="note">换片时顺便测盘厚，低于最小值（盘上有标注）必换。</td></tr>
+      <tr><td class="item-name">减震器</td><td><span class="badge badge-check">必查</span></td><td class="interval">80k km 后注意</td><td class="note">压车头持续弹跳超 2 次，或漏油即换。影响操控和刹车距离。</td></tr>
+      <tr><td class="item-name">蓄电池 12V</td><td><span class="badge badge-check">必查</span></td><td class="interval">3–5 年</td><td class="note">启动无力、冬天难打火就该测。让技师测 CCA 值。</td></tr>
+    </tbody>
+  </table>
+
+  <div class="maint-section-title" style="color:var(--accent)">4S 常见推销项 <span class="km" style="color:var(--accent)">谨慎判断 · 多数可拒绝</span></div>
+  <table class="maint-table">
+    <thead><tr><th style="width:18%">项目</th><th style="width:12%">类型</th><th style="width:22%">参考频率</th><th>建议</th></tr></thead>
+    <tbody>
+      <tr><td class="item-name">燃油系统清洗</td><td><span class="badge badge-trap">能拒</span></td><td class="interval">无固定周期</td><td class="note">加优质燃油基本无需主动清洗。有怠速抖、油耗明显升高再考虑，别每年做。</td></tr>
+      <tr><td class="item-name">节气门清洗</td><td><span class="badge badge-opt">选做</span></td><td class="interval">30k–50k km</td><td class="note">直喷机进气积碳更突出，低速抖动才有意义。不要每次保养都做。</td></tr>
+      <tr><td class="item-name">发动机舱清洗</td><td><span class="badge badge-trap">能拒</span></td><td class="interval">无需定期</td><td class="note">纯美观，高压水枪有冲伤线束风险，建议拒绝。</td></tr>
+      <tr><td class="item-name">镀晶 / 底盘装甲</td><td><span class="badge badge-trap">能拒</span></td><td class="interval">—</td><td class="note">底盘装甲有一定防锈价值但价格虚高（新车已有涂层）；镀晶基本是智商税。</td></tr>
+      <tr><td class="item-name">动力转向液</td><td><span class="badge badge-trap">能拒</span></td><td class="interval">仅限液压转向</td><td class="note">现代车多为 EPS 电助力，根本没有转向液。先确认车型再决定。</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box">
+    <strong>进店前三句话</strong>
+    <ul>
+      <li>机油滤芯、空气滤芯、防冻液，哪个该换了，拿实物给我看。</li>
+      <li>刹车片厚度多少，刹车盘有没有到最小值，夹尺量给我看。</li>
+      <li>这次只做计划内的，其他项目下次再说。</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="brand">汽车系统全览 · 工程手册</span>
+    <span>通用知识参考 · 以车辆实际保养手册与专业诊断为准</span>
+  </div>
+</footer>
+
+<script>
+/* ───── 导航切换 ───── */
+const SECTION_ORDER = ['systems','flow','course','mods','diagnose','calc','maintenance'];
+function show(id, btn) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  // btn 可能来自 onclick；代码调用时按 id 顺序找到对应按钮
+  const navBtn = btn || document.querySelectorAll('nav button')[SECTION_ORDER.indexOf(id)];
+  if (navBtn) navBtn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ───── 故障反查 → 系统总览 跳转联动 ───── */
+const SYS_NAMES = {
+  '01':'发动机','02':'燃油','03':'冷却','04':'润滑','05':'排放','06':'传动',
+  '07':'悬挂','08':'转向','09':'制动','10':'电气','11':'车身','12':'安全'
+};
+function initSysLinks() {
+  // 1) 给每个系统卡片打上 id="sys-NN"
+  document.querySelectorAll('#systems .sys-card').forEach(card => {
+    const num = card.querySelector('.num');
+    if (num) card.id = 'sys-' + num.textContent.trim();
+  });
+  // 2) 把故障卡片 sc-sys 文本里的两位数字编号变成可点击链接
+  document.querySelectorAll('.sc-sys').forEach(el => {
+    el.innerHTML = el.innerHTML.replace(/(\d{2})/g, (m) => {
+      if (!SYS_NAMES[m]) return m;
+      return `<span class="sys-link" data-sys="${m}" title="查看 ${SYS_NAMES[m]}系统">${m}</span>`;
+    });
+  });
+}
+function jumpToSystem(num) {
+  show('systems');
+  const target = document.getElementById('sys-' + num);
+  if (!target) return;
+  // 等切换动画后滚动并高亮
+  setTimeout(() => {
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target.classList.remove('flash');
+    void target.offsetWidth;          // 强制重排，确保动画可重复触发
+    target.classList.add('flash');
+    setTimeout(() => target.classList.remove('flash'), 1700);
+  }, 120);
+}
+document.addEventListener('click', e => {
+  const link = e.target.closest('.sys-link');
+  if (link) jumpToSystem(link.dataset.sys);
+});
+initSysLinks();
+
+/* ───── 原理课：子导航高亮 + 系统卡片跳转 ───── */
+// 系统编号 → 原理课讲锚点（动力相关系统映射到对应讲）
+const SYS_TO_LECTURE = {
+  '01':'lec-2', '02':'lec-3', '03':'lec-4', '04':'lec-4',
+  '05':'lec-3', '06':'lec-5', '09':'lec-6'
+};
+const LECTURE_NAME = {
+  'lec-2':'第二讲 发动机原理', 'lec-3':'第三讲 进气与燃烧',
+  'lec-4':'第四讲 热管理与润滑', 'lec-5':'第五讲 传动系统', 'lec-6':'第六讲 制动与操控'
+};
+function initCourseLinks(){
+  // 给有对应讲的系统卡片加「看工程原理」链接
+  document.querySelectorAll('#systems .sys-card').forEach(card => {
+    const num = card.querySelector('.num');
+    if (!num) return;
+    const lec = SYS_TO_LECTURE[num.textContent.trim()];
+    if (!lec) return;
+    const body = card.querySelector('.sys-card-body');
+    if (!body) return;
+    const a = document.createElement('span');
+    a.className = 'sys-course-link';
+    a.dataset.lec = lec;
+    a.innerHTML = '◈ 看工程原理 · ' + LECTURE_NAME[lec].split(' ')[1];
+    body.appendChild(a);
+  });
+}
+function jumpToLecture(lec){
+  show('course');
+  setTimeout(() => {
+    const el = document.getElementById(lec);
+    if (el) {
+      el.scrollIntoView({ behavior:'smooth', block:'start' });
+      el.classList.remove('flash'); void el.offsetWidth;
+      el.style.transition = 'box-shadow 1.6s ease';
+      el.style.boxShadow = '0 0 0 3px rgba(200,64,26,.5), var(--shadow-lg)';
+      setTimeout(()=>{ el.style.boxShadow=''; }, 1600);
+    }
+  }, 120);
+}
+document.addEventListener('click', e => {
+  const cl = e.target.closest('.sys-course-link');
+  if (cl) { jumpToLecture(cl.dataset.lec); return; }
+  const lr = e.target.closest('.lec-ref');
+  if (lr) { jumpToLecture(lr.dataset.lec); return; }
+  const chip = e.target.closest('.cs-chip');
+  if (chip) {
+    document.querySelectorAll('.cs-chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+  }
+});
+initCourseLinks();
+
+/* ───── 故障反查筛选 ───── */
+document.getElementById('diagFilters').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  document.querySelectorAll('#diagFilters button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const f = btn.dataset.f;
+  document.querySelectorAll('#symptomGrid .symptom-card').forEach(card => {
+    card.classList.toggle('hide', f !== 'all' && card.dataset.cat !== f);
+  });
+});
+
+/* ───── 保养计算器 ───── */
+/* 每个项目：周期(km)、首次到期(km)、类型、单次费用区间、配置依赖、说明 */
+const MAINT_ITEMS = [
+  { name:'机油 + 机滤', cycleFull:10000, cycleSemi:7500, type:'must', cost:[300,800], note:'最高频耗材。全合成约 1 万公里、半合成约 7500 一换。', dep:'oil' },
+  { name:'空气滤清器', cycle:20000, type:'must', cost:[60,200], note:'进气过滤，脏了油耗升高、动力下降。' },
+  { name:'空调滤清器', cycle:15000, type:'must', cost:[50,180], note:'影响车内空气质量，自己换成本极低。' },
+  { name:'制动液', cycle:40000, type:'must', cost:[150,400], note:'吸水后沸点下降，2 年/4 万必换。' },
+  { name:'冷却液（防冻液）', cycle:40000, type:'must', cost:[200,600], note:'老化后腐蚀水泵，约 2 年一换。' },
+  { name:'火花塞（铱金）', cycle:60000, type:'must', cost:[300,1000], note:'磨损后点火弱、油耗升、抖动。' },
+  { name:'变速箱油 ATF', cycle:60000, type:'must', cost:[800,2500], note:'自动挡需定期换，最常被"终身免换"误导。', dep:'auto' },
+  { name:'正时皮带', cycle:80000, type:'must', cost:[800,3000], note:'断裂直接打烂发动机，皮带车的头号预防项。', dep:'belt' },
+  { name:'刹车片', cycle:40000, type:'check', cost:[300,1200], note:'磨损件，按厚度判断；激烈驾驶更勤。' },
+  { name:'刹车盘', cycle:100000, type:'check', cost:[600,2000], note:'换片时测盘厚，低于最小值才换。' },
+  { name:'轮胎（四条）', cycle:60000, type:'check', cost:[1200,5000], note:'看磨损标记和年限，5 年或磨平必换。' },
+  { name:'雨刮片', cycle:20000, type:'check', cost:[30,200], note:'出现条纹或异响就换，可自己动手。' },
+  { name:'减震器', cycle:90000, type:'check', cost:[800,3000], note:'8 万后注意，漏油或持续弹跳即换。' },
+  { name:'蓄电池 12V', cycle:80000, type:'check', cost:[400,1200], note:'按 3–5 年寿命，启动无力就测 CCA。' },
+  { name:'轮胎换位 / 四轮定位', cycle:20000, type:'check', cost:[50,400], note:'均衡磨损、纠正跑偏与吃胎。' },
+];
+
+const slider = document.getElementById('kmSlider');
+const kmDisplay = document.getElementById('kmDisplay');
+const kmEdit = document.getElementById('kmEdit');
+const cfgBelt = document.getElementById('cfgBelt');
+const cfgAuto = document.getElementById('cfgAuto');
+const cfgFull = document.getElementById('cfgFull');
+
+let currentKm = 60000;             // 里程真实值（可超出滑块上限）
+const SLIDER_MAX = 200000;
+
+function setKm(v){                  // 统一入口：拖动 / 快捷按钮 / 手动输入都走这里
+  currentKm = Math.max(0, Math.round(v) || 0);
+  slider.value = Math.min(currentKm, SLIDER_MAX);   // 滑块封顶，不影响真实计算
+  renderCalc();
+}
+
+function fmtKm(n){ return n.toLocaleString('en-US'); }
+function fmtMoney(n){ return '¥' + Math.round(n).toLocaleString('en-US'); }
+
+/* ── 点击里程数字 → 切换为输入框 ── */
+function openKmEdit(){
+  kmEdit.value = currentKm;
+  kmDisplay.style.display = 'none';
+  kmEdit.style.display = 'block';
+  kmEdit.focus();
+  kmEdit.select();
+}
+function commitKmEdit(){
+  const v = parseInt(kmEdit.value, 10);
+  if (!isNaN(v)) setKm(v);          // 空值或非法输入则保持原值
+  kmEdit.style.display = 'none';
+  kmDisplay.style.display = 'inline-flex';
+}
+let escaping = false;
+function cancelKmEdit(){            // 放弃输入，恢复原值
+  escaping = true;
+  kmEdit.style.display = 'none';
+  kmDisplay.style.display = 'inline-flex';
+  renderCalc();                    // 重渲染，确保显示与 currentKm 一致
+}
+kmDisplay.addEventListener('click', openKmEdit);
+kmEdit.addEventListener('blur', () => { if (escaping) { escaping = false; return; } commitKmEdit(); });
+kmEdit.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); kmEdit.blur(); }
+  if (e.key === 'Escape') { cancelKmEdit(); kmEdit.blur(); }
+});
+
+/* 判断某项目在 [km-window, km] 区间内是否到期：用整除判断最近一个周期点是否落入窗口 */
+function isDue(item, km, win){
+  let cyc = item.cycle;
+  if (item.dep === 'oil') cyc = cfgFull.checked ? item.cycleFull : item.cycleSemi;
+  if (!cyc) return { due:false };
+  if (item.dep === 'belt' && !cfgBelt.checked) return { due:false, skip:true };
+  if (item.dep === 'auto' && !cfgAuto.checked) return { due:false, skip:true };
+  if (km < cyc) return { due:false, cyc };
+  // 最近一个到期里程点
+  const lastDuePoint = Math.floor(km / cyc) * cyc;
+  const due = lastDuePoint > (km - win);   // 落在本次保养窗口内
+  return { due, cyc, lastDuePoint };
+}
+
+/* 计算"下一个保养节点"：遍历所有有效项目，找出下一次到期里程最近的那批 */
+function nextService(km){
+  let nextKm = Infinity;
+  const items = [];
+  MAINT_ITEMS.forEach(item => {
+    let cyc = item.cycle;
+    if (item.dep === 'oil') cyc = cfgFull.checked ? item.cycleFull : item.cycleSemi;
+    if (!cyc) return;
+    if (item.dep === 'belt' && !cfgBelt.checked) return;
+    if (item.dep === 'auto' && !cfgAuto.checked) return;
+    const nextDue = Math.ceil((km + 1) / cyc) * cyc;   // 严格大于当前里程的下一个周期点
+    if (nextDue < nextKm) { nextKm = nextDue; items.length = 0; items.push(item.name); }
+    else if (nextDue === nextKm) { items.push(item.name); }
+  });
+  if (nextKm === Infinity) return null;
+  return { km: nextKm, remain: nextKm - km, items };
+}
+
+function renderCalc(){
+  const km = currentKm;
+  kmDisplay.innerHTML = fmtKm(km) + '<span class="km-unit">km</span><span class="edit-hint">✎ 点击输入</span>';
+  const win = 10000; // 把"本次保养"窗口设为最近 1 万公里，覆盖到期项
+
+  const must = [], check = [];
+  let costMin = 0, costMax = 0;
+
+  MAINT_ITEMS.forEach(item => {
+    const r = isDue(item, km, win);
+    if (r.skip) return;
+    if (r.due){
+      const entry = { ...item, cyc:r.cyc, lastDuePoint:r.lastDuePoint };
+      if (item.type === 'must') must.push(entry); else check.push(entry);
+      // 必换项计入费用全额；必查项按一半概率折算（检查未必更换）
+      const factor = item.type === 'must' ? 1 : 0.5;
+      costMin += item.cost[0] * factor;
+      costMax += item.cost[1] * factor;
+    }
+  });
+
+  document.getElementById('statMust').textContent = must.length;
+  document.getElementById('statCheck').textContent = check.length;
+  document.getElementById('statCost').textContent =
+    (costMin === 0 && costMax === 0) ? '¥0' : fmtMoney(costMin) + '–' + fmtMoney(costMax).replace('¥','');
+
+  const box = document.getElementById('calcResult');
+  let html = '';
+
+  if (must.length === 0 && check.length === 0){
+    html = '<div class="calc-empty">这个里程没有明确到期项 —— 做一次常规小保养（机油机滤 + 整车目视检查）即可。</div>';
+  } else {
+    const block = (title, arr, badgeCls, badgeTxt) => {
+      if (!arr.length) return '';
+      let s = `<div class="calc-tier-title">${title} <span class="cnt">${arr.length}</span></div>`;
+      arr.forEach(it => {
+        s += `<div class="calc-item">
+          <span class="ci-badge"><span class="badge ${badgeCls}">${badgeTxt}</span></span>
+          <div class="ci-main">
+            <div class="ci-name">${it.name}</div>
+            <div class="ci-note">${it.note}　<span style="color:var(--muted2)">· 周期约 ${fmtKm(it.cyc)} km</span></div>
+          </div>
+          <div class="ci-cost"><b>${fmtMoney(it.cost[0])}+</b>参考</div>
+        </div>`;
+      });
+      return s;
+    };
+    html += block('到期必换', must, 'badge-must', '必换');
+    html += block('建议检查（酌情更换）', check, 'badge-check', '必查');
+  }
+
+  // ── 下次保养节点 ──
+  const nx = nextService(km);
+  if (nx){
+    const itemTxt = nx.items.slice(0,3).join('、') + (nx.items.length > 3 ? ' 等' : '');
+    html += `<div class="next-service">
+      <div class="ns-icon">▸</div>
+      <div class="ns-body">
+        <div class="ns-title">下一个保养节点 · 约 <b>${fmtKm(nx.km)}</b> km <span class="ns-remain">还有 ${fmtKm(nx.remain)} km</span></div>
+        <div class="ns-items">届时到期：${itemTxt}</div>
+      </div>
+    </div>`;
+  }
+  box.innerHTML = html;
+}
+
+slider.addEventListener('input', () => setKm(parseInt(slider.value, 10)));
+[cfgBelt, cfgAuto, cfgFull].forEach(c => c.addEventListener('change', renderCalc));
+renderCalc();
+</script>
+</body>
+</html>

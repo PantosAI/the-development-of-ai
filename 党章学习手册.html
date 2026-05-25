@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中国共产党章程 · 学习手册</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+  :root{
+    --red:#a4231e;
+    --red-deep:#7d1a16;
+    --gold:#c8a04a;
+    --ink:#1c1a18;
+    --ink-soft:#3a3632;
+    --paper:#f4f0e8;
+    --paper-card:#fbf8f1;
+    --line:#ddd4c4;
+    --shadow:0 2px 14px rgba(40,20,15,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Noto Sans SC',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.85;
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(164,35,30,.045), transparent 38%),
+      radial-gradient(circle at 90% 88%, rgba(200,160,74,.05), transparent 42%);
+  }
+
+  /* ===== 顶部 ===== */
+  header{
+    background:linear-gradient(160deg,var(--red) 0%, var(--red-deep) 100%);
+    color:#fdf6ec;
+    padding:52px 24px 44px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    border-bottom:4px solid var(--gold);
+  }
+  header::before{
+    content:"★";
+    position:absolute;font-size:340px;line-height:1;
+    top:-70px;right:-40px;color:rgba(255,255,255,.05);
+    transform:rotate(-8deg);pointer-events:none;
+  }
+  .emblem{font-size:30px;letter-spacing:.5em;margin-bottom:14px;color:var(--gold)}
+  header h1{
+    font-family:'Noto Serif SC',serif;font-weight:900;
+    font-size:clamp(28px,5vw,46px);letter-spacing:.18em;
+    text-shadow:0 2px 8px rgba(0,0,0,.25);
+  }
+  header .sub{
+    margin-top:14px;font-size:14px;letter-spacing:.25em;
+    color:rgba(253,246,236,.8);font-weight:400;
+  }
+  header .ver{
+    margin-top:18px;display:inline-block;
+    border:1px solid var(--gold);border-radius:30px;
+    padding:5px 18px;font-size:12.5px;letter-spacing:.1em;
+    color:var(--gold);
+  }
+
+  /* ===== 搜索条 ===== */
+  .toolbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(244,240,232,.94);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:12px 20px;
+    display:flex;gap:12px;align-items:center;
+    flex-wrap:wrap;justify-content:center;
+  }
+  .search{
+    flex:1;max-width:420px;min-width:200px;position:relative;
+  }
+  .search input{
+    width:100%;padding:10px 14px 10px 38px;
+    border:1.5px solid var(--line);border-radius:8px;
+    background:#fff;font-family:inherit;font-size:14.5px;color:var(--ink);
+    transition:border-color .2s;
+  }
+  .search input:focus{outline:none;border-color:var(--red)}
+  .search::before{
+    content:"🔍";position:absolute;left:12px;top:50%;
+    transform:translateY(-50%);font-size:14px;opacity:.55;
+  }
+  .btn{
+    padding:9px 16px;border:1.5px solid var(--red);
+    background:transparent;color:var(--red);border-radius:8px;
+    font-family:inherit;font-size:13.5px;cursor:pointer;
+    transition:all .2s;white-space:nowrap;
+  }
+  .btn:hover{background:var(--red);color:#fff}
+  .progress-wrap{font-size:13px;color:var(--ink-soft);display:flex;align-items:center;gap:8px}
+  .progress-bar{width:90px;height:7px;background:var(--line);border-radius:5px;overflow:hidden}
+  .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .4s}
+
+  /* ===== 布局 ===== */
+  .layout{max-width:1180px;margin:0 auto;padding:30px 20px 80px;display:flex;gap:34px}
+  nav.toc{
+    flex:0 0 220px;position:sticky;top:78px;align-self:flex-start;
+    max-height:calc(100vh - 100px);overflow-y:auto;
+    padding-right:6px;
+  }
+  nav.toc h3{
+    font-family:'Noto Serif SC',serif;font-size:14px;color:var(--red);
+    letter-spacing:.2em;margin-bottom:14px;padding-bottom:8px;
+    border-bottom:2px solid var(--gold);
+  }
+  nav.toc a{
+    display:block;padding:7px 10px;color:var(--ink-soft);
+    text-decoration:none;font-size:13.5px;border-radius:6px;
+    border-left:3px solid transparent;transition:all .18s;
+  }
+  nav.toc a:hover{background:var(--paper-card);color:var(--red);border-left-color:var(--gold)}
+  nav.toc a .pg{float:right;font-size:11px;opacity:.5}
+
+  main{flex:1;min-width:0}
+
+  /* ===== 导语 ===== */
+  .intro{
+    background:var(--paper-card);border:1px solid var(--line);
+    border-left:4px solid var(--red);border-radius:10px;
+    padding:22px 26px;margin-bottom:30px;box-shadow:var(--shadow);
+  }
+  .intro p{font-size:14.5px;color:var(--ink-soft)}
+  .intro strong{color:var(--red)}
+
+  /* ===== 章节 ===== */
+  .chapter{
+    background:var(--paper-card);border:1px solid var(--line);
+    border-radius:12px;margin-bottom:18px;overflow:hidden;
+    box-shadow:var(--shadow);scroll-margin-top:80px;
+  }
+  .ch-head{
+    display:flex;align-items:center;gap:14px;
+    padding:18px 24px;cursor:pointer;user-select:none;
+    background:linear-gradient(90deg,rgba(164,35,30,.04),transparent);
+    transition:background .2s;
+  }
+  .ch-head:hover{background:linear-gradient(90deg,rgba(164,35,30,.09),transparent)}
+  .ch-num{
+    font-family:'Noto Serif SC',serif;font-weight:900;
+    color:#fff;background:var(--red);
+    width:38px;height:38px;flex:0 0 38px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;font-size:15px;
+  }
+  .ch-num.zg{background:var(--gold);color:#3a2c10}
+  .ch-title{flex:1}
+  .ch-title h2{
+    font-family:'Noto Serif SC',serif;font-size:19px;font-weight:700;
+    color:var(--ink);letter-spacing:.04em;
+  }
+  .ch-title .meta{font-size:12px;color:var(--ink-soft);opacity:.7;margin-top:2px}
+  .ch-toggle{font-size:20px;color:var(--red);transition:transform .3s}
+  .chapter.open .ch-toggle{transform:rotate(45deg)}
+  .ch-body{
+    max-height:0;overflow:hidden;transition:max-height .45s ease;
+  }
+  .chapter.open .ch-body{max-height:9000px}
+  .ch-inner{padding:6px 26px 26px}
+
+  .ch-inner h4{
+    font-family:'Noto Serif SC',serif;color:var(--red-deep);
+    font-size:15.5px;margin:20px 0 10px;
+    padding-left:12px;border-left:3px solid var(--gold);
+  }
+  .ch-inner p{font-size:14.5px;color:var(--ink-soft);margin-bottom:10px}
+  .ch-inner ul{list-style:none;margin:8px 0 14px}
+  .ch-inner li{
+    font-size:14px;color:var(--ink-soft);padding:5px 0 5px 22px;
+    position:relative;border-bottom:1px dashed rgba(221,212,196,.7);
+  }
+  .ch-inner li:last-child{border-bottom:none}
+  .ch-inner li::before{
+    content:"";position:absolute;left:4px;top:13px;
+    width:7px;height:7px;background:var(--gold);
+    transform:rotate(45deg);border-radius:1px;
+  }
+  .ch-inner li b{color:var(--ink)}
+
+  /* 高亮原文卡片 */
+  .quote{
+    background:linear-gradient(135deg,#fdf6ec,#f8efdf);
+    border:1px solid var(--gold);border-radius:10px;
+    padding:18px 22px;margin:16px 0;position:relative;
+  }
+  .quote::before{
+    content:"原文";position:absolute;top:-11px;left:18px;
+    background:var(--gold);color:#3a2c10;font-size:11px;
+    padding:2px 10px;border-radius:4px;letter-spacing:.1em;
+  }
+  .quote p{font-family:'Noto Serif SC',serif;color:var(--ink);font-size:14.5px;line-height:2}
+  .oath{text-align:center}
+  .oath p{font-size:16px;letter-spacing:.05em;font-weight:600}
+
+  .tag{
+    display:inline-block;background:rgba(164,35,30,.1);color:var(--red);
+    font-size:11.5px;padding:2px 9px;border-radius:4px;margin-left:8px;
+    letter-spacing:.05em;vertical-align:middle;
+  }
+
+  /* 勾选 */
+  .done-row{
+    display:flex;align-items:center;gap:8px;margin-top:18px;
+    padding-top:14px;border-top:1px solid var(--line);
+  }
+  .done-row label{font-size:13px;color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;gap:7px}
+  .done-row input{width:17px;height:17px;accent-color:var(--red);cursor:pointer}
+
+  .hidden{display:none !important}
+  mark{background:var(--gold);color:#3a2c10;padding:0 2px;border-radius:2px}
+
+  footer{
+    text-align:center;padding:30px 20px;color:var(--ink-soft);
+    font-size:12.5px;opacity:.75;border-top:1px solid var(--line);
+  }
+  footer .red{color:var(--red)}
+
+  @media(max-width:760px){
+    .layout{flex-direction:column;gap:18px}
+    nav.toc{position:static;max-height:none;flex:none;
+      display:grid;grid-template-columns:repeat(2,1fr);gap:2px}
+    nav.toc h3{grid-column:1/-1}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="emblem">★ ☭ ★</div>
+  <h1>中国共产党章程</h1>
+  <div class="sub">学 习 手 册 · 总 纲 与 十 一 章</div>
+  <div class="ver">中国共产党第二十次全国代表大会部分修改 · 2022年10月22日通过</div>
+</header>
+
+<div class="toolbar">
+  <div class="search"><input id="searchBox" type="text" placeholder="搜索关键词：如 党员义务、民主集中制、入党誓词…"></div>
+  <button class="btn" onclick="toggleAll(true)">展开全部</button>
+  <button class="btn" onclick="toggleAll(false)">收起全部</button>
+  <div class="progress-wrap">
+    学习进度
+    <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
+    <span id="ptext">0 / 12</span>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="toc">
+    <h3>目 录</h3>
+    <a href="#zg">总　纲<span class="pg">P1</span></a>
+    <a href="#c1">第一章　党员<span class="pg">P24</span></a>
+    <a href="#c2">第二章　党的组织制度<span class="pg">P32</span></a>
+    <a href="#c3">第三章　党的中央组织<span class="pg">P37</span></a>
+    <a href="#c4">第四章　党的地方组织<span class="pg">P40</span></a>
+    <a href="#c5">第五章　党的基层组织<span class="pg">P43</span></a>
+    <a href="#c6">第六章　党的干部<span class="pg">P48</span></a>
+    <a href="#c7">第七章　党的纪律<span class="pg">P51</span></a>
+    <a href="#c8">第八章　纪律检查机关<span class="pg">P55</span></a>
+    <a href="#c9">第九章　党组<span class="pg">P59</span></a>
+    <a href="#c10">第十章　党和共青团关系<span class="pg">P60</span></a>
+    <a href="#c11">第十一章　党徽党旗<span class="pg">P61</span></a>
+  </nav>
+
+  <main>
+    <div class="intro">
+      <p><strong>关于本手册：</strong>现行党章为党的二十大部分修改、2022年10月22日通过，共修改50处（总纲37处、条文13处）。本手册按党章目录组织——<strong>总纲</strong>讲性质、指导思想、目标与路线；<strong>十一章正文</strong>是具体条文。其中入党誓词、党员义务与权利、民主集中制等高频必背内容收录关键原文，其余以要点提炼+核心条款呈现，便于通览熟记。点击章节标题可展开/收起，看完勾选"已读"会自动记录进度。</p>
+    </div>
+
+    <!-- 总纲 -->
+    <section class="chapter" id="zg">
+      <div class="ch-head" onclick="toggleCh(this)">
+        <div class="ch-num zg">纲</div>
+        <div class="ch-title"><h2>总　纲</h2><div class="meta">党的性质 · 指导思想 · 奋斗目标 · 基本路线</div></div>
+        <div class="ch-toggle">＋</div>
+      </div>
+      <div class="ch-body"><div class="ch-inner">
+        <h4>党的性质</h4>
+        <div class="quote"><p>中国共产党是中国工人阶级的先锋队，同时是中国人民和中华民族的先锋队，是中国特色社会主义事业的领导核心，代表中国先进生产力的发展要求，代表中国先进文化的前进方向，代表中国最广大人民的根本利益。党的最高理想和最终目标是实现共产主义。</p></div>
+
+        <h4>指导思想（行动指南）<span class="tag">高频考点</span></h4>
+        <p>中国共产党以六大理论作为自己的行动指南：</p>
+        <ul>
+          <li>马克思列宁主义</li>
+          <li>毛泽东思想</li>
+          <li>邓小平理论</li>
+          <li>"三个代表"重要思想</li>
+          <li>科学发展观</li>
+          <li><b>习近平新时代中国特色社会主义思想</b>（二十大写入的最新成果）</li>
+        </ul>
+
+        <h4>核心要义与"两个确立"</h4>
+        <p>新时代党的中心任务：团结带领全国各族人民全面建成社会主义现代化强国、实现第二个百年奋斗目标，以中国式现代化全面推进中华民族伟大复兴。全党增强"四个意识"、坚定"四个自信"、做到"两个维护"。</p>
+
+        <h4>党的基本路线</h4>
+        <p>领导和团结全国各族人民，以经济建设为中心，坚持四项基本原则，坚持改革开放，自力更生，艰苦创业，把我国建设成为富强民主文明和谐美丽的社会主义现代化强国。</p>
+
+        <div class="done-row"><label><input type="checkbox" data-ch="zg" onchange="mark_(this)">我已读完本节</label></div>
+      </div></div>
+    </section>
+
+    <!-- 第一章 党员 -->
+    <section class="chapter" id="c1">
+      <div class="ch-head" onclick="toggleCh(this)">
+        <div class="ch-num">一</div>
+        <div class="ch-title"><h2>第一章　党员</h2><div class="meta">第一条 — 第九条 · 条件 / 义务 / 权利 / 入党程序</div></div>
+        <div class="ch-toggle">＋</div>
+      </div>
+      <div class="ch-body"><div class="ch-inner">
+        <h4>党员条件（第一条、第二条）</h4>
+        <p>年满十八岁的中国工人、农民、军人、知识分子和其他社会阶层的先进分子，承认党的纲领和章程，愿意参加党的一个组织并在其中积极工作、执行党的决议和按期交纳党费的，可以申请加入中国共产党。</p>
+        <div class="quote"><p>中国共产党党员是中国工人阶级的有共产主义觉悟的先锋战士。党员必须全心全意为人民服务，不惜牺牲个人的一切，为实现共产主义奋斗终身。党员永远是劳动人民的普通一员，不得谋求任何私利和特权。</p></div>
+
+        <h4>入党誓词（第六条）<span class="tag">必背</span></h4>
+        <div class="quote oath"><p>我志愿加入中国共产党，拥护党的纲领，遵守党的章程，履行党员义务，执行党的决定，严守党的纪律，保守党的秘密，对党忠诚，积极工作，为共产主义奋斗终身，随时准备为党和人民牺牲一切，永不叛党。</p></div>
+
+        <h4>党员义务（第三条 · 八项）<span class="tag">高频考点</span></h4>
+        <ul>
+          <li><b>一</b>　认真学习马列主义、毛泽东思想、邓小平理论、"三个代表"重要思想、科学发展观、习近平新时代中国特色社会主义思想，学习党的路线方针政策、基本知识、党史及科学文化法律业务知识。</li>
+          <li><b>二</b>　增强"四个意识"、坚定"四个自信"、做到"两个维护"，贯彻执行党的基本路线和各项方针政策，带头参加改革开放和现代化建设，起先锋模范作用。</li>
+          <li><b>三</b>　坚持党和人民的利益高于一切，吃苦在前、享受在后，克己奉公，多作贡献。</li>
+          <li><b>四</b>　自觉遵守党的纪律，模范遵守国家法律法规，严格保守党和国家秘密，执行党的决定，服从组织分配。</li>
+          <li><b>五</b>　维护党的团结和统一，对党忠诚老实，言行一致，坚决反对一切派别组织和小集团活动，反对阳奉阴违的两面派行为。</li>
+          <li><b>六</b>　切实开展批评和自我批评，勇于揭露和纠正工作中的缺点错误，同消极腐败现象作斗争。</li>
+          <li><b>七</b>　密切联系群众，宣传党的主张，遇事同群众商量，及时反映群众意见，维护群众正当利益。</li>
+          <li><b>八</b>　发扬社会主义新风尚，带头践行社会主义核心价值观，为保护国家和人民利益挺身而出，英勇斗争，不怕牺牲。</li>
+        </ul>
+
+        <h4>党员权利（第四条 · 八项）<span class="tag">高频考点</span></h4>
+        <ul>
+          <li><b>一</b>　参加党的有关会议，阅读党的有关文件，接受党的教育和培训。</li>
+          <li><b>二</b>　在党的会议上和党报党刊上，参加关于党的政策问题的讨论。</li>
+          <li><b>三</b>　对党的工作提出建议和倡议。</li>
+          <li><b>四</b>　在党的会议上有根据地批评党的任何组织和任何党员，向党负责地揭发检举党的任何组织和任何党员违法乱纪的事实，要求处分违法乱纪的党员，要求罢免或撤换不称职的干部。</li>
+          <li><b>五</b>　行使表决权、选举权，有被选举权。</li>
+          <li><b>六</b>　在党组织讨论决定对党员的纪律处分和鉴定时，本人有权参加和进行申辩，他人也可以为之作证和辩护。</li>
+          <li><b>七</b>　对党的决议和政策有不同意见，可以声明保留并向上级提出，但必须坚决执行（保留意见、坚决执行）。</li>
+          <li><b>八</b>　可以向党的上级组织直至中央提出请求、申诉和控告，并要求有关组织给以负责的答复。</li>
+        </ul>
+
+        <h4>入党程序与预备期</h4>
+        <ul>
+          <li>申请入党者须经两名正式党员介绍，填写入党志愿书，经支部大会通过和上级党组织批准，并经过预备期考察。</li>
+          <li>预备党员预备期为<b>一年</b>，从支部大会通过其为预备党员之日算起。</li>
+          <li>预备党员义务与正式党员相同，但<b>没有表决权、选举权和被选举权</b>。</li>
+        </ul>
+
+        <div class="done-row"><label><input type="checkbox" data-ch="c1" onchange="mark_(this)">我已读完本章</label></div>
+      </div></div>
+    </section>
+
+    <!-- 第二章 -->
+    <section class="chapter" id="c2">
+      <div class="ch-head" onclick="toggleCh(this)">
+        <div class="ch-num">二</div>
+        <div class="ch-title"><h2>第二章　党的组织制度</h2><div class="meta">第十条 — 第十八条 · 民主集中制</div></div>
+        <div class="ch-toggle">＋</div>
+      </div>
+      <div class="ch-body"><div class="ch-inner">
+        <h4>民主集中制（第十条）<span class="tag">高频考点</span></h4>
+        <p>党是按照民主集中制组织起来的统一整体，基本原则有六条：</p>
+        <ul>
+          <li>党员个人服从党的组织，少数服从多数，下级组织服从上级组织，全党各个组织和全体党员服从党的全国代表大会和中央委员会（<b>"四个服从"</b>）。</li>
+          <li>党的各级领导机关，除派出的代表机关和非党组织中的党组外，都由选举产生。</li>
+          <li>党的最高领导机关是党的全国代表大会和它所产生的中央委员会。</li>
+          <li>上级组织要经常听取下级组织和党员群众的意见，及时解决问题；下级既要请示报告，又要独立负责地解决职责范围内的问题。</li>
+          <li>党的各级委员会实行集体领导和个人分工负责相结合的制度。</li>
+          <li>党禁止任何形式的个人崇拜。</li>
+        </ul>
+        <h4>组织原则</h4>
+        <ul>
+          <li>党的各级代表大会的代表和委员会，实行任期制。</li>
+          <li>党组织作出决定，一般要经过集体讨论；重大问题须按规定由党组织集体讨论决定。</li>
+        </ul>
+        <div class="done-row"><label><input type="checkbox" data-ch="c2" onchange="mark_(this)">我已读完本章</label></div>
+      </div></div>
+    </section>
+
+    <!-- 第三章 -->
+    <section class="chapter" id="c3">
+      <div class="ch-head" onclick="toggleCh(this)">
+        <div class="ch-num">三</div>
+        <div class="ch-title"><h2>第三章　党的中央组织</h2><div class="meta">第十九条 — 第二十三条</div></div>
+        <div class="ch-toggle">＋</div>
+      </div>
+      <div class="ch-body"><div class="ch-inner">
+        <ul>
+          <li>党的全国代表大会每<b>五年</b>举行一次，由中央委员会召集。</li>
+          <li>党的全国代表大会的职权：听取和审查中央委员会的报告、审查中央纪律检查委员会的报告、讨论并决定党的重大问题、修改党的章程、选举中央委员会和中央纪律检查委员会。</li>
+          <li>中央委员会全体会议由中央政治局召集，每年至少举行一次。</li>
+          <li>党的中央政治局、中央政治局常务委员会和中央委员会总书记，由中央委员会全体会议选举。总书记必须从中央政治局常务委员会委员中产生。</li>
+          <li>中央军事委员会组成人员由中央委员会决定。</li>
+        </ul>
+        <div class="done-row"><label><input type="checkbox" data-ch="c3" onchange="mark_(this)">我已读完本章</label></div>
+      </div></div>
+    </section>
+
+    <!-- 第四章 -->
+    <section class="chapter" id="c4">
+      <div class="ch-head" onclick="toggleCh(this)">
+        <div class="ch-num">四</div>
+        <div class="ch-title"><h2>第四章　党的地方组织</h2><div class="meta">第二十四条 — 第二十八条</div></div>
+        <div class="ch-toggle">＋</div>
+      </div>
+      <div class="ch-body"><div class="ch-inner">
+        <ul>
+          <li>党的省、自治区、直辖市、设区的市和自治州、县（旗）、自治县、不设区的市和市辖区的代表大会，每<b>五年</b>举行一次。</li>
+          <li>党的地方各级代表大会的职权：听取和审查同级委员会的报告、审查同级纪律检查委员会的报告、讨论本地区重大问题并作出决议、选举同级委员会和同级纪律检查委员会。</li>
+          <li>党的地方各级委员会全体会议，每年至少召开两次。</li>
+        </ul>
+        <div class="done-row"><label><input type="checkbox" data-ch="c4" onchange="mark_(this)">我已读完本章</label></div>
+      </div></div>
+    </section>
+
+    <!-- 第五章 -->
+    <section class="chapter" id="c5">
+      <div class="ch-head" onclick="toggleCh(this)">
+        <div class="ch-num">五</div>
+        <div class="ch-title"><h2>第五章　党的基层组织</h2><div class="meta">第二十九条 — 第三十二条 · 与党员最相关</div></div>
+        <div class="ch-toggle">＋</div>
+      </div>
+      <div class="ch-body"><div class="ch-inner">
+        <h4>设置（第二十九条）</h4>
+        <p>企业、农村、机关、学校、医院、科研院所、街道社区、社会组织、人民解放军连队和其他基层单位，凡是有正式党员<b>三人以上</b>的，都应当成立党的基层组织。党员人数不同分别设立：基层委员会、总支部委员会、支部委员会。</p>
+        <h4>基层组织的基本任务（第三十二条）<span class="tag">高频考点</span></h4>
+        <ul>
+          <li>宣传和执行党的路线方针政策，宣传和执行党中央、上级组织和本组织的决议。</li>
+          <li>组织党员认真学习，加强党员教育、管理、监督和服务。</li>
+          <li>对党员进行教育、管理、监督和服务，提高党员素质。</li>
+          <li>密切联系群众，做好群众的思想政治工作。</li>
+          <li>充分发挥党员的先锋模范作用，对要求入党的积极分子进行教育培养，做好经常性的发展党员工作。</li>
+          <li>监督党员干部和其他工作人员遵纪守法，开展批评和自我批评。</li>
+        </ul>
+        <div class="done-row"><label><input type="checkbox" data-ch="c5" onchange="mark_(this)">我已读完本章</label></div>
+      </div></div>
+    </section>
+
+    <!-- 第六章 -->
+    <section class="chapter" id="c6">
+      <div class="ch-head" onclick="toggleCh(this)">
+        <div class="ch-num">六</div>
+        <div class="ch-title"><h2>第六章　党的干部</h2><div class="meta">第三十三条 — 第三十六条</div></div>
+        <div class="ch-toggle">＋</div>
+      </div>
+      <div class="ch-body"><div class="ch-inner">
+        <p>党按照德才兼备、以德为先的原则选拔干部，坚持五湖四海、任人唯贤，反对任人唯亲，坚持"好干部"标准（信念坚定、为民服务、勤政务实、敢于担当、清正廉洁）。</p>
+        <h4>党员领导干部必须具备的基本条件</h4>
+        <ul>
+          <li>努力学习并能够运用党的理论分析解决实际问题，带头贯彻习近平新时代中国特色社会主义思想。</li>
+          <li>具有共产主义远大理想和中国特色社会主义坚定信念，坚决执行党的基本路线方针政策。</li>
+          <li>坚持解放思想、实事求是、与时俱进、开拓创新。</li>
+          <li>坚持正确履行职责，办事公道，清正廉洁，密切联系群众，反对官僚主义、反对形式主义。</li>
+          <li>正确行使人民赋予的权力，依法办事，秉公办事，反对以权谋私。</li>
+        </ul>
+        <div class="done-row"><label><input type="checkbox" data-ch="c6" onchange="mark_(this)">我已读完本章</label></div>
+      </div></div>
+    </section>
+
+    <!-- 第七章 -->
+    <section class="chapter" id="c7">
+      <div class="ch-head" onclick="toggleCh(this)">
+        <div class="ch-num">七</div>
+        <div class="ch-title"><h2>第七章　党的纪律</h2><div class="meta">第三十七条 — 第四十二条 · 五类处分</div></div>
+        <div class="ch-toggle">＋</div>
+      </div>
+      <div class="ch-body"><div class="ch-inner">
+        <h4>对党员的纪律处分（五种）<span class="tag">高频考点</span></h4>
+        <ul>
+          <li>警告</li>
+          <li>严重警告</li>
+          <li>撤销党内职务</li>
+          <li>留党察看（最长不超过<b>两年</b>，期间无表决权、选举权和被选举权）</li>
+          <li>开除党籍（党内的最高处分）</li>
+        </ul>
+        <h4>处分原则</h4>
+        <ul>
+          <li>党的纪律主要包括政治纪律、组织纪律、廉洁纪律、群众纪律、工作纪律、生活纪律（<b>"六大纪律"</b>），政治纪律是最重要、最根本、最关键的纪律。</li>
+          <li>对党员的纪律处分，必须经支部大会讨论决定，报党的基层委员会批准。</li>
+          <li>党组织对违犯党纪的党员，应当本着惩前毖后、治病救人的精神，按错误性质和情节轻重处理。</li>
+          <li>党的各级组织要严格执行和维护党的纪律，对违犯党纪的行为不能听之任之。</li>
+        </ul>
+        <div class="done-row"><label><input type="checkbox" data-ch="c7" onchange="mark_(this)">我已读完本章</label></div>
+      </div></div>
+    </section>
+
+    <!-- 第八章 -->
+    <section class="chapter" id="c8">
+      <div class="ch-head" onclick="toggleCh(this)">
+        <div class="ch-num">八</div>
+        <div class="ch-title"><h2>第八章　党的纪律检查机关</h2><div class="meta">第四十三条 — 第四十六条</div></div>
+        <div class="ch-toggle">＋</div>
+      </div>
+      <div class="ch-body"><div class="ch-inner">
+        <ul>
+          <li>党的中央纪律检查委员会在党的中央委员会领导下进行工作；党的地方各级纪委和基层纪委在同级党委和上级纪委<b>双重领导</b>下进行工作。</li>
+          <li>各级纪委的主要任务：维护党的章程和其他党内法规，检查党的路线方针政策和决议的执行情况，协助党的委员会推进全面从严治党、加强党风建设和组织协调反腐败工作。</li>
+          <li>各级纪委经常对党员进行遵守纪律的教育，作出关于维护党纪的决定；检查和处理党组织和党员违犯党纪的案件；受理党员的控告和申诉，保障党员权利。</li>
+        </ul>
+        <div class="done-row"><label><input type="checkbox" data-ch="c8" onchange="mark_(this)">我已读完本章</label></div>
+      </div></div>
+    </section>
+
+    <!-- 第九章 -->
+    <section class="chapter" id="c9">
+      <div class="ch-head" onclick="toggleCh(this)">
+        <div class="ch-num">九</div>
+        <div class="ch-title"><h2>第九章　党组</h2><div class="meta">第四十七条 — 第四十九条</div></div>
+        <div class="ch-toggle">＋</div>
+      </div>
+      <div class="ch-body"><div class="ch-inner">
+        <ul>
+          <li>在中央和地方国家机关、人民团体、经济组织、文化组织、社会组织和其他非党组织的领导机关中，可以成立党组。</li>
+          <li>党组发挥领导核心作用，其任务主要是负责贯彻执行党的路线方针政策，讨论和决定本单位的重大问题，做好干部管理工作，团结党外干部和群众，完成党和国家交给的任务。</li>
+          <li>党组的成员，由批准成立党组的党组织决定。党组设书记，必要时还可以设副书记。</li>
+        </ul>
+        <div class="done-row"><label><input type="checkbox" data-ch="c9" onchange="mark_(this)">我已读完本章</label></div>
+      </div></div>
+    </section>
+
+    <!-- 第十章 -->
+    <section class="chapter" id="c10">
+      <div class="ch-head" onclick="toggleCh(this)">
+        <div class="ch-num">十</div>
+        <div class="ch-title"><h2>第十章　党和共产主义青年团的关系</h2><div class="meta">第五十条 — 第五十一条</div></div>
+        <div class="ch-toggle">＋</div>
+      </div>
+      <div class="ch-body"><div class="ch-inner">
+        <ul>
+          <li>中国共产主义青年团是中国共产党领导的先进青年的群团组织，是广大青年在实践中学习中国特色社会主义和共产主义的学校，是党的助手和后备军。</li>
+          <li>共青团中央委员会受党中央委员会领导。共青团地方各级组织，受同级党委和上级团组织的双重领导。</li>
+          <li>党的各级委员会要加强对共青团的领导，注意团结、教育和帮助青年。</li>
+        </ul>
+        <div class="done-row"><label><input type="checkbox" data-ch="c10" onchange="mark_(this)">我已读完本章</label></div>
+      </div></div>
+    </section>
+
+    <!-- 第十一章 -->
+    <section class="chapter" id="c11">
+      <div class="ch-head" onclick="toggleCh(this)">
+        <div class="ch-num">十一</div>
+        <div class="ch-title"><h2>第十一章　党徽党旗</h2><div class="meta">第五十二条 — 第五十三条</div></div>
+        <div class="ch-toggle">＋</div>
+      </div>
+      <div class="ch-body"><div class="ch-inner">
+        <ul>
+          <li>中国共产党党徽为镰刀和锤头组成的图案。</li>
+          <li>中国共产党党旗为旗面缀有金黄色党徽图案的红旗。</li>
+          <li>党徽党旗是中国共产党的象征和标志。党的各级组织和每一个党员都要维护党徽党旗的尊严，按照规定制作和使用党徽党旗。</li>
+        </ul>
+        <div class="done-row"><label><input type="checkbox" data-ch="c11" onchange="mark_(this)">我已读完本章</label></div>
+      </div></div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  本手册为<span class="red">学习辅助</span>，按党章目录提炼要点与关键原文，正式条文以 <span class="red">共产党员网（12371.cn）</span> 公布的《中国共产党章程》（2022年版）为准。<br>
+  完整学习建议对照党章原本通读全文。
+</footer>
+
+<script>
+  // 折叠单章
+  function toggleCh(head){
+    head.parentElement.classList.toggle('open');
+  }
+  // 展开/收起全部
+  function toggleAll(open){
+    document.querySelectorAll('.chapter').forEach(c=>{
+      c.classList.toggle('open',open);
+    });
+  }
+  // 默认展开总纲和第一章
+  document.getElementById('zg').classList.add('open');
+  document.getElementById('c1').classList.add('open');
+
+  // 学习进度（内存存储，不用 localStorage）
+  const total = 12;
+  const doneSet = new Set();
+  function mark_(cb){
+    if(cb.checked) doneSet.add(cb.dataset.ch);
+    else doneSet.delete(cb.dataset.ch);
+    const n = doneSet.size;
+    document.getElementById('ptext').textContent = n + ' / ' + total;
+    document.getElementById('pfill').style.width = (n/total*100) + '%';
+  }
+
+  // 搜索：高亮 + 过滤章节
+  const box = document.getElementById('searchBox');
+  box.addEventListener('input', ()=>{
+    const q = box.value.trim();
+    // 先清除旧高亮
+    document.querySelectorAll('mark').forEach(m=>{
+      m.replaceWith(document.createTextNode(m.textContent));
+    });
+    document.querySelectorAll('.chapter').forEach(c=>c.classList.remove('hidden'));
+    if(!q) return;
+    const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
+    document.querySelectorAll('.chapter').forEach(ch=>{
+      const inner = ch.querySelector('.ch-inner');
+      const titleTxt = ch.querySelector('.ch-title').textContent;
+      let hit = re.test(inner.textContent) || re.test(titleTxt);
+      re.lastIndex = 0;
+      if(hit){
+        ch.classList.remove('hidden');
+        ch.classList.add('open');
+        highlight(inner, re);
+      }else{
+        ch.classList.add('hidden');
+      }
+    });
+  });
+  function highlight(root, re){
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    const nodes = [];
+    while(walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node=>{
+      const txt = node.textContent;
+      re.lastIndex = 0;
+      if(re.test(txt)){
+        re.lastIndex = 0;
+        const span = document.createElement('span');
+        span.innerHTML = txt.replace(re, m=>'<mark>'+m+'</mark>');
+        node.replaceWith(span);
+      }
+    });
+  }
+</script>
+</body>
+</html>

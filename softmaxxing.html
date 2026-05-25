@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Softmaxxing · 实用清单</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Noto+Serif+SC:wght@400;600;700&family=Space+Mono&display=swap');
+
+:root{
+  --bg:#0e100e; --ink:#e9eee6; --mut:#7e857a;
+  --line:#222621; --card:#161a15;
+  --ok:#6fd098; --acc:#8fbf6a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:'Noto Serif SC',serif;line-height:1.55;
+  background-image:radial-gradient(circle at 80% 0%,#19211a 0,transparent 55%);
+  padding:34px 18px 60px;
+}
+.wrap{max-width:740px;margin:0 auto}
+.mono{font-family:'Space Mono',monospace}
+
+.head{border-bottom:2px solid var(--ink);padding-bottom:14px}
+.kick{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--acc);text-transform:uppercase}
+h1{font-family:'Archivo Black',sans-serif;font-size:clamp(40px,12vw,82px);line-height:.9;letter-spacing:-2px;margin:6px 0 4px}
+.sub{color:var(--mut);font-size:13px}
+
+.intro{font-size:14px;color:#c2c8bd;margin:18px 0 8px}
+.intro b{color:var(--ok)}
+
+.lbl{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--acc);
+  text-transform:uppercase;margin:30px 0 14px;display:flex;align-items:center;gap:10px}
+.lbl::after{content:'';flex:1;height:1px;background:var(--line)}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--ok);
+  border-radius:4px;padding:16px 18px}
+.card .h{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+.card .num{font-family:'Archivo Black',sans-serif;font-size:18px;color:var(--ok);line-height:1}
+.card h3{font-size:16px}
+.card .en{font-family:'Space Mono',monospace;font-size:10px;color:var(--mut);letter-spacing:1px}
+.card ul{list-style:none;font-size:13px;color:#c2c8bd}
+.card li{padding-left:16px;position:relative;margin-bottom:5px}
+.card li::before{content:'→';position:absolute;left:0;color:var(--acc);font-family:'Space Mono',monospace}
+
+.tip{background:rgba(111,208,152,.08);border:1px solid rgba(111,208,152,.25);border-radius:4px;
+  padding:14px 18px;margin-top:8px;font-size:13px;color:#cdd4c8}
+.tip b{color:var(--ok);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px}
+
+.foot{margin-top:34px;border-top:1px solid var(--line);padding-top:14px;font-size:11.5px;color:var(--mut);line-height:1.7}
+.foot b{color:#c2c8bd}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <div class="kick">Looksmaxxing · 安全区</div>
+    <h1>SOFT<br>MAXXING</h1>
+    <div class="sub">软最大化 · 非侵入式的小改善 — 真实有效,无需手术,无伪科学</div>
+  </div>
+
+  <p class="intro">这是整个光谱里<b>唯一值得保留的内核</b>:做法本身就是正规皮肤科、运动医学和睡眠科学的建议。关键只在动机——为<b>让自己舒服</b>而做,而不是为「优化排名」。</p>
+
+  <div class="lbl">六件真正有用的事</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="h"><span class="num">01</span><div><h3>护肤 · 防晒</h3><div class="en">SKINCARE</div></div></div>
+      <ul>
+        <li>每日防晒是回报最高的一步</li>
+        <li>温和清洁 + 保湿,别叠太多</li>
+        <li>必要时加维 A 醇,从低浓度起</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="h"><span class="num">02</span><div><h3>力量 + 减脂</h3><div class="en">FITNESS</div></div></div>
+      <ul>
+        <li>减脂会让面部轮廓真实变清晰</li>
+        <li>力量训练改善体态与线条</li>
+        <li>比任何「下颌操」都更有效</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="h"><span class="num">03</span><div><h3>睡眠</h3><div class="en">SLEEP</div></div></div>
+      <ul>
+        <li>减少水肿、改善气色与黑眼圈</li>
+        <li>固定作息比补觉更重要</li>
+        <li>低成本、高回报</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="h"><span class="num">04</span><div><h3>发型 · 修饰</h3><div class="en">GROOMING</div></div></div>
+      <ul>
+        <li>合适发型是性价比最高的「换脸」</li>
+        <li>胡须/眉毛整理,边界干净</li>
+        <li>找一个真正懂的理发师</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="h"><span class="num">05</span><div><h3>穿搭 · 合身</h3><div class="en">STYLE</div></div></div>
+      <ul>
+        <li>合身 &gt; 品牌 &gt; 数量</li>
+        <li>建立一套简单可复用的基础色系</li>
+        <li>姿态与体态本身就是穿搭</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="h"><span class="num">06</span><div><h3>牙齿 · 正畸</h3><div class="en">DENTAL</div></div></div>
+      <ul>
+        <li>正规正畸改善咬合与笑容</li>
+        <li>洁牙、牙齿健康是基础</li>
+        <li>由牙医评估,不靠舌头顶上颚</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="tip">
+    <b>边界线 · WHERE IT TURNS</b><br>
+    同样这些事,一旦动机从「让自己舒服」变成「提升 SMV / 优化排名」,语言里开始出现 mogging、blackpill、face card,就已经滑出安全区了。Softmaxxing 的价值正在于:<b style="color:var(--ok)">它不需要那套话语也成立。</b>
+  </div>
+
+  <div class="foot">
+    <b>一句话:</b>护肤、健身、睡眠、修饰、穿搭、牙科——把它们当成正常的自我照顾,而不是一场针对「排名」的军备竞赛。<br>
+    <span class="mono">SAFE ZONE · 无侵入 · 无伪科学 · 有证据支撑</span>
+  </div>
+
+</div>
+</body>
+</html>

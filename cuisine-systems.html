@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中华八大菜系 · 风味手册</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1814;
+  --ink2: #2a2620;
+  --paper: #f5f0e8;
+  --paper2: #ede8df;
+  --paper3: #e4ddd0;
+  --accent: #c8401a;       /* 朱砂红 — 辣/浓油赤酱 */
+  --accent2: #2a6496;      /* 普鲁士蓝 — 鲜/清淡 */
+  --green: #3a6a1a;        /* 苔绿 — 本味/江南 */
+  --purple: #6a3a96;       /* 香/复合味 */
+  --muted: #7a7368;
+  --muted2: #9a9388;
+  --border: #d4cfc5;
+  --border-dark: #b8b0a2;
+  --gold: #b8860b;
+  --shadow: 0 1px 2px rgba(26,24,20,.08), 0 4px 16px rgba(26,24,20,.06);
+  --shadow-lg: 0 4px 12px rgba(26,24,20,.12), 0 12px 40px rgba(26,24,20,.10);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(200,64,26,.025), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(42,100,150,.025), transparent 40%);
+  color: var(--ink);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 纸张纹理：极细网点叠加 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: radial-gradient(rgba(26,24,20,.018) 1px, transparent 1px);
+  background-size: 4px 4px;
+  mix-blend-mode: multiply;
+}
+
+.wrap { max-width: 1180px; margin: 0 auto; }
+
+/* ════════ 顶部标题区 ════════ */
+header {
+  background: var(--ink);
+  color: var(--paper);
+  position: relative;
+  overflow: hidden;
+  border-bottom: 4px solid var(--accent);
+}
+header .wrap { padding: 44px 48px 36px; position: relative; z-index: 2; }
+header::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 340px; height: 100%;
+  background: repeating-linear-gradient(
+    -45deg, transparent, transparent 8px,
+    rgba(255,255,255,0.028) 8px, rgba(255,255,255,0.028) 16px);
+  z-index: 1;
+}
+header::after {
+  content: '⚙';
+  position: absolute;
+  right: 36px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 180px;
+  color: rgba(255,255,255,0.03);
+  z-index: 1;
+  line-height: 1;
+}
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 14px; font-weight: 400;
+}
+.eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--accent); }
+header h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 40px; font-weight: 900; line-height: 1.15; margin-bottom: 14px;
+  letter-spacing: 1px;
+}
+header h1 .sub { color: var(--accent); }
+header .lede { color: rgba(245,240,232,0.62); font-size: 13.5px; max-width: 560px; }
+header .meta-row {
+  display: flex; gap: 28px; margin-top: 22px; flex-wrap: wrap;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: rgba(245,240,232,0.45);
+}
+header .meta-row span { display: flex; align-items: center; gap: 7px; }
+header .meta-row b { color: var(--paper); font-weight: 500; }
+header .meta-row .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+/* ════════ 导航 ════════ */
+nav {
+  background: var(--paper2);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 1px 0 rgba(26,24,20,.04);
+}
+nav .wrap {
+  padding: 0 48px; display: flex; gap: 0; overflow-x: auto;
+  scrollbar-width: none;
+}
+nav .wrap::-webkit-scrollbar { display: none; }
+nav button {
+  background: none; border: none; border-bottom: 3px solid transparent;
+  padding: 15px 22px; font-size: 13px; font-family: 'Noto Sans SC', sans-serif;
+  color: var(--muted); cursor: pointer; white-space: nowrap;
+  transition: color .2s, border-color .2s; display: flex; align-items: center; gap: 8px;
+}
+nav button .ico { font-size: 15px; opacity: .7; }
+nav button:hover { color: var(--ink); }
+nav button.active {
+  color: var(--accent); border-bottom-color: var(--accent); font-weight: 700;
+}
+nav button.active .ico { opacity: 1; }
+
+/* ════════ 主区 ════════ */
+main .wrap { padding: 40px 48px 64px; }
+section { display: none; animation: secIn .35s ease both; }
+section.active { display: block; }
+@keyframes secIn { from { opacity: 0; } to { opacity: 1; } }
+
+.sec-head { margin-bottom: 26px; }
+.sec-head h2.section-title {
+  font-family: 'Noto Serif SC', serif; font-size: 24px; font-weight: 900;
+  display: flex; align-items: center; gap: 12px;
+}
+.sec-head h2.section-title .idx {
+  font-family: 'JetBrains Mono', monospace; font-size: 14px;
+  color: var(--accent); font-weight: 700;
+  border: 1.5px solid var(--accent); border-radius: 4px; padding: 2px 8px;
+}
+.sec-head .section-sub { color: var(--muted); font-size: 13px; margin-top: 8px; max-width: 680px; }
+
+/* ════════ 系统卡片网格 ════════ */
+.systems-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 18px;
+}
+.sys-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 3px;
+  overflow: hidden; box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+  position: relative;
+}
+.sys-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--bar, var(--accent)); opacity: .85;
+}
+.sys-card[data-cat="power"]   { --bar: var(--accent); }
+.sys-card[data-cat="chassis"] { --bar: var(--green); }
+.sys-card[data-cat="electric"]{ --bar: var(--accent2); }
+.sys-card[data-cat="body"]    { --bar: var(--purple); }
+.sys-card[data-cat="safety"]  { --bar: var(--gold); }
+.sys-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--border-dark); }
+.sys-card.flash {
+  animation: cardFlash 1.6s ease;
+}
+@keyframes cardFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(200,64,26,0); border-color: var(--border); }
+  15%  { box-shadow: 0 0 0 3px rgba(200,64,26,.55), var(--shadow-lg); border-color: var(--accent); transform: translateY(-3px); }
+  100% { box-shadow: 0 0 0 0 rgba(200,64,26,0); border-color: var(--border); }
+}
+/* 故障卡片里可点击的系统编号 */
+.sc-sys .sys-link {
+  color: var(--accent2); cursor: pointer; border-bottom: 1px dotted var(--accent2);
+  transition: color .15s, border-color .15s; padding-bottom: 1px;
+}
+.sc-sys .sys-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+.sys-card-header {
+  padding: 15px 20px 13px 22px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: baseline; gap: 10px;
+}
+.sys-card-header .num {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+  color: var(--muted2);
+}
+.sys-card-header h3 { font-family: 'Noto Serif SC', serif; font-size: 17px; font-weight: 700; }
+.sys-card-header .tag {
+  margin-left: auto; font-size: 10px; padding: 2px 9px; border-radius: 20px;
+  font-weight: 500; letter-spacing: .5px;
+}
+.tag-power   { background: #fde8e0; color: #c8401a; }
+.tag-chassis { background: #e0eed8; color: #3a6a1a; }
+.tag-electric{ background: #deeaf5; color: #2a6496; }
+.tag-body    { background: #f0e8f5; color: #6a3a96; }
+.tag-safety  { background: #fdf0d8; color: #8a5a0a; }
+
+.sys-card-body { padding: 14px 20px 16px 22px; }
+.sys-card-body .summary {
+  font-size: 12.5px; color: var(--muted); margin-bottom: 12px; line-height: 1.65;
+}
+.flow-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.flow-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  padding: 2px 8px; border-radius: 3px; border: 1px solid var(--border);
+  color: var(--muted); background: var(--paper2); display: inline-flex; gap: 5px; align-items: center;
+}
+.flow-tag b { color: var(--ink); font-weight: 500; }
+.flow-tag.in  { border-left: 2px solid var(--accent2); }
+.flow-tag.out { border-left: 2px solid var(--accent); }
+
+.sub-list { list-style: none; }
+.sub-list li {
+  display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px dashed var(--border);
+  font-size: 13px; align-items: baseline;
+}
+.sub-list li:last-child { border-bottom: none; }
+.sub-list li .sub-name { font-weight: 500; min-width: 88px; flex-shrink: 0; }
+.sub-list li .sub-name .wear { color: var(--accent); font-size: 10px; margin-left: 3px; }
+.sub-list li .sub-desc { color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+.legend {
+  display: flex; gap: 18px; flex-wrap: wrap; margin: 0 0 22px;
+  font-size: 12px; color: var(--muted); align-items: center;
+  padding: 12px 16px; background: #fff; border: 1px solid var(--border); border-radius: 3px;
+}
+.legend .li { display: flex; align-items: center; gap: 7px; }
+.legend .sw { width: 14px; height: 14px; border-radius: 3px; }
+.legend .wear-mark { color: var(--accent); font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+
+/* ════════ 能量流图 ════════ */
+.flow-canvas {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  padding: 20px; box-shadow: var(--shadow); overflow-x: auto;
+}
+.flow-canvas svg { display: block; min-width: 720px; width: 100%; height: auto; }
+.flow-legend {
+  display: flex; gap: 22px; flex-wrap: wrap; margin-top: 18px; font-size: 12px; color: var(--muted);
+}
+.flow-legend .li { display: flex; align-items: center; gap: 8px; }
+.flow-legend .line { width: 26px; height: 0; border-top: 3px solid; }
+.diagram-node { cursor: default; }
+.diagram-node rect, .diagram-node circle { transition: filter .2s; }
+.diagram-node:hover rect, .diagram-node:hover circle { filter: brightness(1.06); }
+
+/* ════════ 故障反查 ════════ */
+.diag-intro {
+  background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--accent);
+  border-radius: 3px; padding: 16px 20px; margin-bottom: 22px; font-size: 13px; color: var(--muted);
+  line-height: 1.7;
+}
+.diag-intro strong { color: var(--ink); }
+.diag-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+.diag-filters button {
+  font-family: 'Noto Sans SC', sans-serif; font-size: 12.5px;
+  padding: 7px 15px; border-radius: 30px; border: 1.5px solid var(--border-dark);
+  background: #fff; color: var(--muted); cursor: pointer; transition: all .18s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.diag-filters button .ico { font-size: 14px; }
+.diag-filters button:hover { border-color: var(--ink); color: var(--ink); }
+.diag-filters button.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+.symptom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+.symptom-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 3px;
+  box-shadow: var(--shadow); overflow: hidden; transition: opacity .25s, transform .25s;
+}
+.symptom-card.hide { display: none; }
+.symptom-card .sc-head {
+  padding: 14px 18px; display: flex; align-items: flex-start; gap: 12px;
+  border-bottom: 1px solid var(--border); background: var(--paper2);
+}
+.symptom-card .sc-ico {
+  font-size: 22px; line-height: 1; flex-shrink: 0; width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center; border-radius: 8px;
+  background: #fff; border: 1px solid var(--border);
+}
+.symptom-card .sc-title { font-family: 'Noto Serif SC', serif; font-size: 15px; font-weight: 700; }
+.symptom-card .sc-sys {
+  font-size: 10.5px; color: var(--muted); margin-top: 3px; font-family: 'JetBrains Mono', monospace;
+}
+.severity {
+  margin-left: auto; flex-shrink: 0; font-size: 10px; font-weight: 700;
+  padding: 3px 9px; border-radius: 4px; letter-spacing: .5px; white-space: nowrap;
+}
+.sev-stop  { background: var(--accent); color: #fff; }
+.sev-soon  { background: #fdf0d8; color: #8a5a0a; border: 1px solid #e8d890; }
+.sev-watch { background: #deeaf5; color: #2a6496; }
+.symptom-card .sc-body { padding: 13px 18px 16px; }
+.symptom-card .sc-row { display: flex; gap: 10px; padding: 5px 0; font-size: 12.5px; align-items: baseline; }
+.symptom-card .sc-row .k {
+  flex-shrink: 0; width: 58px; font-size: 11px; color: var(--muted); font-weight: 500;
+}
+.symptom-card .sc-row .v { color: var(--ink); line-height: 1.55; }
+.symptom-card .sc-row .v .hl { color: var(--accent); font-weight: 500; }
+
+/* ════════ 保养计算器 ════════ */
+.calc-shell { display: grid; grid-template-columns: 320px 1fr; gap: 22px; align-items: start; }
+.calc-input {
+  background: var(--ink); color: var(--paper); border-radius: 4px; padding: 24px 22px;
+  position: sticky; top: 70px; box-shadow: var(--shadow-lg);
+}
+.calc-input h3 { font-family: 'Noto Serif SC', serif; font-size: 16px; margin-bottom: 4px; }
+.calc-input .ci-sub { font-size: 11.5px; color: rgba(245,240,232,.5); margin-bottom: 20px; }
+.calc-input label {
+  display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: rgba(245,240,232,.55); margin: 16px 0 8px;
+}
+.calc-input .km-display {
+  font-family: 'JetBrains Mono', monospace; font-size: 34px; font-weight: 700;
+  color: var(--accent); line-height: 1; margin-bottom: 4px; cursor: text;
+  display: inline-flex; align-items: baseline; border-bottom: 1px dashed transparent;
+  transition: border-color .15s; padding-bottom: 2px;
+}
+.calc-input .km-display:hover { border-bottom-color: rgba(200,64,26,.5); }
+.calc-input .km-display .edit-hint {
+  font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 400;
+  color: rgba(245,240,232,.4); margin-left: 8px; align-self: center; letter-spacing: 0;
+}
+.calc-input .km-unit { font-size: 14px; color: rgba(245,240,232,.5); margin-left: 6px; }
+.calc-input .km-edit {
+  font-family: 'JetBrains Mono', monospace; font-size: 34px; font-weight: 700;
+  color: var(--accent); line-height: 1; margin-bottom: 4px; width: 100%;
+  background: rgba(245,240,232,.08); border: 1.5px solid var(--accent); border-radius: 4px;
+  padding: 4px 10px; outline: none; -moz-appearance: textfield;
+}
+.calc-input .km-edit::-webkit-outer-spin-button,
+.calc-input .km-edit::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.calc-input input[type=range] {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 4px;
+  background: rgba(245,240,232,.18); border-radius: 4px; outline: none; margin: 8px 0 4px;
+}
+.calc-input input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent); cursor: pointer; border: 3px solid var(--ink); box-shadow: 0 0 0 1px var(--accent);
+}
+.calc-input input[type=range]::-moz-range-thumb {
+  width: 16px; height: 16px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 3px solid var(--ink);
+}
+.km-scale { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: rgba(245,240,232,.35); margin-top: 4px; }
+.calc-input .km-quick { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.calc-input .km-quick button {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 4px 10px; border-radius: 4px;
+  background: rgba(245,240,232,.1); color: var(--paper); border: 1px solid rgba(245,240,232,.2); cursor: pointer; transition: all .15s;
+}
+.calc-input .km-quick button:hover { background: var(--accent); border-color: var(--accent); }
+.toggle-row { display: flex; align-items: center; gap: 10px; margin-top: 18px; }
+.toggle-row .tg { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+.toggle-row .tg input { opacity: 0; width: 0; height: 0; }
+.toggle-row .tg .sl {
+  position: absolute; inset: 0; background: rgba(245,240,232,.2); border-radius: 22px; cursor: pointer; transition: .2s;
+}
+.toggle-row .tg .sl::before {
+  content: ''; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px;
+  background: var(--paper); border-radius: 50%; transition: .2s;
+}
+.toggle-row .tg input:checked + .sl { background: var(--accent); }
+.toggle-row .tg input:checked + .sl::before { transform: translateX(18px); }
+.toggle-row .tg-label { font-size: 12px; color: rgba(245,240,232,.8); }
+
+.calc-output { min-height: 200px; }
+.calc-summary {
+  display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.calc-stat {
+  flex: 1; min-width: 120px; background: #fff; border: 1px solid var(--border); border-radius: 3px;
+  padding: 14px 16px; box-shadow: var(--shadow);
+}
+.calc-stat .n { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 700; line-height: 1; }
+.calc-stat.must .n { color: var(--accent); }
+.calc-stat.check .n { color: var(--accent2); }
+.calc-stat.cost .n { color: var(--ink); }
+.calc-stat .l { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+.calc-tier-title {
+  font-family: 'Noto Serif SC', serif; font-size: 13px; font-weight: 700; letter-spacing: 1px;
+  color: var(--muted); margin: 22px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.calc-tier-title .cnt { font-family: 'JetBrains Mono', monospace; color: var(--accent); }
+.calc-item {
+  display: flex; gap: 12px; align-items: flex-start; background: #fff;
+  border: 1px solid var(--border); border-radius: 3px; padding: 12px 16px; margin-bottom: 8px;
+  box-shadow: var(--shadow); animation: itemIn .3s ease both;
+}
+@keyframes itemIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+.calc-item .ci-badge { flex-shrink: 0; }
+.calc-item .ci-main { flex: 1; }
+.calc-item .ci-name { font-weight: 700; font-size: 13.5px; }
+.calc-item .ci-note { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+.calc-item .ci-cost { flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); text-align: right; white-space: nowrap; }
+.calc-item .ci-cost b { color: var(--ink); font-weight: 700; display: block; font-size: 14px; }
+.calc-empty { text-align: center; color: var(--muted); padding: 40px; font-size: 13px; }
+.calc-disclaimer {
+  margin-top: 20px; font-size: 11.5px; color: var(--muted2); line-height: 1.7;
+  padding: 12px 16px; background: var(--paper2); border-radius: 3px; border: 1px dashed var(--border-dark);
+}
+.next-service {
+  display: flex; gap: 12px; align-items: flex-start; margin-top: 16px;
+  background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--accent2);
+  border-radius: 3px; padding: 13px 16px; box-shadow: var(--shadow);
+}
+.next-service .ns-icon { color: var(--accent2); font-size: 16px; line-height: 1.4; flex-shrink: 0; }
+.next-service .ns-title { font-size: 13.5px; font-weight: 500; }
+.next-service .ns-title b { font-family: 'JetBrains Mono', monospace; color: var(--accent2); font-size: 15px; }
+.next-service .ns-remain {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted);
+  margin-left: 8px; background: var(--paper2); padding: 1px 8px; border-radius: 20px;
+}
+.next-service .ns-items { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* ════════ 保养手册表 ════════ */
+.maintenance-intro {
+  background: #fff; border-left: 4px solid var(--accent); border-radius: 3px;
+  padding: 16px 20px; margin-bottom: 28px; font-size: 13px; color: var(--muted); line-height: 1.8;
+  box-shadow: var(--shadow);
+}
+.maintenance-intro strong { color: var(--ink); }
+.maint-section-title {
+  font-family: 'Noto Serif SC', serif; font-size: 13px; font-weight: 700; letter-spacing: 2px;
+  color: var(--muted); text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 10px;
+}
+.maint-section-title .km { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 12px; letter-spacing: 0; }
+.maint-table {
+  width: 100%; border-collapse: collapse; font-size: 13px; background: #fff;
+  border: 1px solid var(--border); border-radius: 3px; overflow: hidden; box-shadow: var(--shadow);
+}
+.maint-table th {
+  background: var(--ink); color: var(--paper); padding: 11px 14px; text-align: left;
+  font-weight: 500; font-size: 12px; letter-spacing: 1px;
+}
+.maint-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.maint-table tr:last-child td { border-bottom: none; }
+.maint-table tr:hover td { background: var(--paper2); }
+.maint-table .item-name { font-weight: 500; }
+.maint-table .interval { color: var(--accent2); font-size: 12px; font-weight: 500; font-family: 'JetBrains Mono', monospace; }
+.maint-table .note { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.badge { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 500; white-space: nowrap; }
+.badge-must  { background: #fde8e0; color: #c8401a; }
+.badge-check { background: #deeaf5; color: #2a6496; }
+.badge-opt   { background: #f0e8f5; color: #6a3a96; }
+.badge-trap  { background: var(--ink); color: var(--paper); }
+
+.tip-box {
+  background: #fffbf0; border: 1px solid #e8d890; border-radius: 3px; padding: 16px 20px;
+  margin-top: 26px; font-size: 13px; line-height: 1.8; box-shadow: var(--shadow);
+}
+.tip-box strong { color: var(--gold); font-family: 'Noto Serif SC', serif; font-size: 14px; }
+.tip-box ul { margin-top: 8px; padding-left: 4px; list-style: none; }
+.tip-box ul li { margin-bottom: 8px; padding-left: 24px; position: relative; }
+.tip-box ul li::before {
+  content: '“'; position: absolute; left: 0; top: -2px; font-family: 'Noto Serif SC', serif;
+  font-size: 22px; color: var(--gold); font-weight: 700;
+}
+
+/* ════════ 页脚 ════════ */
+footer { border-top: 1px solid var(--border); background: var(--paper2); }
+footer .wrap {
+  padding: 22px 48px; font-size: 11.5px; color: var(--muted); display: flex;
+  justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+}
+footer .wrap .brand { color: var(--ink); font-weight: 500; }
+
+/* ════════ 卡片入场动画 ════════ */
+section.active .sys-card, section.active .symptom-card { animation: fadeUp .35s ease both; }
+section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * .03s); }
+@keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+
+/* ════════ 响应式 ════════ */
+@media(max-width: 860px) {
+  .calc-shell { grid-template-columns: 1fr; }
+  .calc-input { position: static; }
+}
+@media(max-width: 600px) {
+  header .wrap, nav .wrap, main .wrap, footer .wrap { padding-left: 20px; padding-right: 20px; }
+  header h1 { font-size: 28px; }
+  header::after { display: none; }
+  .systems-grid, .symptom-grid { grid-template-columns: 1fr; }
+  .maint-table th:nth-child(3), .maint-table td:nth-child(3) { display: none; }
+  .sec-head h2.section-title { font-size: 20px; }
+}
+
+/* ════════ 家常菜谱 ════════ */
+.home-intro {
+  background: #fffbf0; border: 1px solid #e8d890; border-left: 4px solid var(--gold);
+  border-radius: 3px; padding: 16px 20px; margin-bottom: 22px;
+  font-size: 13px; color: var(--muted); line-height: 1.8; box-shadow: var(--shadow);
+}
+.home-intro strong { color: var(--gold); font-family: 'Noto Serif SC', serif; }
+.home-group-title {
+  font-family: 'Noto Serif SC', serif; font-size: 15px; font-weight: 700;
+  margin: 30px 0 6px; display: flex; align-items: center; gap: 10px;
+}
+.home-group-title .gi {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+  color: var(--green); border: 1.5px solid var(--green); border-radius: 4px; padding: 1px 8px;
+}
+.home-group-sub { font-size: 12px; color: var(--muted); margin: 0 0 16px; max-width: 680px; }
+
+.dish-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
+}
+.dish-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.dish-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--border-dark); }
+.dish-card .dc-head {
+  padding: 13px 16px 10px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: baseline; gap: 8px;
+}
+.dish-card .dc-name { font-family: 'Noto Serif SC', serif; font-size: 16px; font-weight: 700; }
+.dish-card .dc-origin {
+  margin-left: auto; flex-shrink: 0; font-size: 10px; padding: 2px 8px; border-radius: 20px;
+  font-weight: 500; letter-spacing: .5px;
+}
+.dc-origin.o-spicy { background: #fde8e0; color: #c8401a; }
+.dc-origin.o-fresh { background: #deeaf5; color: #2a6496; }
+.dc-origin.o-pure  { background: #e0eed8; color: #3a6a1a; }
+.dc-origin.o-rich  { background: #fdf0d8; color: #8a5a0a; }
+.dc-origin.o-none  { background: var(--paper3); color: var(--muted); }
+.dish-card .dc-body { padding: 12px 16px 14px; flex: 1; display: flex; flex-direction: column; }
+.dish-card .dc-ing {
+  font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; flex: 1;
+}
+.dish-card .dc-ing b { color: var(--ink); font-weight: 500; }
+.dish-card .dc-links { display: flex; gap: 8px; }
+.dish-card .dc-link {
+  flex: 1; text-align: center; text-decoration: none; font-size: 12px; font-weight: 500;
+  padding: 8px 6px; border-radius: 4px; transition: all .15s;
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+}
+.dish-card .dc-link.recipe {
+  background: var(--paper2); color: var(--ink2); border: 1px solid var(--border-dark);
+}
+.dish-card .dc-link.recipe:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.dish-card .dc-link.video {
+  background: #fde8e0; color: var(--accent); border: 1px solid #f0c0b0;
+}
+.dish-card .dc-link.video:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.home-legend {
+  display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 4px;
+  font-size: 12px; color: var(--muted); align-items: center;
+  padding: 12px 16px; background: #fff; border: 1px solid var(--border); border-radius: 3px;
+}
+.home-legend .li { display: flex; align-items: center; gap: 6px; }
+.home-legend .sw { width: 12px; height: 12px; border-radius: 3px; }
+@media(max-width: 600px) { .dish-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">中华饮食 · 风味流派手册</div>
+    <h1>中华八大菜系<span class="sub">完整拆解</span></h1>
+    <p class="lede">8 大菜系、风味地理流变、按口味反查菜品、按人数与口味自动配一桌菜，以及一份点菜避坑指南。把「看懂菜系」和「会点菜」放进同一本手册。</p>
+    <div class="meta-row">
+      <span><span class="dot"></span>菜系 <b>8</b></span>
+      <span><span class="dot"></span>代表菜 <b>40+</b></span>
+      <span><span class="dot"></span>口味需求 <b>14</b></span>
+      <span><span class="dot"></span>涵盖：四大风味系 + 地方流派</span>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <button class="active" onclick="show('systems',this)"><span class="ico">▦</span>菜系总览</button>
+    <button onclick="show('flow',this)"><span class="ico">⇄</span>风味流变</button>
+    <button onclick="show('diagnose',this)"><span class="ico">⚲</span>口味反查</button>
+    <button onclick="show('calc',this)"><span class="ico">▤</span>点菜计算器</button>
+    <button onclick="show('maintenance',this)"><span class="ico">≣</span>代表菜图鉴</button>
+    <button onclick="show('homestyle',this)"><span class="ico">🍳</span>家常菜谱</button>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+
+<!-- ══════════ 菜系总览 ══════════ -->
+<section id="systems" class="active">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">01</span>菜系总览</h2>
+    <p class="section-sub">每张卡片标注了该菜系的「食材底子 ⇠」和「招牌风味 ⇢」，顺着读就能看出一方水土如何长出一方口味。带 <span class="legend" style="display:inline-flex;padding:1px 6px;margin:0;border:none;background:none;"><span class="wear-mark">★</span></span> 标记的是「不会出错」的入门必点菜。</p>
+  </div>
+
+  <div class="legend">
+    <div class="li"><span class="sw" style="background:var(--accent)"></span>辛香 · 川湘</div>
+    <div class="li"><span class="sw" style="background:var(--accent2)"></span>鲜爽 · 粤闽</div>
+    <div class="li"><span class="sw" style="background:var(--green)"></span>本味 · 苏浙</div>
+    <div class="li"><span class="sw" style="background:var(--purple)"></span>醇厚 · 鲁徽</div>
+    <div class="li"><span class="wear-mark">★</span>= 入门必点</div>
+  </div>
+
+  <div class="systems-grid">
+
+    <!-- 01 鲁菜 -->
+    <div class="sys-card" data-cat="body" style="--i:0">
+      <div class="sys-card-header"><span class="num">01</span><h3>鲁菜（山东）</h3><span class="tag tag-body">醇厚</span></div>
+      <div class="sys-card-body">
+        <p class="summary">北方菜的根，宫廷菜的底子。讲究火候足、味要醇正，咸鲜打底，最见功力的是清汤与奶汤的吊制。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 食材 <b>海产 + 大葱 + 高汤</b></span>
+          <span class="flow-tag out">风味 ⇢ <b>咸鲜醇厚</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">爆 / 扒</span><span class="sub-desc">旺火快攻或文火慢煨，是鲁菜两大看家技法</span></li>
+          <li><span class="sub-name">吊汤</span><span class="sub-desc">清汤奶汤吊得清亮，「无汤不成席」</span></li>
+          <li><span class="sub-name">糖醋鲤鱼<span class="wear">★</span></span><span class="sub-desc">外焦里嫩、糖醋亮汁，黄河鲤鱼为正宗</span></li>
+          <li><span class="sub-name">九转大肠</span><span class="sub-desc">酸甜苦辣咸五味俱全，功夫菜代表</span></li>
+          <li><span class="sub-name">葱烧海参<span class="wear">★</span></span><span class="sub-desc">大葱去腥提香，海参吸味，鲁菜门面</span></li>
+          <li><span class="sub-name">把子肉 / 锅塌</span><span class="sub-desc">家常一面，浓油酱香、下饭实在</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 02 川菜 -->
+    <div class="sys-card" data-cat="power" style="--i:1">
+      <div class="sys-card-header"><span class="num">02</span><h3>川菜（四川）</h3><span class="tag tag-power">辛香</span></div>
+      <div class="sys-card-body">
+        <p class="summary">误解最深的菜系——不是只有辣。真正的精髓是「一菜一格、百菜百味」，二十多种复合味型才是底气。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 食材 <b>花椒 + 辣椒 + 豆瓣</b></span>
+          <span class="flow-tag out">风味 ⇢ <b>麻辣 + 百味</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">味型</span><span class="sub-desc">鱼香、怪味、麻辣、糊辣、荔枝……各成一格</span></li>
+          <li><span class="sub-name">郫县豆瓣</span><span class="sub-desc">川菜之魂，红油与醇香的来源</span></li>
+          <li><span class="sub-name">麻婆豆腐<span class="wear">★</span></span><span class="sub-desc">麻、辣、烫、香、酥、嫩、鲜、活八字诀</span></li>
+          <li><span class="sub-name">回锅肉<span class="wear">★</span></span><span class="sub-desc">川菜第一家常菜，灯盏窝、豆瓣香</span></li>
+          <li><span class="sub-name">水煮鱼 / 夫妻肺片</span><span class="sub-desc">麻辣的两张名片，一热一凉</span></li>
+          <li><span class="sub-name">鱼香肉丝</span><span class="sub-desc">不用鱼却有鱼香，复合味型代表</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 03 粤菜 -->
+    <div class="sys-card" data-cat="electric" style="--i:2">
+      <div class="sys-card-header"><span class="num">03</span><h3>粤菜（广东）</h3><span class="tag tag-electric">鲜爽</span></div>
+      <div class="sys-card-body">
+        <p class="summary">「不时不食」的极致追求。口味最清淡，最看重食材本味与新鲜，火候分寸拿捏冠绝各派。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 食材 <b>海河鲜 + 时令 + 老火汤料</b></span>
+          <span class="flow-tag out">风味 ⇢ <b>清鲜本真</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">清 / 鲜 / 嫩</span><span class="sub-desc">少调味、留本味，讲究「镬气」</span></li>
+          <li><span class="sub-name">老火靓汤</span><span class="sub-desc">慢火煲数小时，广东人的命根子</span></li>
+          <li><span class="sub-name">白切鸡<span class="wear">★</span></span><span class="sub-desc">皮爽肉滑、蘸姜葱，最考鸡与火候</span></li>
+          <li><span class="sub-name">烧腊（叉烧 / 烧鹅）<span class="wear">★</span></span><span class="sub-desc">明炉挂烧，皮脆肉嫩、蜜香入味</span></li>
+          <li><span class="sub-name">早茶点心</span><span class="sub-desc">虾饺、烧卖、肠粉，一盅两件慢生活</span></li>
+          <li><span class="sub-name">清蒸海鱼</span><span class="sub-desc">豉油淋葱，只为衬出那一口鲜</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 04 苏菜 -->
+    <div class="sys-card" data-cat="green" style="--i:3">
+      <div class="sys-card-header"><span class="num">04</span><h3>苏菜（江苏）</h3><span class="tag tag-chassis">本味</span></div>
+      <div class="sys-card-body">
+        <p class="summary">文人菜的代表。刀工冠绝、清鲜平和，甜咸适中，讲究造型与火候的分寸，最是雅致。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 食材 <b>江鲜 + 时蔬 + 火腿</b></span>
+          <span class="flow-tag out">风味 ⇢ <b>清鲜雅致</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">刀工</span><span class="sub-desc">文思豆腐切如发丝，苏菜的硬功夫</span></li>
+          <li><span class="sub-name">炖 / 焖 / 煨</span><span class="sub-desc">文火慢功，求酥烂入味而形不散</span></li>
+          <li><span class="sub-name">松鼠鳜鱼<span class="wear">★</span></span><span class="sub-desc">花刀油炸成松鼠形，糖醋亮汁，造型菜典范</span></li>
+          <li><span class="sub-name">清炖蟹粉狮子头<span class="wear">★</span></span><span class="sub-desc">肥瘦细斩、入口即化，淮扬功夫菜</span></li>
+          <li><span class="sub-name">盐水鸭 / 金陵烤鸭</span><span class="sub-desc">皮白肉嫩、咸香不腻，金陵风味</span></li>
+          <li><span class="sub-name">大煮干丝</span><span class="sub-desc">豆干切丝、清汤吊鲜，淮扬早茶名物</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 05 闽菜 -->
+    <div class="sys-card" data-cat="electric" style="--i:4">
+      <div class="sys-card-header"><span class="num">05</span><h3>闽菜（福建）</h3><span class="tag tag-electric">鲜爽</span></div>
+      <div class="sys-card-body">
+        <p class="summary">山海交汇的菜系。擅烹海鲜、长于制汤，「一汤十变」，口味偏清淡甜酸，红糟入菜是一绝。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 食材 <b>海鲜 + 山珍 + 红糟</b></span>
+          <span class="flow-tag out">风味 ⇢ <b>清鲜和醇</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">制汤</span><span class="sub-desc">「重汤」「一汤十变」，汤为闽菜灵魂</span></li>
+          <li><span class="sub-name">红糟</span><span class="sub-desc">福建独有调味，增香添色、去腥提鲜</span></li>
+          <li><span class="sub-name">佛跳墙<span class="wear">★</span></span><span class="sub-desc">数十种山海珍味同煨，闽菜至尊</span></li>
+          <li><span class="sub-name">荔枝肉</span><span class="sub-desc">形如荔枝、酸甜开胃的家常名菜</span></li>
+          <li><span class="sub-name">沙茶面 / 鱼丸</span><span class="sub-desc">市井烟火，海鲜入味、Q弹鲜爽</span></li>
+          <li><span class="sub-name">醉糟鸡</span><span class="sub-desc">红糟与酒香交融，闽味的代表手法</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 06 浙菜 -->
+    <div class="sys-card" data-cat="green" style="--i:5">
+      <div class="sys-card-header"><span class="num">06</span><h3>浙菜（浙江）</h3><span class="tag tag-chassis">本味</span></div>
+      <div class="sys-card-body">
+        <p class="summary">清爽精致、不重浓油。求鲜嫩软滑、注重本味，菜名常带典故，杭帮、宁波、绍兴三路各有风骨。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 食材 <b>湖鲜 + 时蔬 + 黄酒</b></span>
+          <span class="flow-tag out">风味 ⇢ <b>清鲜软糯</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">炝 / 焖 / 烩</span><span class="sub-desc">手法细腻，求清而不淡、鲜而不俗</span></li>
+          <li><span class="sub-name">黄酒入馔</span><span class="sub-desc">绍兴黄酒去腥增香，浙菜的隐味</span></li>
+          <li><span class="sub-name">西湖醋鱼<span class="wear">★</span></span><span class="sub-desc">活鱼现杀、糖醋勾芡，酸甜带蟹味</span></li>
+          <li><span class="sub-name">东坡肉<span class="wear">★</span></span><span class="sub-desc">慢火少水、酥而不烂、肥而不腻</span></li>
+          <li><span class="sub-name">龙井虾仁</span><span class="sub-desc">茶香入虾，清雅至极的文人菜</span></li>
+          <li><span class="sub-name">宋嫂鱼羹 / 干菜焖肉</span><span class="sub-desc">一羹一肉，见杭绍两路风味</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 07 湘菜 -->
+    <div class="sys-card" data-cat="power" style="--i:6">
+      <div class="sys-card-header"><span class="num">07</span><h3>湘菜（湖南）</h3><span class="tag tag-power">辛香</span></div>
+      <div class="sys-card-body">
+        <p class="summary">与川菜并称两大辣派，但湘菜重「鲜辣、酸辣、香辣」，少麻多油、色浓味重，下饭是第一要义。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 食材 <b>鲜辣椒 + 腊味 + 豆豉</b></span>
+          <span class="flow-tag out">风味 ⇢ <b>香辣酸辣</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">辣的分别</span><span class="sub-desc">湘辣重鲜香、不靠花椒麻，与川辣分野</span></li>
+          <li><span class="sub-name">腊味 / 烟熏</span><span class="sub-desc">湘西腊肉烟火气十足，自成一格</span></li>
+          <li><span class="sub-name">剁椒鱼头<span class="wear">★</span></span><span class="sub-desc">鲜辣红艳、鱼头嫩滑，湘菜门面</span></li>
+          <li><span class="sub-name">辣椒炒肉<span class="wear">★</span></span><span class="sub-desc">湖南人的国民下饭菜，镬气足</span></li>
+          <li><span class="sub-name">毛氏红烧肉</span><span class="sub-desc">不放酱油、糖色红亮，肥而不腻</span></li>
+          <li><span class="sub-name">小炒黄牛肉 / 口味虾</span><span class="sub-desc">一干锅一夜宵，鲜辣过瘾</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 08 徽菜 -->
+    <div class="sys-card" data-cat="body" style="--i:7">
+      <div class="sys-card-header"><span class="num">08</span><h3>徽菜（安徽）</h3><span class="tag tag-body">醇厚</span></div>
+      <div class="sys-card-body">
+        <p class="summary">山区菜系，重油重色重火功。善用山珍野味与火腿吊鲜，「轻度腐败、严控火候」是它最独特的标签。</p>
+        <div class="flow-tags">
+          <span class="flow-tag in">⇠ 食材 <b>山珍 + 火腿 + 笋菌</b></span>
+          <span class="flow-tag out">风味 ⇢ <b>咸鲜浓醇</b></span>
+        </div>
+        <ul class="sub-list">
+          <li><span class="sub-name">烧 / 炖 / 熏</span><span class="sub-desc">重火功、讲究原汁原味、酥嫩入味</span></li>
+          <li><span class="sub-name">火腿吊鲜</span><span class="sub-desc">徽州火腿提味，山珍因此出彩</span></li>
+          <li><span class="sub-name">臭鳜鱼<span class="wear">★</span></span><span class="sub-desc">似臭非臭、肉质蒜瓣，徽菜头号招牌</span></li>
+          <li><span class="sub-name">毛豆腐<span class="wear">★</span></span><span class="sub-desc">长出白毛再煎烧，发酵风味的经典</span></li>
+          <li><span class="sub-name">一品锅 / 胡适一品锅</span><span class="sub-desc">层层码放、一锅成宴，徽州年节菜</span></li>
+          <li><span class="sub-name">问政山笋</span><span class="sub-desc">火腿煨春笋，鲜到眉毛掉下来</span></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tip-box" style="margin-top:26px">
+    <strong>八大菜系是怎么数出来的</strong>
+    <ul>
+      <li>最早只说「四大菜系」——鲁、川、粤、苏，是各大流派的根基。</li>
+      <li>清末民初扩展为「八大」，加入闽、浙、湘、徽四派，多按省份与风味流派划分。</li>
+      <li>如今亦有「十大」之说，把京菜、沪菜（本帮）也算进来，但八大仍是最通行的框架。</li>
+    </ul>
+  </div>
+</section>
+<!-- ══════════ 风味流变 ══════════ -->
+<section id="flow">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">02</span>风味流变</h2>
+    <p class="section-sub">八大菜系不是凭空并列的八个名字，而是一方水土养一方口味的结果。下图把「四大根基 → 八大流派」的源流，与各菜系的地理带、以及它们归属的四大风味系画在一起——看懂这张图，八大菜系就串成了一张活的版图。</p>
+  </div>
+
+  <div class="flow-canvas">
+    <svg viewBox="0 0 760 470" xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans SC, sans-serif">
+      <defs>
+        <marker id="arrSpicy" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L7,3 L0,6 Z" fill="#c8401a"/>
+        </marker>
+        <marker id="arrFresh" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L7,3 L0,6 Z" fill="#2a6496"/>
+        </marker>
+        <marker id="arrPure" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L7,3 L0,6 Z" fill="#3a6a1a"/>
+        </marker>
+        <marker id="arrRich" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L7,3 L0,6 Z" fill="#b8860b"/>
+        </marker>
+      </defs>
+
+      <!-- 标题带 -->
+      <text x="20" y="26" font-size="12" font-weight="700" fill="#7a7368" letter-spacing="2">历史源流 — 四大根基扩展为八大</text>
+      <line x1="20" y1="34" x2="740" y2="34" stroke="#d4cfc5" stroke-width="1"/>
+
+      <!-- ===== 四大根基（横向）===== -->
+      <g class="diagram-node">
+        <rect x="40" y="56" width="120" height="60" rx="4" fill="#1a1814" stroke="#b8860b" stroke-width="2"/>
+        <text x="100" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#fdf0d8">鲁菜</text>
+        <text x="100" y="100" text-anchor="middle" font-size="9.5" fill="#c8a86a">北方之根 · 宫廷底</text>
+      </g>
+      <g class="diagram-node">
+        <rect x="220" y="56" width="120" height="60" rx="4" fill="#1a1814" stroke="#c8401a" stroke-width="2"/>
+        <text x="280" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#fde8e0">川菜</text>
+        <text x="280" y="100" text-anchor="middle" font-size="9.5" fill="#d8a89a">百味之源 · 西南</text>
+      </g>
+      <g class="diagram-node">
+        <rect x="400" y="56" width="120" height="60" rx="4" fill="#1a1814" stroke="#2a6496" stroke-width="2"/>
+        <text x="460" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#deeaf5">粤菜</text>
+        <text x="460" y="100" text-anchor="middle" font-size="9.5" fill="#9ab8d8">鲜之极致 · 岭南</text>
+      </g>
+      <g class="diagram-node">
+        <rect x="580" y="56" width="120" height="60" rx="4" fill="#1a1814" stroke="#3a6a1a" stroke-width="2"/>
+        <text x="640" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#e0eed8">苏菜</text>
+        <text x="640" y="100" text-anchor="middle" font-size="9.5" fill="#a8c890">文人之雅 · 江淮</text>
+      </g>
+
+      <!-- ===== 派生流派 ===== -->
+      <text x="20" y="160" font-size="12" font-weight="700" fill="#7a7368" letter-spacing="2">清末扩充 — 四派各生出邻近一脉</text>
+      <line x1="20" y1="168" x2="740" y2="168" stroke="#d4cfc5" stroke-width="1"/>
+
+      <!-- 徽（承鲁的醇厚，山区化）-->
+      <g class="diagram-node">
+        <rect x="40" y="188" width="120" height="52" rx="4" fill="#fdf0d8" stroke="#b8860b" stroke-width="1.5"/>
+        <text x="100" y="210" text-anchor="middle" font-size="13" font-weight="700" fill="#8a5a0a">徽菜</text>
+        <text x="100" y="226" text-anchor="middle" font-size="9.5" fill="#a8760a">重油重色 · 山珍</text>
+      </g>
+      <path d="M 100 116 L 100 186" fill="none" stroke="#b8860b" stroke-width="2" marker-end="url(#arrRich)"/>
+      <text x="106" y="155" font-size="9" fill="#b8860b">醇厚一脉</text>
+
+      <!-- 湘（与川同辣，分鲜辣）-->
+      <g class="diagram-node">
+        <rect x="220" y="188" width="120" height="52" rx="4" fill="#fde8e0" stroke="#c8401a" stroke-width="1.5"/>
+        <text x="280" y="210" text-anchor="middle" font-size="13" font-weight="700" fill="#c8401a">湘菜</text>
+        <text x="280" y="226" text-anchor="middle" font-size="9.5" fill="#a8503a">香辣酸辣 · 重油</text>
+      </g>
+      <path d="M 280 116 L 280 186" fill="none" stroke="#c8401a" stroke-width="2" marker-end="url(#arrSpicy)"/>
+      <text x="286" y="155" font-size="9" fill="#c8401a">辛香一脉</text>
+
+      <!-- 闽（与粤同鲜，擅汤）-->
+      <g class="diagram-node">
+        <rect x="400" y="188" width="120" height="52" rx="4" fill="#deeaf5" stroke="#2a6496" stroke-width="1.5"/>
+        <text x="460" y="210" text-anchor="middle" font-size="13" font-weight="700" fill="#2a6496">闽菜</text>
+        <text x="460" y="226" text-anchor="middle" font-size="9.5" fill="#4a749a">山海制汤 · 红糟</text>
+      </g>
+      <path d="M 460 116 L 460 186" fill="none" stroke="#2a6496" stroke-width="2" marker-end="url(#arrFresh)"/>
+      <text x="466" y="155" font-size="9" fill="#2a6496">鲜爽一脉</text>
+
+      <!-- 浙（与苏同本味，更清爽）-->
+      <g class="diagram-node">
+        <rect x="580" y="188" width="120" height="52" rx="4" fill="#e0eed8" stroke="#3a6a1a" stroke-width="1.5"/>
+        <text x="640" y="210" text-anchor="middle" font-size="13" font-weight="700" fill="#3a6a1a">浙菜</text>
+        <text x="640" y="226" text-anchor="middle" font-size="9.5" fill="#5a7a3a">清爽精致 · 黄酒</text>
+      </g>
+      <path d="M 640 116 L 640 186" fill="none" stroke="#3a6a1a" stroke-width="2" marker-end="url(#arrPure)"/>
+      <text x="646" y="155" font-size="9" fill="#3a6a1a">本味一脉</text>
+
+      <!-- ===== 四大风味系归类 ===== -->
+      <text x="20" y="284" font-size="12" font-weight="700" fill="#7a7368" letter-spacing="2">风味归类 — 八派最终汇入四大味觉坐标</text>
+      <line x1="20" y1="292" x2="740" y2="292" stroke="#d4cfc5" stroke-width="1"/>
+
+      <!-- 四个风味系底盒 -->
+      <g class="diagram-node"><rect x="40" y="312" width="160" height="38" rx="4" fill="#fff" stroke="#c8401a" stroke-width="1.5"/><text x="120" y="336" text-anchor="middle" font-size="12" font-weight="700" fill="#c8401a">辛香系 · 川 / 湘</text></g>
+      <g class="diagram-node"><rect x="220" y="312" width="160" height="38" rx="4" fill="#fff" stroke="#2a6496" stroke-width="1.5"/><text x="300" y="336" text-anchor="middle" font-size="12" font-weight="700" fill="#2a6496">鲜爽系 · 粤 / 闽</text></g>
+      <g class="diagram-node"><rect x="400" y="312" width="160" height="38" rx="4" fill="#fff" stroke="#3a6a1a" stroke-width="1.5"/><text x="480" y="336" text-anchor="middle" font-size="12" font-weight="700" fill="#3a6a1a">本味系 · 苏 / 浙</text></g>
+      <g class="diagram-node"><rect x="580" y="312" width="160" height="38" rx="4" fill="#fff" stroke="#b8860b" stroke-width="1.5"/><text x="660" y="336" text-anchor="middle" font-size="12" font-weight="700" fill="#8a5a0a">醇厚系 · 鲁 / 徽</text></g>
+
+      <!-- 风味轴说明 -->
+      <text x="20" y="386" font-size="12" font-weight="700" fill="#7a7368" letter-spacing="2">一句话坐标 — 越往左味越重、越往右味越本真</text>
+      <line x1="20" y1="394" x2="740" y2="394" stroke="#d4cfc5" stroke-width="1"/>
+
+      <!-- 味觉光谱条 -->
+      <rect x="40" y="414" width="680" height="22" rx="11" fill="url(#none)" stroke="#d4cfc5"/>
+      <rect x="40" y="414" width="170" height="22" rx="11" fill="#fde8e0"/>
+      <rect x="210" y="414" width="170" height="22" fill="#fdf0d8"/>
+      <rect x="380" y="414" width="170" height="22" fill="#deeaf5"/>
+      <rect x="550" y="414" width="170" height="22" rx="11" fill="#e0eed8"/>
+      <text x="125" y="429" text-anchor="middle" font-size="10" font-weight="700" fill="#c8401a">麻辣浓烈</text>
+      <text x="295" y="429" text-anchor="middle" font-size="10" font-weight="700" fill="#8a5a0a">咸鲜醇厚</text>
+      <text x="465" y="429" text-anchor="middle" font-size="10" font-weight="700" fill="#2a6496">清鲜本真</text>
+      <text x="635" y="429" text-anchor="middle" font-size="10" font-weight="700" fill="#3a6a1a">清淡雅致</text>
+      <text x="40" y="456" font-size="9" fill="#9a9388">川 · 湘</text>
+      <text x="285" y="456" text-anchor="middle" font-size="9" fill="#9a9388">鲁 · 徽</text>
+      <text x="465" y="456" text-anchor="middle" font-size="9" fill="#9a9388">闽 · 粤</text>
+      <text x="720" y="456" text-anchor="end" font-size="9" fill="#9a9388">苏 · 浙</text>
+    </svg>
+  </div>
+
+  <div class="flow-legend">
+    <div class="li"><span class="line" style="border-color:#c8401a"></span>辛香系（重味、下饭）</div>
+    <div class="li"><span class="line" style="border-color:#2a6496"></span>鲜爽系（求鲜、本味）</div>
+    <div class="li"><span class="line" style="border-color:#3a6a1a"></span>本味系（清雅、刀工）</div>
+    <div class="li"><span class="line" style="border-color:#b8860b"></span>醇厚系（重火、浓郁）</div>
+  </div>
+
+  <div class="maintenance-intro" style="margin-top:24px;border-left-color:var(--accent2)">
+    <strong>一句话读懂：</strong>八大菜系本质是「地理 × 物产 × 历史」共同塑造的口味分区。北方鲁徽靠厚味与火功扛住寒冷与山地，西南川湘以辣解决湿气与开胃，东南粤闽守着山海之鲜，江南苏浙在富庶里把「本味」做到极致。所以与其背菜名，不如先记住你的口味坐标落在哪一格——这正是下一栏「口味反查」要帮你做的事。
+  </div>
+</section>
+<!-- ══════════ 口味反查 ══════════ -->
+<section id="diagnose">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">03</span>口味反查</h2>
+    <p class="section-sub">前面是「正着学」——按菜系认菜；这里是「反着查」——你心里往往先有个念头：今天想吃辣、想喝口汤、想清淡点、想点个下饭的。这一栏从你的需求出发，反向定位到菜系和具体该点哪道菜。</p>
+  </div>
+
+  <div class="diag-intro">
+    <strong>推荐强度说明：</strong>
+    <span class="severity sev-stop" style="margin:0 4px;">闭眼必点</span>= 几乎不会出错的招牌；
+    <span class="severity sev-soon" style="margin:0 4px;">值得一试</span>= 有特色，看个人口味；
+    <span class="severity sev-watch" style="margin:0 4px;">小众尝鲜</span>= 风味独特，先做好心理准备。
+    <br>本栏为通用建议，口味因人而异——点菜前不妨问问同桌的接受度。
+  </div>
+
+  <div class="diag-filters" id="diagFilters">
+    <button class="active" data-f="all"><span class="ico">◉</span>全部</button>
+    <button data-f="spicy"><span class="ico">🌶</span>想吃辣</button>
+    <button data-f="soup"><span class="ico">🍲</span>想喝汤</button>
+    <button data-f="light"><span class="ico">🍃</span>想清淡</button>
+    <button data-f="rice"><span class="ico">🍚</span>想下饭</button>
+    <button data-f="host"><span class="ico">🪷</span>请客有面</button>
+  </div>
+
+  <div class="symptom-grid" id="symptomGrid">
+
+    <!-- 想吃辣 -->
+    <div class="symptom-card" data-cat="spicy">
+      <div class="sc-head">
+        <div class="sc-ico">🌶</div>
+        <div><div class="sc-title">想要麻辣过瘾、又麻又辣</div><div class="sc-sys">→ 02 川菜</div></div>
+        <span class="severity sev-stop">闭眼必点</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v"><span class="hl">水煮鱼 / 麻婆豆腐 / 毛血旺</span>，花椒的「麻」是川菜与湘菜的最大分别。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">川辣讲究麻辣相济，舌头先麻后辣，层次比纯辣丰富。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">怕麻就提前说「不要花椒、微辣」，川菜其实能调味型。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="spicy">
+      <div class="sc-head">
+        <div class="sc-ico">🔥</div>
+        <div><div class="sc-title">想要辣得鲜香、不要麻、特下饭</div><div class="sc-sys">→ 07 湘菜</div></div>
+        <span class="severity sev-stop">闭眼必点</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v"><span class="hl">辣椒炒肉 / 剁椒鱼头 / 小炒黄牛肉</span>，鲜辣不麻、镬气十足。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">湘菜用鲜辣椒和豆豉，主打香辣酸辣，不靠花椒，配米饭一绝。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">湘菜的辣往往比想象中扎实，能吃辣再上剁椒类。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="spicy">
+      <div class="sc-head">
+        <div class="sc-ico">🥘</div>
+        <div><div class="sc-title">想吃个凉拌的、麻辣开胃菜</div><div class="sc-sys">→ 02 川菜</div></div>
+        <span class="severity sev-soon">值得一试</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v"><span class="hl">夫妻肺片 / 口水鸡</span>，红油凉拌，开胃醒神。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">川菜的凉菜自成一派，麻辣红油是它的灵魂调味。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">作为一桌的头菜，先上凉菜开胃是地道吃法。</span></div>
+      </div>
+    </div>
+
+    <!-- 想喝汤 -->
+    <div class="symptom-card" data-cat="soup">
+      <div class="sc-head">
+        <div class="sc-ico">🍲</div>
+        <div><div class="sc-title">想喝一锅料足、滋补的浓汤</div><div class="sc-sys">→ 05 闽菜</div></div>
+        <span class="severity sev-stop">闭眼必点</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v"><span class="hl">佛跳墙</span>，海参鲍鱼花胶同煨，是「重汤」闽菜的巅峰。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">闽菜「一汤十变」，制汤是看家本领，料越足越显功夫。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">正经佛跳墙价格不菲，认准用料而非只看名字。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="soup">
+      <div class="sc-head">
+        <div class="sc-ico">🥣</div>
+        <div><div class="sc-title">想喝一口清润、不油腻的靓汤</div><div class="sc-sys">→ 03 粤菜</div></div>
+        <span class="severity sev-stop">闭眼必点</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v"><span class="hl">老火例汤 / 炖盅</span>，慢火数小时，清润不浊。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">广东人「无汤不欢」，老火汤讲究清而有味、温润养人。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">老火汤喝汤为主，汤渣已无多少味，不必硬吃。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="soup">
+      <div class="sc-head">
+        <div class="sc-ico">🍜</div>
+        <div><div class="sc-title">想要清汤吊出来的极致鲜</div><div class="sc-sys">→ 01 鲁菜 / 04 苏菜</div></div>
+        <span class="severity sev-soon">值得一试</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v">鲁菜<span class="hl">清汤燕菜</span>、淮扬<span class="hl">大煮干丝</span>，全靠吊汤的真功夫。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">「唱戏的腔、厨师的汤」，清汤不靠味精，全凭食材慢吊。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">看似清淡，实则最考厨艺，是检验馆子水平的试金石。</span></div>
+      </div>
+    </div>
+
+    <!-- 想清淡 -->
+    <div class="symptom-card" data-cat="light">
+      <div class="sc-head">
+        <div class="sc-ico">🍃</div>
+        <div><div class="sc-title">想吃得清淡、尝食材本来的鲜</div><div class="sc-sys">→ 03 粤菜</div></div>
+        <span class="severity sev-stop">闭眼必点</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v"><span class="hl">白切鸡 / 清蒸海鱼</span>，少调味，全凭食材新鲜。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">粤菜口味最清淡，追求「不时不食」与原汁原味。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">清蒸鱼最考新鲜度，鱼眼清亮、肉质蒜瓣才是好货。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="light">
+      <div class="sc-head">
+        <div class="sc-ico">🌸</div>
+        <div><div class="sc-title">想要清雅精致、带点文气的菜</div><div class="sc-sys">→ 06 浙菜 / 04 苏菜</div></div>
+        <span class="severity sev-soon">值得一试</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v"><span class="hl">龙井虾仁 / 西湖醋鱼</span>，茶香入馔、清鲜带酸甜。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">浙菜清爽精致，菜名多带典故，是江南文人菜的代表。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">西湖醋鱼口味两极分化，先做好「酸甜带土腥」的预期。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="light">
+      <div class="sc-head">
+        <div class="sc-ico">🍵</div>
+        <div><div class="sc-title">想吃顿清爽的早茶 / 点心</div><div class="sc-sys">→ 03 粤菜</div></div>
+        <span class="severity sev-stop">闭眼必点</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v"><span class="hl">虾饺 / 肠粉 / 烧卖</span>，一盅两件，慢慢叹茶。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">粤式早茶是独立的饮食文化，点心精巧、清爽不腻。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">虾饺看皮，半透明能见虾仁、捏出多道褶才算到位。</span></div>
+      </div>
+    </div>
+
+    <!-- 想下饭 -->
+    <div class="symptom-card" data-cat="rice">
+      <div class="sc-head">
+        <div class="sc-ico">🍚</div>
+        <div><div class="sc-title">想点个浓油赤酱、巨下饭的</div><div class="sc-sys">→ 07 湘菜 / 01 鲁菜</div></div>
+        <span class="severity sev-stop">闭眼必点</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v">湘菜<span class="hl">辣椒炒肉</span>、鲁菜<span class="hl">把子肉</span>，咸香重口、配饭神器。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">这两派都重酱香与火候，菜本身就是为「就着白饭」设计的。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">下饭菜偏咸，配一碗清汤或时蔬解腻更舒服。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="rice">
+      <div class="sc-head">
+        <div class="sc-ico">🥩</div>
+        <div><div class="sc-title">想吃一块酥烂入味的红烧肉</div><div class="sc-sys">→ 06 浙菜 / 07 湘菜</div></div>
+        <span class="severity sev-soon">值得一试</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v">浙菜<span class="hl">东坡肉</span>（酱甜软糯）/ 湘菜<span class="hl">毛氏红烧肉</span>（不放酱油、糖色红亮）。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">同是红烧肉，两派调味迥异，能吃出地域口味的分野。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">东坡肉偏甜，北方口味的人可先尝一块再决定加菜。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="rice">
+      <div class="sc-head">
+        <div class="sc-ico">🍳</div>
+        <div><div class="sc-title">想点个不辣、人人都爱的家常菜</div><div class="sc-sys">→ 02 川菜</div></div>
+        <span class="severity sev-stop">闭眼必点</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v"><span class="hl">鱼香肉丝 / 宫保鸡丁</span>，咸甜微辣，老少皆宜。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">这是川菜「百味」的体现——鱼香、荔枝味型并不靠辣取胜。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">点菜时强调「鱼香味、微辣」，避免端上来一盘红油。</span></div>
+      </div>
+    </div>
+
+    <!-- 请客有面 -->
+    <div class="symptom-card" data-cat="host">
+      <div class="sc-head">
+        <div class="sc-ico">🪷</div>
+        <div><div class="sc-title">正式宴请，想点道压得住场的大菜</div><div class="sc-sys">→ 05 闽菜 / 01 鲁菜</div></div>
+        <span class="severity sev-stop">闭眼必点</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v"><span class="hl">佛跳墙</span>（闽）或<span class="hl">葱烧海参</span>（鲁），都是宴席门面菜。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">用料贵重、功夫足、寓意好，是传统宴席的「硬菜」担当。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">一桌一道大菜即可镇场，再多就显得用力过猛。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="host">
+      <div class="sc-head">
+        <div class="sc-ico">🐿</div>
+        <div><div class="sc-title">想点道好看又惊艳、适合拍照的</div><div class="sc-sys">→ 04 苏菜</div></div>
+        <span class="severity sev-soon">值得一试</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v"><span class="hl">松鼠鳜鱼</span>，花刀油炸成松鼠形，浇汁时滋滋作响。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">苏菜以刀工和造型见长，这道菜兼具观赏性与糖醋好味。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">趁热吃，刚浇汁时外脆里嫩，凉了口感大打折扣。</span></div>
+      </div>
+    </div>
+
+    <div class="symptom-card" data-cat="host">
+      <div class="sc-head">
+        <div class="sc-ico">🐟</div>
+        <div><div class="sc-title">想点个「闻着怪、吃着香」的特色菜</div><div class="sc-sys">→ 08 徽菜</div></div>
+        <span class="severity sev-watch">小众尝鲜</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="k">点这个</span><span class="v"><span class="hl">臭鳜鱼 / 毛豆腐</span>，似臭非臭、发酵风味独特。</span></div>
+        <div class="sc-row"><span class="k">为什么</span><span class="v">徽菜「轻度腌渍发酵」是一绝，闻着冲、入口却鲜香。</span></div>
+        <div class="sc-row"><span class="k">小提醒</span><span class="v">先问同桌接受度，发酵味劝退人，但爱的人会上瘾。</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- ══════════ 点菜计算器 ══════════ -->
+<section id="calc">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">04</span>点菜计算器</h2>
+    <p class="section-sub">「几个人该点几个菜」是中餐桌上的永恒难题。拖动人数、选好口味与预算，下面会算出推荐菜量、荤素汤的搭配比例，并按你选的口味系给出具体该点哪几道。</p>
+  </div>
+
+  <div class="calc-shell">
+    <div class="calc-input">
+      <h3>这桌饭怎么配</h3>
+      <p class="ci-sub">通用经验法则：人均一菜、再加一两道凑整，荤素相间、有汤有凉。</p>
+
+      <label>用餐人数</label>
+      <div class="km-display" id="kmDisplay">6<span class="km-unit">人</span><span class="edit-hint">✎ 点击输入</span></div>
+      <input type="text" inputmode="numeric" class="km-edit" id="kmEdit" style="display:none">
+      <input type="range" id="kmSlider" min="1" max="20" value="6" step="1">
+      <div class="km-scale"><span>1</span><span>10</span><span>20</span></div>
+      <div class="km-quick">
+        <button onclick="setKm(2)">二人</button>
+        <button onclick="setKm(4)">四人</button>
+        <button onclick="setKm(6)">六人</button>
+        <button onclick="setKm(8)">八人</button>
+        <button onclick="setKm(12)">一大桌</button>
+      </div>
+
+      <label>偏好口味系</label>
+      <div class="km-quick" id="flavorPick" style="margin-top:8px;">
+        <button class="active" data-flavor="all">不挑 · 都行</button>
+        <button data-flavor="spicy">辛香 · 川湘</button>
+        <button data-flavor="fresh">鲜爽 · 粤闽</button>
+        <button data-flavor="pure">本味 · 苏浙</button>
+        <button data-flavor="rich">醇厚 · 鲁徽</button>
+      </div>
+
+      <div class="toggle-row">
+        <label class="tg"><input type="checkbox" id="cfgHost"><span class="sl"></span></label>
+        <span class="tg-label">正式宴请（加一道镇场大菜）</span>
+      </div>
+      <div class="toggle-row">
+        <label class="tg"><input type="checkbox" id="cfgSoup" checked><span class="sl"></span></label>
+        <span class="tg-label">配一道汤</span>
+      </div>
+      <div class="toggle-row">
+        <label class="tg"><input type="checkbox" id="cfgVeg" checked><span class="sl"></span></label>
+        <span class="tg-label">荤素均衡（不要全是肉）</span>
+      </div>
+    </div>
+
+    <div class="calc-output">
+      <div class="calc-summary">
+        <div class="calc-stat must"><div class="n" id="statMust">0</div><div class="l">道 · 推荐总菜量</div></div>
+        <div class="calc-stat check"><div class="n" id="statCheck">0</div><div class="l">荤 / 素 / 汤 搭配</div></div>
+        <div class="calc-stat cost"><div class="n" id="statCost">¥0</div><div class="l">人均参考预算</div></div>
+      </div>
+      <div id="calcResult"></div>
+      <div class="calc-disclaimer">
+        菜量与预算为通用经验估算，受地区、餐厅档次、食量大小影响很大，仅用于建立「该点多少、大概多少钱」的预期。宴请、聚会、家常的标准各不相同。<strong style="color:var(--ink)">这是参考，不是菜单。</strong>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ══════════ 代表菜图鉴 ══════════ -->
+<section id="maintenance">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">05</span>代表菜图鉴</h2>
+    <p class="section-sub">八大菜系经典菜的完整对照表，按「入门→招牌→尝鲜」分层排列。最后两块是「容易踩雷的菜」和「点菜三句话」——知道哪些稳点、哪些要慎点，才不会一桌人面面相觑。</p>
+  </div>
+
+  <div class="maintenance-intro">
+    <strong>如何读这张表：</strong>
+    <span class="badge badge-must">必点</span> 几乎不出错的入门招牌；
+    <span class="badge badge-check">推荐</span> 有特色、值得一试；
+    <span class="badge badge-opt">尝鲜</span> 风味独特、看个人接受度。
+    <br>菜系归属以最通行的说法为准，部分名菜跨地域流传、版本众多。
+  </div>
+
+  <div class="maint-section-title">入门必点 <span class="km">第一次吃这个菜系 · 闭眼点</span></div>
+  <table class="maint-table">
+    <thead><tr><th style="width:20%">菜名</th><th style="width:12%">推荐度</th><th style="width:14%">所属菜系</th><th>风味 / 点菜要点</th></tr></thead>
+    <tbody>
+      <tr><td class="item-name">麻婆豆腐</td><td><span class="badge badge-must">必点</span></td><td class="interval">川菜</td><td class="note">麻辣烫香、嫩滑下饭。川菜的入门第一课，怕麻可让师傅少放花椒。</td></tr>
+      <tr><td class="item-name">回锅肉</td><td><span class="badge badge-must">必点</span></td><td class="interval">川菜</td><td class="note">肥而不腻、豆瓣酱香，号称「川菜之王」，看肉片是否炒出灯盏窝。</td></tr>
+      <tr><td class="item-name">白切鸡</td><td><span class="badge badge-must">必点</span></td><td class="interval">粤菜</td><td class="note">皮爽肉滑、蘸姜葱蓉。最考鸡的品质与火候，宁可清淡也不掩本味。</td></tr>
+      <tr><td class="item-name">辣椒炒肉</td><td><span class="badge badge-must">必点</span></td><td class="interval">湘菜</td><td class="note">湖南国民下饭菜，鲜辣镬气。判断一家湘菜馆水平的基准菜。</td></tr>
+      <tr><td class="item-name">东坡肉</td><td><span class="badge badge-must">必点</span></td><td class="interval">浙菜</td><td class="note">慢火少水、酥而不烂、酱甜软糯。偏甜，北方口味先尝一块。</td></tr>
+    </tbody>
+  </table>
+
+  <div class="maint-section-title">招牌大菜 <span class="km">请客 · 想吃好点时点</span></div>
+  <table class="maint-table">
+    <thead><tr><th style="width:20%">菜名</th><th style="width:12%">推荐度</th><th style="width:14%">所属菜系</th><th>风味 / 点菜要点</th></tr></thead>
+    <tbody>
+      <tr><td class="item-name">佛跳墙</td><td><span class="badge badge-check">推荐</span></td><td class="interval">闽菜</td><td class="note">山海珍味同煨、浓鲜醇厚。宴席门面，认准真材实料而非空有其名。</td></tr>
+      <tr><td class="item-name">葱烧海参</td><td><span class="badge badge-check">推荐</span></td><td class="interval">鲁菜</td><td class="note">大葱去腥提香、海参吸味。鲁菜的硬菜担当，咸鲜醇正。</td></tr>
+      <tr><td class="item-name">松鼠鳜鱼</td><td><span class="badge badge-check">推荐</span></td><td class="interval">苏菜</td><td class="note">花刀油炸成松鼠形、糖醋亮汁。造型菜典范，趁热吃外脆里嫩。</td></tr>
+      <tr><td class="item-name">清炖蟹粉狮子头</td><td><span class="badge badge-check">推荐</span></td><td class="interval">苏菜</td><td class="note">肥瘦细斩、入口即化。淮扬功夫菜，讲究「细切粗斩」不剁泥。</td></tr>
+      <tr><td class="item-name">糖醋鲤鱼</td><td><span class="badge badge-check">推荐</span></td><td class="interval">鲁菜</td><td class="note">外焦里嫩、糖醋亮汁。黄河鲤鱼为正宗，是鲁菜的看家名片。</td></tr>
+      <tr><td class="item-name">剁椒鱼头</td><td><span class="badge badge-check">推荐</span></td><td class="interval">湘菜</td><td class="note">鲜辣红艳、鱼头嫩滑。湘菜门面菜，适合多人分食、配面条收尾。</td></tr>
+    </tbody>
+  </table>
+
+  <div class="maint-section-title">小众尝鲜 <span class="km">老饕进阶 · 看接受度</span></div>
+  <table class="maint-table">
+    <thead><tr><th style="width:20%">菜名</th><th style="width:12%">推荐度</th><th style="width:14%">所属菜系</th><th>风味 / 点菜要点</th></tr></thead>
+    <tbody>
+      <tr><td class="item-name">臭鳜鱼</td><td><span class="badge badge-opt">尝鲜</span></td><td class="interval">徽菜</td><td class="note">似臭非臭、肉质蒜瓣。徽菜头号招牌，闻着冲、入口却鲜香独特。</td></tr>
+      <tr><td class="item-name">毛豆腐</td><td><span class="badge badge-opt">尝鲜</span></td><td class="interval">徽菜</td><td class="note">长出白毛再煎烧，发酵风味经典。爱者上瘾、惧者却步。</td></tr>
+      <tr><td class="item-name">九转大肠</td><td><span class="badge badge-opt">尝鲜</span></td><td class="interval">鲁菜</td><td class="note">酸甜苦辣咸五味俱全。功夫菜代表，处理不好会有异味。</td></tr>
+      <tr><td class="item-name">荔枝肉</td><td><span class="badge badge-opt">尝鲜</span></td><td class="interval">闽菜</td><td class="note">形如荔枝、酸甜开胃。闽味家常名菜，接受度高于佛跳墙。</td></tr>
+      <tr><td class="item-name">醉糟鸡</td><td><span class="badge badge-opt">尝鲜</span></td><td class="interval">闽菜</td><td class="note">红糟与酒香交融。闽菜特色手法，不胜酒力者注意。</td></tr>
+    </tbody>
+  </table>
+
+  <div class="maint-section-title" style="color:var(--accent)">容易踩雷的菜 <span class="km" style="color:var(--accent)">慎点 · 先问清同桌</span></div>
+  <table class="maint-table">
+    <thead><tr><th style="width:20%">菜名 / 情况</th><th style="width:12%">提示</th><th style="width:14%">所属菜系</th><th>建议</th></tr></thead>
+    <tbody>
+      <tr><td class="item-name">西湖醋鱼</td><td><span class="badge badge-trap">慎点</span></td><td class="interval">浙菜</td><td class="note">口味两极分化，正宗版带土腥与微甜醋味，外地人常吃不惯，先小份试。</td></tr>
+      <tr><td class="item-name">全桌都点辣</td><td><span class="badge badge-trap">慎点</span></td><td class="interval">川 / 湘</td><td class="note">一桌全辣会麻木、不解馋。留一两道清淡或汤菜，口腔才有缓冲。</td></tr>
+      <tr><td class="item-name">点重名「招牌菜」</td><td><span class="badge badge-trap">慎点</span></td><td class="interval">通用</td><td class="note">非地道馆子的「佛跳墙」「狮子头」常货不对板，先看用料和价格。</td></tr>
+      <tr><td class="item-name">人少点大菜</td><td><span class="badge badge-trap">慎点</span></td><td class="interval">通用</td><td class="note">两三人点整鱼、整鸡、佛跳墙吃不完。人少优先点小份、半份或单人菜。</td></tr>
+      <tr><td class="item-name">发酵风味菜</td><td><span class="badge badge-trap">慎点</span></td><td class="interval">徽菜</td><td class="note">臭鳜鱼、毛豆腐这类，桌上有人完全不能接受时别勉强公点。</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box">
+    <strong>点菜前三句话</strong>
+    <ul>
+      <li>我们 X 个人，帮我配几荤几素一个汤，别点重样的。</li>
+      <li>有没有不辣、清淡点的，桌上有人吃不了辣。</li>
+      <li>招牌菜先上一道试试，好吃再加，先别一次点满。</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ══════════ 家常菜谱 ══════════ -->
+<section id="homestyle">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">06</span>家常菜谱</h2>
+    <p class="section-sub">我们平时家里炒的菜，大多塞不进严格的「八大菜系」——它是按场景划分的：好做、好买、下饭、便宜。一道家常菜，往往是某个菜系「飘到民间、被简化」的版本。下面按出身分三类整理，每道菜都能一键点开看配料步骤和视频教程。</p>
+  </div>
+
+  <div class="home-intro">
+    <strong>一个判断法则：</strong>越是家常、越简单的菜，越难归类；越是讲究技法、上得了席面的菜，菜系归属越清晰。比如同样是鱼，家里「清蒸鱼」是无门无派的家常做法，而「松鼠鳜鱼」就是明确的苏菜功夫菜。
+  </div>
+
+  <div class="home-legend">
+    <div class="li"><span class="sw" style="background:var(--accent)"></span>川湘辛香底</div>
+    <div class="li"><span class="sw" style="background:var(--accent2)"></span>粤闽鲜爽底</div>
+    <div class="li"><span class="sw" style="background:var(--green)"></span>苏浙本味底</div>
+    <div class="li"><span class="sw" style="background:var(--gold)"></span>鲁徽醇厚底</div>
+    <div class="li"><span class="sw" style="background:var(--paper3)"></span>无明确门派</div>
+    <div class="li" style="margin-left:auto;color:var(--muted2);">🔍 看配料 · 📺 看视频 — 点击跳转下厨房 / B站</div>
+  </div>
+
+
+  <div class="home-group-title"><span class="gi">A</span>有菜系出身、已全国家常化</div>
+  <p class="home-group-sub">这些菜在餐馆里有清晰的流派归属，但早已飘进千家万户，家里做的多是简化版。</p>
+  <div class="dish-grid">
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">西红柿炒鸡蛋</span><span class="dc-origin o-none">国民·无门派</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　鸡蛋、西红柿、糖、盐</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E8%A5%BF%E7%BA%A2%E6%9F%BF%E7%82%92%E9%B8%A1%E8%9B%8B" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E8%A5%BF%E7%BA%A2%E6%9F%BF%E7%82%92%E9%B8%A1%E8%9B%8B%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">鱼香肉丝</span><span class="dc-origin o-spicy">川菜底</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　里脊肉、木耳、泡椒、鱼香汁（糖醋蒜姜）</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E9%B1%BC%E9%A6%99%E8%82%89%E4%B8%9D" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E9%B1%BC%E9%A6%99%E8%82%89%E4%B8%9D%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">麻婆豆腐</span><span class="dc-origin o-spicy">川菜底</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　嫩豆腐、肉末、郫县豆瓣、花椒</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E9%BA%BB%E5%A9%86%E8%B1%86%E8%85%90" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E9%BA%BB%E5%A9%86%E8%B1%86%E8%85%90%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">宫保鸡丁</span><span class="dc-origin o-spicy">川菜底</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　鸡腿肉、花生、干辣椒、宫保汁</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E5%AE%AB%E4%BF%9D%E9%B8%A1%E4%B8%81" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E5%AE%AB%E4%BF%9D%E9%B8%A1%E4%B8%81%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">回锅肉</span><span class="dc-origin o-spicy">川菜底</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　五花肉、青蒜、郫县豆瓣、豆豉</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E5%9B%9E%E9%94%85%E8%82%89" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E5%9B%9E%E9%94%85%E8%82%89%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">辣椒炒肉</span><span class="dc-origin o-spicy">湘菜底</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　前腿肉、青椒、豆豉、生抽</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E8%BE%A3%E6%A4%92%E7%82%92%E8%82%89" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E8%BE%A3%E6%A4%92%E7%82%92%E8%82%89%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">红烧肉</span><span class="dc-origin o-none">各地各版</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　五花肉、冰糖、生抽老抽、葱姜八角</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E7%BA%A2%E7%83%A7%E8%82%89" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E7%BA%A2%E7%83%A7%E8%82%89%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">糖醋里脊</span><span class="dc-origin o-rich">鲁菜底</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　里脊肉、淀粉、番茄酱、糖醋汁</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E7%B3%96%E9%86%8B%E9%87%8C%E8%84%8A" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E7%B3%96%E9%86%8B%E9%87%8C%E8%84%8A%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="home-group-title"><span class="gi">B</span>难归进八大菜系的家常大类</div>
+  <p class="home-group-sub">要么各地通用，要么是东北菜/家常融合，没有清晰的流派标签——但全是下饭主力。</p>
+  <div class="dish-grid">
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">可乐鸡翅</span><span class="dc-origin o-none">家常融合</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　鸡翅中、可乐、生抽、姜片</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E5%8F%AF%E4%B9%90%E9%B8%A1%E7%BF%85" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E5%8F%AF%E4%B9%90%E9%B8%A1%E7%BF%85%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">土豆烧牛肉</span><span class="dc-origin o-none">家常通用</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　牛腩、土豆、胡萝卜、番茄</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E5%9C%9F%E8%B1%86%E7%83%A7%E7%89%9B%E8%82%89" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E5%9C%9F%E8%B1%86%E7%83%A7%E7%89%9B%E8%82%89%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">青椒土豆丝</span><span class="dc-origin o-none">家常通用</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　土豆、青椒、醋、干辣椒</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E9%9D%92%E6%A4%92%E5%9C%9F%E8%B1%86%E4%B8%9D" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E9%9D%92%E6%A4%92%E5%9C%9F%E8%B1%86%E4%B8%9D%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">酸辣土豆丝</span><span class="dc-origin o-none">家常通用</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　土豆、干辣椒、花椒、香醋</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E9%85%B8%E8%BE%A3%E5%9C%9F%E8%B1%86%E4%B8%9D" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E9%85%B8%E8%BE%A3%E5%9C%9F%E8%B1%86%E4%B8%9D%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">蒜蓉空心菜</span><span class="dc-origin o-fresh">偏粤做法</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　空心菜、蒜末、盐</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E8%92%9C%E8%93%89%E7%A9%BA%E5%BF%83%E8%8F%9C" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E8%92%9C%E8%93%89%E7%A9%BA%E5%BF%83%E8%8F%9C%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">地三鲜</span><span class="dc-origin o-rich">东北家常</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　土豆、茄子、青椒、酱汁</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E5%9C%B0%E4%B8%89%E9%B2%9C" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E5%9C%B0%E4%B8%89%E9%B2%9C%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">红烧茄子</span><span class="dc-origin o-none">家常通用</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　茄子、蒜、生抽、糖</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E7%BA%A2%E7%83%A7%E8%8C%84%E5%AD%90" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E7%BA%A2%E7%83%A7%E8%8C%84%E5%AD%90%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">紫菜蛋花汤</span><span class="dc-origin o-none">家常通用</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　紫菜、鸡蛋、虾皮、香油</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E7%B4%AB%E8%8F%9C%E8%9B%8B%E8%8A%B1%E6%B1%A4" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E7%B4%AB%E8%8F%9C%E8%9B%8B%E8%8A%B1%E6%B1%A4%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="home-group-title"><span class="gi">C</span>真正无名无姓的国民家常菜</div>
+  <p class="home-group-sub">「中国人家里都会做」，谈不上属于哪个菜系——它们就是家的味道本身。</p>
+  <div class="dish-grid">
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">蛋炒饭</span><span class="dc-origin o-none">国民·无门派</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　隔夜米饭、鸡蛋、葱花、盐</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E8%9B%8B%E7%82%92%E9%A5%AD" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E8%9B%8B%E7%82%92%E9%A5%AD%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">番茄牛腩</span><span class="dc-origin o-none">家常通用</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　牛腩、番茄、土豆、葱姜</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E7%95%AA%E8%8C%84%E7%89%9B%E8%85%A9" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E7%95%AA%E8%8C%84%E7%89%9B%E8%85%A9%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">白菜炖豆腐</span><span class="dc-origin o-none">家常通用</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　白菜、北豆腐、粉条、高汤</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E7%99%BD%E8%8F%9C%E7%82%96%E8%B1%86%E8%85%90" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E7%99%BD%E8%8F%9C%E7%82%96%E8%B1%86%E8%85%90%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">清蒸鱼</span><span class="dc-origin o-fresh">偏粤做法</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　鲈鱼、葱姜、蒸鱼豉油、热油</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E6%B8%85%E8%92%B8%E9%B1%BC" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E6%B8%85%E8%92%B8%E9%B1%BC%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">凉拌黄瓜</span><span class="dc-origin o-none">家常通用</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　黄瓜、蒜、香醋、香油</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E5%87%89%E6%8B%8C%E9%BB%84%E7%93%9C" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E5%87%89%E6%8B%8C%E9%BB%84%E7%93%9C%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">西红柿牛腩汤</span><span class="dc-origin o-none">家常通用</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　牛腩、番茄、洋葱、香菜</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E8%A5%BF%E7%BA%A2%E6%9F%BF%E7%89%9B%E8%85%A9%E6%B1%A4" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link video" href="https://search.bilibili.com/all?keyword=%E8%A5%BF%E7%BA%A2%E6%9F%BF%E7%89%9B%E8%85%A9%E6%B1%A4%20%E5%81%9A%E6%B3%95%20%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">📺 看视频</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tip-box">
+    <strong>关于这些链接</strong>
+    <ul>
+      <li>「看配料」跳转下厨房，按菜名搜索，能看到图文配料、用量和分步骤做法。</li>
+      <li>「看视频」跳转 B 站搜索，王刚、老饭骨这类硬核 UP 主的教程一搜就有。</li>
+      <li>配料只列了主料和关键调味，具体用量以你点开的菜谱为准——家常菜本就「适量」二字最难，多做两次就有手感了。</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="brand">中华八大菜系 · 风味手册</span>
+    <span>通用饮食文化参考 · 菜系归属与口味因地因人而异</span>
+  </div>
+</footer>
+<script>
+/* ───── 导航切换 ───── */
+const SECTION_ORDER = ['systems','flow','diagnose','calc','maintenance','homestyle'];
+function show(id, btn) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const navBtn = btn || document.querySelectorAll('nav button')[SECTION_ORDER.indexOf(id)];
+  if (navBtn) navBtn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ───── 口味反查 → 菜系总览 跳转联动 ───── */
+const SYS_NAMES = {
+  '01':'鲁','02':'川','03':'粤','04':'苏',
+  '05':'闽','06':'浙','07':'湘','08':'徽'
+};
+function initSysLinks() {
+  // 1) 给每个菜系卡片打上 id="sys-NN"
+  document.querySelectorAll('#systems .sys-card').forEach(card => {
+    const num = card.querySelector('.num');
+    if (num) card.id = 'sys-' + num.textContent.trim();
+  });
+  // 2) 把口味反查卡片 sc-sys 文本里的两位数字编号变成可点击链接
+  document.querySelectorAll('.sc-sys').forEach(el => {
+    el.innerHTML = el.innerHTML.replace(/(\d{2})/g, (m) => {
+      if (!SYS_NAMES[m]) return m;
+      return `<span class="sys-link" data-sys="${m}" title="查看 ${SYS_NAMES[m]}菜">${m}</span>`;
+    });
+  });
+}
+function jumpToSystem(num) {
+  show('systems');
+  const target = document.getElementById('sys-' + num);
+  if (!target) return;
+  setTimeout(() => {
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target.classList.remove('flash');
+    void target.offsetWidth;
+    target.classList.add('flash');
+    setTimeout(() => target.classList.remove('flash'), 1700);
+  }, 120);
+}
+document.addEventListener('click', e => {
+  const link = e.target.closest('.sys-link');
+  if (link) jumpToSystem(link.dataset.sys);
+});
+initSysLinks();
+
+/* ───── 口味反查筛选 ───── */
+document.getElementById('diagFilters').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  document.querySelectorAll('#diagFilters button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const f = btn.dataset.f;
+  document.querySelectorAll('#symptomGrid .symptom-card').forEach(card => {
+    card.classList.toggle('hide', f !== 'all' && card.dataset.cat !== f);
+  });
+});
+
+/* ═══════════════ 点菜计算器 ═══════════════ */
+/* 每个口味系的推荐菜单：分荤、素、汤、凉、大菜、主食 */
+const DISH_POOL = {
+  spicy: {
+    label:'辛香系（川湘）',
+    meat:['回锅肉','水煮鱼','宫保鸡丁','小炒黄牛肉','辣子鸡','毛血旺'],
+    veg :['干煸四季豆','麻婆豆腐','蒜泥白肉拌黄瓜','地三鲜','手撕包菜'],
+    cold:['夫妻肺片','口水鸡','凉拌折耳根'],
+    soup:['酸辣汤','番茄蛋汤'],
+    big :['剁椒鱼头','水煮鱼（大份）'],
+    staple:['担担面','蛋炒饭']
+  },
+  fresh: {
+    label:'鲜爽系（粤闽）',
+    meat:['白切鸡','豉油鸡','叉烧','沙茶牛肉','荔枝肉'],
+    veg :['白灼时蔬','蒜蓉炒芥兰','上汤娃娃菜','清炒丝瓜'],
+    cold:['白切猪手','凉拌海蜇'],
+    soup:['老火例汤','佛跳墙','西红柿鱼丸汤'],
+    big :['清蒸海鱼','佛跳墙','烧鹅'],
+    staple:['虾饺','肠粉','干炒牛河']
+  },
+  pure: {
+    label:'本味系（苏浙）',
+    meat:['东坡肉','龙井虾仁','盐水鸭','响油鳝糊'],
+    veg :['清炒河虾仁','油焖春笋','清炒荷兰豆','蟹粉豆腐'],
+    cold:['白斩鸡','糟毛豆','醉鸡'],
+    soup:['腌笃鲜','宋嫂鱼羹','大煮干丝'],
+    big :['松鼠鳜鱼','清炖蟹粉狮子头'],
+    staple:['阳春面','片儿川']
+  },
+  rich: {
+    label:'醇厚系（鲁徽）',
+    meat:['把子肉','九转大肠','锅塌里脊','红烧划水'],
+    veg :['油焖大虾','拔丝山药','炒合菜','问政山笋'],
+    cold:['酱牛肉','拌海蜇头'],
+    soup:['清汤燕菜','奶汤蒲菜','一品锅'],
+    big :['葱烧海参','糖醋鲤鱼','臭鳜鱼'],
+    staple:['炸酱面','锅贴']
+  }
+};
+/* “不挑”模式：从四系各取，凑出经典通用一桌 */
+const ALL_POOL = {
+  label:'综合（八大皆有）',
+  meat:['回锅肉','白切鸡','宫保鸡丁','东坡肉','把子肉','叉烧'],
+  veg :['麻婆豆腐','白灼时蔬','地三鲜','油焖春笋','蒜蓉娃娃菜'],
+  cold:['夫妻肺片','酱牛肉','凉拌黄瓜'],
+  soup:['酸辣汤','老火例汤','番茄蛋汤'],
+  big :['松鼠鳜鱼','剁椒鱼头','葱烧海参'],
+  staple:['蛋炒饭','担担面']
+};
+
+const slider = document.getElementById('kmSlider');
+const kmDisplay = document.getElementById('kmDisplay');
+const kmEdit = document.getElementById('kmEdit');
+const cfgHost = document.getElementById('cfgHost');
+const cfgSoup = document.getElementById('cfgSoup');
+const cfgVeg  = document.getElementById('cfgVeg');
+
+let people = 6;
+let flavor = 'all';
+const SLIDER_MAX = 20;
+
+function setKm(v){               // 沿用原入口名，便于 HTML 快捷按钮调用
+  people = Math.max(1, Math.min(99, Math.round(v) || 1));
+  slider.value = Math.min(people, SLIDER_MAX);
+  renderCalc();
+}
+
+/* ── 点击人数 → 切换为输入框 ── */
+function openKmEdit(){
+  kmEdit.value = people;
+  kmDisplay.style.display = 'none';
+  kmEdit.style.display = 'block';
+  kmEdit.focus(); kmEdit.select();
+}
+function commitKmEdit(){
+  const v = parseInt(kmEdit.value, 10);
+  if (!isNaN(v)) setKm(v);
+  kmEdit.style.display = 'none';
+  kmDisplay.style.display = 'inline-flex';
+}
+let escaping = false;
+function cancelKmEdit(){
+  escaping = true;
+  kmEdit.style.display = 'none';
+  kmDisplay.style.display = 'inline-flex';
+  renderCalc();
+}
+kmDisplay.addEventListener('click', openKmEdit);
+kmEdit.addEventListener('blur', () => { if (escaping){ escaping=false; return; } commitKmEdit(); });
+kmEdit.addEventListener('keydown', e => {
+  if (e.key === 'Enter'){ e.preventDefault(); kmEdit.blur(); }
+  if (e.key === 'Escape'){ cancelKmEdit(); kmEdit.blur(); }
+});
+
+/* ── 口味系选择 ── */
+document.getElementById('flavorPick').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  document.querySelectorAll('#flavorPick button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  flavor = btn.dataset.flavor;
+  renderCalc();
+});
+
+/* 从池子里不重复抽 n 道菜 */
+function pick(arr, n, used){
+  const out = [];
+  const pool = arr.filter(x => !used.has(x));
+  while (out.length < n && pool.length){
+    const i = Math.floor(Math.random() * pool.length);
+    const dish = pool.splice(i,1)[0];
+    out.push(dish); used.add(dish);
+  }
+  return out;
+}
+
+function fmtMoney(n){ return '¥' + Math.round(n).toLocaleString('en-US'); }
+
+/* 人均预算档：按是否宴请粗估（仅作预期，不是报价） */
+function perCapita(){
+  // 家常 60–90，宴请 120–200；这里取中位并随人数略降（人多分摊大菜更划算）
+  const base = cfgHost.checked ? 160 : 75;
+  const scale = people >= 8 ? 0.9 : 1;
+  return Math.round(base * scale);
+}
+
+function renderCalc(){
+  kmDisplay.innerHTML = people + '<span class="km-unit">人</span><span class="edit-hint">✎ 点击输入</span>';
+
+  // ── 总菜量：人均一道，向上取整 + 凑整经验 ──
+  let total = people <= 2 ? people + 1 : Math.ceil(people * 1.0) + 1;
+  if (cfgHost.checked) total += 1;            // 宴请多一道大菜
+  total = Math.max(3, Math.min(total, 16));   // 合理区间
+
+  // ── 荤素汤搭配 ──
+  let soupN = cfgSoup.checked ? (people >= 8 ? 2 : 1) : 0;
+  let coldN = people >= 4 ? 1 : 0;            // 4 人以上配一道凉菜开胃
+  let bigN  = cfgHost.checked ? 1 : 0;
+  let rest  = Math.max(0, total - soupN - coldN - bigN);
+  let vegN, meatN;
+  if (cfgVeg.checked){
+    vegN  = Math.round(rest * 0.42);          // 荤略多于素，符合多数人习惯
+    meatN = rest - vegN;
+  } else {
+    meatN = Math.round(rest * 0.75);
+    vegN  = rest - meatN;
+  }
+
+  // ── 抽具体菜 ──
+  const pool = (flavor === 'all') ? ALL_POOL : DISH_POOL[flavor];
+  const used = new Set();
+  const bigList   = pick(pool.big,  bigN,  used);
+  const meatList  = pick(pool.meat, meatN, used);
+  const vegList   = pick(pool.veg,  vegN,  used);
+  const coldList  = pick(pool.cold, coldN, used);
+  const soupList  = pick(pool.soup, soupN, used);
+
+  // ── 统计卡片 ──
+  document.getElementById('statMust').textContent = total;
+  document.getElementById('statCheck').textContent = `${meatN+bigN} / ${vegN} / ${soupN}`;
+  const pc = perCapita();
+  document.getElementById('statCost').textContent = fmtMoney(pc) + '/人';
+
+  // ── 渲染结果 ──
+  const box = document.getElementById('calcResult');
+  let html = '';
+
+  const block = (title, arr, badgeCls, badgeTxt, note) => {
+    if (!arr.length) return '';
+    let s = `<div class="calc-tier-title">${title} <span class="cnt">${arr.length}</span></div>`;
+    arr.forEach(name => {
+      s += `<div class="calc-item">
+        <span class="ci-badge"><span class="badge ${badgeCls}">${badgeTxt}</span></span>
+        <div class="ci-main">
+          <div class="ci-name">${name}</div>
+          <div class="ci-note">${note}</div>
+        </div>
+      </div>`;
+    });
+    return s;
+  };
+
+  html += block('镇场大菜', bigList, 'badge-must', '大菜', '一桌的门面，多人分食最划算');
+  html += block('荤菜', meatList, 'badge-must', '荤', '有肉有滋味，配饭的主力');
+  html += block('素菜 / 时蔬', vegList, 'badge-check', '素', '解腻、配色，平衡整桌口感');
+  html += block('凉菜', coldList, 'badge-opt', '凉', '开胃头菜，先上桌垫垫');
+  html += block('汤', soupList, 'badge-check', '汤', '润口收尾，辣味餐尤其需要');
+
+  if (!html){
+    html = '<div class="calc-empty">把人数和口味选好，这里会给出一桌的搭配建议。</div>';
+  }
+
+  // ── 一句话搭配点评 ──
+  const flavorName = pool.label;
+  let tip = '';
+  if (people <= 2){
+    tip = `两三个人不用贪多，${total} 道刚好——点菜诀窍是「宁可少点再加，别一次点满吃不完」。`;
+  } else if (people >= 10){
+    tip = `${people} 人是大桌，${total} 道菜按「人手一筷都能夹到」来配，大菜和汤可点大份分食。`;
+  } else {
+    tip = `${people} 人配 ${total} 道，荤素相间、有凉有汤，是${flavorName}最稳的一桌结构。`;
+  }
+  html += `<div class="next-service">
+    <div class="ns-icon">▸</div>
+    <div class="ns-body">
+      <div class="ns-title">搭配建议 · 口味偏向 <b>${flavorName}</b></div>
+      <div class="ns-items">${tip}</div>
+    </div>
+  </div>`;
+
+  box.innerHTML = html;
+}
+
+slider.addEventListener('input', () => setKm(parseInt(slider.value, 10)));
+[cfgHost, cfgSoup, cfgVeg].forEach(c => c.addEventListener('change', renderCalc));
+renderCalc();
+</script>
+</body>
+</html>
