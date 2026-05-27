@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自费疫苗速查 · 狂犬 / 乙肝 / 九价HPV / 流感</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@500;700&display=swap');
+
+  :root{
+    --ink:#16191c;
+    --ink-soft:#3a4046;
+    --muted:#6b7178;
+    --paper:#f4f1ea;
+    --card:#ffffff;
+    --line:#d9d3c6;
+    --line-strong:#b8b0a0;
+    --rabies:#b23a2e;
+    --hbv:#1f6f54;
+    --hpv:#6a3d8c;
+    --flu:#1f5d8c;
+    --warn-bg:#fdf3e3;
+    --warn-line:#e0a94d;
+    --warn-ink:#8a5a12;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 12% -5%, rgba(178,58,46,.04), transparent 35%),
+      radial-gradient(circle at 90% 4%, rgba(31,93,140,.04), transparent 30%),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Noto Sans SC',system-ui,sans-serif;
+    font-weight:400;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px 90px;}
+
+  /* ---------- header ---------- */
+  header.top{
+    padding:54px 0 30px;
+    border-bottom:2px solid var(--ink);
+    margin-bottom:6px;
+  }
+  .kicker{
+    font-family:'JetBrains Mono',monospace;
+    font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:14px;
+  }
+  h1{
+    font-family:'Noto Serif SC',serif;font-weight:900;
+    font-size:clamp(2.1rem,5.5vw,3.3rem);
+    line-height:1.1;margin:0 0 16px;letter-spacing:-.01em;
+  }
+  h1 .sub{display:block;font-size:.42em;font-weight:600;color:var(--ink-soft);letter-spacing:.04em;margin-top:10px;}
+  .lede{max-width:62ch;color:var(--ink-soft);font-size:1.02rem;}
+  .lede b{color:var(--ink);font-weight:700;}
+
+  /* ---------- nav pills (tab switch) ---------- */
+  nav.jump{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 4px;}
+  nav.jump button{
+    font-family:inherit;cursor:pointer;
+    font-size:.9rem;font-weight:500;
+    padding:8px 16px;border-radius:999px;border:1.5px solid var(--line-strong);
+    color:var(--ink);background:var(--card);transition:.18s;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  nav.jump button .dot{width:9px;height:9px;border-radius:50%;}
+  nav.jump button:hover{transform:translateY(-2px);box-shadow:0 5px 14px rgba(0,0,0,.08);}
+  nav.jump button.active{
+    background:#1b1e21;color:#f1ede4;border-color:#1b1e21;
+    box-shadow:0 6px 16px -6px rgba(0,0,0,.4);
+  }
+  .d-rabies{background:var(--rabies);} .d-hbv{background:var(--hbv);}
+  .d-hpv{background:var(--hpv);} .d-flu{background:var(--flu);}
+
+  /* ---------- quick compare strip ---------- */
+  .strip{
+    margin:38px 0 14px;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    background:var(--card);box-shadow:0 1px 0 var(--line);
+  }
+  .strip table{width:100%;border-collapse:collapse;font-size:.9rem;}
+  .strip th,.strip td{padding:13px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  .strip thead th{
+    background:#1b1e21;color:#f1ede4;font-weight:500;font-size:.78rem;
+    letter-spacing:.04em;text-transform:uppercase;
+  }
+  .strip tbody tr:last-child td{border-bottom:none;}
+  .strip td:first-child{font-weight:700;white-space:nowrap;}
+  .strip .tag{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:middle;}
+
+  /* ---------- vaccine card ---------- */
+  section.vax{display:none;}
+  section.vax.show{display:block;animation:fadeUp .32s ease both;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  section.vax{
+    background:var(--card);border:1px solid var(--line);border-radius:18px;
+    margin-top:30px;overflow:hidden;
+    box-shadow:0 1px 2px rgba(0,0,0,.03),0 14px 30px -22px rgba(0,0,0,.25);
+    scroll-margin-top:18px;
+  }
+  .vhead{padding:26px 30px 22px;border-bottom:1px solid var(--line);position:relative;}
+  .vhead::before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;}
+  .vax[data-c="rabies"] .vhead::before{background:var(--rabies);}
+  .vax[data-c="hbv"] .vhead::before{background:var(--hbv);}
+  .vax[data-c="hpv"] .vhead::before{background:var(--hpv);}
+  .vax[data-c="flu"] .vhead::before{background:var(--flu);}
+
+  .vhead .idx{font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.2em;color:var(--muted);}
+  .vhead h2{font-family:'Noto Serif SC',serif;font-weight:900;font-size:1.72rem;margin:6px 0 4px;line-height:1.15;}
+  .vhead .en{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--muted);}
+  .vhead .oneliner{margin-top:12px;color:var(--ink-soft);font-size:.96rem;max-width:64ch;}
+
+  .vbody{padding:8px 30px 28px;}
+
+  /* rows of facts */
+  .facts{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:18px;}
+  .fact{padding:16px 18px;border-bottom:1px solid var(--line);}
+  .fact:nth-child(odd){border-right:1px solid var(--line);}
+  .fact .lab{
+    font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);font-weight:700;margin-bottom:5px;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .fact .val{font-size:.97rem;color:var(--ink);}
+  .fact .val b{font-weight:700;}
+  .fact.full{grid-column:1/-1;border-right:none;}
+
+  /* schedule visual */
+  .sched{margin:22px 0 4px;}
+  .sched h4{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-family:'JetBrains Mono',monospace;margin:0 0 14px;font-weight:700;}
+  .timeline{display:flex;align-items:flex-start;gap:0;flex-wrap:wrap;}
+  .dose{flex:1;min-width:78px;text-align:center;position:relative;padding-top:24px;}
+  .dose::before{
+    content:"";position:absolute;top:9px;left:50%;right:-50%;height:2px;background:var(--line-strong);
+  }
+  .dose:last-child::before{display:none;}
+  .dose .pip{
+    position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:20px;height:20px;border-radius:50%;border:3px solid var(--card);z-index:2;
+    box-shadow:0 0 0 2px var(--line-strong);
+  }
+  .vax[data-c="rabies"] .pip{background:var(--rabies);}
+  .vax[data-c="hbv"] .pip{background:var(--hbv);}
+  .vax[data-c="hpv"] .pip{background:var(--hpv);}
+  .vax[data-c="flu"] .pip{background:var(--flu);}
+  .dose .day{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1.05rem;margin-top:4px;}
+  .dose .note{font-size:.74rem;color:var(--muted);margin-top:2px;line-height:1.4;}
+
+  .sched .alt{margin-top:18px;padding:12px 16px;background:var(--paper);border-radius:10px;font-size:.88rem;color:var(--ink-soft);}
+  .sched .alt b{color:var(--ink);}
+
+  /* callouts */
+  .callout{
+    margin-top:20px;padding:14px 18px;border-radius:10px;
+    background:var(--warn-bg);border:1px solid var(--warn-line);
+    font-size:.9rem;color:var(--warn-ink);line-height:1.65;
+  }
+  .callout .h{font-weight:700;display:block;margin-bottom:3px;color:var(--warn-ink);}
+  .callout.neutral{background:#eef2f0;border-color:#bcccc4;color:#2c3c34;}
+  .callout.neutral .h{color:#1f4d3a;}
+
+  ul.tight{margin:8px 0 0;padding-left:18px;}
+  ul.tight li{margin-bottom:5px;}
+
+  /* types / brands block */
+  .types{margin-top:24px;}
+  .types h4{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-family:'JetBrains Mono',monospace;margin:0 0 12px;font-weight:700;}
+  .types .ttbl{width:100%;border-collapse:collapse;font-size:.85rem;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .types .ttbl th,.types .ttbl td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  .types .ttbl thead th{background:#26292d;color:#eee7da;font-weight:500;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;}
+  .types .ttbl tbody tr:last-child td{border-bottom:none;}
+  .types .ttbl tbody tr:nth-child(even){background:#faf8f3;}
+  .types .ttbl td:first-child{font-weight:700;white-space:nowrap;}
+  .types .ttbl .imp{display:inline-block;font-size:.66rem;padding:1px 7px;border-radius:999px;background:#eee;color:#555;margin-left:5px;vertical-align:middle;font-weight:500;letter-spacing:.03em;}
+  .types .ttbl .imp.dom{background:#e3efe9;color:#1f6f54;}
+  .types .ttbl .imp.imp-i{background:#e7eef5;color:#1f5d8c;}
+  .types .scroll{overflow-x:auto;}
+  .types .ttbl-note{font-size:.78rem;color:var(--muted);margin-top:8px;line-height:1.6;}
+
+  /* male benefit cards */
+  .mbox{margin-top:22px;border:1.5px solid var(--hpv);border-radius:14px;overflow:hidden;}
+  .mbox .mhead{background:var(--hpv);color:#fff;padding:12px 18px;font-weight:700;font-size:.98rem;letter-spacing:.02em;}
+  .mbox .mhead small{display:block;font-weight:400;opacity:.85;font-size:.76rem;margin-top:2px;letter-spacing:0;}
+  .mbody{padding:16px 18px;}
+  .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px;}
+  .mcard{background:#f7f2fb;border:1px solid #e3d3ef;border-radius:10px;padding:11px 13px;}
+  .mcard .mt{font-weight:700;font-size:.9rem;color:#52286f;margin-bottom:3px;}
+  .mcard .md{font-size:.82rem;color:var(--ink-soft);line-height:1.55;}
+  .mbody .mself{font-size:.88rem;color:var(--ink-soft);line-height:1.65;margin-top:4px;}
+  .mbody .mself b{color:var(--ink);}
+  @media (max-width:560px){.mgrid{grid-template-columns:1fr;}}
+
+  /* footer */
+  footer{margin-top:46px;padding-top:24px;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted);line-height:1.7;}
+  footer b{color:var(--ink-soft);}
+  .src{font-family:'JetBrains Mono',monospace;font-size:.72rem;}
+  .updated{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-top:8px;}
+
+  @media (max-width:640px){
+    .facts{grid-template-columns:1fr;}
+    .fact:nth-child(odd){border-right:none;}
+    .vhead,.vbody{padding-left:22px;padding-right:22px;}
+    .dose{min-width:64px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="kicker">Self-pay Vaccines · 自费疫苗</div>
+    <h1>四种自费疫苗速查
+      <span class="sub">狂犬 · 乙肝 · 九价HPV · 流感</span>
+    </h1>
+    <p class="lede">面向成人的接种程序、保护期与关键提醒一页看清。狂犬部分依据 <b>《狂犬病暴露预防处置工作规范（2023年版）》</b>，其余三种依据现行国家指南与产品说明书整理。具体以接种单位与疫苗说明书为准。</p>
+    <nav class="jump">
+      <button type="button" class="active" data-target="rabies"><span class="dot d-rabies"></span>狂犬病</button>
+      <button type="button" data-target="hbv"><span class="dot d-hbv"></span>乙肝</button>
+      <button type="button" data-target="hpv"><span class="dot d-hpv"></span>九价HPV</button>
+      <button type="button" data-target="flu"><span class="dot d-flu"></span>流感</button>
+    </nav>
+  </header>
+
+  <!-- QUICK COMPARE -->
+  <div class="strip">
+    <table>
+      <thead>
+        <tr><th>疫苗</th><th>主程序（成人）</th><th>保护持续</th><th>最佳/可接种时间</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag d-rabies"></span>狂犬病</td>
+          <td>5针法 0/3/7/14/28天，或 2-1-1 法（共4剂）</td>
+          <td>全程后约 1 年内再暴露多无需加强；≥3个月按 0、3 天加强</td>
+          <td>暴露后越早越好，无禁忌症</td>
+        </tr>
+        <tr>
+          <td><span class="tag d-hbv"></span>乙肝</td>
+          <td>3针 0/1/6 月</td>
+          <td>应答者一般 ≥20 年，多有免疫记忆</td>
+          <td>任意时间，无季节性</td>
+        </tr>
+        <tr>
+          <td><span class="tag d-hpv"></span>九价HPV</td>
+          <td>≥15岁：3针 0/2/6 月</td>
+          <td>已观察 ≥10 年仍维持，长期持久</td>
+          <td>越早越好，性暴露前最佳</td>
+        </tr>
+        <tr>
+          <td><span class="tag d-flu"></span>流感</td>
+          <td>成人每年 1 剂</td>
+          <td>接种 4–6 个月后保护力下降，一般不超 1 年</td>
+          <td>每年 9–10 月最佳，整个流行季可补种</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============ RABIES ============ -->
+  <section class="vax show" id="rabies" data-c="rabies">
+    <div class="vhead">
+      <div class="idx">01 / 暴露后预防 · PEP</div>
+      <h2>狂犬病疫苗</h2>
+      <div class="en">Rabies Vaccine · 暴露后免疫</div>
+      <p class="oneliner">狂犬病病死率几乎 100%，暴露后接种<b>无禁忌症</b>。是否需要打、是否加被动免疫制剂，取决于暴露分级。</p>
+    </div>
+    <div class="vbody">
+
+      <div class="facts">
+        <div class="fact">
+          <div class="lab">暴露分级</div>
+          <div class="val"><b>Ⅰ级</b>：接触/喂养、完好皮肤被舔 → 仅清洗，无需医学处置<br>
+          <b>Ⅱ级</b>：裸露皮肤轻咬、无明显出血的轻微抓擦伤 → 处置伤口 + 接种疫苗<br>
+          <b>Ⅲ级</b>：贯穿性咬抓伤、破损皮肤被舔、黏膜/开放伤口被污染、直接接触蝙蝠 → 处置伤口 + <b>被动免疫制剂</b> + 疫苗</div>
+        </div>
+        <div class="fact">
+          <div class="lab">接种部位</div>
+          <div class="val">≥2岁：上臂三角肌；<2岁：大腿前外侧。<b>避免臀部注射</b>。每剂均 1 个剂量，不分体重年龄。</div>
+        </div>
+        <div class="fact">
+          <div class="lab">伤口处理</div>
+          <div class="val">越早越好。肥皂水 + 流动清水交替冲洗约 <b>15 分钟</b>，生理盐水洗净，再用稀释碘伏消毒。</div>
+        </div>
+        <div class="fact">
+          <div class="lab">不良反应</div>
+          <div class="val">多为局部疼痛/红肿或轻微发热乏力，一般无需处理；极个别可较重，应及时就诊。</div>
+        </div>
+      </div>
+
+      <div class="sched">
+        <h4>免疫程序 A · 5针法</h4>
+        <div class="timeline">
+          <div class="dose"><span class="pip"></span><div class="day">第1针</div><div class="note">0天<br>当天</div></div>
+          <div class="dose"><span class="pip"></span><div class="day">第2针</div><div class="note">3天</div></div>
+          <div class="dose"><span class="pip"></span><div class="day">第3针</div><div class="note">7天</div></div>
+          <div class="dose"><span class="pip"></span><div class="day">第4针</div><div class="note">14天</div></div>
+          <div class="dose"><span class="pip"></span><div class="day">第5针</div><div class="note">28天</div></div>
+        </div>
+        <div class="alt"><b>免疫程序 B · “2-1-1”法（共4剂）：</b>第 0 天左右上臂三角肌<b>各注射 1 剂</b>，第 7 天、第 21 天各 1 剂。</div>
+      </div>
+
+      <div class="callout">
+        <span class="h">⚠ 被动免疫制剂（仅 Ⅲ 级 / 部分 Ⅱ 级）</span>
+        按体重一次性足量、尽量全部浸润注射至伤口周围。狂犬病人免疫球蛋白 <b>20 IU/kg</b>；抗狂犬病血清 <b>40 IU/kg</b>（注射前须做过敏试验）；单克隆抗体按批准剂量。未能当天使用者，首针后 <b>7 天内（含7天）</b> 仍可补注。被动制剂与疫苗<b>不可同部位、不可同注射器</b>。
+      </div>
+
+      <div class="callout neutral">
+        <span class="h">再次暴露处置</span>
+        全程接种后 <b>3 个月内</b>再暴露一般无需加强；<b>≥3 个月</b>者于第 0、3 天各加强 1 剂。完成全程者（除严重免疫缺陷外）再暴露<b>无需</b>被动免疫制剂。任何一次暴露都应先彻底处理伤口。
+      </div>
+
+      <div class="types">
+        <h4>疫苗种类 · 按细胞培养基质区分</h4>
+        <div class="scroll">
+        <table class="ttbl">
+          <thead><tr><th>细胞基质</th><th>特点</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Vero 细胞<span class="imp dom">市场主流</span></td>
+              <td>非洲绿猴肾细胞；可稳定大规模传代，成本低、价格亲民</td>
+              <td>当前国内占 <b>90% 以上</b>份额。国产多用 CTN-1V 株，与国内流行株同源性高</td>
+            </tr>
+            <tr>
+              <td>人二倍体细胞</td>
+              <td>人胚肺成纤维细胞（如 MRC-5/2BS）；人源细胞，无动物异源成分</td>
+              <td>第三代疫苗。抗体应答更快更优、不良反应更少，但产量低、<b>价格最高</b>（约300元/支，全程超1500元）</td>
+            </tr>
+            <tr>
+              <td>地鼠肾细胞</td>
+              <td>传统工艺，成本低</td>
+              <td>份额较小，仍在使用</td>
+            </tr>
+            <tr>
+              <td>鸡胚细胞</td>
+              <td>纯化鸡胚成纤维细胞（PCEC）</td>
+              <td>成本较高、产量难提升，主要为进口</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="ttbl-note">剂型还分<b>冻干型</b>（主流，含微量防腐剂）与<b>液体型</b>。康泰生物的人二倍体疫苗为国内首个"2-1-1"四针法、预充式剂型。四种基质的安全性与免疫效果都达标，主要差别在成本与单价；如对某工艺出现不良反应，可遵医嘱换工艺。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HBV ============ -->
+  <section class="vax" id="hbv" data-c="hbv">
+    <div class="vhead">
+      <div class="idx">02 / 慢性感染预防</div>
+      <h2>乙肝疫苗</h2>
+      <div class="en">Hepatitis B Vaccine · 重组（CHO/酵母）</div>
+      <p class="oneliner">成人若幼时未接种或抗体已阴转、且为易感者（HBsAg、抗-HBc 阴性），可自费接种。预防 HBV 感染最有效的手段。</p>
+    </div>
+    <div class="vbody">
+
+      <div class="facts">
+        <div class="fact">
+          <div class="lab">适用人群</div>
+          <div class="val">未接种或免疫失败的成人、医务人员、血透/家庭密切接触等高危人群。接种前查 <b>HBsAg / 抗-HBs / 抗-HBc</b>。</div>
+        </div>
+        <div class="fact">
+          <div class="lab">接种部位</div>
+          <div class="val">成人上臂三角肌肌内注射。可与多种疫苗同时、不同部位接种。</div>
+        </div>
+        <div class="fact">
+          <div class="lab">抗体检测</div>
+          <div class="val">全程后 1–3 个月查抗-HBs：<b>≥10 mIU/mL</b> 为成功；<b><10</b> 为无/低应答，需补种。</div>
+        </div>
+        <div class="fact">
+          <div class="lab">无/低应答处理</div>
+          <div class="val">可再按 0/1/6 加强一轮，或加大剂量；高危人群可定期监测、必要时加强。</div>
+        </div>
+      </div>
+
+      <div class="sched">
+        <h4>免疫程序 · 0/1/6 月</h4>
+        <div class="timeline">
+          <div class="dose"><span class="pip"></span><div class="day">第1针</div><div class="note">0个月</div></div>
+          <div class="dose"><span class="pip"></span><div class="day">第2针</div><div class="note">1个月后</div></div>
+          <div class="dose"><span class="pip"></span><div class="day">第3针</div><div class="note">6个月后</div></div>
+        </div>
+        <div class="alt">第 2 针后约 1 周抗-HBs 才转阳；第 3 针使抗体水平明显升高并延长保护期。全程接种是保证效果的关键。</div>
+      </div>
+
+      <div class="callout neutral">
+        <span class="h">保护期与加强</span>
+        有应答者保护效果一般<b>至少 20 年</b>，且具免疫记忆——即使抗-HBs 转阴，再次接触 HBV 也能快速产生抗体。WHO 与我国均<b>不主张</b>对全程接种且免疫成功的一般人群常规加强；仅血透、医务人员等高危群体建议每 6–12 个月监测，抗-HBs <10 mIU/mL 时加强。
+      </div>
+
+      <div class="callout">
+        <span class="h">⚠ 禁忌 / 慎用</span>
+        对疫苗成分（含辅料、甲醛、抗生素）过敏者禁用；急性病、严重慢性病、慢性病急性发作期、发热者暂缓；妊娠期一般不接种。
+      </div>
+
+      <div class="types">
+        <h4>疫苗种类 · 按工艺与剂量区分</h4>
+        <div class="scroll">
+        <table class="ttbl">
+          <thead><tr><th>类型</th><th>常见剂量</th><th>程序与说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>重组（酿酒酵母）</td>
+              <td>5 / 10 / 20 μg</td>
+              <td>最普遍的技术路线，0/1/6 三针。成人多用 20μg</td>
+            </tr>
+            <tr>
+              <td>重组（汉逊酵母）</td>
+              <td>10 / 20 μg</td>
+              <td>头对头研究中 10μg 抗体阳性率、滴度略优于同剂量其他两种</td>
+            </tr>
+            <tr>
+              <td>重组（CHO 细胞）</td>
+              <td>10 / 20 μg</td>
+              <td>哺乳动物细胞表达，与人体更接近；20μg 用于母婴阻断/成人</td>
+            </tr>
+            <tr>
+              <td>60μg 大剂量<span class="imp">便捷程序</span></td>
+              <td>60 μg</td>
+              <td>国产，针对成人。初免 <b>0/2 两针</b>；对无/低应答者<b>加强仅需 1 针</b>，阳转率高，提升依从性</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="ttbl-note">三种工艺只是表达载体不同，最终都是表面抗原，效果无本质差异，仅用量略有差别；常规免疫中<b>可替代使用</b>，但仍建议尽量全程同一品种。市场上不同厂家、剂量排列组合可选产品超过 10 款。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HPV ============ -->
+  <section class="vax" id="hpv" data-c="hpv">
+    <div class="vhead">
+      <div class="idx">03 / 宫颈癌 & HPV相关肿瘤预防</div>
+      <h2>HPV 疫苗（含九价）</h2>
+      <div class="en">2 / 4 / 9-valent HPV · 国产 & 进口</div>
+      <p class="oneliner">预防 HPV 持续感染所致宫颈癌等多种肿瘤。国内已上市二价、四价、九价共多款；九价覆盖 <b>90% 以上</b>宫颈癌相关型别。2025 年起四价、九价相继获批<b>男性</b>接种。</p>
+    </div>
+    <div class="vbody">
+
+      <div class="facts">
+        <div class="fact">
+          <div class="lab">适用人群</div>
+          <div class="val">女性 <b>9–45 岁</b>；男性 <b>16–26 岁</b>（2025年进口获批）。越早、性暴露前接种效果最佳。</div>
+        </div>
+        <div class="fact">
+          <div class="lab">接种部位</div>
+          <div class="val">上臂三角肌肌内注射。孕期不接种；接种中发现妊娠则推迟剩余剂次至产后。</div>
+        </div>
+        <div class="fact">
+          <div class="lab">品牌一致性</div>
+          <div class="val">建议全程使用<b>同一种</b> HPV 疫苗完成所有剂次。</div>
+        </div>
+        <div class="fact">
+          <div class="lab">仍需筛查</div>
+          <div class="val">接种是一级预防，<b>不能替代</b>宫颈癌筛查；二者结合保护最佳。</div>
+        </div>
+      </div>
+
+      <div class="sched">
+        <h4>免疫程序 · ≥15岁（成人主流）3针 0/2/6 月</h4>
+        <div class="timeline">
+          <div class="dose"><span class="pip"></span><div class="day">第1针</div><div class="note">0个月</div></div>
+          <div class="dose"><span class="pip"></span><div class="day">第2针</div><div class="note">1–2个月后</div></div>
+          <div class="dose"><span class="pip"></span><div class="day">第3针</div><div class="note">6个月后</div></div>
+        </div>
+        <div class="alt"><b>9–14岁女性</b>可选 <b>2 剂程序</b>（0、6–12 月，最小间隔 5 个月）；<b>免疫功能低下者</b>无论年龄均按 3 剂。最小间隔：1↔2 针 ≥4 周，2↔3 针 ≥12 周，1↔3 针 ≥5 个月，过早接种需补种。</div>
+      </div>
+
+      <div class="callout neutral">
+        <span class="h">保护期</span>
+        临床随访显示高滴度抗体可维持 <b>10 年以上</b>，属长期持久型；目前指南<b>未推荐</b>常规加强针。
+      </div>
+
+      <div class="callout">
+        <span class="h">⚠ 不要盲目等更高价数</span>
+        低龄接种效果优于高龄。虽然九价放宽了年龄，但为「等更广覆盖」而推迟接种，可能错过最佳预防时机。
+      </div>
+
+      <div class="types">
+        <h4>已上市疫苗 · 价数 / 厂家 / 适用人群</h4>
+        <div class="scroll">
+        <table class="ttbl">
+          <thead><tr><th>价数 · 商品名</th><th>厂家</th><th>覆盖型别</th><th>适用 / 程序</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>二价 · 馨可宁<span class="imp">国产</span></td>
+              <td>万泰生物（厦大）</td>
+              <td>16/18</td>
+              <td>女 9–45；9–14岁可<b>2剂</b>(0/6)，余 3 剂</td>
+            </tr>
+            <tr>
+              <td>二价 · 沃泽惠<span class="imp">国产</span></td>
+              <td>沃森生物</td>
+              <td>16/18</td>
+              <td>女 9–45；低龄 2 剂，余 3 剂</td>
+            </tr>
+            <tr>
+              <td>二价 · 希瑞适<span class="imp imp-i">进口</span></td>
+              <td>GSK 葛兰素史克</td>
+              <td>16/18</td>
+              <td>女 9–45；0/1/6 三剂</td>
+            </tr>
+            <tr>
+              <td>四价 · 佳达修<span class="imp imp-i">进口</span></td>
+              <td>默沙东（智飞代理）</td>
+              <td>6/11/16/18</td>
+              <td>女 9–45；<b>男 9–26</b>；0/2/6 三剂</td>
+            </tr>
+            <tr>
+              <td>九价 · 佳达修9<span class="imp imp-i">进口</span></td>
+              <td>默沙东（智飞代理）</td>
+              <td>+31/33/45/52/58</td>
+              <td>女 9–45、<b>男 16–26</b>；9–14岁2剂，余3剂</td>
+            </tr>
+            <tr>
+              <td>九价 · 馨可宁9<span class="imp">国产·新</span></td>
+              <td>万泰生物（厦大）</td>
+              <td>同上 9 种型别</td>
+              <td>2025获批，女 9–45；9–17岁2剂，18–45岁3剂；价格约进口40%</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="ttbl-note">二价防 16/18（约 70% 宫颈癌）；四价加 6/11（防尖锐湿疣）；九价再加 5 种高危型，覆盖宫颈癌相关型别 90% 以上。低龄"黄金年龄"(9–14岁)抗体应答是 25 岁以上的 2–3 倍。更高价数（11/14/15 价）仍在临床。具体年龄/剂次以各产品说明书为准。</div>
+      </div>
+
+      <div class="mbox">
+        <div class="mhead">男性接种 HPV，有什么用？
+          <small>2025年四价(男9–26)、九价(男16–26)相继获批 · WHO 主张"男女共防"</small>
+        </div>
+        <div class="mbody">
+          <div class="mgrid">
+            <div class="mcard"><div class="mt">① 防自身癌症</div><div class="md">高危型(16/18等)持续感染可致<b>肛门癌、阴茎癌、口咽癌</b>。男性感染率高、自我清除慢，却无常规筛查。</div></div>
+            <div class="mcard"><div class="mt">② 防尖锐湿疣</div><div class="md">低危型 6/11 引起<b>生殖器疣</b>——高传染、易复发，影响生活质量；四价/九价均覆盖。</div></div>
+            <div class="mcard"><div class="mt">③ 保护伴侣</div><div class="md">HPV 主要经性接触传播。男性接种<b>切断传播链</b>，降低女性伴侣宫颈癌、外阴癌风险。</div></div>
+            <div class="mcard"><div class="mt">④ 群体免疫</div><div class="md">已有 51 个国家实行<b>性别中立</b>接种策略；男女共防加速整体 HPV 相关疾病下降。</div></div>
+          </div>
+          <div class="mself">男性获批适应证明确包含：HPV16/18 所致<b>肛门癌</b>、HPV6/11 所致<b>生殖器疣</b>，以及 6/11/16/18 所致的 1–3 级肛门上皮内瘤样病变(AIN)。男男性行为者、HIV 感染者等高危人群获益更突出。注意：疫苗仅预防、<b>不能治疗</b>已有感染。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FLU ============ -->
+  <section class="vax" id="flu" data-c="flu">
+    <div class="vhead">
+      <div class="idx">04 / 季节性 · 每年一次</div>
+      <h2>流感疫苗</h2>
+      <div class="en">Influenza Vaccine · 2025–2026 季 · 已转三价(TIV)</div>
+      <p class="oneliner">流感病毒抗原年年漂变，疫苗保护期短——这是它与其他三种最大的不同：<b>需要每年接种一次</b>。</p>
+    </div>
+    <div class="vbody">
+
+      <div class="facts">
+        <div class="fact">
+          <div class="lab">成分更新</div>
+          <div class="val">2025–2026 季全球转向<b>三价</b>（甲H1N1、甲H3N2〔本年更新〕、乙Victoria）。B/Yamagata 自 2020 年起未再检出，已移除。</div>
+        </div>
+        <div class="fact">
+          <div class="lab">接种程序（成人）</div>
+          <div class="val">每流行季 <b>1 剂</b>，同季全程接种者无需重复。6月龄–8岁首次接种灭活苗需 2 剂、间隔≥4周。</div>
+        </div>
+        <div class="fact">
+          <div class="lab">起效时间</div>
+          <div class="val">接种后 <b>2–4 周</b>产生保护性抗体，6–8 周达峰。</div>
+        </div>
+        <div class="fact">
+          <div class="lab">接种方式</div>
+          <div class="val">灭活苗(IIV)肌内注射，成人上臂三角肌；减毒活苗(LAIV)鼻喷，<b>严禁注射</b>，限 3–17 岁。</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <span class="h">⏱ 保护期 —— 你问的核心</span>
+        即使毒株不变、成分相同，接种 <b>4–6 个月后</b>保护力即可能下降，<b>保护力一般不超过 1 年</b>。叠加病毒年年变异，故<b>建议每年接种 1 次</b>。
+      </div>
+
+      <div class="callout neutral">
+        <span class="h">📅 接种时间</span>
+        我国流感高发季约为 <b>11 月至次年 3 月</b>。最佳接种时间为每年 <b>9–10 月</b>，争取在流行季前完成免疫；错过也没关系——<b>整个流行季（11 月、12 月乃至次年 1 月）接种仍有意义</b>，接种后 2–4 周即获抗体。
+      </div>
+
+      <div class="callout">
+        <span class="h">⚠ 禁忌</span>
+        对疫苗任一成分（辅料、甲醛、裂解剂、抗生素）过敏，或既往任一流感疫苗严重过敏史者禁用。
+      </div>
+
+      <div class="types">
+        <h4>疫苗种类 · 价数 / 工艺 / 剂型</h4>
+        <div class="scroll">
+        <table class="ttbl">
+          <thead><tr><th>类型</th><th>简称</th><th>适用 / 说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>三价灭活<span class="imp dom">本季主流</span></td>
+              <td>IIV3</td>
+              <td>2025–26 季全球转回三价（甲H1N1、甲H3N2、乙Victoria）。肌内注射，≥6 月龄</td>
+            </tr>
+            <tr>
+              <td>四价灭活</td>
+              <td>IIV4</td>
+              <td>较三价多一个乙型系；因 B/Yamagata 已消失，本季多数转三价</td>
+            </tr>
+            <tr>
+              <td>三价减毒活疫苗</td>
+              <td>LAIV3</td>
+              <td><b>鼻喷，严禁注射</b>，限 3–17 岁；孕妇、免疫缺陷者禁用</td>
+            </tr>
+            <tr>
+              <td>裂解 / 亚单位</td>
+              <td>—</td>
+              <td>灭活苗的两种工艺；另有高剂量、佐剂型等针对老年人的剂型</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="ttbl-note">国内多家厂商（科兴、华兰、国药、赛诺菲等）均有不同价数与剂型产品。优先级：当季任一种正规流感疫苗都建议尽早接种，不必为特定价数/品牌而推迟。</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <b>资料来源：</b>狂犬部分依据《狂犬病暴露预防处置工作规范（2023年版）》（国家疾控局，2023-09-14）及中检院批签发数据；流感依据《中国流感疫苗预防接种技术指南（2025—2026）》（中国疾控中心）；乙肝依据中国疾控中心乙肝问答、成人头对头免疫原性研究及厂家说明书；HPV 各价数/厂家依据国家药监局获批信息、默沙东/万泰公告、各地疾控公告（含 2025 年男性适应证获批与国产九价馨可宁9 上市）。<br>
+    本页为科普速查，<b>不构成个体化医疗建议</b>。是否接种、具体程序、禁忌评估请以接种单位、疫苗说明书及医师面诊为准。
+    <div class="updated">UPDATED · 2026-05 · OPENCLAW</div>
+  </footer>
+
+</div>
+<script>
+  (function(){
+    const buttons = document.querySelectorAll('nav.jump button');
+    const sections = document.querySelectorAll('section.vax');
+    buttons.forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const id = btn.dataset.target;
+        buttons.forEach(b=>b.classList.toggle('active', b===btn));
+        sections.forEach(s=>{
+          s.classList.remove('show');
+          if(s.id===id){
+            // retrigger fade animation
+            void s.offsetWidth;
+            s.classList.add('show');
+          }
+        });
+      });
+    });
+  })();
+</script>
+</body>
+</html>
