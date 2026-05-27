@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOLM 峡谷攻略手册</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Noto+Serif+SC:wght@400;600;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e14;
+    --bg2:#0f1620;
+    --panel:#121a26;
+    --panel2:#16202e;
+    --gold:#c8aa6e;
+    --gold-bright:#f0e6d2;
+    --gold-dim:#785a28;
+    --teal:#0ac8b9;
+    --teal-dim:#0a5c64;
+    --blue:#0397ab;
+    --red:#c8443c;
+    --red-bright:#ff5c52;
+    --line:#1e2a3a;
+    --txt:#a09b8c;
+    --txt-bright:#cdbe91;
+    --top:#d4843c;
+    --jg:#5fc97a;
+    --mid:#c85cd4;
+    --bot:#e0c04a;
+    --sup:#4a9fe0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(10,200,185,0.08), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 90% 100%, rgba(200,68,60,0.06), transparent 60%),
+      linear-gradient(160deg, var(--bg), var(--bg2));
+    color:var(--txt);
+    font-family:'Rajdhani','Noto Serif SC',sans-serif;
+    min-height:100vh;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:
+      linear-gradient(rgba(200,170,110,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,170,110,0.025) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(ellipse 70% 70% at 50% 30%, black, transparent 90%);
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px;position:relative;z-index:1}
+
+  /* ===== HEADER ===== */
+  header{padding:60px 0 30px;text-align:center;position:relative}
+  .kicker{
+    font-family:'Cinzel',serif;letter-spacing:.5em;font-size:.72rem;
+    color:var(--gold-dim);text-transform:uppercase;margin-bottom:14px;padding-left:.5em;
+  }
+  h1{
+    font-family:'Cinzel',serif;font-weight:900;font-size:clamp(2.4rem,6vw,4.2rem);
+    color:var(--gold-bright);letter-spacing:.04em;line-height:1.05;
+    text-shadow:0 0 30px rgba(200,170,110,0.25);
+  }
+  h1 .accent{color:var(--gold);display:block;font-size:.42em;letter-spacing:.3em;margin-top:10px;font-weight:500}
+  .deco-line{
+    width:200px;height:2px;margin:26px auto 8px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);position:relative;
+  }
+  .deco-line::before{
+    content:'◆';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    color:var(--gold);font-size:.7rem;background:var(--bg);padding:0 10px;
+  }
+  .sub{font-size:.92rem;color:var(--txt);max-width:560px;margin:0 auto;letter-spacing:.05em}
+
+  /* ===== NAV ===== */
+  nav{
+    position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+    padding:14px 0;margin:24px 0 10px;
+    background:linear-gradient(180deg, rgba(10,14,20,0.96), rgba(10,14,20,0.78));
+    backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  nav a{
+    font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--txt-bright);text-decoration:none;padding:8px 16px;border:1px solid transparent;
+    border-radius:2px;transition:.25s;position:relative;
+  }
+  nav a:hover{color:var(--gold-bright);border-color:var(--gold-dim);background:rgba(200,170,110,0.06)}
+
+  /* ===== SECTION ===== */
+  section{padding:48px 0 20px;scroll-margin-top:70px}
+  .sec-head{display:flex;align-items:center;gap:18px;margin-bottom:34px}
+  .sec-num{
+    font-family:'Cinzel',serif;font-weight:900;font-size:2.6rem;color:var(--gold-dim);
+    line-height:1;opacity:.55;
+  }
+  .sec-title h2{
+    font-family:'Cinzel',serif;font-weight:700;font-size:1.65rem;color:var(--gold-bright);letter-spacing:.05em;
+  }
+  .sec-title p{font-size:.82rem;color:var(--txt);letter-spacing:.04em}
+  .sec-head::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--gold-dim),transparent)}
+
+  /* ===== LANE FILTER (col 1) ===== */
+  .lane-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+  .lane-tab{
+    font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;
+    padding:9px 18px;border:1px solid var(--line);background:var(--panel);color:var(--txt-bright);
+    cursor:pointer;transition:.22s;border-radius:2px;
+  }
+  .lane-tab:hover{border-color:var(--gold-dim)}
+  .lane-tab.active{background:var(--gold);color:#0a0e14;border-color:var(--gold);font-weight:700}
+
+  .hero-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+  .hero-card{
+    background:linear-gradient(155deg,var(--panel),var(--panel2));
+    border:1px solid var(--line);border-radius:4px;padding:16px 16px 15px;
+    position:relative;overflow:hidden;transition:.28s;
+  }
+  .hero-card::before{
+    content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--laneclr,var(--gold));
+  }
+  .hero-card:hover{transform:translateY(-3px);border-color:var(--gold-dim);box-shadow:0 8px 30px rgba(0,0,0,.45)}
+  .hc-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+  .hc-name{font-family:'Noto Serif SC',serif;font-weight:900;font-size:1.12rem;color:var(--gold-bright)}
+  .hc-role{
+    font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--laneclr,var(--gold));border:1px solid var(--laneclr,var(--gold));
+    padding:2px 7px;border-radius:2px;white-space:nowrap;opacity:.9;
+  }
+  .hc-tag{font-size:.7rem;color:var(--teal);letter-spacing:.05em;margin-bottom:8px;font-weight:600}
+  .hc-desc{font-size:.82rem;color:var(--txt);line-height:1.55}
+  .hc-rune{
+    margin-top:10px;padding-top:9px;border-top:1px dashed var(--line);
+    font-size:.72rem;color:var(--txt);letter-spacing:.04em;display:flex;align-items:center;gap:5px;
+  }
+  .hc-rune b{color:var(--teal);font-weight:700;font-family:'Noto Serif SC',serif}
+  .rune-ic{color:var(--gold);font-size:.8rem}
+
+  /* ===== RUNES SECTION ===== */
+  .rune-intro{
+    background:linear-gradient(135deg,rgba(200,170,110,.06),rgba(15,22,32,.4));
+    border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:4px;
+    padding:14px 20px;margin-bottom:22px;font-size:.86rem;color:var(--txt-bright);line-height:1.65;
+  }
+  .rune-intro b{color:var(--gold-bright)}
+  .rune-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:18px}
+  .rune-sys{
+    background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);
+    border-top:3px solid var(--rc,var(--gold));border-radius:5px;padding:18px 20px;
+  }
+  .rs-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .rs-ic{
+    width:36px;height:36px;border-radius:5px;display:grid;place-items:center;flex-shrink:0;
+    background:rgba(10,14,20,.5);border:1px solid var(--rc,var(--gold));font-size:1.1rem;color:var(--rc,var(--gold));
+  }
+  .rs-head h3{font-family:'Cinzel',serif;font-size:1.15rem;color:var(--gold-bright);letter-spacing:.05em}
+  .rs-head span{font-size:.68rem;color:var(--rc,var(--gold));letter-spacing:.15em}
+  .rs-def{font-size:.8rem;color:var(--txt-bright);margin-bottom:10px;padding-bottom:9px;border-bottom:1px dashed var(--line);line-height:1.5}
+  .rune-sys ul{list-style:none}
+  .rune-sys li{font-size:.8rem;padding:5px 0 5px 16px;position:relative;color:var(--txt);line-height:1.5}
+  .rune-sys li::before{content:'◈';position:absolute;left:0;color:var(--rc,var(--gold));font-size:.65rem;top:7px}
+  .rune-sys li b{color:var(--gold-bright);font-weight:600}
+  .rune-tip{
+    background:linear-gradient(135deg,rgba(10,200,185,.07),rgba(15,22,32,.4));
+    border:1px solid var(--teal-dim);border-radius:5px;padding:14px 20px;font-size:.84rem;color:var(--txt-bright);line-height:1.65;
+  }
+  .rune-tip b{color:var(--teal)}
+
+  /* ===== TIPS SECTION ===== */
+  .tip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  .tip-card{
+    background:linear-gradient(155deg,var(--panel),var(--panel2));border:1px solid var(--line);
+    border-left:3px solid var(--tc,var(--gold));border-radius:5px;padding:18px 20px 16px;
+  }
+  .tip-card h4{font-family:'Cinzel',serif;font-size:1.02rem;color:var(--gold-bright);letter-spacing:.04em;margin-bottom:11px;display:flex;align-items:center;gap:9px}
+  .tip-card h4 span{font-size:1.15rem}
+  .tip-card ul{list-style:none}
+  .tip-card li{font-size:.82rem;padding:6px 0 6px 18px;position:relative;color:var(--txt);line-height:1.55}
+  .tip-card li::before{content:'▸';position:absolute;left:0;color:var(--tc,var(--gold));top:6px}
+  .tip-card li b{color:var(--gold-bright);font-weight:600}
+  .hero-card[hidden]{display:none}
+
+  /* ===== LANE TACTICS (col 2) ===== */
+  .tactics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}
+  .tac-card{
+    background:linear-gradient(160deg,var(--panel),rgba(15,22,32,0.6));
+    border:1px solid var(--line);border-radius:5px;padding:0;overflow:hidden;
+  }
+  .tac-head{
+    padding:16px 20px;display:flex;align-items:center;gap:12px;
+    background:linear-gradient(90deg,var(--laneclr,var(--gold)),transparent 85%);
+    border-bottom:1px solid var(--line);
+  }
+  .tac-icon{
+    width:34px;height:34px;border-radius:3px;display:grid;place-items:center;
+    background:rgba(10,14,20,.55);border:1px solid rgba(255,255,255,.15);
+    font-family:'Cinzel',serif;font-weight:900;color:#0a0e14;font-size:1rem;
+  }
+  .tac-head h3{font-family:'Cinzel',serif;font-size:1.1rem;color:#0a0e14;letter-spacing:.06em;text-shadow:0 1px 0 rgba(255,255,255,.15)}
+  .tac-head .en{font-size:.62rem;letter-spacing:.2em;color:rgba(10,14,20,.7);text-transform:uppercase}
+  .tac-body{padding:18px 20px}
+  .tac-body .role-def{font-size:.84rem;color:var(--txt-bright);margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed var(--line)}
+  .tac-body ul{list-style:none}
+  .tac-body li{font-size:.84rem;padding:6px 0 6px 20px;position:relative;color:var(--txt)}
+  .tac-body li::before{content:'▸';position:absolute;left:0;color:var(--laneclr,var(--gold));font-size:.8rem;top:6px}
+  .tac-body li b{color:var(--gold-bright);font-weight:600}
+
+  /* ===== MAP / RESOURCES (col 3) ===== */
+  .map-layout{display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start}
+  .map-vis{
+    background:radial-gradient(circle at 30% 70%, rgba(10,200,185,.07), transparent 55%),
+              radial-gradient(circle at 70% 30%, rgba(200,68,60,.07), transparent 55%),
+              var(--panel);
+    border:1px solid var(--line);border-radius:6px;padding:18px;position:sticky;top:78px;
+  }
+  .map-vis svg{width:100%;height:auto;display:block}
+  .map-cap{font-size:.7rem;color:var(--txt);text-align:center;margin-top:10px;letter-spacing:.05em;font-style:italic}
+
+  .res-table{width:100%;border-collapse:collapse;font-size:.84rem}
+  .res-table thead th{
+    font-family:'Cinzel',serif;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--gold);text-align:left;padding:11px 12px;border-bottom:2px solid var(--gold-dim);
+  }
+  .res-table tbody tr{border-bottom:1px solid var(--line);transition:.2s}
+  .res-table tbody tr:hover{background:rgba(200,170,110,.045)}
+  .res-table td{padding:11px 12px;vertical-align:top}
+  .res-name{font-family:'Noto Serif SC',serif;font-weight:600;color:var(--gold-bright);font-size:.92rem;display:flex;align-items:center;gap:8px}
+  .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;box-shadow:0 0 8px currentColor}
+  .res-time{color:var(--teal);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .res-int{color:var(--txt-bright);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .res-note{color:var(--txt);font-size:.78rem;line-height:1.45}
+  .res-table .epic td{background:rgba(200,68,60,.06)}
+
+  /* ===== EXTRAS ===== */
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .info-card{
+    background:linear-gradient(150deg,var(--panel),var(--panel2));
+    border:1px solid var(--line);border-radius:5px;padding:18px 20px;position:relative;
+  }
+  .info-card h4{font-family:'Cinzel',serif;font-size:.95rem;color:var(--gold);letter-spacing:.06em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .info-card h4 span{font-size:1.1rem}
+  .info-card ul{list-style:none}
+  .info-card li{font-size:.82rem;padding:5px 0 5px 18px;position:relative;color:var(--txt)}
+  .info-card li::before{content:'◦';position:absolute;left:0;color:var(--teal);top:5px}
+  .info-card li b{color:var(--gold-bright);font-weight:600}
+  .timeline{position:relative;padding-left:24px}
+  .timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:2px;background:linear-gradient(180deg,var(--teal),var(--gold-dim))}
+  .tl-item{position:relative;padding:8px 0}
+  .tl-item::before{content:'';position:absolute;left:-21px;top:13px;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)}
+  .tl-time{font-family:'Rajdhani';font-weight:700;color:var(--teal);font-size:.8rem;letter-spacing:.05em}
+  .tl-txt{font-size:.82rem;color:var(--txt-bright)}
+
+  /* ===== FOOTER ===== */
+  footer{text-align:center;padding:48px 0 40px;margin-top:40px;border-top:1px solid var(--line)}
+  footer .fl{font-family:'Cinzel',serif;color:var(--gold-dim);letter-spacing:.2em;font-size:.7rem;text-transform:uppercase}
+  footer .note{font-size:.74rem;color:#5a5648;margin-top:10px;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.5}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ===== ME / PROFILE ===== */
+  .me-banner{
+    background:linear-gradient(120deg,#0f2540,#0a1828 60%,#1a1410);
+    border:1px solid var(--gold-dim);border-radius:8px;padding:24px 26px;margin-bottom:22px;
+    display:flex;flex-wrap:wrap;align-items:center;gap:24px;position:relative;overflow:hidden;
+  }
+  .me-banner::after{
+    content:'';position:absolute;top:-40%;right:-10%;width:300px;height:300px;
+    background:radial-gradient(circle,rgba(10,200,185,.12),transparent 70%);pointer-events:none;
+  }
+  .me-rank{
+    width:78px;height:78px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;
+    background:radial-gradient(circle,#1a3050,#0a1420);border:2px solid var(--gold);
+    font-family:'Cinzel',serif;font-weight:900;color:var(--gold-bright);font-size:.62rem;text-align:center;line-height:1.2;
+    box-shadow:0 0 24px rgba(200,170,110,.3);
+  }
+  .me-id h3{font-family:'Cinzel',serif;font-size:1.7rem;color:var(--gold-bright);letter-spacing:.04em}
+  .me-id .tier{color:var(--teal);font-size:.85rem;letter-spacing:.1em;font-weight:600}
+  .me-id .mode{font-size:.74rem;color:var(--txt);margin-top:2px}
+  .me-bigstat{display:flex;gap:30px;margin-left:auto;position:relative;z-index:1}
+  .me-bigstat .bs{text-align:center}
+  .me-bigstat .bs .v{font-family:'Rajdhani';font-weight:700;font-size:2rem;color:var(--gold-bright);line-height:1}
+  .me-bigstat .bs .l{font-size:.68rem;color:var(--txt);letter-spacing:.1em;margin-top:4px}
+  .me-bigstat .bs .v.win{color:var(--teal)}
+
+  .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin-bottom:22px}
+  .stat-chip{
+    background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:11px 8px;text-align:center;
+  }
+  .stat-chip .cv{font-family:'Rajdhani';font-weight:700;font-size:1.35rem;color:var(--gold-bright);line-height:1}
+  .stat-chip .cl{font-size:.64rem;color:var(--txt);letter-spacing:.06em;margin-top:4px}
+  .stat-chip.gold{border-color:var(--gold-dim)}
+  .stat-chip.gold .cv{color:var(--gold)}
+
+  .bars{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;margin-bottom:8px}
+  .bar-item{font-size:.8rem}
+  .bar-top{display:flex;justify-content:space-between;margin-bottom:4px}
+  .bar-top .bl{color:var(--txt-bright)}
+  .bar-top .bn{color:var(--teal);font-weight:700;font-variant-numeric:tabular-nums}
+  .bar-track{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:3px}
+
+  .jg-callout{
+    background:linear-gradient(135deg,rgba(95,201,122,.08),rgba(15,22,32,.4));
+    border:1px solid var(--jg);border-left-width:4px;border-radius:5px;padding:16px 20px;margin:22px 0 18px;
+  }
+  .jg-callout h4{font-family:'Cinzel',serif;color:var(--jg);font-size:1.05rem;letter-spacing:.05em;margin-bottom:6px}
+  .jg-callout p{font-size:.84rem;color:var(--txt-bright);line-height:1.6}
+  .jg-callout b{color:var(--gold-bright)}
+
+  .jg-steps{counter-reset:s;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+  .jg-step{
+    background:linear-gradient(155deg,var(--panel),var(--panel2));border:1px solid var(--line);
+    border-radius:5px;padding:18px 20px 16px;position:relative;
+  }
+  .jg-step::before{
+    counter-increment:s;content:counter(s);position:absolute;top:14px;right:16px;
+    font-family:'Cinzel',serif;font-weight:900;font-size:2rem;color:var(--jg);opacity:.22;line-height:1;
+  }
+  .jg-step h5{font-family:'Noto Serif SC',serif;font-weight:900;color:var(--gold-bright);font-size:1.05rem;margin-bottom:8px}
+  .jg-step ul{list-style:none}
+  .jg-step li{font-size:.82rem;padding:5px 0 5px 18px;position:relative;color:var(--txt);line-height:1.5}
+  .jg-step li::before{content:'▸';position:absolute;left:0;color:var(--jg);top:5px}
+  .jg-step li b{color:var(--gold-bright);font-weight:600}
+
+  .pool-note{font-size:.8rem;color:var(--txt);margin-top:6px}
+  .pool-note b{color:var(--jg)}
+
+  @media(max-width:760px){
+    .map-layout{grid-template-columns:1fr}
+    .map-vis{position:relative;top:0;max-width:380px;margin:0 auto}
+    .sec-num{font-size:2rem}
+    nav{gap:2px}
+    nav a{padding:7px 9px;font-size:.62rem;letter-spacing:.1em}
+  }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="kicker">League of Legends · Wild Rift</div>
+  <h1>峡谷召唤手册<span class="accent">LOLM 全位置 · 打法 · 资源</span></h1>
+  <div class="deco-line"></div>
+  <p class="sub">全 138 英雄定位 / 分路战术 / 野区资源时间表 —— 一册掌控召唤师峡谷</p>
+</header>
+
+<nav class="wrap">
+  <a href="#heroes">英雄定位</a>
+  <a href="#runes">天赋符文</a>
+  <a href="#tactics">分路打法</a>
+  <a href="#map">地图资源</a>
+  <a href="#summoner">召唤师技能</a>
+  <a href="#timeline">节奏轴</a>
+  <a href="#tips">上分技巧</a>
+  <a href="#me" style="color:var(--teal)">我的档案</a>
+</nav>
+
+<!-- ============ 1. HEROES ============ -->
+<section id="heroes" class="wrap reveal">
+  <div class="sec-head">
+    <div class="sec-num">01</div>
+    <div class="sec-title"><h2>英雄定位</h2><p>HERO ROLES · 全 138 英雄按主流位置归类，一英雄一坑</p></div>
+  </div>
+
+  <div class="lane-tabs">
+    <button class="lane-tab active" data-lane="all">全部 138</button>
+    <button class="lane-tab" data-lane="top">上路 31</button>
+    <button class="lane-tab" data-lane="jg">打野 27</button>
+    <button class="lane-tab" data-lane="mid">中路 34</button>
+    <button class="lane-tab" data-lane="bot">下路 21</button>
+    <button class="lane-tab" data-lane="sup">辅助 25</button>
+  </div>
+
+  <div class="hero-grid" id="heroGrid"></div>
+</section>
+
+<!-- ============ 1.5 RUNES ============ -->
+<section id="runes" class="wrap reveal">
+  <div class="sec-head">
+    <div class="sec-num">02</div>
+    <div class="sec-title"><h2>天赋符文</h2><p>RUNES · 一页符文 = 1 基石 + 3 主修 + 1 辅修</p></div>
+  </div>
+
+  <div class="rune-intro">
+    符文页结构：先选 <b>1 个基石符文</b>（最关键，决定你的核心强化），再从某一系选 <b>3 个主修</b>小符文，最后从另一系选 <b>1 个辅修</b>。每个英雄卡片下方已标注「推荐基石」——下面是四大系定位与常见基石速查。
+  </div>
+
+  <div class="rune-grid">
+    <div class="rune-sys" style="--rc:var(--red)">
+      <div class="rs-head"><span class="rs-ic">⚔</span><div><h3>主宰系</h3><span>爆发 · 突进</span></div></div>
+      <p class="rs-def">适合刺客、爆发法师、突进战士。核心是「打出爆发、追上目标」。</p>
+      <ul>
+        <li><b>电刑</b>：连续命中触发单体高爆发，刺客/爆发法师首选。</li>
+        <li><b>黑暗收割</b>：击杀/参团叠层，越滚越肿的收割流。</li>
+        <li><b>强攻（先攻）</b>：贴脸打真伤+赏金，前期滚雪球射手/战士。</li>
+      </ul>
+    </div>
+
+    <div class="rune-sys" style="--rc:var(--teal)">
+      <div class="rs-head"><span class="rs-ic">✦</span><div><h3>精密系</h3><span>普攻 · 持续</span></div></div>
+      <p class="rs-def">适合靠普攻吃饭的射手、持续作战战士。核心是「越打越强」。</p>
+      <ul>
+        <li><b>征服者</b>：普攻技能叠层加自适应+回血，泛用性最高，战士/持续输出射手。</li>
+        <li><b>迅捷步法</b>：充能后普攻回血+加速，灵动近战与放风筝射手。</li>
+        <li><b>致命节奏 / 强攻</b>：强化攻速节奏，依赖平A的英雄。</li>
+      </ul>
+    </div>
+
+    <div class="rune-sys" style="--rc:var(--mid)">
+      <div class="rs-head"><span class="rs-ic">✧</span><div><h3>巫术系</h3><span>技能 · 消耗</span></div></div>
+      <p class="rs-def">适合消耗法师、辅助。核心是「强化技能、加强续航与机动」。</p>
+      <ul>
+        <li><b>召唤艾黎</b>：跟随精灵给伤害/护盾，消耗法师与软辅最稳。</li>
+        <li><b>相位猛冲</b>：连击后获得加速，机动型法师/战士。</li>
+        <li><b>聚星雨 / 风暴聚集</b>：后期成长型 AP，越久越强。</li>
+      </ul>
+    </div>
+
+    <div class="rune-sys" style="--rc:var(--jg)">
+      <div class="rs-head"><span class="rs-ic">🛡</span><div><h3>坚决系</h3><span>耐久 · 控制</span></div></div>
+      <p class="rs-def">适合坦克、肉坦战士、开团辅助。核心是「扛伤、抓控、保人」。</p>
+      <ul>
+        <li><b>余震</b>：控到人后获得双抗+范围伤害，开团坦克/坦辅首选。</li>
+        <li><b>不灭之握</b>：周期普攻打最大生命伤害+回血+永久加血，消耗型肉坦。</li>
+        <li><b>生命源泉</b>：减速/控制标记敌人，队友打它回血，奶系辅助。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rune-tip">
+    💡 <b>看阵容灵活换</b>：同一个英雄不是只能带一种。例：剑姬默认带<b>征服者</b>滚伤害，但若己方没坦克、你要顶在前面，就换<b>不灭之握</b>加坦度；拉克丝怕被劫一套秒，可把电刑换成<b>召唤艾黎</b>多个护盾。基石跟阵容/对线走，别死板。
+  </div>
+</section>
+
+<!-- ============ 3. TACTICS ============ -->
+<section id="tactics" class="wrap reveal">
+  <div class="sec-head">
+    <div class="sec-num">03</div>
+    <div class="sec-title"><h2>分路打法</h2><p>LANE TACTICS · 每条路的核心思路</p></div>
+  </div>
+  <div class="tactics-grid" id="tacticsGrid"></div>
+</section>
+
+<!-- ============ 3. MAP ============ -->
+<section id="map" class="wrap reveal">
+  <div class="sec-head">
+    <div class="sec-num">04</div>
+    <div class="sec-title"><h2>地图资源</h2><p>RIFT OBJECTIVES · 刷新时间与间隔（手游机制）</p></div>
+  </div>
+
+  <div class="map-layout">
+    <div class="map-vis">
+      <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="mapbg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#0d3b3f"/><stop offset="1" stop-color="#3b1414"/>
+          </linearGradient>
+        </defs>
+        <!-- base diamond -->
+        <rect x="20" y="20" width="260" height="260" rx="8" fill="url(#mapbg)" opacity="0.35" stroke="#1e2a3a"/>
+        <!-- lanes -->
+        <path d="M40 260 L40 40 L260 40" fill="none" stroke="#0397ab" stroke-width="9" opacity="0.5" stroke-linecap="round"/>
+        <path d="M40 260 L260 260 L260 40" fill="none" stroke="#c8443c" stroke-width="9" opacity="0.5" stroke-linecap="round"/>
+        <path d="M48 252 L252 48" fill="none" stroke="#c8aa6e" stroke-width="9" opacity="0.55" stroke-linecap="round"/>
+        <!-- river diagonal subtle -->
+        <path d="M30 220 L220 30 M80 270 L270 80" stroke="#0ac8b9" stroke-width="2" opacity="0.18"/>
+        <!-- nexus -->
+        <circle cx="40" cy="260" r="11" fill="#0397ab"/><circle cx="260" cy="40" r="11" fill="#c8443c"/>
+        <!-- BARON (top-left river) -->
+        <g><circle cx="95" cy="95" r="12" fill="#7a2fb0" stroke="#c85cd4" stroke-width="2"/>
+           <text x="95" y="99" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">男</text>
+           <text x="95" y="78" text-anchor="middle" font-size="8" fill="#c85cd4">大龙路</text></g>
+        <!-- DRAGON (bottom-right river) -->
+        <g><circle cx="205" cy="205" r="12" fill="#c8443c" stroke="#ff5c52" stroke-width="2"/>
+           <text x="205" y="209" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">龙</text>
+           <text x="205" y="228" text-anchor="middle" font-size="8" fill="#ff5c52">小龙路</text></g>
+        <!-- red/blue buffs -->
+        <circle cx="120" cy="180" r="6" fill="#0ac8b9"/><circle cx="180" cy="120" r="6" fill="#c8443c"/>
+        <circle cx="155" cy="215" r="6" fill="#0ac8b9"/><circle cx="145" cy="85" r="6" fill="#c8443c"/>
+        <!-- scuttle -->
+        <circle cx="150" cy="150" r="5" fill="#c8aa6e"/>
+        <text x="150" y="166" text-anchor="middle" font-size="7" fill="#c8aa6e">河蟹</text>
+      </svg>
+      <div class="map-cap">蓝方左下 · 红方右上 · 男爵居大龙路 / 元素龙居小龙路</div>
+    </div>
+
+    <table class="res-table">
+      <thead><tr><th>资源</th><th>首次刷新</th><th>重生间隔</th><th>说明</th></tr></thead>
+      <tbody id="resBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 4. SUMMONER + JUNGLE ============ -->
+<section id="summoner" class="wrap reveal">
+  <div class="sec-head">
+    <div class="sec-num">05</div>
+    <div class="sec-title"><h2>召唤师技能 & 野区</h2><p>SPELLS & CAMPS · 冷却与小怪刷新</p></div>
+  </div>
+  <div class="info-grid">
+    <div class="info-card">
+      <h4><span>⚡</span>召唤师技能 CD</h4>
+      <ul>
+        <li><b>闪现</b>　冷却 150 秒（峡谷救命第一技能）</li>
+        <li><b>惩戒</b>　充能 45 秒 · 最多存 2 层（打野必带）</li>
+        <li><b>点燃</b>　冷却 90 秒（线上击杀 / 减疗）</li>
+        <li><b>治疗 / 屏障</b>　冷却 120 秒（保命续航）</li>
+        <li><b>狂暴 / 净化 / 幽灵</b>　视英雄与对线选择</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h4><span>🌲</span>野区小怪</h4>
+      <ul>
+        <li><b>红 / 蓝 BUFF</b>　20 秒出生 · 150 秒重生 · 持续 90s</li>
+        <li><b>普通野怪</b>（狼 / 蛤蟆 / 石头怪）20 秒出生 · 90 秒重生</li>
+        <li><b>河蟹</b>　1 分 25 秒出生 · 约 200 秒重生 · 给视野</li>
+        <li><b>霸符升级</b>　红蓝 buff 在 6:00 首次升级、11:00 二次升级强化</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h4><span>📐</span>兵线 & 距离</h4>
+      <ul>
+        <li><b>开局</b>　13 秒倒计时后第一波兵出动</li>
+        <li><b>兵线周期</b>　每 25 秒刷新一波</li>
+        <li><b>到位时间</b>　中路 ~15s / 边路 ~23s</li>
+        <li><b>炮车</b>　每隔几波出现，推塔利器</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. TIMELINE ============ -->
+<section id="timeline" class="wrap reveal">
+  <div class="sec-head">
+    <div class="sec-num">06</div>
+    <div class="sec-title"><h2>对局节奏轴</h2><p>GAME TEMPO · 游戏内「战场节奏」四阶段时间表</p></div>
+  </div>
+  <div class="info-grid">
+    <div class="info-card">
+      <h4><span>🌅</span>前期 · 0–6 min</h4>
+      <p style="font-size:.78rem;color:var(--gold);margin:-4px 0 10px;letter-spacing:.05em">对线发育，磨塔开龙</p>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-time">0:00</div><div class="tl-txt">游戏开始（出生左下角，目标摧毁右上敌方水晶）</div></div>
+        <div class="tl-item"><div class="tl-time">1:00</div><div class="tl-txt">奇幻蘑菇刷新</div></div>
+      </div>
+    </div>
+    <div class="info-card">
+      <h4><span>🔥</span>中期 · 6–11 min</h4>
+      <p style="font-size:.78rem;color:var(--gold);margin:-4px 0 10px;letter-spacing:.05em">抢占视野，争夺资源</p>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-time">6:00</div><div class="tl-txt">红蓝霸符升级</div></div>
+        <div class="tl-item"><div class="tl-time">6:00</div><div class="tl-txt">峡谷先锋 / 亚龙首次登场</div></div>
+        <div class="tl-item"><div class="tl-time">6:00</div><div class="tl-txt">防御塔镀层消失</div></div>
+        <div class="tl-item"><div class="tl-time">6:05</div><div class="tl-txt">触发战略点</div></div>
+        <div class="tl-item"><div class="tl-time">7:30</div><div class="tl-txt">奇幻传送门开启</div></div>
+      </div>
+    </div>
+    <div class="info-card">
+      <h4><span>👑</span>后期 · 11–18 min</h4>
+      <p style="font-size:.78rem;color:var(--gold);margin:-4px 0 10px;letter-spacing:.05em">击败男爵，抱团推进</p>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-time">11:00</div><div class="tl-txt">纳什男爵登场</div></div>
+        <div class="tl-item"><div class="tl-time">11:00</div><div class="tl-txt">红蓝霸符二次升级</div></div>
+        <div class="tl-item"><div class="tl-time">12:30</div><div class="tl-txt">炮车出击</div></div>
+        <div class="tl-item"><div class="tl-time">16:00</div><div class="tl-txt">水晶枢纽护盾失效</div></div>
+      </div>
+    </div>
+    <div class="info-card">
+      <h4><span>⚔️</span>终结期 · 18 min+</h4>
+      <p style="font-size:.78rem;color:var(--gold);margin:-4px 0 10px;letter-spacing:.05em">精准团战，终结比赛</p>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-time">19:00</div><div class="tl-txt">远古巨龙登场</div></div>
+        <div class="tl-item"><div class="tl-time">25:00</div><div class="tl-txt">防御塔燃烧（逼迫终结）</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. TIPS / 上分技巧 ============ -->
+<section id="tips" class="wrap reveal">
+  <div class="sec-head">
+    <div class="sec-num">07</div>
+    <div class="sec-title"><h2>上分技巧</h2><p>PRO TIPS · 通用提高，比练英雄更管用</p></div>
+  </div>
+
+  <div class="tip-grid">
+    <div class="tip-card" style="--tc:var(--gold)">
+      <h4><span>🗺️</span>视野 = 信息差</h4>
+      <ul>
+        <li><b>真假眼分工</b>：守卫眼做视野，扫描/控制守卫排眼，进对方野区/打龙前先点亮。</li>
+        <li><b>关键三点</b>：河道、龙坑/男爵坑、对方红蓝 buff 入口——这三处有眼，被抓概率大降。</li>
+        <li><b>反向思维</b>：你看不到对方打野时，默认他在抓你那一路，主动后撤比硬补刀安全。</li>
+      </ul>
+    </div>
+
+    <div class="tip-card" style="--tc:var(--teal)">
+      <h4><span>📏</span>兵线管理</h4>
+      <ul>
+        <li><b>控线别瞎推</b>：劣势/想游走前把线推过去，安全发育时把线控在自家塔前。</li>
+        <li><b>叠兵反弹</b>：被压时让兵线在塔下叠成一大波，对手吃不干净你反而能反打。</li>
+        <li><b>带线牵制</b>：上路/分带英雄推掉一路后，全图都得分人来挡你，等于 1 换多。</li>
+      </ul>
+    </div>
+
+    <div class="tip-card" style="--tc:var(--mid)">
+      <h4><span>🎯</span>团战站位</h4>
+      <ul>
+        <li><b>分工别站错</b>：射手/法师站最后排只打能打到的最近目标，别贪后排；坦克/开团在最前。</li>
+        <li><b>开团时机</b>：等对方交了关键技能/位移，或抓到落单再开，别无脑先手送。</li>
+        <li><b>会撤退</b>：打不过别恋战，保命的输出 &gt; 团灭的人头，活着才能运营。</li>
+      </ul>
+    </div>
+
+    <div class="tip-card" style="--tc:var(--red)">
+      <h4><span>💰</span>经济运营</h4>
+      <ul>
+        <li><b>补刀是根本</b>：每分钟金币 678 已经不错，但顶级是 700+；少送一次=多一件小件。</li>
+        <li><b>滚雪球</b>：拿到优势别浪，换塔、控龙、入侵野区把优势变成全队经济。</li>
+        <li><b>装备节点</b>：核心两件套成型是你最强的窗口期，抓这个时间点逼团/推进。</li>
+      </ul>
+    </div>
+
+    <div class="tip-card" style="--tc:var(--sup)">
+      <h4><span>🧠</span>决策与心态</h4>
+      <ul>
+        <li><b>资源&gt;人头</b>：打不打架先问「这波打完我能拿到什么」，为龙/塔/男爵服务。</li>
+        <li><b>少送一次抵两次发挥</b>：你的失误率（战损率 5.4）已经很低，重点是关键团别崩。</li>
+        <li><b>稳定心态</b>：你 57% 胜率靠的是稳定，连跪时果断停一停，别上头连开。</li>
+      </ul>
+    </div>
+
+    <div class="tip-card" style="--tc:var(--jg)">
+      <h4><span>📱</span>小地图习惯</h4>
+      <ul>
+        <li><b>每几秒扫一眼</b>：养成无意识看小地图的习惯，5 个敌人位置心里有数。</li>
+        <li><b>消失=危险</b>：对方某人从地图消失超过几秒，提醒队友并自己后撤。</li>
+        <li><b>信号沟通</b>：手游打字慢，多用预警/集合/撤退信号，比语言更快同步。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rune-tip" style="margin-top:18px;border-color:var(--gold-dim)">
+    🔑 <b style="color:var(--gold)">给你的针对性建议</b>：你伤害（20416/局）和参团（49.4%）都不低，短板很明确——<b style="color:var(--gold)">推塔伤害只有 1613/局，明显偏低</b>。这说明你常打赢团战却没把优势转成「推进/拿资源」。下一步重点练：<b>团战赢了之后立刻带队推塔/控龙</b>，把击杀转化成地图资源，而不是打完就各自回线。这一点改好，胜率还能再上一截。
+  </div>
+</section>
+
+<!-- ============ 8. ME / 召唤师档案 + 打野补课 ============ -->
+<section id="me" class="wrap reveal">
+  <div class="sec-head">
+    <div class="sec-num">08</div>
+    <div class="sec-title"><h2>召唤师档案</h2><p>MY PROFILE · 战绩 & 打野速成补课</p></div>
+  </div>
+
+  <!-- banner -->
+  <div class="me-banner">
+    <div class="me-rank">最强<br>王者</div>
+    <div class="me-id">
+      <h3>PantosAI</h3>
+      <div class="tier">最强王者 · 标准模式</div>
+      <div class="mode">排位赛 · 本赛季</div>
+    </div>
+    <div class="me-bigstat">
+      <div class="bs"><div class="v">316</div><div class="l">场次</div></div>
+      <div class="bs"><div class="v win">57.0%</div><div class="l">胜率</div></div>
+      <div class="bs"><div class="v">5.4</div><div class="l">战损率</div></div>
+    </div>
+  </div>
+
+  <!-- evaluation chips -->
+  <div class="stat-row">
+    <div class="stat-chip gold"><div class="cv">16</div><div class="cl">MVP</div></div>
+    <div class="stat-chip gold"><div class="cv">17</div><div class="cl">S 评价</div></div>
+    <div class="stat-chip"><div class="cv">31</div><div class="cl">A 评价</div></div>
+    <div class="stat-chip gold"><div class="cv">15</div><div class="cl">超神</div></div>
+    <div class="stat-chip"><div class="cv">23</div><div class="cl">先拔头筹</div></div>
+    <div class="stat-chip"><div class="cv">17</div><div class="cl">三连破</div></div>
+    <div class="stat-chip"><div class="cv">2</div><div class="cl">四连破</div></div>
+    <div class="stat-chip"><div class="cv">1</div><div class="cl">五连破</div></div>
+  </div>
+
+  <!-- performance bars -->
+  <div class="bars">
+    <div class="bar-item"><div class="bar-top"><span class="bl">参团率</span><span class="bn">49.4%</span></div><div class="bar-track"><div class="bar-fill" style="width:49%"></div></div></div>
+    <div class="bar-item"><div class="bar-top"><span class="bl">每分钟金币</span><span class="bn">678</span></div><div class="bar-track"><div class="bar-fill" style="width:72%"></div></div></div>
+    <div class="bar-item"><div class="bar-top"><span class="bl">英雄伤害 / 局</span><span class="bn">20,416</span></div><div class="bar-track"><div class="bar-fill" style="width:82%"></div></div></div>
+    <div class="bar-item"><div class="bar-top"><span class="bl">承受伤害 / 局</span><span class="bn">15,332</span></div><div class="bar-track"><div class="bar-fill" style="width:60%"></div></div></div>
+    <div class="bar-item"><div class="bar-top"><span class="bl">推塔伤害 / 局</span><span class="bn">1,613</span></div><div class="bar-track"><div class="bar-fill" style="width:22%"></div></div></div>
+    <div class="bar-item"><div class="bar-top"><span class="bl">位置熟练</span><span class="bn">中11 / 射13 / 辅11 / 单8 / 野6</span></div><div class="bar-track"><div class="bar-fill" style="width:90%"></div></div></div>
+  </div>
+
+  <!-- jungle crash course -->
+  <div class="jg-callout">
+    <h4>🌲 打野补课 · 给「四路能赢、野区零基础」的你</h4>
+    <p>你中路/射手是大师水准，伤害和评价都很能打——<b>问题不在操作，在节奏意识</b>。打野的难点不是技术，是「该去哪、该几点去、该不该来」的决策。下面三步先把框架搭起来，比硬练某个英雄更管用。</p>
+  </div>
+
+  <div class="jg-steps">
+    <div class="jg-step">
+      <h5>第一步：刷野别瞎刷</h5>
+      <ul>
+        <li><b>固定开野路线</b>：开局先想好「红开还是蓝开」，取决于哪条路想先 gank——想抓下就靠下开野，抓上就靠上。</li>
+        <li><b>两轮内必出招</b>：前两组野刷完（约 3 分钟）就该有第一次 gank 或反蹲，纯刷野=废野。</li>
+        <li><b>清野效率</b>：带惩戒、走最短路径，别在野区绕圈，刷完立刻看小地图找机会。</li>
+      </ul>
+    </div>
+    <div class="jg-step">
+      <h5>第二步：gank 看时机</h5>
+      <ul>
+        <li><b>三个信号才去</b>：①兵线压到对方塔下 ②对手交了闪现/位移 ③对手血量被压低。三个占一个就能抓。</li>
+        <li><b>从草丛/视野盲区切入</b>，别直线冲塔，先用控制接队友伤害。</li>
+        <li><b>抓不到就别恋战</b>：对手躲塔了就转头刷野或反蹲，强抓送死最亏。</li>
+      </ul>
+    </div>
+    <div class="jg-step">
+      <h5>第三步：盯资源时间</h5>
+      <ul>
+        <li><b>记关键点</b>：6:00 先锋+亚龙、11:00 男爵、19:00 远古龙（见上方节奏轴）。资源刷新前 30 秒就该带队到位。</li>
+        <li><b>控视野再开龙</b>：先插眼/排眼确认对方打野位置，再决定打不打，别裸开被偷。</li>
+        <li><b>反野记 CD</b>：记对方 buff 刷新时间（150 秒），趁对面打野不在反掉，滚开经济差。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="jg-callout" style="border-color:var(--gold-dim);border-left-color:var(--gold)">
+    <h4 style="color:var(--gold)">🎯 上手英雄池建议</h4>
+    <p class="pool-note">既然零基础，先别碰李青/螳螂这种高操作的。<b>从「机制简单、容错高、节奏直白」的入手</b>：<b>赵信</b>（无脑冲、清野快、gank 硬）、<b>皇子</b>（EQ+大招开团稳）、<b>蔚</b>（锁头突进，抓单容错高）、<b>奥拉夫</b>（血越低越猛、免控）。先用这几个把「刷野→gank→控龙」的节奏跑顺，再进阶灵动型刺客。你中路意识那么好，野区路线一旦熟练，上手会很快。</p>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div class="fl">◆ Summoner's Rift · Wild Rift ◆</div>
+  <p class="note">英雄定位为主流单一分路示意（多数英雄可兼任多位），强度随版本浮动；资源与节奏时间依据游戏内「战场节奏」整理，不同版本/补丁可能微调，实战以游戏内为准。</p>
+</footer>
+
+<script>
+/* ---------- HERO DATA (按单一主流位置归类，不重叠) ---------- */
+const heroes = [
+  // ===== 上路 TOP (31) =====
+  {n:'奎桑提',lane:'top',tag:'反伤重坦',d:'被动累积反伤，大招飞天突袭，越肉越能打。',r:'余震'},
+  {n:'波比',lane:'top',tag:'反突进坦克',d:'W免疫位移，E撞墙眩晕，大招把人轰出团战。',r:'余震'},
+  {n:'纳尔',lane:'top',tag:'狂暴变身',d:'小纳尔风筝、大纳尔撞墙开团，怒气切换一锤定团。',r:'迅捷步法'},
+  {n:'兰博',lane:'top',tag:'过热法坦战士',d:'喷火清线+大招地毯火海，热量机制管理是核心。',r:'电刑'},
+  {n:'安蓓萨',lane:'top',tag:'暗影刺客战士',d:'追猎标记+突进收割，灵动切入脆皮。',r:'征服者'},
+  {n:'铁男',lane:'top',tag:'吸血重坦',d:'莫德凯撒，W单挑回血，大招拉人单挑异空间。',r:'征服者'},
+  {n:'大树',lane:'top',tag:'续航肉坦',d:'茂凯，被动种树回血，大招全图护盾保团。',r:'余震'},
+  {n:'奥恩',lane:'top',tag:'锻造肉坦',d:'自带打造装备，团战撞墙开团+召唤巨魔二段。',r:'余震'},
+  {n:'狗熊',lane:'top',tag:'狂暴战士',d:'沃利贝尔，变身缠斗回血，越塔强杀压制强。',r:'征服者'},
+  {n:'厄加特',lane:'top',tag:'处决法坦',d:'多腿炮台+大招拖拽处决残血，越肉越坦。',r:'征服者'},
+  {n:'亚托克斯',lane:'top',tag:'真伤战士',d:'剑魔，三段Q命中加伤，大招变身回血续航。',r:'征服者'},
+  {n:'格温',lane:'top',tag:'真伤刺客战士',d:'W雾隐回血免疫远程，剪刀真伤切后排。',r:'征服者'},
+  {n:'塞恩',lane:'top',tag:'冲撞肉坦',d:'被动复活，大招直线冲锋撞人开团。',r:'不灭之握'},
+  {n:'慎',lane:'top',tag:'格挡坦克',d:'W格挡保团，大招全图护盾支援，攻防兼备。',r:'余震'},
+  {n:'辛吉德',lane:'top',tag:'毒液带线',d:'放毒跑图+大招增益，拉扯牵制玩法独特。',r:'不灭之握'},
+  {n:'猴子',lane:'top',tag:'分身战士',d:'孙悟空，分身突进+大招横扫击飞，爆发开团。',r:'征服者'},
+  {n:'凯南',lane:'top',tag:'AP突进战士',d:'电耗子，叠晕+大招龙卷风团控爆发。',r:'电刑'},
+  {n:'瑟提',lane:'top',tag:'拳师战士',d:'真伤拳+大招抓人砸地，越打越能锤。',r:'征服者'},
+  {n:'杰斯',lane:'top',tag:'远近切换战士',d:'锤炮双形态，远程消耗+近身爆发压制力强。',r:'电刑'},
+  {n:'天使',lane:'top',tag:'后期法师战士',d:'凯尔，被动远程化，大招无敌保命，越后期越强。',r:'征服者'},
+  {n:'贾克斯',lane:'top',tag:'武器大师战士',d:'E格挡普攻+大招加抗性，后期单挑无解。',r:'征服者'},
+  {n:'蒙多',lane:'top',tag:'回血肉坦',d:'丢菜刀减速，大招爆发回血，谁都砍不死。',r:'不灭之握'},
+  {n:'卡蜜尔',lane:'top',tag:'机动战士',d:'钩爪位移+大招锁单，真伤腿切脆皮。',r:'征服者'},
+  {n:'诺手',lane:'top',tag:'血怒重坦',d:'被动割裂+大招斩杀，近身缠斗滚雪球极快。',r:'征服者'},
+  {n:'剑姬',lane:'top',tag:'单挑战神',d:'破四点+格挡，后期单带无解，1v1几乎无敌。',r:'征服者'},
+  {n:'瑞文',lane:'top',tag:'连招战士',d:'三段Q+位移盾，操作上限极高的爆发战士。',r:'征服者'},
+  {n:'刀妹',lane:'top',tag:'刀锋舞者',d:'艾瑞莉娅，叠标记突进，团战切入连环位移。',r:'征服者'},
+  {n:'鳄鱼',lane:'top',tag:'怒气战士',d:'雷克顿，怒气强化技能，前期压制滚雪球。',r:'征服者'},
+  {n:'狗头',lane:'top',tag:'后期巨兽',d:'纳瑟斯，Q叠层数后期一刀秒人，大招变巨。',r:'不灭之握'},
+  {n:'提莫',lane:'top',tag:'蘑菇消耗',d:'隐身+毒蘑菇布雷，恶心消耗与视野控制。',r:'迅捷步法'},
+  {n:'盖伦',lane:'top',tag:'新手战士',d:'转转转+大招处决，简单粗暴生存高。',r:'征服者'},
+
+  // ===== 打野 JUNGLE (27) =====
+  {n:'豹女',lane:'jg',tag:'灵动法刺',d:'奈德丽，人豹切换，标枪命中突进爆发。',r:'电刑'},
+  {n:'梦魇',lane:'jg',tag:'恐惧突进',d:'大招全图突袭，黑暗中加速gank，团战恐惧控场。',r:'征服者'},
+  {n:'佛耶戈',lane:'jg',tag:'夺魂战士',d:'破败之王，击杀附身敌人，团战滚雪球收割。',r:'征服者'},
+  {n:'千珏',lane:'jg',tag:'羊灵射手',d:'叠印记加伤，大招团队无敌罩，进退一体。',r:'迅捷步法'},
+  {n:'稻草人',lane:'jg',tag:'恐惧法师',d:'费德提克，沉默+大招瞬移团控，AP打野。',r:'电刑'},
+  {n:'人马',lane:'jg',tag:'冲锋战士',d:'撞人减速+大招减伤，刷野快开团硬。',r:'征服者'},
+  {n:'尼菈',lane:'jg',tag:'真伤战士',d:'被动真伤+大招拉群控制，团战大范围拉拽。',r:'征服者'},
+  {n:'莉莉娅',lane:'jg',tag:'催眠法师',d:'被动灼烧，大招全图催眠睡人，AP团控打野。',r:'电刑'},
+  {n:'凯隐',lane:'jg',tag:'双形态刺客',d:'红蓝形态二选一，红刀战士/蓝刀刺客切后排。',r:'征服者'},
+  {n:'狼人',lane:'jg',tag:'追猎战士',d:'沃利贝尔/沃里克，嗜血追杀残血，缠斗回血。',r:'征服者'},
+  {n:'龙女',lane:'jg',tag:'变龙战士',d:'希瓦娜，大招变龙强化，刷野极快后期成型。',r:'征服者'},
+  {n:'潘森',lane:'jg',tag:'战争之矛',d:'被动格挡+大招飞天空降gank，前期压制。',r:'电刑'},
+  {n:'奥拉夫',lane:'jg',tag:'狂战士',d:'捡斧头加速，大招免控，血越低越猛。',r:'征服者'},
+  {n:'酒桶',lane:'jg',tag:'醉拳坦克',d:'古拉加斯，身体冲撞+大招击退开团/分割战场。',r:'电刑'},
+  {n:'伊芙琳',lane:'jg',tag:'隐身刺客',d:'被动隐身贴脸，魅惑+大招爆发秒杀脆皮。',r:'电刑'},
+  {n:'蛮王',lane:'jg',tag:'无敌战士',d:'叠暴击+大招无敌一段时间，刷野快后期切。',r:'征服者'},
+  {n:'螳螂',lane:'jg',tag:'进化刺客',d:'卡兹克，进化跳/隐身，专猎落单脆皮爆发。',r:'电刑'},
+  {n:'赵信',lane:'jg',tag:'冲脸战士',d:'三段刺+大招画圈，前中期入场强硬。',r:'征服者'},
+  {n:'男枪',lane:'jg',tag:'双枪打野',d:'格雷福斯，霰弹爆发+大招贯穿，前期强势。',r:'电刑'},
+  {n:'皇子',lane:'jg',tag:'开团打野',d:'嘉文，EQ接力+大招开墙，先手控人定团战。',r:'征服者'},
+  {n:'龙龟',lane:'jg',tag:'反伤肉坦',d:'拉莫斯，滚动突进+大招喷火，越肉反伤越高。',r:'余震'},
+  {n:'阿木木',lane:'jg',tag:'团控坦克',d:'被动连环控+大招群体定身，开团神器。',r:'余震'},
+  {n:'狮子狗',lane:'jg',tag:'草丛刺客',d:'雷恩加尔，草中跳扑+大招隐身猎杀脆皮。',r:'电刑'},
+  {n:'雪人',lane:'jg',tag:'召唤坦克',d:'努努，吞噬野怪+大招蓄力大范围爆发减速。',r:'余震'},
+  {n:'盲僧',lane:'jg',tag:'节奏型打野',d:'李青，回旋踢+摸眼R闪，前期gank节奏之王。',r:'征服者'},
+  {n:'蔚',lane:'jg',tag:'锁头突进',d:'蓄力穿墙+大招锁定突进，先手抓单稳定。',r:'征服者'},
+  {n:'剑圣',lane:'jg',tag:'无极收割',d:'易，大招加速+被动破甲，后期推进收割机。',r:'征服者'},
+
+  // ===== 中路 MID (34) =====
+  {n:'岩雀',lane:'mid',tag:'地形法师',d:'塔莉垭，造墙+石柱控制，poke与团战兼备。',r:'电刑'},
+  {n:'梅尔',lane:'mid',tag:'弹反法师',d:'W免疫并反弹技能，大招全图斩杀残血，机制超模。',r:'电刑'},
+  {n:'诺拉',lane:'mid',tag:'约德尔法师',d:'闪现型法师，灵动消耗+爆发，技能联动强。',r:'电刑'},
+  {n:'大眼',lane:'mid',tag:'激光poke',d:'维克兹（虚空之眼），W激光+大招扫射，远程消耗法师。',r:'艾黎'},
+  {n:'阿罗拉',lane:'mid',tag:'控制法师',d:'冰系法师，多段控制+poke，团战减速控场。',r:'电刑'},
+  {n:'瑞兹',lane:'mid',tag:'连环法师',d:'符文连锁加伤，大招传送门支援/逃生。',r:'征服者'},
+  {n:'维克托',lane:'mid',tag:'进化法师',d:'升级技能+激光网，后期成型清场强。',r:'艾黎'},
+  {n:'大头',lane:'mid',tag:'炮台法师',d:'黑默丁格，摆炮台+导弹poke，守塔阵地战强。',r:'艾黎'},
+  {n:'冰女',lane:'mid',tag:'冰封法师',d:'丽桑卓，自保冰墙+大招群体定身冰冻团控。',r:'电刑'},
+  {n:'泰隆',lane:'mid',tag:'翻墙刺客',d:'被动出血+大招隐身翻墙，gank与切入。',r:'电刑'},
+  {n:'辛德拉',lane:'mid',tag:'暗球法师',d:'摆球+大招多球轰炸，单点爆发秒人。',r:'电刑'},
+  {n:'吸血鬼',lane:'mid',tag:'血池法师',d:'弗拉基米尔，W池子免疫，后期AP坦法续航强。',r:'征服者'},
+  {n:'乌鸦',lane:'mid',tag:'吸血法师',d:'斯维因，大招范围吸血回血，团战站场核心。',r:'征服者'},
+  {n:'佐伊',lane:'mid',tag:'爆发线霸',d:'捡技能+睡泡，一套泡泡QQ秒人。',r:'电刑'},
+  {n:'薇古丝',lane:'mid',tag:'恐惧法师',d:'Vex，惩罚位移敌人，大招追身爆发刺客猎手。',r:'电刑'},
+  {n:'永恩',lane:'mid',tag:'灵体剑客',d:'E分离灵魂+大招击飞冲锋，亦中亦上的战士。',r:'征服者'},
+  {n:'卡萨丁',lane:'mid',tag:'后期蛇女',d:'被动魔抗+大招无限跳，后期切后排无解。',r:'电刑'},
+  {n:'小鱼人',lane:'mid',tag:'突进刺客',d:'菲兹，E跳跃灵动，大招鲨鱼推人爆发。',r:'电刑'},
+  {n:'艾克',lane:'mid',tag:'回溯法刺',d:'大招倒带回血，团战切入再撤，容错极高。',r:'电刑'},
+  {n:'发条',lane:'mid',tag:'团控法师',d:'奥莉安娜，球游走+大招聚怪，团战指挥核心。',r:'艾黎'},
+  {n:'卡特',lane:'mid',tag:'重置刺客',d:'卡特琳娜，匕首+大招旋转，团战收割越滚越大。',r:'电刑'},
+  {n:'阿克尚',lane:'mid',tag:'复活射刺',d:'翻滚射击+大招贯穿，击杀复活队友。',r:'征服者'},
+  {n:'亚索',lane:'mid',tag:'风剑客',d:'快乐风男，叠暴击+E穿越，配合击飞接大招。',r:'征服者'},
+  {n:'黛安娜',lane:'mid',tag:'月刃战士',d:'戴安娜，W护盾+大招聚怪二段，AP突进爆发。',r:'电刑'},
+  {n:'劫',lane:'mid',tag:'影分身刺客',d:'三分身+大招标记，瞬间爆发秒杀脆皮。',r:'电刑'},
+  {n:'小法',lane:'mid',tag:'爆发法师',d:'维迦，叠E关人笼，大招单点高爆发秒人。',r:'电刑'},
+  {n:'卡牌',lane:'mid',tag:'全图支援',d:'崔斯特，黄牌定身+大招全图传送支援。',r:'艾黎'},
+  {n:'炸弹人',lane:'mid',tag:'清线poke',d:'吉格斯，超远手清线快，拆塔与消耗强。',r:'艾黎'},
+  {n:'加里奥',lane:'mid',tag:'反法坦克',d:'嘲讽+大招全图空降支援，克制AP保护后排。',r:'艾黎'},
+  {n:'阿卡丽',lane:'mid',tag:'离群刺客',d:'烟雾隐身+双段大招，灵动切后排刺客。',r:'电刑'},
+  {n:'龙王',lane:'mid',tag:'恒星法师',d:'奥瑞利安索尔，被动叠层加强技能，越打越肿。',r:'艾黎'},
+  {n:'火男',lane:'mid',tag:'烈焰法师',d:'布兰德，叠被动引燃+大招弹射，团战AOE爆发。',r:'电刑'},
+  {n:'火女',lane:'mid',tag:'眩晕法师',d:'安妮，叠晕+大招召唤提博斯，新手友好爆发。',r:'电刑'},
+  {n:'狐狸',lane:'mid',tag:'机动法刺',d:'阿狸，魅惑勾人，大招三段位移灵动收割。',r:'电刑'},
+
+  // ===== AD 下路 (21) =====
+  {n:'小火龙',lane:'bot',tag:'换形射手',d:'斯莫德，技能升级换形态，远程混合输出。',r:'征服者'},
+  {n:'大嘴',lane:'bot',tag:'真伤射手',d:'克格莫，被动真伤+大招远程炮击，后期DPS爆表。',r:'征服者'},
+  {n:'卡莉斯塔',lane:'bot',tag:'跳跃射手',d:'每次攻击跳步走A，大招把辅助拉回保命。',r:'征服者'},
+  {n:'希维尔',lane:'bot',tag:'弹射射手',d:'回旋镖+W弹射清线，大招团队加速开/撤。',r:'迅捷步法'},
+  {n:'老鼠',lane:'bot',tag:'瘟疫射手',d:'图奇，隐身埋伏+大招穿透，叠毒爆发。',r:'征服者'},
+  {n:'泽丽',lane:'bot',tag:'电能射手',d:'蓄力炮+大招放电链，机动poke型射手。',r:'电刑'},
+  {n:'莎弥拉',lane:'bot',tag:'连招射手',d:'叠风格等级+大招扫射，贴脸高风险高爆发。',r:'征服者'},
+  {n:'霞',lane:'bot',tag:'羽刃射手',d:'收羽爆发+大招无敌冲锋，机动性极佳。',r:'迅捷步法'},
+  {n:'韦鲁斯',lane:'bot',tag:'蓄力射手',d:'蓄力穿透箭+大招缠绕控制，远程poke。',r:'电刑'},
+  {n:'库奇',lane:'bot',tag:'英勇投弹手',d:'机动散射+大招导弹齐射，灵活风筝输出。',r:'电刑'},
+  {n:'卡莎',lane:'bot',tag:'进化射手',d:'被动叠满进化技能，大招追身机动收割。',r:'征服者'},
+  {n:'女警',lane:'bot',tag:'陷阱射手',d:'凯特琳，放夹子+大招狙杀，超远手对线压制。',r:'迅捷步法'},
+  {n:'德莱文',lane:'bot',tag:'旋刃射手',d:'接斧头叠层赏金，高伤高风险滚雪球射手。',r:'强攻'},
+  {n:'EZ',lane:'bot',tag:'技能射手',d:'伊泽瑞尔，Q消耗+E位移，蓝AD混合风筝。',r:'电刑'},
+  {n:'卢锡安',lane:'bot',tag:'位移射手',d:'被动双枪，E突进，前中期强势连招。',r:'强攻'},
+  {n:'VN',lane:'bot',tag:'真伤猎手',d:'薇恩，W四下真伤+大招隐身，后期单挑大C。',r:'迅捷步法'},
+  {n:'小炮',lane:'bot',tag:'阵地射手',d:'崔丝塔娜，跳跃保命+大招击退，后期攻速暴击。',r:'强攻'},
+  {n:'女枪',lane:'bot',tag:'扫射射手',d:'厄运小姐，大招泼水范围AOE，团战清场。',r:'电刑'},
+  {n:'烬',lane:'bot',tag:'四发美学',d:'第四发暴击+大招狙击，节奏感强的爆发射手。',r:'强攻'},
+  {n:'艾希',lane:'bot',tag:'控制射手',d:'寒冰，减速箭+全图大招开团，团队视野好。',r:'强攻'},
+  {n:'金克丝',lane:'bot',tag:'团战滚雪球',d:'切枪+火箭清线，击杀重置加速越打越猛。',r:'强攻'},
+
+  // ===== 辅助 SUPPORT (25) =====
+  {n:'芮尔',lane:'sup',tag:'磁化坦辅',d:'磁力拉拽+大招吸引敌人，先手开团坦辅。',r:'余震'},
+  {n:'巴德',lane:'sup',tag:'漫游软辅',d:'捡铃铛+大招定身一切，游走与团控独特。',r:'艾黎'},
+  {n:'时光',lane:'sup',tag:'护盾软辅',d:'基兰，光子加速+大招圆环保护/治疗团队。',r:'艾黎'},
+  {n:'米利欧',lane:'sup',tag:'解控奶辅',d:'大招群体解控+治疗，给射手附加灼烧射程。',r:'生命源泉'},
+  {n:'婕拉',lane:'sup',tag:'种子法辅',d:'种植物poke+大招缠绕，消耗与控制兼备。',r:'艾黎'},
+  {n:'琴女',lane:'sup',tag:'治疗软辅',d:'娑娜，光环加成+大招横扫眩晕，续航开团。',r:'艾黎'},
+  {n:'派克',lane:'sup',tag:'刺客辅助',d:'隐身突进+大招处决，斩杀回赏金的游走刺辅。',r:'电刑'},
+  {n:'索拉卡',lane:'sup',tag:'全图奶妈',d:'E沉默+大招全图回血，团队续航核心。',r:'生命源泉'},
+  {n:'泰坦',lane:'sup',tag:'锚钩坦辅',d:'诺提勒斯，丢锚拉人+大招追身定身，连环控。',r:'余震'},
+  {n:'卡尔玛',lane:'sup',tag:'增益软辅',d:'加强技能护盾加速，poke与保护兼顾。',r:'艾黎'},
+  {n:'布隆',lane:'sup',tag:'坦克护盾辅',d:'被动眩晕+格挡，大招地震开团兼保护。',r:'余震'},
+  {n:'猫咪',lane:'sup',tag:'附身奶辅',d:'悠米，附身队友+大招多段定身，无敌依附保人。',r:'生命源泉'},
+  {n:'牛头',lane:'sup',tag:'先手坦辅',d:'阿利斯塔，顶撞连击撞飞，大招团战减伤。',r:'余震'},
+  {n:'莫甘娜',lane:'sup',tag:'黑盾法辅',d:'Q定身+E黑盾免控，大招团战群体定身。',r:'电刑'},
+  {n:'娜美',lane:'sup',tag:'潮汐软辅',d:'泡泡控制+大招潮汐击飞，增益普攻保护。',r:'生命源泉'},
+  {n:'锤石',lane:'sup',tag:'钩子硬辅',d:'勾锁+灯笼救人，开团保人攻防一体。',r:'余震'},
+  {n:'洛',lane:'sup',tag:'飞翔开团辅',d:'突进击飞+大招隐身，灵动先手开团。',r:'电刑'},
+  {n:'萨勒芬妮',lane:'sup',tag:'唱跳法辅',d:'回声叠层+大招魅惑链，poke治疗团控全能。',r:'艾黎'},
+  {n:'蕾欧娜',lane:'sup',tag:'日女开团',d:'EQ突进+大招定身，绑定后排强开。',r:'余震'},
+  {n:'露露',lane:'sup',tag:'增益软辅',d:'璐璐，变形+加速护盾，大招放大保护核心。',r:'艾黎'},
+  {n:'石头人',lane:'sup',tag:'开团坦辅',d:'墨菲特，被动护盾+大招震飞群控，AP开团。',r:'余震'},
+  {n:'风女',lane:'sup',tag:'风暴软辅',d:'迦娜，护盾+加速+击飞，大招团队回血保人。',r:'生命源泉'},
+  {n:'拉克丝',lane:'sup',tag:'光辉法辅',d:'Q定身+大招激光，poke与控制兼备的辅助法师。',r:'电刑'},
+  {n:'塞纳',lane:'sup',tag:'射手辅助',d:'灵魂攻击叠射程+大招全图狙击，可奶可输出。',r:'强攻'},
+  {n:'机器人',lane:'sup',tag:'抓单钩辅',d:'布里茨，一勾定生死，开团抓单威胁巨大。',r:'余震'},
+];
+
+const laneMeta = {
+  top:{name:'上路',clr:'var(--top)'}, jg:{name:'打野',clr:'var(--jg)'},
+  mid:{name:'中路',clr:'var(--mid)'}, bot:{name:'下路',clr:'var(--bot)'}, sup:{name:'辅助',clr:'var(--sup)'}
+};
+
+const grid = document.getElementById('heroGrid');
+function renderHeroes(filter='all'){
+  grid.innerHTML='';
+  heroes.filter(h=>filter==='all'||h.lane===filter).forEach(h=>{
+    const m=laneMeta[h.lane];
+    const c=document.createElement('div');
+    c.className='hero-card';c.style.setProperty('--laneclr',m.clr);
+    c.innerHTML=`<div class="hc-top"><div class="hc-name">${h.n}</div><div class="hc-role">${m.name}</div></div>
+      <div class="hc-tag">${h.tag}</div><div class="hc-desc">${h.d}</div>
+      <div class="hc-rune"><span class="rune-ic">◈</span>基石：<b>${h.r}</b></div>`;
+    grid.appendChild(c);
+  });
+}
+renderHeroes();
+document.querySelectorAll('.lane-tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.lane-tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');renderHeroes(t.dataset.lane);
+  });
+});
+
+/* ---------- TACTICS DATA ---------- */
+const tactics = [
+  {lane:'top',icon:'上',en:'TOP / BARON',def:'孤岛对线，多为战士/坦克/分带英雄，靠单带与传送/支援影响全局。',pts:[
+    ['控线为王','学会卡兵线，把兵线控在塔前安全区，避免被gank。'],
+    ['对拼时机','看天赋等级差与小兵数，蹲对手大招/技能空档开打。'],
+    ['分带牵制','劣势时带线消耗资源，优势时换塔或支援中路。'],
+    ['提防双游','上路离己方野区近，被打野+辅助抓死亡率最高。'],
+  ]},
+  {lane:'jg',icon:'野',en:'JUNGLE',def:'地图节奏发动机，刷野+gank+控资源，决定哪条路滚起雪球。',pts:[
+    ['开野路线','红开/蓝开看gank路线，前两轮就要想好抓哪路。'],
+    ['卡线gank','兵线压到对方塔下、对手交了位移/没闪时是最佳抓点。'],
+    ['资源优先','小龙、峡谷先锋、buff刷新前提前到位卡视野。'],
+    ['反蹲反野','记对方打野动向，刷不到就反蹲或反野滚开差距。'],
+  ]},
+  {lane:'mid',icon:'中',en:'MID',def:'最短路线、最快支援。法师/刺客主场，掌控中路即掌控地图中枢。',pts:[
+    ['线权与游走','推线后趁兵线优势去抓上下路或控河道资源。'],
+    ['优先级意识','中路最易被双方打野照顾，注意河道眼位。'],
+    ['爆发把握','刺客抓落单脆皮一套带走；法师靠poke+大招团控。'],
+    ['串联全场','中路是连接点，gank成功能直接带动全局节奏。'],
+  ]},
+  {lane:'bot',icon:'下',en:'BOT / DRAGON',def:'射手主战场，靠辅助保护发育，后期团队主要持续输出来源。',pts:[
+    ['补刀发育','射手核心是吃满兵线经济，活着输出比抢人头重要。'],
+    ['配合辅助','跟辅助统一节奏，硬辅先手就跟，软辅保护就站后。'],
+    ['龙团站位','靠近小龙路，团战围绕元素龙争夺，注意走位。'],
+    ['后期carry','三件套成型后是团队大C，团战别贪、保命输出。'],
+  ]},
+  {lane:'sup',icon:'辅',en:'SUPPORT',def:'下路第二人，前期保护射手、做视野，中后期开团/保人转化为团队价值。',pts:[
+    ['视野为先','河道、龙坑、三角草插眼/排眼，眼位决定团战胜负。'],
+    ['对线消耗','硬辅找机会先手消耗，软辅卡技能保射手补刀。'],
+    ['游走节奏','线权安全时游走中路联动，比死守下路价值高。'],
+    ['团战定位','开团辅先手控核心，保护辅站射手身边见招拆招。'],
+  ]},
+];
+const tg=document.getElementById('tacticsGrid');
+tactics.forEach(t=>{
+  const m=laneMeta[t.lane];
+  const card=document.createElement('div');
+  card.className='tac-card';card.style.setProperty('--laneclr',m.clr);
+  card.innerHTML=`<div class="tac-head"><div class="tac-icon">${t.icon}</div>
+      <div><h3>${m.name}</h3><div class="en">${t.en}</div></div></div>
+    <div class="tac-body"><div class="role-def">${t.def}</div>
+      <ul>${t.pts.map(p=>`<li><b>${p[0]}</b>：${p[1]}</li>`).join('')}</ul></div>`;
+  tg.appendChild(card);
+});
+
+/* ---------- RESOURCE TABLE ---------- */
+const res = [
+  {n:'红 / 蓝 BUFF',clr:'#0ac8b9',t:'0:20',i:'150 秒',note:'蓝给法力/冷却，红给战伤+减速；打野核心资源。6:00 升级强化，11:00 二次升级。',epic:false},
+  {n:'普通野怪',clr:'#5fc97a',t:'0:20',i:'90 秒',note:'狼群/蛤蟆/石头怪等，提供经验金币，无额外 buff。',epic:false},
+  {n:'河道迅捷蟹',clr:'#c8aa6e',t:'1:25',i:'约200 秒',note:'河蟹，击杀给河道视野与经验，争视野的关键。',epic:false},
+  {n:'元素亚龙（小龙）',clr:'#c8443c',t:'6:00',i:'5 分钟',note:'炼狱/山脉/海洋等随机首刷，给永久团队增益，首杀改变地形。',epic:true},
+  {n:'峡谷先锋',clr:'#c85cd4',t:'6:00',i:'仅一次',note:'与亚龙同时登场，只刷新一次；击杀得「先锋之眼」召唤推塔。',epic:true},
+  {n:'防御塔镀层',clr:'#5fc97a',t:'—',i:'6:00 消失',note:'前期外塔有额外护甲镀层，6 分钟统一消失，之后更易推塔。',epic:false},
+  {n:'奇幻传送门',clr:'#0397ab',t:'7:30',i:'开启后常驻',note:'地图传送门开启，加快支援与游走，影响中期节奏。',epic:false},
+  {n:'纳什男爵（大龙）',clr:'#ff5c52',t:'11:00',i:'重生间隔',note:'后期团队核心目标，buff 强化小兵/炮车推进，分推收益最大。',epic:true},
+  {n:'炮车',clr:'#e0c04a',t:'12:30',i:'随兵线',note:'攻城炮车出击，推塔能力大幅增强，配合男爵 buff 破高地。',epic:false},
+  {n:'水晶枢纽护盾',clr:'#4a9fe0',t:'—',i:'16:00 失效',note:'基地水晶护盾在 16 分钟失效，之后更易被一波带走。',epic:false},
+  {n:'远古巨龙',clr:'#f0e6d2',t:'19:00',i:'终局资源',note:'最强增益，攻击触发燃烧、残血斩杀，常是一波团灭的胜负手。',epic:true},
+  {n:'防御塔燃烧',clr:'#c8443c',t:'25:00',i:'终结机制',note:'25 分钟后防御塔进入燃烧（自损）状态，逼迫尽快终结比赛。',epic:false},
+];
+const rb=document.getElementById('resBody');
+res.forEach(r=>{
+  const tr=document.createElement('tr');
+  if(r.epic) tr.className='epic';
+  tr.innerHTML=`<td><span class="res-name"><span class="dot" style="color:${r.clr};background:${r.clr}"></span>${r.n}</span></td>
+    <td class="res-time">${r.t}</td><td class="res-int">${r.i}</td><td class="res-note">${r.note}</td>`;
+  rb.appendChild(tr);
+});
+
+/* ---------- reveal on scroll ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
