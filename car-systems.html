@@ -990,6 +990,259 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
   .spec-cards { grid-template-columns: 1fr; }
 }
 
+/* 刹车片示例图 / 空调滤方向 */
+.diag-fig { background:#fff; border:1px solid var(--border); border-radius:4px; padding:16px 18px 12px; box-shadow:var(--shadow); margin-bottom:14px; }
+.diag-fig svg { width:100%; height:auto; display:block; }
+.diag-cap { font-size:12.5px; color:var(--muted); line-height:1.75; margin-top:12px; border-top:1px dashed var(--border); padding-top:11px; }
+.diag-cap b { color:var(--ink2); }
+.diag-cap .hot { color:var(--accent); font-weight:700; }
+.cf-orient {
+  display:flex; align-items:center; gap:16px; background:var(--paper2); border:1px dashed var(--border-dark);
+  border-radius:4px; padding:14px 18px; margin:4px 0 12px; flex-wrap:wrap;
+}
+.cf-orient .cf-big { font-family:'Noto Serif SC',serif; font-weight:900; font-size:21px; color:var(--accent); white-space:nowrap; }
+.cf-orient .cf-txt { font-size:12.5px; line-height:1.7; color:var(--ink2); flex:1; min-width:200px; }
+.cf-orient .cf-txt b { color:var(--accent); }
+
+/* ════════ 全车滤清系统 ════════ */
+.filter-intro {
+  background: #fff; border-left: 4px solid var(--accent2); border-radius: 3px;
+  padding: 16px 20px; margin: 6px 0 18px; font-size: 13.5px; line-height: 1.85;
+  color: var(--ink2); box-shadow: var(--shadow);
+}
+.filter-intro b { color: var(--accent); }
+.filter-intro .fi-tag {
+  display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--accent2); border: 1px solid var(--accent2); border-radius: 3px;
+  padding: 1px 7px; margin: 0 2px;
+}
+.filter-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; margin-bottom: 8px;
+}
+.filter-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  padding: 15px 18px 16px; box-shadow: var(--shadow); position: relative; overflow: hidden;
+  transition: transform .18s, box-shadow .18s, border-color .18s;
+}
+.filter-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--ch, var(--accent));
+}
+.filter-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--border-dark); }
+.filter-card[data-ch="intake"]  { --ch: var(--green); }
+.filter-card[data-ch="fuel"]    { --ch: var(--accent); }
+.filter-card[data-ch="lube"]    { --ch: var(--accent2); }
+.filter-card[data-ch="exhaust"] { --ch: var(--gold); }
+.filter-card[data-ch="cabin"]   { --ch: var(--purple); }
+.filter-card[data-ch="trans"]   { --ch: var(--muted); }
+.fc-top { display: flex; align-items: baseline; gap: 8px; margin-bottom: 3px; flex-wrap: wrap; }
+.fc-name { font-family: 'Noto Serif SC', serif; font-size: 15.5px; font-weight: 700; color: var(--ink); }
+.fc-channel {
+  margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .5px;
+  padding: 2px 8px; border-radius: 20px; color: #fff; background: var(--ch, var(--accent)); white-space: nowrap; flex-shrink: 0;
+}
+.fc-alias { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted2); margin-bottom: 8px; }
+.fc-desc { font-size: 12.5px; line-height: 1.65; color: var(--muted); }
+.fc-desc b { color: var(--ink2); }
+.fc-status {
+  display: inline-block; margin-top: 10px; font-size: 10.5px; font-weight: 700; letter-spacing: .3px;
+  padding: 2px 9px; border-radius: 4px;
+}
+.fc-must { background: #fde8e0; color: #c8401a; }
+.fc-long { background: #deeaf5; color: #2a6496; }
+.fc-free { background: #e4ddd0; color: #7a6a50; }
+
+/* ════════ 驾车技巧 ════════ */
+.drive-hero {
+  background: var(--ink); color: var(--paper); border-radius: 4px;
+  padding: 24px 28px; margin-bottom: 24px; box-shadow: var(--shadow-lg);
+  position: relative; overflow: hidden; border-left: 5px solid var(--accent);
+}
+.drive-hero::after {
+  content: '⚠'; position: absolute; right: 26px; top: 50%; transform: translateY(-50%);
+  font-size: 130px; color: rgba(200,64,26,.10); line-height: 1; z-index: 0;
+}
+.drive-hero > * { position: relative; z-index: 1; }
+.dh-kicker {
+  display: inline-flex; align-items: center; gap: 9px; font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+}
+.dh-kicker::before { content: ''; width: 22px; height: 1px; background: var(--accent); }
+.dh-title { font-family: 'Noto Serif SC', serif; font-size: 26px; font-weight: 900; margin-bottom: 6px; }
+.dh-title .hl { color: var(--accent); }
+.dh-mine {
+  font-size: 12.5px; color: rgba(245,240,232,.6); line-height: 1.7; margin-bottom: 16px;
+  border-left: 2px solid rgba(200,64,26,.5); padding-left: 12px;
+}
+.dh-mine b { color: var(--accent); }
+.dh-what { font-size: 13.5px; line-height: 1.8; color: rgba(245,240,232,.82); margin-bottom: 16px; }
+.dh-what b { color: var(--paper); }
+.dh-defend { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.dh-def {
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.10); border-radius: 4px;
+  padding: 12px 14px; border-top: 2px solid var(--accent);
+}
+.dh-def .dd-h { font-family: 'Noto Serif SC', serif; font-weight: 700; font-size: 13px; color: var(--paper); margin-bottom: 5px; }
+.dh-def .dd-b { font-size: 11.5px; line-height: 1.6; color: rgba(245,240,232,.62); }
+.dh-punch {
+  background: var(--accent); color: #fff; border-radius: 4px; padding: 13px 18px;
+  font-size: 13.5px; line-height: 1.7; font-weight: 500;
+}
+.dh-punch b { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+
+.drive-block-title {
+  font-family: 'Noto Serif SC', serif; font-size: 18px; font-weight: 900;
+  margin: 30px 0 14px; padding-bottom: 10px; border-bottom: 2px solid var(--ink);
+  display: flex; align-items: center; gap: 10px;
+}
+.drive-block-title .dbt-i {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #fff; background: var(--accent2);
+  width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.drive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+.drive-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  padding: 16px 18px 17px; box-shadow: var(--shadow); position: relative;
+  border-top: 3px solid var(--accent2); transition: transform .18s, box-shadow .18s;
+}
+.drive-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.drive-card .dc-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--muted2);
+}
+.drive-card .dc-h {
+  font-family: 'Noto Serif SC', serif; font-size: 15.5px; font-weight: 700; color: var(--ink);
+  margin: 2px 0 8px; display: flex; align-items: baseline; gap: 8px;
+}
+.drive-card .dc-b { font-size: 12.5px; line-height: 1.7; color: var(--muted); }
+.drive-card .dc-b b { color: var(--ink2); }
+.drive-card .dc-b .hot { color: var(--accent); font-weight: 700; }
+.drive-card .lec-ref { color: var(--accent2); }
+.drive-card .dc-list { list-style: none; margin-top: 4px; }
+.drive-card .dc-list li { font-size: 12.5px; line-height: 1.6; color: var(--muted); padding: 5px 0 5px 16px; position: relative; border-bottom: 1px dashed var(--border); }
+.drive-card .dc-list li:last-child { border-bottom: none; }
+.drive-card .dc-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent2); font-size: 11px; top: 6px; }
+.drive-card .dc-list li b { color: var(--ink2); }
+
+/* 今日复盘 · 反应时间线 */
+.reflect {
+  background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--accent);
+  border-radius: 4px; padding: 18px 22px 20px; margin-bottom: 24px; box-shadow: var(--shadow);
+}
+.reflect .rf-h {
+  font-family: 'Noto Serif SC', serif; font-size: 16px; font-weight: 900; color: var(--ink);
+  display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px;
+}
+.reflect .rf-h .rf-clock { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent); }
+.reflect .rf-sub { font-size: 12.5px; color: var(--muted); margin-bottom: 16px; }
+.rf-timeline { list-style: none; position: relative; margin: 0 0 16px; padding-left: 26px; }
+.rf-timeline::before { content: ''; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: var(--border-dark); }
+.rf-timeline li { position: relative; padding: 0 0 14px; }
+.rf-timeline li:last-child { padding-bottom: 0; }
+.rf-timeline li::before {
+  content: ''; position: absolute; left: -23px; top: 3px; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--accent2); border: 2px solid var(--paper); box-shadow: 0 0 0 1px var(--border-dark);
+}
+.rf-timeline li.hot::before { background: var(--accent); }
+.rf-timeline .rt-t { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--accent2); }
+.rf-timeline li.hot .rt-t { color: var(--accent); }
+.rf-timeline .rt-d { font-size: 13px; line-height: 1.65; color: var(--ink2); margin-top: 2px; }
+.rf-timeline .rt-d b { color: var(--accent); }
+.reflect .rf-rule {
+  background: #fffbf0; border: 1px solid #e8d890; border-radius: 4px; padding: 13px 16px;
+  font-size: 13px; line-height: 1.75; color: var(--ink2);
+}
+.reflect .rf-rule b { color: var(--gold); font-family: 'Noto Serif SC', serif; }
+.reflect .rf-rule .em { color: var(--accent); font-weight: 700; }
+
+/* 路线图 · 射阳⇄盐城 盘湾线 */
+.route-wrap { background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 20px 22px 22px; box-shadow: var(--shadow); }
+.route-dir {
+  display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 700; color: #fff; background: var(--accent); padding: 4px 12px; border-radius: 20px; margin-bottom: 6px;
+}
+.route-dir.back { background: var(--accent2); }
+.route-note-top { font-size: 12.5px; color: var(--muted); line-height: 1.7; margin-bottom: 18px; }
+.route { list-style: none; position: relative; margin: 0; padding-left: 34px; }
+.route::before {
+  content: ''; position: absolute; left: 11px; top: 10px; bottom: 10px; width: 6px;
+  background:
+    repeating-linear-gradient(to bottom, var(--gold) 0, var(--gold) 9px, transparent 9px, transparent 18px) center / 2px 100% no-repeat,
+    var(--border-dark);
+  border-radius: 3px;
+}
+.route .stop { position: relative; padding: 0 0 22px; }
+.route .stop:last-child { padding-bottom: 0; }
+.route .stop::before {
+  content: ''; position: absolute; left: -29px; top: 2px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--ink); border: 3px solid var(--paper); box-shadow: 0 0 0 1.5px var(--border-dark); z-index: 1;
+}
+.route .stop.terminal::before { background: var(--accent); box-shadow: 0 0 0 1.5px var(--accent); width: 18px; height: 18px; left: -30px; }
+.route .stop.key::before { background: var(--accent2); box-shadow: 0 0 0 1.5px var(--accent2); }
+.route .st-name {
+  font-family: 'Noto Serif SC', serif; font-size: 15px; font-weight: 700; color: var(--ink);
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+}
+.route .st-name .st-role { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; padding: 1px 8px; border-radius: 20px; }
+.route .st-role.start { background: var(--accent); color: #fff; }
+.route .st-role.end   { background: var(--accent); color: #fff; }
+.route .st-role.via   { background: var(--paper3); color: var(--muted); }
+.route .st-role.keyt  { background: #deeaf5; color: #2a6496; }
+.route .st-marks { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+.route .mk { display: flex; align-items: flex-start; gap: 9px; font-size: 12.5px; line-height: 1.55; color: var(--ink2); }
+.route .mk .mk-ic { flex-shrink: 0; width: 20px; text-align: center; font-size: 13px; }
+.route .mk b { color: var(--accent); }
+.route .mk.lane { background: var(--paper2); border-radius: 4px; padding: 7px 10px; }
+.route-warn {
+  margin-top: 16px; background: #fde8e0; border: 1px solid #f0c4b8; border-radius: 4px;
+  padding: 13px 16px; font-size: 12.5px; line-height: 1.7; color: var(--ink2);
+}
+.route-warn b { color: var(--accent); }
+.route-warn .wn-tag {
+  display: inline-flex; align-items: center; gap: 5px; font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 700; color: #fff; background: var(--accent); padding: 1px 9px; border-radius: 4px; margin-right: 6px;
+}
+.route-honest {
+  margin-top: 12px; font-size: 12px; line-height: 1.7; color: var(--muted);
+  background: var(--paper2); border: 1px dashed var(--border-dark); border-radius: 4px; padding: 11px 15px;
+}
+.route-honest b { color: var(--ink2); }
+
+/* 实战手册：心法块 + 分类卡片 */
+.creed {
+  background: var(--ink); color: var(--paper); border-radius: 4px; padding: 20px 22px;
+  margin-bottom: 16px; border-left: 4px solid var(--accent2); box-shadow: var(--shadow-lg);
+}
+.creed .cr-h { font-family: 'Noto Serif SC', serif; font-weight: 900; font-size: 16px; margin-bottom: 14px; }
+.creed .cr-h .hl { color: var(--accent2); }
+.creed-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); gap: 12px; }
+.cr-cell { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 4px; padding: 12px 14px; border-top: 2px solid var(--accent2); }
+.cr-cell .cc-k { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--accent2); margin-bottom: 6px; text-transform: uppercase; }
+.cr-cell .cc-v { font-size: 12.5px; line-height: 1.65; color: rgba(245,240,232,.85); }
+.cr-cell .cc-v b { color: var(--paper); }
+.man-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(335px, 1fr)); gap: 14px; }
+.man-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px; box-shadow: var(--shadow);
+  overflow: hidden; border-top: 3px solid var(--cat, var(--accent2));
+}
+.man-card h5 {
+  font-family: 'Noto Serif SC', serif; font-size: 14.5px; font-weight: 700; color: var(--ink);
+  padding: 12px 16px 10px; display: flex; align-items: center; gap: 9px;
+  border-bottom: 1px solid var(--border); background: var(--paper2);
+}
+.man-card h5 .mi { font-size: 16px; line-height: 1; }
+.man-list { list-style: none; padding: 9px 16px 14px; }
+.man-list li { font-size: 12.5px; line-height: 1.6; color: var(--ink2); padding: 6px 0 6px 17px; position: relative; border-bottom: 1px dashed var(--border); }
+.man-list li:last-child { border-bottom: none; }
+.man-list li::before { content: '▸'; position: absolute; left: 0; top: 6px; color: var(--cat, var(--accent2)); font-size: 11px; }
+.man-list li b { color: var(--accent); }
+.man-list li .mono { font-family: 'JetBrains Mono', monospace; color: var(--accent2); font-weight: 700; }
+
+@media(max-width: 600px) {
+  .filter-grid, .drive-grid, .man-grid { grid-template-columns: 1fr; }
+  .drive-hero { padding: 20px 18px; }
+  .dh-title { font-size: 21px; }
+  .drive-hero::after { display: none; }
+}
+
 </style>
 </head>
 <body>
@@ -1015,6 +1268,7 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
     <button onclick="show('flow',this)"><span class="ico">⇄</span>能量流图</button>
     <button onclick="show('course',this)"><span class="ico">◈</span>原理课</button>
     <button onclick="show('mods',this)"><span class="ico">▲</span>改装</button>
+    <button onclick="show('drive',this)"><span class="ico">◉</span>驾车技巧</button>
     <button onclick="show('diagnose',this)"><span class="ico">⚠</span>故障反查</button>
     <button onclick="show('calc',this)"><span class="ico">▤</span>保养计算器</button>
     <button onclick="show('maintenance',this)"><span class="ico">≣</span>保养手册</button>
@@ -1078,10 +1332,16 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
     <p class="mycar-block-sub">三个关键参数，最终都以随车手册「润滑油规格」章节或油箱盖附近标签为准。原理见 <span class="lec-ref" data-lec="lec-4">第四讲 · 摩擦学与机油黏度的权衡</span>。</p>
 
     <div class="spec-cards">
+      <div class="spec-card go">
+        <div class="sp-label">黏度 · 认准</div>
+        <div class="sp-value">0W-20</div>
+        <div class="sp-desc">这台 1.5T 的原厂标定就是 <b>0W-20</b>。后一个数字「20」是 100℃ 高温下的黏度——<b>数越大越稠</b>。所以 30、40 的油明显<b>更粘稠</b>，这台机器根本不需要，用了反增阻力、费油。</div>
+        <span class="sp-tag">就用这个</span>
+      </div>
       <div class="spec-card">
-        <div class="sp-label">黏度</div>
-        <div class="sp-value" style="font-size:20px">0W-20 / 5W-30</div>
-        <div class="sp-desc">1.5T 通常推荐这两档之一，<b>以手册为准</b>。前一个数（W 前）管低温启动流动性，后一个管 100℃ 高温油膜强度。</div>
+        <div class="sp-label">机油量</div>
+        <div class="sp-value" style="font-size:22px">3.3–3.4<span class="u">L</span></div>
+        <div class="sp-desc">这台 1.5T 加注量不大，换机滤时约 <b>3.3–3.4 升</b>。<b>不是越满越好</b>——加多了冲油、增加曲轴阻力，看机油尺到上下限之间偏上即可。</div>
       </div>
       <div class="spec-card">
         <div class="sp-label">级别</div>
@@ -1094,7 +1354,7 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
         <div class="sp-desc">本田原厂（Ultra）或嘉实多、美孚、壳牌等主流全合成皆可，只要<b>黏度和级别对上</b>。</div>
       </div>
     </div>
-    <p class="mycar-block-sub" style="margin-top:8px">⚠ 别自作主张换更稠的油「加强保护」。超出厂家规格的高黏度会增加泵油损耗、冷启动供油迟缓，反而可能增加磨损和油耗（见第四讲）。</p>
+    <p class="mycar-block-sub" style="margin-top:8px">⚠ 别为了「加强保护」自己换成 5W-30、5W-40 这种更稠的油。后一个数字越大越粘稠，超出厂家规格会增加泵油损耗、冷启动供油迟缓，反而可能增加磨损和油耗（见第四讲）。<b>认准 0W-20</b>，5W-30 仅作手册明确允许或激烈驾驶时的备选。</p>
 
     <div class="pick-card">
       <span class="pk-tag">可直接照着买</span>
@@ -1231,6 +1491,83 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
       <div class="hb-title">⚠ 关于 4 号「机油加注口盖」的诚实说明</div>
       <p>这张照片的角度下，机油盖那块被进气管路和线束挡住，<b>我无法 100% 确认它的精确位置</b>，所以标了「估计」。别把这个标记当成板上钉钉。</p>
       <p><b>但这事有零成本的兜底——你自己一眼就能找到：</b>打开舱盖，看那块印着 <b>HONDA</b> 字样的盖板（缸盖罩，即图中 3 号）。机油加注口盖就在它上面，是一个<b>圆形、能用手拧、印着机油壶图标或「ENGINE OIL」字样</b>的盖子，通常是那片区域里最规整显眼的圆盖，逆时针拧开即可。看实物比在照片上猜准得多。</p>
+    </div>
+
+    <!-- G 刹车片厚度怎么看 -->
+    <h3 class="mycar-block-title"><span class="mbt-num">G</span>刹车片厚度怎么看</h3>
+    <p class="mycar-block-sub">刹车片会越磨越薄，<b>看的就是那层"摩擦片"还剩多厚</b>。不用拆轮子——从轮毂缝隙往里看，对着刹车盘边上那块就能估个大概。下面这张示例图标清了各个部位和该换的厚度线。</p>
+
+    <div class="diag-fig">
+      <svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans SC',sans-serif">
+        <!-- 上半：盘 + 片 剖面 -->
+        <text x="60" y="22" font-size="13" font-weight="700" fill="var(--ink)">剖面：刹车盘 与 刹车片</text>
+
+        <!-- 刹车盘 -->
+        <rect x="62" y="40" width="46" height="150" rx="3" fill="var(--paper3)" stroke="var(--border-dark)" stroke-width="1.5"/>
+        <line x1="78" y1="46" x2="78" y2="184" stroke="var(--border-dark)" stroke-width="1" opacity=".5"/>
+        <line x1="92" y1="46" x2="92" y2="184" stroke="var(--border-dark)" stroke-width="1" opacity=".5"/>
+        <text x="85" y="210" font-size="12" fill="var(--muted)" text-anchor="middle">刹车盘</text>
+        <text x="85" y="225" font-size="10.5" fill="var(--muted2)" text-anchor="middle" font-family="'JetBrains Mono',monospace">rotor</text>
+
+        <!-- 摩擦片（会磨损的那层） -->
+        <rect x="108" y="58" width="46" height="114" rx="2" fill="var(--accent)" opacity=".88"/>
+        <!-- 背板（钢） -->
+        <rect x="154" y="52" width="22" height="126" rx="2" fill="var(--ink2)"/>
+        <text x="165" y="200" font-size="11" fill="var(--muted)" text-anchor="middle">背板</text>
+
+        <!-- 厚度标注（摩擦片那段） -->
+        <line x1="108" y1="44" x2="154" y2="44" stroke="var(--accent)" stroke-width="1.5"/>
+        <line x1="108" y1="40" x2="108" y2="48" stroke="var(--accent)" stroke-width="1.5"/>
+        <line x1="154" y1="40" x2="154" y2="48" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="200" y="48" font-size="12.5" font-weight="700" fill="var(--accent)">← 看的就是这块「摩擦片」的厚度</text>
+
+        <!-- 金属报警片 -->
+        <path d="M154 168 L120 178 L120 184 L154 176 Z" fill="var(--muted)" stroke="var(--ink2)" stroke-width="0.8"/>
+        <!-- 引线：把报警片连到右侧说明 -->
+        <line x1="123" y1="181" x2="201" y2="179" stroke="var(--muted2)" stroke-width="1.1" stroke-dasharray="3 2"/>
+        <circle cx="123" cy="181" r="2.6" fill="var(--ink2)"/>
+        <text x="205" y="178" font-size="11.5" fill="var(--ink2)"><tspan font-weight="700">金属报警片</tspan>：磨到 ~2–3mm 时它先蹭到盘</text>
+        <text x="205" y="194" font-size="11.5" fill="var(--ink2)">→ 出现<tspan fill="var(--accent)" font-weight="700">尖锐金属异响</tspan>，提醒你该换了</text>
+
+        <!-- 下半：厚度标尺 -->
+        <text x="60" y="256" font-size="13" font-weight="700" fill="var(--ink)">厚度对照（毫米）</text>
+        <!-- 色带 -->
+        <rect x="60" y="270" width="125" height="26" fill="#fde8e0" stroke="var(--accent)" stroke-width="1"/>
+        <rect x="185" y="270" width="83"  height="26" fill="#fdf0d8" stroke="var(--gold)" stroke-width="1"/>
+        <rect x="268" y="270" width="292" height="26" fill="#e0eed8" stroke="var(--green)" stroke-width="1"/>
+        <!-- 区间标签 -->
+        <text x="122" y="287" font-size="11.5" font-weight="700" fill="#c8401a" text-anchor="middle">≤3 必换</text>
+        <text x="226" y="287" font-size="11.5" font-weight="700" fill="#8a5a0a" text-anchor="middle">4–5 勤查</text>
+        <text x="414" y="287" font-size="11.5" font-weight="700" fill="#3a6a1a" text-anchor="middle">新片 ≈ 10–12mm</text>
+        <!-- 刻度 -->
+        <text x="60"  y="312" font-size="11" fill="var(--muted)" text-anchor="middle" font-family="'JetBrains Mono',monospace">0</text>
+        <text x="185" y="312" font-size="11" fill="var(--muted)" text-anchor="middle" font-family="'JetBrains Mono',monospace">3</text>
+        <text x="268" y="312" font-size="11" fill="var(--muted)" text-anchor="middle" font-family="'JetBrains Mono',monospace">5</text>
+        <text x="560" y="312" font-size="11" fill="var(--muted)" text-anchor="middle" font-family="'JetBrains Mono',monospace">12</text>
+        <!-- 报警触发点（移到色带下方，虚线引向 ~2–3mm 处，避免与标题重叠）-->
+        <line x1="143" y1="296" x2="143" y2="330" stroke="var(--ink2)" stroke-width="1.2" stroke-dasharray="3 2"/>
+        <text x="143" y="345" font-size="10.5" fill="var(--ink2)" text-anchor="middle">报警片触发 ≈ 2–3mm</text>
+      </svg>
+      <div class="diag-cap">
+        <b>怎么自己看：</b>方向盘打死让前轮转向外侧，从<b>轮毂缝隙</b>对着刹车盘边缘看，那块贴着盘、颜色偏深的就是刹车片，<b>估它还剩多厚</b>。<span class="hot">薄到 3mm 左右就该换</span>；要更准就让师傅用卡尺夹给你看。听到<span class="hot">持续尖锐金属摩擦声</span>，多半是报警片到了，别拖。
+      </div>
+    </div>
+
+    <!-- H 空调滤方向 -->
+    <h3 class="mycar-block-title"><span class="mbt-num">H</span>自己换空调滤 · 方向别装反</h3>
+    <p class="mycar-block-sub">空调滤（手套箱后面那块）自己换几分钟、几十块钱的事，但<b>装反了等于白换</b>——过滤效率大打折扣。</p>
+
+    <div class="cf-orient">
+      <div class="cf-big">软的一面朝上 ↑</div>
+      <div class="cf-txt">两面不一样：一面更<b>蓬松柔软</b>（粗滤/迎风面），一面更密实平整。装的时候<b>软的那面朝上</b>，让脏空气先过松的那层。</div>
+    </div>
+
+    <div class="info-card">
+      <div class="ic-head"><h4>更稳的判断：认滤芯上的气流箭头</h4><span class="ic-pill">AIRFLOW ↓</span></div>
+      <div class="ic-body">
+        <p>滤芯边框上一般印着 <b>「AIRFLOW」+ 箭头</b>。本田这套气流是<b>往下吹进鼓风机</b>的，所以<b>箭头朝下</b>装——这和"软面朝上"是一回事（迎风的软面在上、箭头指向下方的出风侧）。</p>
+        <p>口诀：<b>软面朝上 / 箭头朝下</b>。万一某款滤芯印的方向和这个不一致，<b>以滤芯上的箭头为准</b>。</p>
+      </div>
     </div>
 
   </div>
@@ -1819,6 +2156,335 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
   </div>
 </section>
 
+<!-- ══════════ 驾车技巧 ══════════ -->
+<section id="drive">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">◉</span>驾车技巧</h2>
+    <p class="section-sub">这一栏不讲机械，讲怎么把车开回家。核心只有一个词——<b>预见性</b>：把看不见的地方默认成有危险，把车速握在自己手里。</p>
+  </div>
+
+  <!-- 头条：鬼探头 -->
+  <div class="drive-hero">
+    <div class="dh-kicker">今日实战 · 头号杀手</div>
+    <div class="dh-title">鬼探头 · <span class="hl">你赢不了物理，也赢不了责任认定</span></div>
+    <div class="dh-mine">
+      今天就吃了一次鬼探头，气是真气。但气完得先认一个现实：这类事故里，能保护你的<b>从来不是路权，是车速</b>。对方违不违章，是事后的事；当下那零点几秒，只有速度能救你。
+    </div>
+    <div class="dh-what">
+      <b>什么是鬼探头：</b>行人、电动车或车辆，从你视线被挡住的地方——路边连排停的车、公交车、绿化带、大货车旁——<b>毫无预兆地窜到车头前</b>，等你看见时已经来不及。叫"鬼"，就是因为它从你的视觉盲区里凭空冒出来。
+    </div>
+    <div class="dh-defend">
+      <div class="dh-def">
+        <div class="dd-h">① 降速是唯一万能解</div>
+        <div class="dd-b">速度低，反应距离和制动距离同时变短。慢下来多出的那几米，就是生与死的缓冲。</div>
+      </div>
+      <div class="dh-def">
+        <div class="dd-h">② 覆盖刹车</div>
+        <div class="dd-b">过停放车辆、公交站、大车旁时，提前松油门，脚虚放在刹车上方（cover braking），随时能踩下去。</div>
+      </div>
+      <div class="dh-def">
+        <div class="dd-h">③ 横向留空间</div>
+        <div class="dd-b">能往左借半个车位就别贴着遮挡物开，给可能窜出的人留出一条缓冲带。</div>
+      </div>
+      <div class="dh-def">
+        <div class="dd-h">④ 看缝隙找线索</div>
+        <div class="dd-b">停着的车底有没有脚、车窗里有没有人影、间隙处有没有晃动——这些都是"鬼"要出来的预告。</div>
+      </div>
+    </div>
+    <div class="dh-punch">
+      <b>一句话记牢：</b>看不见的地方，就当那里站着一个随时会冲出来的人。把车速压到你能为这个假设负责的程度。
+    </div>
+  </div>
+
+  <!-- 今日复盘：反应时间线 -->
+  <div class="reflect">
+    <div class="rf-h">今日复盘 · 那 <span class="rf-clock">0.8</span> 秒到底发生了什么</div>
+    <div class="rf-sub">把今天这次真实经历拆成时间线——结论可能和直觉相反：问题不在反应慢，恰恰在反应已经够快了。</div>
+    <ul class="rf-timeline">
+      <li>
+        <div class="rt-t">≈ -0.2 s · 余光预警</div>
+        <div class="rt-d">人从左侧来。我左眼余光<b>透过旁边那辆车的玻璃</b>，提前约 0.2 秒扫到了一个人影——这 0.2 秒是白捡的预警，很关键。</div>
+      </li>
+      <li class="hot">
+        <div class="rt-t">0 → +0.8 s · 探出到踩刹</div>
+        <div class="rt-d">从人探出车头，到我<b>踩下刹车</b>，约 0.8 秒，已经是<b>急刹</b>。</div>
+      </li>
+      <li>
+        <div class="rt-t">判断</div>
+        <div class="rt-d">0.8 秒其实已经很快了（人的感知-反应时间通常 0.7–1.5 秒）。但这 0.8 秒里，<b>有一段是"脚从油门挪到刹车"的纯机械时间</b>——这才是能抠出来的余量。</div>
+      </li>
+    </ul>
+    <div class="rf-rule">
+      <b>我定下的规矩：</b>在<span class="em">视线不确定的路段</span>、以及<span class="em">过路口 / 红绿灯</span>这种本来速度就慢的地方，<b>脚直接虚放在刹车上，不踩油门</b>——也就是头条说的"覆盖刹车"。把那段挪脚的时间提前省掉，0.8 秒就能压到 0.5 秒上下。能控制的只有这个。
+    </div>
+  </div>
+
+  <!-- 其余防御性驾驶技巧 -->
+  <h3 class="drive-block-title"><span class="dbt-i">◈</span>其余八条 · 把"预见性"拆成习惯</h3>
+  <div class="drive-grid">
+
+    <div class="drive-card">
+      <div class="dc-num">01</div>
+      <div class="dc-h">视线放远，别盯前车尾</div>
+      <div class="dc-b">把目光越过前车看到<b>更前方两三台车</b>。前车突然变道、点刹，往往是在躲它前面你还没看到的东西——你提前看到，就能提前反应，而不是被动跟着急刹。</div>
+    </div>
+
+    <div class="drive-card">
+      <div class="dc-num">02</div>
+      <div class="dc-h">跟车 · 3 秒法则</div>
+      <div class="dc-b">前车经过某个固定点（路牌、桥墩）后，<b>默数 3 秒你才到</b>，距离就够。比"保持几米"好用，因为它自动随车速缩放。<span class="hot">雨天、高速翻倍到 4–6 秒。</span></div>
+    </div>
+
+    <div class="drive-card">
+      <div class="dc-num">03</div>
+      <div class="dc-h">变道 · 后视镜不够，要摆头</div>
+      <div class="dc-b">后视镜永远有<b>盲区</b>（就在你侧后方 B 柱外侧）。并线前先打灯，再<b>快速侧头扫一眼</b>那个方向确认无车，才打方向。光看镜子并线，是最常见的剐蹭起因。</div>
+    </div>
+
+    <div class="drive-card">
+      <div class="dc-num">04</div>
+      <div class="dc-h">下长坡 · 用发动机制动</div>
+      <div class="dc-b">别一脚刹车踩到底拖着下坡，长时间摩擦会<span class="hot">热衰减</span>——刹车越来越软甚至失灵。挂 <b>L / S 挡或手动降挡</b>，让发动机帮你拖住车速，刹车只做点修正。原理见 <span class="lec-ref" data-lec="lec-6">制动那一讲</span>。</div>
+    </div>
+
+    <div class="drive-card">
+      <div class="dc-num">05</div>
+      <div class="dc-h">雨天 / 湿滑路</div>
+      <div class="dc-b">降速、<b>轻刹、不急打方向</b>。大面积积水别高速冲——轮胎会浮在水膜上失去抓地（水滑）。起步和刹车都要"柔"，急动作在湿地上最容易打滑。</div>
+    </div>
+
+    <div class="drive-card">
+      <div class="dc-num">06</div>
+      <div class="dc-h">夜间会车 · 管好灯光</div>
+      <div class="dc-b">对向来车<b>提前切近光</b>，别用远光晃人。自己被对向远光晃到时，<b>看自己这侧的路沿白线</b>保持车道，别盯着光源——盯着只会更瞎。</div>
+    </div>
+
+    <div class="drive-card">
+      <div class="dc-num">07</div>
+      <div class="dc-h">两轮车 · 永远当不可预测</div>
+      <div class="dc-b">电动车、外卖、自行车的走位是<b>随机的</b>：逆行、突然左拐、不看后方。多留横向距离；<b>右转、开车门前务必回头确认</b>，别让它出现在你的盲区里。</div>
+    </div>
+
+    <div class="drive-card">
+      <div class="dc-num">08</div>
+      <div class="dc-h">导航 · 别只盯着路线条</div>
+      <ul class="dc-list">
+        <li>用 <b>3D 导航</b>，别只看 2D 那根蓝线——3D 能看清路口真实形态和该走哪条车道。</li>
+        <li>盯着地图看<b>地标和走向</b>，提前把屏幕上的参照物（饭店、桥、雕塑）对上现实。</li>
+        <li>很多<b>岔口一晃就过</b>——提前 200–300 米就看清要走哪个叉，别等到跟前才反应。</li>
+      </ul>
+      <div class="dc-b" style="margin-top:8px">具体到熟路，把关键参照物记成"锚点"最稳——见下方<b>路线笔记</b>。</div>
+    </div>
+
+  </div>
+
+  <!-- 实战手册：归类整理的驾车纪律 -->
+  <h3 class="drive-block-title"><span class="dbt-i">▤</span>实战手册 · 一条条攒下来的纪律</h3>
+  <p class="section-sub" style="margin:-4px 0 14px">把零散记下来的经验归了类、去了重。最上面是总框架，后面按场景分。原则不变：<b>预判 + 控速</b>，把概率压下去、把反应时间提上来。</p>
+
+  <!-- 心法 -->
+  <div class="creed">
+    <div class="cr-h">总框架 · <span class="hl">三件事 + 一个法则</span></div>
+    <div class="creed-grid">
+      <div class="cr-cell">
+        <div class="cc-k">开车</div>
+        <div class="cc-v">① <b>刹车油门</b>（脚永远在其一）② <b>守规矩</b>（懂交规）③ <b>预判控速</b>（一眼五向）</div>
+      </div>
+      <div class="cr-cell">
+        <div class="cc-k">行车自检</div>
+        <div class="cc-v">喇叭、档位（瞄一眼不会错）、视野（玻璃水 / 不看手机）；<b>脚不在油门就在刹车</b></div>
+      </div>
+      <div class="cr-cell">
+        <div class="cc-k">停车</div>
+        <div class="cc-v">脚踩刹车挂 N/P；四件套：<b>脚刹 → 档位 → 手刹 → 开关</b>；停好也观察路况</div>
+      </div>
+      <div class="cr-cell">
+        <div class="cc-k">视线法则</div>
+        <div class="cc-v"><b>一秒五向 · 1.5 秒视线</b>。看过一眼 ≠ 那边没车，<b>反复扫</b>，回头那一瞬就可能有人贴上来</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="do-banner" style="margin:0 0 16px">
+    <b>速度参考（没限速牌时的自我上限）：</b>城市路口 30–50、郊区路口 40–60；路口转弯 15–30；普通弯道 ≤40、急弯 ≤20；<b>接近路口 / 红绿灯一律减到 10 上下</b>，确保随时能停住。有限速牌一律按牌子。下高速降到 40 以下。雨雪天再往下压。
+  </div>
+
+  <div class="man-grid">
+
+    <div class="man-card" style="--cat:var(--accent)">
+      <h5><span class="mi">🚦</span>路口 & 红绿灯（最高频）</h5>
+      <ul class="man-list">
+        <li><b>所有路口都要慢</b>，仔细观察、随时能停；过了路口也接着看。</li>
+        <li>见黄即减，<b>绝对不抢黄</b>。</li>
+        <li>路口 / 红绿灯前<b>一律不变道、不超车</b>，更不能压黄线超车。</li>
+        <li>提前看路口地标和虚实线——<b>虚线转实线往往很短</b>，要变道得趁早。</li>
+        <li>越接近目的地越要盯每一个路口；等灯别发呆。</li>
+        <li>地标也会变，别全凭记忆。</li>
+      </ul>
+    </div>
+
+    <div class="man-card" style="--cat:var(--accent2)">
+      <h5><span class="mi">👁</span>预判 · 控速 · 车距</h5>
+      <ul class="man-list">
+        <li>核心就是<b>预判 + 控速</b>：慢下来，才有时间看、有时间处理。</li>
+        <li>按车速估车距和<b>制动距离</b>——速度越高，每秒走的米数越多。</li>
+        <li><b>匀加速、匀减速、匀转弯</b>，循序渐进，特殊情况另说。</li>
+        <li>注意脚下力的大小，油门和刹车都讲究力度过渡。</li>
+        <li>不盯死一个点，持续微修方向。</li>
+        <li><b>开车不分神</b>，不被任何无关的事吸引——这条最关键。</li>
+      </ul>
+    </div>
+
+    <div class="man-card" style="--cat:var(--gold)">
+      <h5><span class="mi">🛡</span>让行 · 防御</h5>
+      <ul class="man-list">
+        <li><b>让速不让道</b>：宁可松油门减速，别轻易变线。</li>
+        <li>一定让行人，<b>不管对方违不违规</b>；雨天别溅水。</li>
+        <li>鬼探头靠 Timing：看不见的地方默认有人，覆盖刹车（详见头条）。</li>
+        <li><b>离大车远一点</b>——视线被挡，它也看不到你。</li>
+        <li>标志牌 / 障碍物背后的人最容易被忽略；路边随时有车倒出来。</li>
+        <li>夜间对<b>黑衣人、黑车、猫狗</b>格外小心，路口路边尤甚；遇强光减速。</li>
+      </ul>
+    </div>
+
+    <div class="man-card" style="--cat:var(--purple)">
+      <h5><span class="mi">↔</span>变道 · 超车</h5>
+      <ul class="man-list">
+        <li>顺序固定：<b>先看（含回头扫盲区）→ 打灯 → 再动</b>，绝不先动再看。</li>
+        <li>转向 / 变道前先看要去那侧，<b>放慢、速度跟对侧一致</b>；直行则两侧都看。</li>
+        <li>超车要<b>完全超过再并回</b>；让车让速。</li>
+        <li>达到一定速度后<b>必须打灯</b>再借道，否则车身自校正会有反方向作用力。</li>
+        <li><b>没绝对把握和视野，坚决不变道</b>——你不知道哪个人会突然加速冲过来。</li>
+        <li>左车道是超车道；汇入车道走右侧；别突然打灯。</li>
+      </ul>
+    </div>
+
+    <div class="man-card" style="--cat:var(--green)">
+      <h5><span class="mi">↻</span>转弯 · 转向</h5>
+      <ul class="man-list">
+        <li>转弯先贴就近车道；<b>弧线可以大一点，给后轮留足空间</b>。</li>
+        <li><b>后轮不压线</b>（别压路缘 / 花池子）。</li>
+        <li>大弯减速（离心力大）；转大弯前看清<b>四面八方</b>的来车和障碍。</li>
+        <li>转弯后确认路况，再缓步提速。</li>
+        <li>掉头 / 转弯要<b>看直行车流</b>，别赌对方让你。</li>
+        <li>上下桥保持均速。</li>
+      </ul>
+    </div>
+
+    <div class="man-card" style="--cat:var(--ink)">
+      <h5><span class="mi">⚙</span>启动前 & 车内纪律</h5>
+      <ul class="man-list">
+        <li><b>所有准备动作（座椅、后视镜、空调…）在静止时做完</b>。车一动，脚就只在油门或刹车上，不允许多余动作——这时最易出事。</li>
+        <li>规范启动车辆，别在行进中乱挂档（别误碰 N 档）。</li>
+        <li>姿势：腿放正、手放方向盘上；<b>腿不搭、手不靠</b>。</li>
+        <li><b>车上不说话；要说话不转头。</b></li>
+        <li>情绪不好不开车，手不乱动。</li>
+      </ul>
+    </div>
+
+    <div class="man-card" style="--cat:var(--accent2)">
+      <h5><span class="mi">🅿</span>停车 · 倒车 · 开门</h5>
+      <ul class="man-list">
+        <li>倒车<b>停进框里</b>；后视镜里黄线居中＝停正了，不然两边都不好开门。</li>
+        <li>开门前先看后视镜——<b>警惕开门杀</b>。</li>
+        <li>倒车 / 转弯特别注意空间，<b>倒不进去的地方就别进</b>。</li>
+        <li>侧方位：距离 30、<b>B 柱与车平行、45° 打方向、左后车尾进线</b>，反复看镜修。</li>
+        <li>起雾倒车看不清，<b>摇下车窗</b>直接看后视镜。</li>
+      </ul>
+    </div>
+
+    <div class="man-card" style="--cat:var(--gold)">
+      <h5><span class="mi">🛣</span>高速 · 高架 · 隧道 · 导航</h5>
+      <ul class="man-list">
+        <li>高速：方向盘和刹车都<b>循序渐进</b>；<b>下高速前降到 40 以下</b>。</li>
+        <li>高架看清虚 / 实线——哪段能转哪段不能；<b>全程听导航</b>（晚上尤其，违规一次 6 分）。</li>
+        <li><b>隧道内绝对不变道。</b></li>
+        <li><b>用分段导航</b>，否则容易被导上高速；变道分多段、看好虚实线；优先走右（也有例外）。</li>
+        <li>留意<b>区间测速</b>和可变车道。</li>
+      </ul>
+    </div>
+
+    <div class="man-card" style="--cat:var(--accent2)">
+      <h5><span class="mi">🌧</span>天气 · 视野 · 疲劳</h5>
+      <ul class="man-list">
+        <li>雨雪天：<b>距离更大、速度更慢</b>，路滑不好压速。</li>
+        <li>雨天不加速，<b>别上 90（会发飘）</b>，有岔口不提速。</li>
+        <li><b>视野看不清就停下来。</b></li>
+        <li>不疲劳驾驶——累了连红绿灯都会漏看；不看手机，护着眼睛。</li>
+        <li>夜间<b>远近光交替</b>。</li>
+      </ul>
+    </div>
+
+    <div class="man-card" style="--cat:var(--ink)">
+      <h5><span class="mi">🧊</span>心态 · 远离不讲理的</h5>
+      <ul class="man-list">
+        <li><b>路怒零容忍</b>，一次机会都不给自己。</li>
+        <li>路上总有不讲理的，<b>别赌对方守规矩</b>：遇事不下车、喇叭先行、让它过去。</li>
+        <li>老远就打双闪硬挤的，<b>直接放它过</b>，别较劲。</li>
+        <li>真要还手也<b>不伤及无辜</b>——干脆别报复。</li>
+        <li>喝酒不开车——<b>电瓶车也算酒驾</b>。</li>
+        <li>加油站加油先熄火；胎压一两个月看一次。</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="do-banner" style="margin-top:18px">
+    <b>这一栏的底层逻辑：</b>所有技巧都在做同一件事——把意外发生的<b>概率</b>往下压，把留给自己反应的<b>时间</b>往上提。开得"无聊"一点，就是开得安全一点。
+  </div>
+
+  <!-- 路线笔记：射阳 ⇄ 盐城（盘湾线） -->
+  <h3 class="drive-block-title"><span class="dbt-i" style="background:var(--gold)">◆</span>路线笔记 · 射阳 ⇄ 盐城（盘湾线）</h3>
+  <p class="section-sub" style="margin:-4px 0 14px">江苏盐城。走盘湾镇这条——盘湾在射阳西南、潭洋河畔，沿陈李线方向西接盐城市区。把关键乡镇和我自己认的锚点都钉在下面。</p>
+
+  <div class="route-wrap">
+    <div class="route-dir">去程　射阳 → 盐城　↓</div>
+    <div class="route-note-top">起点射阳县城（合德），往南经兴桥到盘湾，再往南过特庸，接亭湖南洋一带进盐城市区。</div>
+
+    <ul class="route">
+      <li class="stop terminal">
+        <div class="st-name">射阳 · 合德镇 <span class="st-role start">起点</span></div>
+      </li>
+      <li class="stop">
+        <div class="st-name">兴桥镇 <span class="st-role via">途经</span></div>
+        <div class="st-marks"><div class="mk"><span class="mk-ic">·</span><div>合德正南紧邻的镇，<b>它南边直接挨着盘湾</b>——所以出县城经兴桥就到盘湾，<b>不走新坍</b>（新坍在兴桥西边，不在这条线上）。</div></div></div>
+      </li>
+      <li class="stop key">
+        <div class="st-name">盘湾镇 <span class="st-role keyt">关键</span></div>
+        <div class="st-marks">
+          <div class="mk lane"><span class="mk-ic">🏁</span><div>记忆点：看到 <b>「永兴饭店」</b> → 立刻并到<b>最右车道</b>，后面一路靠右。</div></div>
+          <div class="mk"><span class="mk-ic">🐂</span><div>地标：<b>盘湾大牛</b>（认准这个，说明位置对了）。</div></div>
+          <div class="mk"><span class="mk-ic">🪧</span><div>大牛之后有指示牌：<b>「盘湾宏大村」</b>。</div></div>
+        </div>
+      </li>
+      <li class="stop key">
+        <div class="st-name">特庸镇 <span class="st-role keyt">途经 · 已核</span></div>
+        <div class="st-marks"><div class="mk"><span class="mk-ic">↓</span><div><b>盘湾正南就是特庸</b>（特庸北邻盘湾）。特庸的西边、南边就直接贴着<b>盐城亭湖区</b>。</div></div></div>
+      </li>
+      <li class="stop">
+        <div class="st-name">亭湖区 · 南洋镇一带 <span class="st-role via">入市区</span></div>
+        <div class="st-marks"><div class="mk"><span class="mk-ic">·</span><div>特庸西/南接亭湖区南洋镇——南洋有盐城机场、紧邻市区，从这一带进城。</div></div></div>
+      </li>
+      <li class="stop terminal">
+        <div class="st-name">盐城市区 · 亭湖区 <span class="st-role end">终点</span></div>
+      </li>
+    </ul>
+
+    <div class="route-warn">
+      <span class="wn-tag">⚠ 注意</span><b>左右分流点：去程 2 处、回程 2 处。</b>都在<b>最右车道</b>上，会出现「同时指向左 / 右」的分流地标——看到要<b>提前判断走哪边</b>，别一晃就过头走错。去和回各盯紧这 2 个点。
+    </div>
+
+    <div style="margin-top:14px">
+      <div class="route-dir back">回程　盐城 → 射阳　↑</div>
+      <div class="route-note-top" style="margin-bottom:0">原路反向：盐城市区 → 亭湖南洋一带 → 特庸 → 盘湾（宏大村牌 → 大牛 → 永兴饭店）→ 兴桥 → 射阳合德。回程同样留意那 <b style="color:var(--accent)">2 个左右分流点</b>。</div>
+    </div>
+
+    <div class="route-honest">
+      <b>诚实说明 · 乡镇这块（已基本核实）：</b>整条骨架按官方区划核过了——<b>合德 → 兴桥 → 盘湾 → 特庸 → 亭湖（南洋）→ 盐城市区</b>。要点：兴桥北邻合德、南邻盘湾，所以<b>不经过新坍</b>（新坍在兴桥西边）；盘湾正南就是特庸，特庸西/南直接贴着亭湖区。剩下唯一的小不确定，是特庸进市区具体走南洋哪条路——这个按高德实际报的为准。真正的硬锚点仍是你自己认的 <b>永兴饭店 → 盘湾大牛 → 宏大村牌</b>。
+    </div>
+  </div>
+</section>
+
 <!-- ══════════ 故障反查 ══════════ -->
 <section id="diagnose">
   <div class="sec-head">
@@ -2141,6 +2807,72 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
     <br>里程以"先到为准"计算——公里数和时间哪个先到就按哪个。
   </div>
 
+  <!-- 全车滤清系统 -->
+  <div class="maint-section-title">全车滤清系统 <span class="km">车到处都在"过滤"</span></div>
+  <div class="filter-intro">
+    今天换的<b>机油 + 机滤</b>，只是全车最勤快的那一个滤。一台车想跑起来，要<b>呼吸</b>（进气）、要<b>喝油</b>（燃油）、要<b>循环润滑</b>（机油）、要<b>排废</b>（尾气），人坐在里面还要<b>呼吸</b>（空调）——<b>每一条进、出的通道上，都卡着一个"滤"</b>。所以说"油箱也在过滤"并不夸张：那是蒸发排放系统的活儿。下面把这些藏在各处的滤连同它们的专业名词一次理清，分别属于哪条通道：
+    <span class="fi-tag">进气</span><span class="fi-tag">燃油</span><span class="fi-tag">润滑</span><span class="fi-tag">排放</span><span class="fi-tag">座舱</span>
+  </div>
+  <div class="filter-grid">
+
+    <div class="filter-card" data-ch="lube">
+      <div class="fc-top"><span class="fc-name">机油滤清器</span><span class="fc-channel">润滑</span></div>
+      <div class="fc-alias">机滤 · Oil Filter</div>
+      <div class="fc-desc">滤掉发动机机油里磨下来的<b>金属碎屑、积碳和杂质</b>，让循环的机油保持干净，保护曲轴、凸轮轴这些精密配合面。换机油必须一起换，单价低，没有省的道理。</div>
+      <span class="fc-status fc-must">随机油同换</span>
+    </div>
+
+    <div class="filter-card" data-ch="intake">
+      <div class="fc-top"><span class="fc-name">空气滤清器</span><span class="fc-channel">进气</span></div>
+      <div class="fc-alias">空滤 · Air Filter</div>
+      <div class="fc-desc">滤掉进入气缸<b>参与燃烧的空气</b>里的灰尘砂砾。堵了进气受阻，混合气变浓——<b>动力下降、油耗升高</b>。拿出来对着光看，明显发黑堵塞就换。</div>
+      <span class="fc-status fc-must">必换 · 1.5–2 万</span>
+    </div>
+
+    <div class="filter-card" data-ch="cabin">
+      <div class="fc-top"><span class="fc-name">空调滤清器</span><span class="fc-channel">座舱</span></div>
+      <div class="fc-alias">空调滤 / 花粉滤 · Cabin Filter</div>
+      <div class="fc-desc">滤掉吹进<b>车厢的空气</b>，挡 PM2.5、花粉、灰尘和异味——管的是<b>车里人的呼吸</b>。和发动机无关，但直接关系健康。自己换成本极低。</div>
+      <span class="fc-status fc-must">必换 · 1–1.5 万</span>
+    </div>
+
+    <div class="filter-card" data-ch="fuel">
+      <div class="fc-top"><span class="fc-name">燃油滤清器</span><span class="fc-channel">燃油</span></div>
+      <div class="fc-alias">汽滤 / 油滤 · Fuel Filter</div>
+      <div class="fc-desc">滤掉汽油里的<b>杂质和水分</b>，保护精密的喷油嘴和高压油泵。现代车多把它<b>集成在油箱内的油泵总成里</b>，属于长寿命件，不用频繁动。</div>
+      <span class="fc-status fc-long">长周期 / 部分免维护</span>
+    </div>
+
+    <div class="filter-card" data-ch="exhaust">
+      <div class="fc-top"><span class="fc-name">炭罐</span><span class="fc-channel">油箱</span></div>
+      <div class="fc-alias">碳罐 · EVAP 炭罐</div>
+      <div class="fc-desc">"油箱也在过滤"说的就是它。它是<b>蒸发排放控制系统（EVAP）</b>的核心：油箱里挥发的汽油蒸气先被罐内活性炭<b>吸附住、不直接排进大气</b>，等发动机一工作再被吸回去烧掉，既环保又不浪费油。</div>
+      <span class="fc-status fc-free">一般免维护</span>
+    </div>
+
+    <div class="filter-card" data-ch="exhaust">
+      <div class="fc-top"><span class="fc-name">汽油颗粒捕捉器</span><span class="fc-channel">排放</span></div>
+      <div class="fc-alias">GPF · 国六排放标配</div>
+      <div class="fc-desc">装在<b>排气端</b>，捕捉燃烧后尾气里的<b>固体颗粒物（PM）</b>。国六车基本都有。攒满了会触发"再生"——靠高温把颗粒烧掉。<b>长期只在市区低速会堵</b>，偶尔跑跑高速有助于它再生。</div>
+      <span class="fc-status fc-free">免维护 · 注意再生</span>
+    </div>
+
+    <div class="filter-card" data-ch="lube">
+      <div class="fc-top"><span class="fc-name">油气分离器</span><span class="fc-channel">曲轴箱</span></div>
+      <div class="fc-alias">PCV 系统 · Oil Separator</div>
+      <div class="fc-desc">属于<b>曲轴箱强制通风（PCV）</b>系统。它把窜入曲轴箱的废气里夹带的<b>机油雾分离出来</b>：机油回收利用，废气送回进气重新燃烧。既防机油消耗，又控制排放。</div>
+      <span class="fc-status fc-free">免维护 / 长周期</span>
+    </div>
+
+    <div class="filter-card" data-ch="trans">
+      <div class="fc-top"><span class="fc-name">变速箱滤网</span><span class="fc-channel">传动</span></div>
+      <div class="fc-alias">CVT / AT Filter</div>
+      <div class="fc-desc">滤掉变速箱油里的<b>磨损杂质</b>，保护阀体和液压系统。换变速箱油时一并处理；CVT 多为<b>内置滤网</b>，不单独频繁更换。</div>
+      <span class="fc-status fc-long">随变速箱油</span>
+    </div>
+
+  </div>
+
   <div class="maint-section-title">每次保养 <span class="km">5,000–10,000 km / 半年</span></div>
   <table class="maint-table">
     <thead><tr><th style="width:18%">项目</th><th style="width:12%">类型</th><th style="width:22%">更换周期</th><th>说明 / 判断依据</th></tr></thead>
@@ -2212,7 +2944,7 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
 
 <script>
 /* ───── 导航切换 ───── */
-const SECTION_ORDER = ['mycar','systems','flow','course','mods','diagnose','calc','maintenance'];
+const SECTION_ORDER = ['mycar','systems','flow','course','mods','drive','diagnose','calc','maintenance'];
 function show(id, btn) {
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
