@@ -558,6 +558,145 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
 .home-legend .li { display: flex; align-items: center; gap: 6px; }
 .home-legend .sw { width: 12px; height: 12px; border-radius: 3px; }
 @media(max-width: 600px) { .dish-grid { grid-template-columns: 1fr; } }
+
+/* 家常菜卡片：私房·有详解 标签 + 看详解链接 */
+.dc-origin.o-mine { background: #efe6f6; color: var(--purple); }
+.dish-card .dc-link.detail {
+  background: #efe6f6; color: var(--purple); border: 1px solid #d8c6ea; cursor: pointer;
+}
+.dish-card .dc-link.detail:hover { background: var(--purple); color: #fff; border-color: var(--purple); }
+
+/* ════════ 07 烹饪技巧总结（可生长技法库）════════ */
+.tq-lead {
+  background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--purple);
+  border-radius: 3px; padding: 16px 20px; margin-bottom: 18px;
+  font-size: 13px; color: var(--muted); line-height: 1.8; box-shadow: var(--shadow);
+}
+.tq-lead strong { color: var(--purple); font-family: 'Noto Serif SC', serif; }
+
+/* 统计 + 分类筛选条 */
+.tq-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+.tq-count {
+  font-family:'JetBrains Mono',monospace; font-size: 12px; color: var(--muted2);
+  display:flex; align-items:baseline; gap:5px;
+}
+.tq-count b { font-family:'Noto Serif SC',serif; font-size: 20px; color: var(--purple); font-weight: 900; }
+.tq-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.tq-filters button {
+  font-family: 'Noto Sans SC', sans-serif; font-size: 12.5px;
+  padding: 6px 14px; border-radius: 30px; border: 1.5px solid var(--border-dark);
+  background: #fff; color: var(--muted); cursor: pointer; transition: all .18s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.tq-filters button:hover { border-color: var(--ink); color: var(--ink); }
+.tq-filters button.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.tq-filters button .c { font-family:'JetBrains Mono',monospace; font-size: 10px; opacity:.7; }
+
+/* 技法卡（原子化：一条技法一张卡）*/
+.tq-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 14px; }
+.tq-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  box-shadow: var(--shadow); padding: 0; overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.tq-card.hide { display: none; }
+.tq-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--border-dark); }
+.tq-card .tq-cat {
+  font-size: 10px; font-weight: 600; letter-spacing: .5px; padding: 5px 14px;
+  color: #fff; background: var(--c, var(--muted)); display: flex; align-items: center; gap: 6px;
+}
+.tq-card .tq-cat .qn { font-family:'JetBrains Mono',monospace; opacity:.85; }
+.tq-card h4 {
+  font-family:'Noto Serif SC',serif; font-size: 15.5px; font-weight: 700;
+  padding: 12px 16px 8px; line-height: 1.4;
+}
+.tq-card .tq-do { font-size: 12.5px; color: var(--ink2); line-height: 1.65; padding: 0 16px 8px; flex: 1; }
+.tq-card .tq-do b { color: var(--accent); font-weight: 600; }
+.tq-card .tq-why {
+  font-size: 12px; color: var(--muted); line-height: 1.65;
+  padding: 9px 16px; background: var(--paper2); border-top: 1px solid var(--border);
+}
+.tq-card .tq-why::before { content: '∵ 为什么　'; color: var(--accent2); font-weight: 700; font-family:'Noto Serif SC',serif; }
+.tq-card .tq-src {
+  font-size: 10.5px; color: var(--muted2); padding: 7px 16px; border-top: 1px dashed var(--border);
+  display: flex; align-items: center; gap: 5px;
+}
+.tq-card .tq-src .lbl { font-family:'JetBrains Mono',monospace; letter-spacing:.5px; }
+.tq-card .tq-src .dish {
+  color: var(--purple); font-weight: 500; cursor: pointer; border-bottom: 1px dotted var(--purple);
+}
+/* 占位 / 添加卡 */
+.tq-add {
+  border: 1.5px dashed var(--border-dark); border-radius: 4px; background: transparent;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 24px 18px; color: var(--muted2); min-height: 150px;
+}
+.tq-add .plus { font-size: 26px; line-height: 1; margin-bottom: 8px; color: var(--border-dark); }
+.tq-add .t { font-family:'Noto Serif SC',serif; font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.tq-add .s { font-size: 11px; line-height: 1.6; }
+
+/* 案例库（折叠）：完整流程出处 */
+.case-archive { margin-top: 34px; }
+.case-archive > .ttl {
+  font-family:'Noto Serif SC',serif; font-size: 15px; font-weight: 700;
+  margin: 0 0 6px; display: flex; align-items: center; gap: 10px;
+}
+.case-archive > .ttl .gi {
+  font-family:'JetBrains Mono',monospace; font-size: 12px; font-weight: 700;
+  color: var(--accent2); border: 1.5px solid var(--accent2); border-radius: 4px; padding: 1px 8px;
+}
+.case-archive > .sub { font-size: 12px; color: var(--muted); margin: 0 0 16px; max-width: 680px; }
+details.case {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  box-shadow: var(--shadow); margin-bottom: 12px; overflow: hidden;
+}
+details.case > summary {
+  list-style: none; cursor: pointer; padding: 13px 18px;
+  font-family:'Noto Serif SC',serif; font-size: 15px; font-weight: 700;
+  display: flex; align-items: center; gap: 10px; user-select: none;
+}
+details.case > summary::-webkit-details-marker { display: none; }
+details.case > summary .arw { color: var(--purple); font-size: 12px; transition: transform .2s; }
+details.case[open] > summary { border-bottom: 1px solid var(--border); background: var(--paper2); }
+details.case[open] > summary .arw { transform: rotate(90deg); }
+details.case > summary .hint { font-family:'Noto Sans SC'; font-size: 12px; font-weight: 400; color: var(--muted2); margin-left: auto; }
+.case-body { padding: 18px 20px 8px; }
+
+/* 阶段时间线（案例内部复用）*/
+.flow-stages { position: relative; padding-left: 30px; }
+.flow-stages::before {
+  content:''; position:absolute; left: 9px; top: 6px; bottom: 18px;
+  width: 2px; background: linear-gradient(var(--purple), var(--accent2)); opacity:.35;
+}
+.tq-stage { position: relative; margin-bottom: 16px; }
+.tq-stage::before {
+  content: attr(data-n); position: absolute; left: -30px; top: 0;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--paper); border: 2px solid var(--purple); color: var(--purple);
+  font-family:'JetBrains Mono',monospace; font-size: 11px; font-weight: 700;
+  display:flex; align-items:center; justify-content:center; z-index:1;
+}
+.tq-stage-card { background: var(--paper); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.tq-stage-card > h5 {
+  font-family:'Noto Serif SC',serif; font-size: 14px; font-weight: 700;
+  padding: 10px 14px; background: var(--paper3); border-bottom: 1px solid var(--border);
+}
+.tq-stage-card > h5 .en { font-family:'JetBrains Mono',monospace; font-size:10px; color: var(--muted2); font-weight:400; margin-left:6px; }
+.tq-rows { padding: 4px 14px 10px; }
+.tq-row { display: flex; gap: 12px; padding: 7px 0; border-bottom: 1px dashed var(--border); align-items: baseline; }
+.tq-row:last-child { border-bottom: none; }
+.tq-item { flex: 0 0 78px; font-weight: 500; color: var(--ink2); font-size: 12.5px; font-family:'Noto Serif SC',serif; }
+.tq-note { flex: 1; font-size: 12px; color: var(--muted); line-height: 1.65; }
+.tq-note em { color: var(--accent); font-style: normal; font-weight: 500; }
+.tq-note .seq { color: var(--purple); font-weight: 600; font-family:'JetBrains Mono',monospace; margin-right: 3px; }
+.tq-sub { margin-top: 4px; padding-left: 12px; border-left: 2px solid var(--border-dark); }
+.tq-sub div { font-size: 11.5px; color: var(--muted); padding: 2px 0; }
+.tq-sub b { color: var(--ink2); font-weight: 500; }
+@media(max-width: 600px) {
+  .tq-grid { grid-template-columns: 1fr; }
+  .tq-item { flex-basis: 64px; }
+}
 </style>
 </head>
 <body>
@@ -584,6 +723,7 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
     <button onclick="show('calc',this)"><span class="ico">▤</span>点菜计算器</button>
     <button onclick="show('maintenance',this)"><span class="ico">≣</span>代表菜图鉴</button>
     <button onclick="show('homestyle',this)"><span class="ico">🍳</span>家常菜谱</button>
+    <button onclick="show('technique',this)"><span class="ico">🔪</span>烹饪技巧总结</button>
   </div>
 </nav>
 
@@ -1416,6 +1556,17 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
     </div>
 
     <div class="dish-card">
+      <div class="dc-head"><span class="dc-name">时蔬牛柳</span><span class="dc-origin o-mine">私房·有详解</span></div>
+      <div class="dc-body">
+        <div class="dc-ing"><b>配料</b>　牛柳、彩椒、芦笋、葱姜蒜、鸡蛋、海苔（装饰）</div>
+        <div class="dc-links">
+          <a class="dc-link recipe" href="https://www.xiachufang.com/search/?keyword=%E6%97%B6%E8%94%AC%E7%89%9B%E6%9F%B3" target="_blank" rel="noopener">🔍 看配料</a>
+          <a class="dc-link detail" onclick="showTechniqueCase('case-shilu')">📖 看详解</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
       <div class="dc-head"><span class="dc-name">青椒土豆丝</span><span class="dc-origin o-none">家常通用</span></div>
       <div class="dc-body">
         <div class="dc-ing"><b>配料</b>　土豆、青椒、醋、干辣椒</div>
@@ -1565,6 +1716,197 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
   </div>
 </section>
 
+<!-- ══════════ 烹饪技巧总结 ══════════ -->
+<section id="technique">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">07</span>烹饪技巧总结</h2>
+    <p class="section-sub">这是一个会不断长大的「技法库」。每条技法都是独立、可复用的——不绑定某一道菜，而是标注它「出自哪道菜」。以后每多做一道菜、多悟一个门道，就往里加一张卡，按分类自动归位。</p>
+  </div>
+
+  <div class="tq-lead">
+    <strong>怎么用、怎么加：</strong>下面每张卡 = 一条技法，包含「怎么做 + 为什么 + 出自哪道菜」三件套。顶部按分类筛选；想新增时，复制任意一张卡、改五个地方即可——分类（data-cat）、技法名、怎么做、为什么、出处。筛选条会根据卡片自动生成，新分类也能直接冒出来，不用改脚本。
+  </div>
+
+  <!-- 统计 + 分类筛选（按钮由脚本根据卡片 data-cat 自动生成）-->
+  <div class="tq-bar">
+    <div class="tq-count"><b id="tqCount">0</b><span>条技法 · 持续添加中</span></div>
+    <div class="tq-filters" id="tqFilters"></div>
+  </div>
+
+  <!-- ▼▼▼ 技法卡片区：新增技法就在这里加一张 .tq-card（带 data-cat）▼▼▼ -->
+  <div class="tq-grid" id="tqGrid">
+
+    <!-- 复制模板（去掉注释即可生效）：
+    <div class="tq-card" data-cat="分类名">
+      <div class="tq-cat" style="--c:var(--purple)">分类名</div>
+      <h4>技法名</h4>
+      <div class="tq-do">怎么做：……（关键动作用 <b>红字</b> 标重点）</div>
+      <div class="tq-why">原理一句话讲透。</div>
+      <div class="tq-src"><span class="lbl">SRC</span> 源自 · <span class="dish">菜名</span></div>
+    </div>
+    -->
+
+    <div class="tq-card" data-cat="食材预处理">
+      <div class="tq-cat" style="--c:var(--green)">食材预处理</div>
+      <h4>肉下锅前吸干表面水</h4>
+      <div class="tq-do">切好的肉用厨房纸把<b>正反两面的生水都吸干</b>再下锅。</div>
+      <div class="tq-why">表面带水会先把油温拉低、还四处溅油，肉只能被「煮」得发白出水，上不了色、出不了焦香。</div>
+      <div class="tq-src"><span class="lbl">SRC</span> 源自 · <span class="dish">时蔬牛柳</span></div>
+    </div>
+
+    <div class="tq-card" data-cat="食材预处理">
+      <div class="tq-cat" style="--c:var(--green)">食材预处理</div>
+      <h4>姜去腥，葱蒜增香</h4>
+      <div class="tq-do">腥味重的食材配<b>姜片</b>去腥；爆香增味靠<b>葱末、蒜粒</b>，别一股脑全扔进去。</div>
+      <div class="tq-why">姜里的姜烯酚等成分专压肉腥，葱蒜的硫化物负责出香——分工不同，下锅时机也不同。</div>
+      <div class="tq-src"><span class="lbl">SRC</span> 源自 · <span class="dish">时蔬牛柳</span></div>
+    </div>
+
+    <div class="tq-card" data-cat="食材预处理">
+      <div class="tq-cat" style="--c:var(--green)">食材预处理</div>
+      <h4>绿叶菜先焯水，水里加盐</h4>
+      <div class="tq-do">芦笋、绿叶菜下炒锅前先<b>焯一下水，水里撒点盐</b>。</div>
+      <div class="tq-why">焯过熟得快，不必为等它熟而把肉炒老；盐能护住叶绿素，成菜更翠、不发黄。</div>
+      <div class="tq-src"><span class="lbl">SRC</span> 源自 · <span class="dish">时蔬牛柳</span></div>
+    </div>
+
+    <div class="tq-card" data-cat="选锅·油温">
+      <div class="tq-cat" style="--c:var(--gold)">选锅·油温</div>
+      <h4>不粘锅 ≈ 自带一层油</h4>
+      <div class="tq-do">新手优先用不粘锅，几乎不会粘。</div>
+      <div class="tq-why">涂层的本质就是「提前铺好的油膜」，相当于替你完成了润锅这一步。</div>
+      <div class="tq-src"><span class="lbl">SRC</span> 源自 · <span class="dish">时蔬牛柳</span></div>
+    </div>
+
+    <div class="tq-card" data-cat="选锅·油温">
+      <div class="tq-cat" style="--c:var(--gold)">选锅·油温</div>
+      <h4>铁锅靠「热锅凉油 + 润满整锅」防粘</h4>
+      <div class="tq-do">铁锅先<b>烧热再下凉油</b>，转动锅让<b>油布满整个锅面</b>再下料。</div>
+      <div class="tq-why">高温让锅面收紧、凉油形成隔离膜，食材就不会直接焊在铁上；养好的铁锅一样不粘。</div>
+      <div class="tq-src"><span class="lbl">SRC</span> 源自 · <span class="dish">时蔬牛柳</span></div>
+    </div>
+
+    <div class="tq-card" data-cat="选锅·油温">
+      <div class="tq-cat" style="--c:var(--gold)">选锅·油温</div>
+      <h4>下料前先看油温</h4>
+      <div class="tq-do">油下锅后先<b>判断油温</b>（看油纹、丢点葱花试响），到位再下主料。</div>
+      <div class="tq-why">油温决定是「滑炒得嫩」还是「爆炒得香」；温度不够会粘锅出水，过高则瞬间焦糊。</div>
+      <div class="tq-src"><span class="lbl">SRC</span> 源自 · <span class="dish">时蔬牛柳</span></div>
+    </div>
+
+    <div class="tq-card" data-cat="火候·翻炒">
+      <div class="tq-cat" style="--c:var(--accent)">火候·翻炒</div>
+      <h4>荤菜先煸到半熟，先盛出来</h4>
+      <div class="tq-do">牛柳这类肉先<b>煎到半熟就盛出</b>，等蔬菜快好时再回锅。</div>
+      <div class="tq-why">肉久炒必柴。分两段下锅，肉和菜各自都能停在最佳熟度。</div>
+      <div class="tq-src"><span class="lbl">SRC</span> 源自 · <span class="dish">时蔬牛柳</span></div>
+    </div>
+
+    <div class="tq-card" data-cat="火候·翻炒">
+      <div class="tq-cat" style="--c:var(--accent)">火候·翻炒</div>
+      <h4>爆炒的通用节奏：爆香→下素→回锅→尝味</h4>
+      <div class="tq-do"><b>①葱姜爆香 ②下蔬菜翻炒 ③肉回锅合炒 ④出锅前尝一口</b>定咸淡与熟度。</div>
+      <div class="tq-why">香味要先用热油逼出来打底，难熟的先下，肉最后回锅只为合味——顺序错了味道就散。</div>
+      <div class="tq-src"><span class="lbl">SRC</span> 源自 · <span class="dish">时蔬牛柳</span></div>
+    </div>
+
+    <div class="tq-card" data-cat="火候·翻炒">
+      <div class="tq-cat" style="--c:var(--accent)">火候·翻炒</div>
+      <h4>怕焦就把锅端离火</h4>
+      <div class="tq-do">下料、加调料这种「手忙」的瞬间，可以<b>把锅端离火口</b>几秒再操作。</div>
+      <div class="tq-why">离火控温比「慌着关火再开火」更稳更快，避免这几秒里食材过火发苦。</div>
+      <div class="tq-src"><span class="lbl">SRC</span> 源自 · <span class="dish">时蔬牛柳</span></div>
+    </div>
+
+    <div class="tq-card" data-cat="养锅·收尾">
+      <div class="tq-cat" style="--c:var(--accent2)">养锅·收尾</div>
+      <h4>趁热清洁灶台、油烟机</h4>
+      <div class="tq-do">炒完<b>趁油渍还温热</b>，抹布喷点洗洁精，把灶台、墙面、油烟机、餐具都抹一遍。</div>
+      <div class="tq-why">油渍刚溅上、没冷却凝固时一抹就掉；等它干硬，再清理要费十倍力气。</div>
+      <div class="tq-src"><span class="lbl">SRC</span> 源自 · <span class="dish">时蔬牛柳</span></div>
+    </div>
+
+    <div class="tq-card" data-cat="养锅·收尾">
+      <div class="tq-cat" style="--c:var(--accent2)">养锅·收尾</div>
+      <h4>锅擦干 → 烘干 → 铁锅薄油养膜</h4>
+      <div class="tq-do">锅洗后用布<b>擦干、开小火烘干</b>；铁锅再<b>抹一层薄油</b>收起来。</div>
+      <div class="tq-why">残水是铁锅生锈的根源；烘干后那层薄油既防锈又养出油膜，锅越用越不粘——这就是「养锅」。</div>
+      <div class="tq-src"><span class="lbl">SRC</span> 源自 · <span class="dish">时蔬牛柳</span></div>
+    </div>
+
+    <!-- 占位：提示这是一个持续生长的库 -->
+    <div class="tq-add">
+      <div class="plus">＋</div>
+      <div class="t">下一条技法</div>
+      <div class="s">每学一道新菜，就把新门道<br>提炼成一张卡加到这里</div>
+    </div>
+
+  </div>
+
+  <!-- 案例库：完整流程的出处（折叠）-->
+  <div class="case-archive">
+    <div class="ttl"><span class="gi">例</span>案例库 · 完整流程</div>
+    <p class="sub">技法的出处。把一道菜从买菜到刷锅整条流水线记下来，便是上面那些技法的「现场」。这里也会随着菜越做越多而不断添加。</p>
+
+    <details class="case" id="case-shilu">
+      <summary><span class="arw">▸</span>时蔬牛柳<span class="hint">买菜 → 备菜 → 下锅 → 收尾</span></summary>
+      <div class="case-body">
+        <div class="flow-stages">
+
+          <div class="tq-stage" data-n="1">
+            <div class="tq-stage-card">
+              <h5>买菜<span class="en">SHOPPING</span></h5>
+              <div class="tq-rows">
+                <div class="tq-row"><span class="tq-item">牛柳</span><span class="tq-note">切条或块；<em>下锅前用厨房纸把正反两面的生水吸干</em>——表面干，才煎得上色、不溅油。</span></div>
+                <div class="tq-row"><span class="tq-item">彩椒</span><span class="tq-note">切条或块，跟牛柳大小相近，受热和摆盘都协调。</span></div>
+                <div class="tq-row"><span class="tq-item">葱姜蒜</span><span class="tq-note">分三样备好：<div class="tq-sub"><div><b>姜片</b>——主要用来<em>去腥</em></div><div><b>葱末、蒜粒</b>——爆香增味</div></div></span></div>
+                <div class="tq-row"><span class="tq-item">鸡蛋</span><span class="tq-note">备用（可用蛋清给牛柳上浆，让肉更嫩滑）。</span></div>
+                <div class="tq-row"><span class="tq-item">芦笋</span><span class="tq-note">绿色时蔬，提供脆口和颜色。</span></div>
+                <div class="tq-row"><span class="tq-item">海苔</span><span class="tq-note">纯<em>装饰用</em>，出锅摆盘时点缀。</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tq-stage" data-n="2">
+            <div class="tq-stage-card">
+              <h5>备菜<span class="en">PREP</span></h5>
+              <div class="tq-rows">
+                <div class="tq-row"><span class="tq-item">去皮</span><span class="tq-note">芦笋根部老皮削掉，口感更嫩。</span></div>
+                <div class="tq-row"><span class="tq-item">焯水</span><span class="tq-note">绿叶/芦笋下锅前先焯一下：<div class="tq-sub"><div>① 后面炒的时候<b>熟得快</b>，不至于为等它熟把肉炒老</div><div>② 焯水时加点<b>盐</b>，能<em>锁住「绿」颜色</em>，成菜更翠</div></div></span></div>
+                <div class="tq-row"><span class="tq-item">按盘摆放</span><span class="tq-note">备好的料按下锅顺序分盘码好，炒起来手不忙脚不乱。</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tq-stage" data-n="3">
+            <div class="tq-stage-card">
+              <h5>下锅（颠锅）<span class="en">STIR-FRY</span></h5>
+              <div class="tq-rows">
+                <div class="tq-row"><span class="tq-item">选锅</span><span class="tq-note">两种各有讲究：<div class="tq-sub"><div><b>不粘锅</b>——本质上就类似<em>提前加了一层油</em>，省心好上手</div><div><b>铁锅</b>——导热好、受热均匀，养好了一样不粘</div></div></span></div>
+                <div class="tq-row"><span class="tq-item">放油</span><span class="tq-note">倒入适量油，<em>看/试油温</em>，转动锅让<em>油布满整个锅</em>（热锅凉油、润锅，是不粘的关键）。</span></div>
+                <div class="tq-row"><span class="tq-item">下料顺序</span><span class="tq-note"><span class="seq">①</span>先下<b>荤菜</b>（牛柳），煸到<em>半熟就先出锅</em>，避免久炒变老。<br><span class="seq">②</span>下<b>葱姜末</b>爆香，搅匀后下<b>蔬菜</b>翻炒；<em>再把牛柳回锅</em>合炒，最后<em>尝一口看熟没熟、咸淡够不够</em>。</span></div>
+                <div class="tq-row"><span class="tq-item">控温小技</span><span class="tq-note">下其他东西、怕一下子焦的时候，可以<em>把锅端离火口</em>，温度降下来再操作。</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tq-stage" data-n="4">
+            <div class="tq-stage-card">
+              <h5>收尾<span class="en">CLEAN-UP</span></h5>
+              <div class="tq-rows">
+                <div class="tq-row"><span class="tq-item">擦台面</span><span class="tq-note">抹布上喷点洗洁精，趁油渍还没凝固，把<b>灶台、墙壁、油烟机、餐具</b>都擦一遍。</span></div>
+                <div class="tq-row"><span class="tq-item">养锅</span><span class="tq-note">锅底用抹布擦干：<div class="tq-sub"><div>开小火把残水<b>烘干</b></div><div>铁锅再<em>倒一点油</em>抹匀——<b>防锈、养出油膜</b>，下次更不粘</div></div></span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </details>
+
+  </div>
+</section>
+
 </div>
 </main>
 
@@ -1576,7 +1918,7 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
 </footer>
 <script>
 /* ───── 导航切换 ───── */
-const SECTION_ORDER = ['systems','flow','diagnose','calc','maintenance','homestyle'];
+const SECTION_ORDER = ['systems','flow','diagnose','calc','maintenance','homestyle','technique'];
 function show(id, btn) {
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
@@ -1622,6 +1964,48 @@ document.addEventListener('click', e => {
   if (link) jumpToSystem(link.dataset.sys);
 });
 initSysLinks();
+
+/* ═══════════ 07 技法库：自动生成分类筛选 + 计数 ═══════════ */
+/* 技法卡只要带 data-cat，就会被自动统计、自动归类，无需改动脚本 */
+function initTechniqueLib() {
+  const grid = document.getElementById('tqGrid');
+  const bar  = document.getElementById('tqFilters');
+  const cnt  = document.getElementById('tqCount');
+  if (!grid || !bar) return;
+  const cards = [...grid.querySelectorAll('.tq-card[data-cat]')];
+  if (cnt) cnt.textContent = cards.length;
+
+  // 按出现顺序收集分类
+  const cats = [];
+  cards.forEach(c => { const k = c.dataset.cat; if (k && !cats.includes(k)) cats.push(k); });
+
+  // 生成筛选按钮：全部 + 各分类（带条数）
+  const mk = (label, val, n) =>
+    `<button data-f="${val}">${label}${n!=null?`<span class="c">${n}</span>`:''}</button>`;
+  bar.innerHTML = mk('全部', 'all', cards.length) +
+    cats.map(k => mk(k, k, cards.filter(c => c.dataset.cat === k).length)).join('');
+  bar.querySelector('button').classList.add('active');
+
+  bar.addEventListener('click', e => {
+    const btn = e.target.closest('button'); if (!btn) return;
+    bar.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.f;
+    cards.forEach(c => c.classList.toggle('hide', f !== 'all' && c.dataset.cat !== f));
+  });
+}
+initTechniqueLib();
+
+/* 从家常菜卡片「看详解」跳到技法栏并展开对应案例 */
+function showTechniqueCase(id) {
+  show('technique');
+  const d = document.getElementById(id);
+  if (!d) return;
+  setTimeout(() => {
+    d.open = true;
+    d.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 140);
+}
 
 /* ───── 口味反查筛选 ───── */
 document.getElementById('diagFilters').addEventListener('click', e => {
