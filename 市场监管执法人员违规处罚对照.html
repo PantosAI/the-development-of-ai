@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>市场监管执法人员违规处罚对照</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+  :root{
+    --ink:#1a1714;
+    --paper:#f4f0e8;
+    --paper-2:#ece6d8;
+    --seal:#b22322;
+    --seal-deep:#8c1a19;
+    --gold:#9a7b3f;
+    --line:#d8cfba;
+    --muted:#6b6357;
+    --zw:#3a6ea5;   /* 政务蓝 */
+    --dj:#b22322;   /* 党纪红 */
+    --warn-1:#5a8f6e;
+    --warn-2:#c9a227;
+    --warn-3:#cc7a2b;
+    --warn-4:#b22322;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Noto Sans SC',sans-serif;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(178,35,34,.04), transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(154,123,63,.05), transparent 45%),
+      var(--paper);
+    color:var(--ink);line-height:1.85;
+    -webkit-font-smoothing:antialiased;padding:0 0 80px;
+  }
+
+  /* 顶部 */
+  .masthead{position:relative;padding:64px 28px 48px;text-align:center;border-bottom:3px double var(--seal-deep);overflow:hidden;}
+  .masthead::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 39px,rgba(26,23,20,.025) 39px 40px);pointer-events:none;}
+  .seal{width:78px;height:78px;margin:0 auto 22px;border:3px solid var(--seal);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif SC',serif;font-weight:900;font-size:13px;color:var(--seal);line-height:1.1;letter-spacing:1px;transform:rotate(-6deg);box-shadow:inset 0 0 0 1px rgba(178,35,34,.3);text-align:center;}
+  .kicker{font-size:13px;letter-spacing:6px;color:var(--muted);margin-bottom:14px;text-transform:uppercase;}
+  h1{font-family:'Noto Serif SC',serif;font-weight:900;font-size:clamp(26px,5vw,40px);letter-spacing:2px;color:var(--ink);}
+  .subtitle{margin-top:16px;font-size:15px;color:var(--muted);max-width:620px;margin-left:auto;margin-right:auto;}
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+
+  /* 提示 */
+  .keynote{margin:44px 0;background:linear-gradient(135deg,#fff8ec,#f6eedb);border:1px solid var(--gold);border-left:5px solid var(--seal);padding:24px 26px;border-radius:4px;box-shadow:0 6px 24px -12px rgba(140,26,25,.4);}
+  .keynote h3{font-family:'Noto Serif SC',serif;color:var(--seal-deep);font-size:18px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .keynote p{font-size:14.5px;color:#4a4338;}
+  .keynote strong{color:var(--seal-deep);}
+
+  /* 区块标题 */
+  .section{margin-top:56px;}
+  .section-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:8px;}
+  .section-num{font-family:'Noto Serif SC',serif;font-size:40px;font-weight:900;color:var(--seal);line-height:1;opacity:.85;}
+  .section-head h2{font-family:'Noto Serif SC',serif;font-size:23px;font-weight:700;letter-spacing:1px;}
+  .section-law{font-size:13px;color:var(--muted);margin:6px 0 26px;font-style:italic;}
+
+  /* ===== 政务 vs 党纪 对比 ===== */
+  .vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:640px){.vs-grid{grid-template-columns:1fr;}}
+  .vs-card{border-radius:10px;padding:22px 22px 8px;border:1px solid var(--line);background:#fffdf8;position:relative;overflow:hidden;}
+  .vs-card.zw{border-top:5px solid var(--zw);}
+  .vs-card.dj{border-top:5px solid var(--dj);}
+  .vs-card h3{font-family:'Noto Serif SC',serif;font-size:20px;margin-bottom:4px;}
+  .vs-card.zw h3{color:var(--zw);}
+  .vs-card.dj h3{color:var(--dj);}
+  .vs-card .law{font-size:12.5px;color:var(--muted);margin-bottom:16px;font-style:italic;}
+  .vs-row{padding:10px 0;border-bottom:1px dashed var(--line);}
+  .vs-row:last-child{border-bottom:none;}
+  .vs-k{font-size:12px;color:var(--muted);letter-spacing:1px;}
+  .vs-v{font-size:14.5px;font-weight:500;margin-top:2px;}
+  .pill{display:inline-block;font-size:12px;padding:3px 9px;border-radius:14px;margin:3px 5px 3px 0;background:var(--paper-2);}
+  .vs-card.zw .pill{background:rgba(58,110,165,.12);color:var(--zw);}
+  .vs-card.dj .pill{background:rgba(178,35,34,.1);color:var(--dj);}
+
+  .double{margin-top:18px;background:linear-gradient(135deg,#241a18,#3a2422);color:#f6e9e4;border-radius:10px;padding:22px 24px;}
+  .double h4{font-family:'Noto Serif SC',serif;color:#f0c9a0;font-size:17px;margin-bottom:10px;}
+  .double p{font-size:14.5px;line-height:1.8;}
+  .double strong{color:#f0c9a0;}
+
+  /* ===== 行为专栏 ===== */
+  .col{background:#fffdf8;border:1px solid var(--line);border-radius:10px;margin-bottom:18px;overflow:hidden;box-shadow:0 2px 14px -10px rgba(26,23,20,.5);transition:transform .25s,box-shadow .25s;}
+  .col:hover{transform:translateY(-2px);box-shadow:0 10px 26px -14px rgba(26,23,20,.55);}
+  .col-head{display:flex;align-items:center;gap:14px;padding:16px 22px;border-left:7px solid var(--c);background:linear-gradient(90deg,var(--cbg),transparent 75%);}
+  .col-ico{font-size:24px;flex:0 0 auto;}
+  .col-title{font-family:'Noto Serif SC',serif;font-weight:700;font-size:19px;letter-spacing:.5px;}
+  .col-sub{margin-left:auto;font-size:12px;color:var(--muted);text-align:right;max-width:200px;}
+  .col-body{padding:4px 22px 14px;}
+  .beh{display:grid;grid-template-columns:88px 1fr auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px dashed var(--line);}
+  .beh:last-child{border-bottom:none;}
+  @media(max-width:600px){.beh{grid-template-columns:1fr;gap:6px;}}
+  .deg{font-size:11.5px;font-weight:700;text-align:center;padding:4px 0;border-radius:14px;white-space:nowrap;}
+  .d1{background:rgba(90,143,110,.16);color:var(--warn-1);}
+  .d2{background:rgba(201,162,39,.18);color:#9a7d12;}
+  .d3{background:rgba(204,122,43,.18);color:var(--warn-3);}
+  .d4{background:rgba(178,35,34,.15);color:var(--warn-4);}
+  .beh-txt{font-size:14.5px;}
+  .punish{display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end;}
+  @media(max-width:600px){.punish{justify-content:flex-start;}}
+  .tag{font-size:11.5px;padding:3px 9px;border-radius:5px;white-space:nowrap;font-weight:500;}
+  .tag.zw{background:rgba(58,110,165,.13);color:var(--zw);border:1px solid rgba(58,110,165,.3);}
+  .tag.dj{background:rgba(178,35,34,.1);color:var(--dj);border:1px solid rgba(178,35,34,.25);}
+  .tag.xs{background:#241a18;color:#f0c9a0;}
+
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:22px;font-size:13px;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:12px;height:12px;border-radius:3px;display:inline-block;}
+
+  /* 配色 */
+  .c-shizhi{--c:#5a8f6e;--cbg:rgba(90,143,110,.12);}
+  .c-lanquan{--c:#cc7a2b;--cbg:rgba(204,122,43,.13);}
+  .c-lianjie{--c:#b22322;--cbg:rgba(178,35,34,.12);}
+  .c-xunsi{--c:#7a4fb0;--cbg:rgba(122,79,176,.12);}
+  .c-mimi{--c:#3a6ea5;--cbg:rgba(58,110,165,.12);}
+
+  /* 公示链接 */
+  .links{margin-top:14px;display:grid;gap:14px;}
+  .link-card{display:block;text-decoration:none;color:var(--ink);background:#fffdf8;border:1px solid var(--line);border-radius:8px;padding:18px 20px;position:relative;transition:all .2s;}
+  .link-card:hover{border-color:var(--seal);background:#fff8ee;transform:translateX(4px);}
+  .link-card .lc-head{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+  .link-card .lc-tag{font-size:11px;font-weight:700;background:var(--seal);color:#fff;padding:2px 8px;border-radius:4px;}
+  .link-card .lc-name{font-family:'Noto Serif SC',serif;font-weight:700;font-size:16.5px;}
+  .link-card .lc-url{color:var(--seal-deep);font-size:13.5px;word-break:break-all;font-family:monospace;margin:4px 0 6px;}
+  .link-card .lc-desc{font-size:13.5px;color:var(--muted);}
+  .link-card .arrow{position:absolute;right:18px;top:18px;color:var(--seal);font-size:18px;transition:transform .2s;}
+  .link-card:hover .arrow{transform:translate(3px,-3px);}
+
+  /* 渠道 */
+  .channels{margin-top:14px;counter-reset:ch;}
+  .channel{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--line);}
+  .channel::before{counter-increment:ch;content:counter(ch);flex:0 0 34px;font-family:'Noto Serif SC',serif;font-weight:900;font-size:18px;color:var(--seal);border:2px solid var(--seal);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;}
+  .channel .ch-t{font-weight:700;margin-bottom:2px;font-size:15px;}
+  .channel .ch-d{font-size:13.5px;color:var(--muted);}
+
+  /* ===== 公职人员范围 ===== */
+  .gz-core{background:linear-gradient(135deg,#eef3f8,#e3ecf5);border:1px solid var(--zw);border-left:5px solid var(--zw);border-radius:6px;padding:20px 24px;margin-bottom:26px;}
+  .gz-core .k{font-family:'Noto Serif SC',serif;color:var(--zw);font-size:17px;margin-bottom:6px;}
+  .gz-core p{font-size:14.5px;color:#33404f;}
+  .gz-core strong{color:var(--zw);}
+  .formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:center;margin:14px 0 2px;font-family:'Noto Serif SC',serif;font-size:15px;}
+  .formula .box{background:#fff;border:1px solid var(--zw);border-radius:8px;padding:8px 16px;color:var(--zw);font-weight:700;}
+  .formula .op{font-size:20px;color:var(--muted);}
+  .formula .res{background:var(--zw);color:#fff;border-color:var(--zw);}
+
+  .cat-list{counter-reset:cat;display:grid;gap:12px;margin-bottom:30px;}
+  .cat{display:flex;gap:16px;align-items:flex-start;background:#fffdf8;border:1px solid var(--line);border-radius:8px;padding:16px 18px;transition:all .2s;}
+  .cat.hl{border:1px solid var(--seal);background:#fff8ee;box-shadow:0 4px 18px -10px rgba(178,35,34,.5);}
+  .cat::before{counter-increment:cat;content:counter(cat,cjk-decimal);font-family:'Noto Serif SC',serif;font-weight:900;font-size:17px;color:#fff;background:var(--gold);flex:0 0 30px;width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;}
+  .cat.hl::before{background:var(--seal);}
+  .cat-t{font-weight:700;font-size:15.5px;margin-bottom:2px;}
+  .cat-t .badge{font-size:11px;font-weight:700;background:var(--seal);color:#fff;padding:2px 8px;border-radius:4px;margin-left:8px;vertical-align:middle;}
+  .cat-d{font-size:13.5px;color:var(--muted);}
+
+  .bz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:8px;}
+  @media(max-width:680px){.bz-grid{grid-template-columns:1fr;}}
+  .bz{background:#fffdf8;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .bz-head{padding:14px 16px;font-family:'Noto Serif SC',serif;font-weight:700;font-size:16px;color:#fff;}
+  .bz.b1 .bz-head{background:var(--zw);}
+  .bz.b2 .bz-head{background:var(--gold);}
+  .bz.b3 .bz-head{background:#6b7a3a;}
+  .bz.b4 .bz-head{background:#3f7d8c;}
+  .bz.b5 .bz-head{background:#a06a3a;}
+  .bz.b6 .bz-head{background:#7a7066;}
+  .bz-row{padding:12px 16px;border-bottom:1px dashed var(--line);font-size:13.5px;}
+  .bz-row:last-child{border-bottom:none;}
+  .yn{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:12px;margin-right:6px;white-space:nowrap;}
+  .yes{background:rgba(90,143,110,.18);color:#3d6b4f;}
+  .no{background:rgba(178,35,34,.13);color:var(--seal-deep);}
+  .maybe{background:rgba(201,162,39,.2);color:#8a6f10;}
+
+  footer{max-width:920px;margin:60px auto 0;padding:24px;border-top:2px solid var(--ink);font-size:12.5px;color:var(--muted);text-align:center;}
+  .disclaimer{background:var(--paper-2);border-radius:6px;padding:14px 18px;font-size:12.5px;color:#5b5346;margin-top:30px;line-height:1.7;}
+</style>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="seal">监督<br>追责</div>
+    <div class="kicker">公职人员违规处罚对照</div>
+    <h1>市场监管执法人员<br>违规行为与处罚梳理</h1>
+    <p class="subtitle">区分政务处分与党纪处分，并把违规行为按类型分专栏，每栏内从轻到重列出对应处分与公示去向。</p>
+  </header>
+
+  <main class="wrap">
+
+    <div class="keynote">
+      <h3>⚖️ 先看一条关键原则</h3>
+      <p>处分档次<strong>不是「某行为固定对应某一档」</strong>，而是按<strong>「情节轻重」</strong>升降——同一类违规，情节较轻给警告记过，情节严重就降级撤职，特别严重直接开除。下面的专栏按违规类型归类，栏内从轻到重排列，便于快速定位，但实际定档以调查认定的情节为准。</p>
+    </div>
+
+    <!-- 壹 公职人员范围 -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">壹</span><h2>谁算「公职人员」</h2></div>
+      <p class="section-law">前述处分先要回答一个前提问题：被追责的人是不是公职人员？依据《监察法》第十五条 ·《政务处分法》沿用同一口径</p>
+
+      <div class="gz-core">
+        <div class="k">核心判断：不看编制，看是否行使公权力</div>
+        <p>公职人员的法定范围<strong>不以「身份编制」划线，而以「是否行使公权力、履行公职」划线</strong>。所以它比「公务员」宽得多——公务员只是其中一类；同时它又不等于「所有体制内的人」——纯技术岗、普通职工往往不在内。</p>
+        <div class="formula">
+          <span class="box">行使公权力</span>
+          <span class="op">／</span>
+          <span class="box">对公共事务·国有资产负管理职责</span>
+          <span class="op">→</span>
+          <span class="box res">公职人员</span>
+        </div>
+      </div>
+
+      <h3 style="font-family:'Noto Serif SC',serif;font-size:17px;margin:0 0 14px;color:var(--ink);">法定六类（《监察法》§15）</h3>
+      <div class="cat-list">
+        <div class="cat hl">
+          <div>
+            <div class="cat-t">公务员及参公管理人员<span class="badge">市场监管执法人员在此类</span></div>
+            <div class="cat-d">党机关、人大、政府、监委、法院、检察院、政协、民主党派和工商联机关的公务员，以及参照《公务员法》管理的人员。市场监管局正式执法人员属于这一类、最核心。</div>
+          </div>
+        </div>
+        <div class="cat">
+          <div>
+            <div class="cat-t">受委托管理公共事务组织中从事公务的人员</div>
+            <div class="cat-d">法律法规授权、或受国家机关委托管理公共事务的组织里办公务的人。协管、辅助执法人员若实际行使执法公权力，也可能落入此类。</div>
+          </div>
+        </div>
+        <div class="cat">
+          <div>
+            <div class="cat-t">国有企业管理人员</div>
+            <div class="cat-d">国企里对国有资产负有经营管理职责的管理岗（董事、监事、高管等）。</div>
+          </div>
+        </div>
+        <div class="cat">
+          <div>
+            <div class="cat-t">公办事业单位中从事管理的人员</div>
+            <div class="cat-d">公办教育、科研、文化、医疗卫生、体育等单位里的管理人员（如公立医院院长、科主任等管理岗）。</div>
+          </div>
+        </div>
+        <div class="cat">
+          <div>
+            <div class="cat-t">基层群众性自治组织中从事管理的人员</div>
+            <div class="cat-d">村委会、居委会里管钱管事的人（如村支书、村主任协助政府管理公共事务时）。</div>
+          </div>
+        </div>
+        <div class="cat">
+          <div>
+            <div class="cat-t">其他依法履行公职的人员</div>
+            <div class="cat-d">兜底条款，凡实际行使公权力、履行公职的，均可纳入。</div>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="font-family:'Noto Serif SC',serif;font-size:17px;margin:0 0 6px;color:var(--ink);">体制内编制全景：六类怎么算？关键在「岗位职责」</h3>
+      <p class="section-law">真正的「编制」有 4 种（行政 / 参公 / 事业 / 工勤）；国企、编外严格说不算编制，但常被一起提，故并列。判断是否公职人员，仍看<strong style="font-style:normal;color:var(--seal-deep)">是否行使公权力、是否从事管理</strong>。</p>
+      <div class="bz-grid">
+        <div class="bz b1">
+          <div class="bz-head">① 行政编 · 公务员</div>
+          <div class="bz-row"><span class="yn yes">算</span>党政群机关公务员，第一类、最核心</div>
+          <div class="bz-row"><span class="yn yes">算</span>市场监管执法人员一般属此</div>
+          <div class="bz-row"><span class="yn yes">算</span>含公检法司「政法专项编制」，同属公务员</div>
+        </div>
+        <div class="bz b4">
+          <div class="bz-head">② 参公编制</div>
+          <div class="bz-row"><span class="yn yes">算</span>参照《公务员法》管理，身份是事业编但按公务员对待</div>
+          <div class="bz-row"><span class="yn yes">算</span>常见于部分行政执法、监管类单位</div>
+          <div class="bz-row">追责口径与公务员基本一致</div>
+        </div>
+        <div class="bz b2">
+          <div class="bz-head">③ 事业编</div>
+          <div class="bz-row"><span class="yn yes">算</span>管理岗：院长、校长、处长科长、科室负责人</div>
+          <div class="bz-row"><span class="yn no">多半不算</span>专技 / 工勤岗：一线医生、教师、研究员（不带管理职责）</div>
+          <div class="bz-row"><span class="yn maybe">视情形</span>技术人员若实际参与审批、执法、评审，行使公权力那一刻也可能纳入</div>
+        </div>
+        <div class="bz b5">
+          <div class="bz-head">④ 工勤编制</div>
+          <div class="bz-row"><span class="yn no">一般不算</span>机关 / 事业单位的在编工人（技工、司机等技能岗）</div>
+          <div class="bz-row"><span class="yn maybe">视情形</span>受委托实际行使公权力时，可能被纳入</div>
+          <div class="bz-row">本质是工勤技能岗，无管理 / 公权力职责</div>
+        </div>
+        <div class="bz b3">
+          <div class="bz-head">⑤ 国有企业 <span style="font-size:11px;font-weight:400;opacity:.85">（非编制 · 企业用工）</span></div>
+          <div class="bz-row"><span class="yn yes">算</span>管理人员：董事、监事、高管及对国资负管理职责的岗位</div>
+          <div class="bz-row"><span class="yn no">一般不算</span>普通职工：一线工人、基层员工</div>
+          <div class="bz-row">非管理岗违规走企业内部管理，不是政务处分</div>
+        </div>
+        <div class="bz b6">
+          <div class="bz-head">⑥ 编外用工 <span style="font-size:11px;font-weight:400;opacity:.85">（非编制）</span></div>
+          <div class="bz-row"><span class="yn no">一般不算</span>合同制、劳务派遣、临时工、协管 / 辅助执法等</div>
+          <div class="bz-row"><span class="yn maybe">视情形</span>受国家机关委托实际行使公权力（如协助执法）时，可落入第二类公职人员</div>
+          <div class="bz-row">无编制，多按劳动关系 / 内部管理处理</div>
+        </div>
+      </div>
+      <div class="keynote" style="margin:20px 0 0;">
+        <p style="font-size:14px;">📌 一句话抓要害：<strong>行政编、参公编基本都算；事业编、国企「管理岗算、普通岗多半不算」；工勤、编外一般不算，但「受委托行使公权力」那一刻可被纳入。</strong>《监察法》措辞专门用「从事管理的人员」「管理人员」，把范围圈在管理职责和公权力上，而非笼统覆盖所有在编人员。</p>
+      </div>
+    </section>
+
+    <!-- 贰 政务 vs 党纪 -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">贰</span><h2>政务处分 vs 党纪处分</h2></div>
+      <p class="section-law">两套并行的处分体系：一套管「公职身份」，一套管「党籍身份」</p>
+
+      <div class="vs-grid">
+        <div class="vs-card zw">
+          <h3>政务处分</h3>
+          <div class="law">依据《公职人员政务处分法》· 监察机关（监委）作出</div>
+          <div class="vs-row"><div class="vs-k">适用对象</div><div class="vs-v">所有公职人员（不论是否党员）</div></div>
+          <div class="vs-row"><div class="vs-k">针对什么</div><div class="vs-v">违法、违反职务行为规范</div></div>
+          <div class="vs-row"><div class="vs-k">影响什么</div><div class="vs-v">职务、级别、工资等公职待遇</div></div>
+          <div class="vs-row"><div class="vs-k">六档处分</div><div class="vs-v">
+            <span class="pill">警告</span><span class="pill">记过</span><span class="pill">记大过</span><span class="pill">降级</span><span class="pill">撤职</span><span class="pill">开除</span>
+          </div></div>
+        </div>
+
+        <div class="vs-card dj">
+          <h3>党纪处分</h3>
+          <div class="law">依据《中国共产党纪律处分条例》· 纪检机关 / 党组织作出</div>
+          <div class="vs-row"><div class="vs-k">适用对象</div><div class="vs-v">仅党员</div></div>
+          <div class="vs-row"><div class="vs-k">针对什么</div><div class="vs-v">违反党的六大纪律（政治/组织/廉洁/群众/工作/生活）</div></div>
+          <div class="vs-row"><div class="vs-k">影响什么</div><div class="vs-v">党内职务、党员资格等党内身份</div></div>
+          <div class="vs-row"><div class="vs-k">五档处分</div><div class="vs-v">
+            <span class="pill">警告</span><span class="pill">严重警告</span><span class="pill">撤销党内职务</span><span class="pill">留党察看</span><span class="pill">开除党籍</span>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="double">
+        <h4>两者怎么配合：纪法双施、双重处分</h4>
+        <p>对一个<strong>党员身份的执法人员</strong>，违纪违法时通常<strong>党纪、政务处分一并给予</strong>。比如收受财物，可能同时被「开除党籍 + 开除公职」（俗称<strong>「双开」</strong>）。原则上<strong>党纪严于国法、纪在法前</strong>——有些行为对非党员够不上政务处分，但党员已经违反党纪（如违规吃请、作风问题）。<br><br>判断法：违规人员<strong>不是党员</strong> → 只有政务处分；<strong>是党员</strong> → 两套都适用，一般同步处理。基层市场监管执法人员绝大多数是党员，真要追责通常是<strong>党纪＋政务双重处分</strong>，严重的再叠加刑事追责。</p>
+      </div>
+    </section>
+
+    <!-- 贰 行为专栏 -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">叁</span><h2>违规行为专栏（按类型分）</h2></div>
+      <p class="section-law">每栏内行为从轻到重排列；右侧标签为大致对应的处分（党员通常党纪＋政务并处）</p>
+
+      <div class="legend">
+        <span><i class="dot" style="background:#5a8f6e"></i>情节较轻</span>
+        <span><i class="dot" style="background:#c9a227"></i>较重</span>
+        <span><i class="dot" style="background:#cc7a2b"></i>严重</span>
+        <span><i class="dot" style="background:#b22322"></i>特别严重</span>
+        <span><i class="dot" style="background:#3a6ea5"></i>政务处分</span>
+        <span><i class="dot" style="background:#b22322"></i>党纪处分</span>
+        <span><i class="dot" style="background:#241a18"></i>刑事</span>
+      </div>
+
+      <!-- 专栏一：失职渎职 -->
+      <div class="col c-shizhi">
+        <div class="col-head">
+          <span class="col-ico">🛌</span><span class="col-title">专栏一 · 失职渎职类</span>
+          <span class="col-sub">该查不查、不作为、走过场</span>
+        </div>
+        <div class="col-body">
+          <div class="beh"><span class="deg d1">情节较轻</span><span class="beh-txt">巡查走过场、记录敷衍、漏查一般隐患但未致后果</span><span class="punish"><span class="tag zw">警告/记过</span><span class="tag dj">警告</span></span></div>
+          <div class="beh"><span class="deg d2">较重</span><span class="beh-txt">玩忽职守、不作为，致违法经营长期存在或隐患扩大</span><span class="punish"><span class="tag zw">记大过</span><span class="tag dj">严重警告</span></span></div>
+          <div class="beh"><span class="deg d3">严重</span><span class="beh-txt">严重不负责任造成较重损失或恶劣影响</span><span class="punish"><span class="tag zw">降级/撤职</span><span class="tag dj">撤销党内职务/留党察看</span></span></div>
+          <div class="beh"><span class="deg d4">特别严重</span><span class="beh-txt">玩忽职守致公共利益重大损失</span><span class="punish"><span class="tag zw">开除</span><span class="tag dj">开除党籍</span><span class="tag xs">刑法§397</span></span></div>
+        </div>
+      </div>
+
+      <!-- 专栏二：滥用职权 -->
+      <div class="col c-lanquan">
+        <div class="col-head">
+          <span class="col-ico">⚡</span><span class="col-title">专栏二 · 滥用职权类</span>
+          <span class="col-sub">超权、乱执法、罚款畸高</span>
+        </div>
+        <div class="col-body">
+          <div class="beh"><span class="deg d1">情节较轻</span><span class="beh-txt">程序瑕疵：不出示证件、不听陈述申辩等，情节轻微</span><span class="punish"><span class="tag zw">警告/记过</span><span class="tag dj">警告</span></span></div>
+          <div class="beh"><span class="deg d2">较重</span><span class="beh-txt">该回避未回避、影响执法公正</span><span class="punish"><span class="tag zw">记过/记大过</span><span class="tag dj">严重警告</span></span></div>
+          <div class="beh"><span class="deg d3">严重</span><span class="beh-txt">超越权限罚款、畸高处罚、乱设处罚事项，后果较重</span><span class="punish"><span class="tag zw">降级/撤职</span><span class="tag dj">撤销党内职务</span></span></div>
+          <div class="beh"><span class="deg d4">特别严重</span><span class="beh-txt">严重滥用职权造成重大损失或极恶劣影响</span><span class="punish"><span class="tag zw">开除</span><span class="tag dj">开除党籍</span><span class="tag xs">刑法§397</span></span></div>
+        </div>
+      </div>
+
+      <!-- 专栏三：廉洁问题 -->
+      <div class="col c-lianjie">
+        <div class="col-head">
+          <span class="col-ico">💰</span><span class="col-title">专栏三 · 廉洁问题类</span>
+          <span class="col-sub">吃请、收礼、收财物、索贿</span>
+        </div>
+        <div class="col-body">
+          <div class="beh"><span class="deg d1">情节较轻</span><span class="beh-txt">违规接受被检查方吃请、收受小额礼品未上交</span><span class="punish"><span class="tag zw">警告/记过</span><span class="tag dj">警告</span></span></div>
+          <div class="beh"><span class="deg d2">较重</span><span class="beh-txt">违规收受礼品礼金、消费卡，数额较大</span><span class="punish"><span class="tag zw">记大过</span><span class="tag dj">严重警告</span></span></div>
+          <div class="beh"><span class="deg d3">严重</span><span class="beh-txt">利用职权吃拿卡要、多次收受财物或为他人谋利收受较大数额</span><span class="punish"><span class="tag zw">降级/撤职</span><span class="tag dj">留党察看</span></span></div>
+          <div class="beh"><span class="deg d4">特别严重</span><span class="beh-txt">受贿、索贿情节特别严重</span><span class="punish"><span class="tag zw">开除</span><span class="tag dj">开除党籍</span><span class="tag xs">受贿罪§385</span></span></div>
+        </div>
+      </div>
+
+      <!-- 专栏四：徇私舞弊 -->
+      <div class="col c-xunsi">
+        <div class="col-head">
+          <span class="col-ico">🤝</span><span class="col-title">专栏四 · 徇私舞弊类</span>
+          <span class="col-sub">选择性执法、包庇、当保护伞</span>
+        </div>
+        <div class="col-body">
+          <div class="beh"><span class="deg d2">较重</span><span class="beh-txt">选择性执法：对关系户从轻、对他人从重，差别对待明显</span><span class="punish"><span class="tag zw">记大过</span><span class="tag dj">严重警告</span></span></div>
+          <div class="beh"><span class="deg d3">严重</span><span class="beh-txt">徇私舞弊、包庇纵容违法经营，造成较严重后果</span><span class="punish"><span class="tag zw">降级/撤职</span><span class="tag dj">留党察看</span></span></div>
+          <div class="beh"><span class="deg d3">严重</span><span class="beh-txt">对应移送的违法线索故意压案不查、以罚代刑</span><span class="punish"><span class="tag zw">撤职</span><span class="tag dj">留党察看</span><span class="tag xs">§402</span></span></div>
+          <div class="beh"><span class="deg d4">特别严重</span><span class="beh-txt">长期勾连、充当违法经营或黑恶势力「保护伞」</span><span class="punish"><span class="tag zw">开除</span><span class="tag dj">开除党籍</span><span class="tag xs">徇私枉法§399</span></span></div>
+        </div>
+      </div>
+
+      <!-- 专栏五：失泄密及其他 -->
+      <div class="col c-mimi">
+        <div class="col-head">
+          <span class="col-ico">🔓</span><span class="col-title">专栏五 · 失泄密 / 违规营利</span>
+          <span class="col-sub">通风报信、违规经商</span>
+        </div>
+        <div class="col-body">
+          <div class="beh"><span class="deg d2">较重</span><span class="beh-txt">泄露执法工作秘密、提前向被查对象通风报信</span><span class="punish"><span class="tag zw">记大过</span><span class="tag dj">严重警告</span></span></div>
+          <div class="beh"><span class="deg d3">严重</span><span class="beh-txt">违规从事营利活动、与被监管对象存在利益输送</span><span class="punish"><span class="tag zw">降级/撤职</span><span class="tag dj">撤销党内职务</span></span></div>
+          <div class="beh"><span class="deg d4">特别严重</span><span class="beh-txt">泄密或利益输送造成重大损失、性质恶劣</span><span class="punish"><span class="tag zw">开除</span><span class="tag dj">开除党籍</span><span class="tag xs">移送司法</span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 叁 公示平台 -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">肆</span><h2>处罚结果在哪里查（公示平台）</h2></div>
+      <p class="section-law">两类公示：企业被处罚 → 信用公示系统；公职人员被处分 → 纪检监察通报</p>
+      <div class="links">
+        <a class="link-card" href="https://www.gsxt.gov.cn/" target="_blank" rel="noopener">
+          <span class="arrow">↗</span>
+          <div class="lc-head"><span class="lc-tag">企业处罚</span><span class="lc-name">国家企业信用信息公示系统</span></div>
+          <div class="lc-url">https://www.gsxt.gov.cn/</div>
+          <div class="lc-desc">查某家企业被市场监管部门作出的行政处罚、抽查检查结果、经营异常名录、严重违法失信名单。输入企业名称即可，可侧面核对「该查的查没查、公示是否规范」。</div>
+        </a>
+        <a class="link-card" href="https://www.creditchina.gov.cn/" target="_blank" rel="noopener">
+          <span class="arrow">↗</span>
+          <div class="lc-head"><span class="lc-tag">企业处罚</span><span class="lc-name">信用中国</span></div>
+          <div class="lc-url">https://www.creditchina.gov.cn/</div>
+          <div class="lc-desc">全国信用信息归集平台，行政处罚信息同步公示，并可查信用修复情况。多数省份另有「信用+省份」站点（如信用广东 credit.gd.gov.cn）。</div>
+        </a>
+        <a class="link-card" href="https://www.ccdi.gov.cn/" target="_blank" rel="noopener">
+          <span class="arrow">↗</span>
+          <div class="lc-head"><span class="lc-tag">公职人员处分</span><span class="lc-name">中央纪委国家监委网站</span></div>
+          <div class="lc-url">https://www.ccdi.gov.cn/</div>
+          <div class="lc-desc">公职人员党纪政务处分、审查调查、典型案例的权威发布平台。「党纪政务处分」栏目：ccdi.gov.cn/scdcn/sggb/djcf/ 。基层执法人员的处分通常由地方纪委监委公布。</div>
+        </a>
+        <a class="link-card" href="https://www.creditchina.gov.cn/" target="_blank" rel="noopener">
+          <span class="arrow">↗</span>
+          <div class="lc-head"><span class="lc-tag">地方平台</span><span class="lc-name">当地市场监管局 / 纪委监委官网</span></div>
+          <div class="lc-url">搜索「城市名 + 市场监督管理局」或「城市名 + 纪委监委」</div>
+          <div class="lc-desc">辖区内的行政处罚公示、食品安全抽检、量化分级，以及对本系统人员的通报，多在地方官网与官方公众号发布，往往比国家级平台更具体到本地。</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 肆 行动渠道 -->
+    <section class="section">
+      <div class="section-head"><span class="section-num">伍</span><h2>怎么启动追责（行动渠道）</h2></div>
+      <p class="section-law">查到 / 怀疑违规后的正当途径</p>
+      <div class="channels">
+        <div class="channel"><div><div class="ch-t">政府信息公开申请</div><div class="ch-d">向当地市场监管局申请公开特定巡查 / 检查记录。作为被检查当事人（利害关系人），针对自己被巡查的记录获批可能性较高。</div></div></div>
+        <div class="channel"><div><div class="ch-t">行政复议 / 行政诉讼</div><div class="ch-d">被巡查方对执法行为有异议时最直接有效。复议、诉讼过程中，执法机关有义务提供执法记录作为证据——记录此时就摊开了。</div></div></div>
+        <div class="channel"><div><div class="ch-t">投诉举报执法人员</div><div class="ch-d">怀疑不作为、乱作为、吃拿卡要、利益勾连，向当地市场监管局纪检监察部门、同级纪委监委举报；也可拨打 12345（政务）、12315（市场监管）。</div></div></div>
+        <div class="channel"><div><div class="ch-t">公示信息反查</div><div class="ch-d">通过上面的信用公示系统对照「该查的查没查、公示合不合规」，作为发现问题、固定证据的切入点。</div></div></div>
+      </div>
+    </section>
+
+    <div class="disclaimer">
+      ⚠️ 本页为对话内容整理，仅供参考，<strong>不构成法律意见</strong>。处分档次以监察 / 纪检机关依据具体情节的认定为准，专栏中的处分标注为大致对应关系；条例条款与公示平台地址可能随时间更新，请以官方最新版本为准。涉及具体维权或举报，建议咨询专业律师或直接联系对应监管 / 监察机关。
+    </div>
+  </main>
+
+  <footer>
+    市场监管执法人员违规行为与处罚对照 · 依据《公职人员政务处分法》《中国共产党纪律处分条例》《刑法》整理
+  </footer>
+</body>
+</html>
