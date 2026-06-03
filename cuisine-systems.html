@@ -697,6 +697,188 @@ details.case > summary .hint { font-family:'Noto Sans SC'; font-size: 12px; font
   .tq-grid { grid-template-columns: 1fr; }
   .tq-item { flex-basis: 64px; }
 }
+
+/* ════════ 颠锅动态演示（纸张风格）════════ */
+.wok-demo {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  margin-bottom: 18px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(280px, 0.85fr) 1fr;
+}
+.wok-demo .wok-head {
+  grid-column: 1 / -1;
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  padding: 14px 20px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--paper2);
+}
+.wok-demo .wok-head .tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px;
+  color: #fff; background: var(--accent); padding: 3px 9px; border-radius: 3px;
+}
+.wok-demo .wok-head h4 {
+  font-family: 'Noto Serif SC', serif; font-size: 17px; font-weight: 900; color: var(--ink);
+}
+.wok-demo .wok-head .pinyin {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px;
+  color: var(--muted2); text-transform: uppercase;
+}
+
+/* 左：动画舞台 */
+.wok-stage-wrap {
+  border-right: 1px solid var(--border);
+  background:
+    radial-gradient(ellipse at 50% 118%, rgba(200,64,26,.06), transparent 55%),
+    var(--paper);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 18px 16px 10px;
+}
+.wok-stage {
+  position: relative;
+  width: 100%; max-width: 320px; height: 240px;
+}
+.wok-arc { position: absolute; inset: 0; pointer-events: none; opacity: .4; }
+
+.wok-stove {
+  position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 28px;
+  background: radial-gradient(ellipse at center, rgba(26,24,20,.12), transparent 70%);
+  border-radius: 50%;
+}
+.wok-flame {
+  position: absolute; bottom: 22px; left: 50%;
+  width: 11px; height: 30px;
+  background: linear-gradient(to top, var(--gold), var(--accent), transparent);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  transform-origin: bottom center; filter: blur(.6px);
+  animation: wokFlick .4s ease-in-out infinite alternate; opacity: .78;
+}
+.wok-flame:nth-of-type(1) { transform: translateX(-50%) translateX(-24px) scale(.8); animation-delay: .05s; }
+.wok-flame:nth-of-type(2) { transform: translateX(-50%) scale(1.05); animation-delay: .15s; }
+.wok-flame:nth-of-type(3) { transform: translateX(-50%) translateX(24px) scale(.82); animation-delay: .1s; }
+@keyframes wokFlick {
+  from { transform: translateX(-50%) scaleY(1) scaleX(1); opacity: .62; }
+  to   { transform: translateX(-50%) scaleY(1.22) scaleX(.9); opacity: .92; }
+}
+
+.wok-rig {
+  position: absolute; bottom: 42px; left: 50%;
+  width: 150px; height: 60px; transform-origin: 145% 50%;
+  animation: wokMotion 2.4s cubic-bezier(.45,.05,.55,.95) infinite;
+}
+@keyframes wokMotion {
+  0%   { transform: translateX(-50%) translate(0,0) rotate(0deg); }
+  20%  { transform: translateX(-50%) translate(-23px,7px) rotate(-13deg); }
+  38%  { transform: translateX(-50%) translate(-10px,-14px) rotate(20deg); }
+  58%  { transform: translateX(-50%) translate(20px,4px) rotate(4deg); }
+  78%  { transform: translateX(-50%) translate(5px,1px) rotate(1deg); }
+  100% { transform: translateX(-50%) translate(0,0) rotate(0deg); }
+}
+.wok-pan {
+  position: absolute; left: 0; top: 16px; width: 114px; height: 30px;
+  background: linear-gradient(160deg, #4a463f, var(--ink2) 55%, #14110f);
+  border-radius: 7px 7px 56px 56px / 7px 7px 88px 88px;
+  box-shadow: inset 0 3px 5px rgba(255,255,255,.1), inset 0 -7px 9px rgba(0,0,0,.5);
+}
+.wok-pan::before {
+  content: ''; position: absolute; top: 2px; left: 6px; right: 6px; height: 10px;
+  background: radial-gradient(ellipse at center, #0e0c0a, #2a2521); border-radius: 50%;
+}
+.wok-handle {
+  position: absolute; left: 105px; top: 18px; width: 62px; height: 10px;
+  background: linear-gradient(90deg, #4a463f, #14110f); border-radius: 5px;
+  transform: rotate(-8deg); transform-origin: left center;
+  box-shadow: inset 0 2px 2px rgba(255,255,255,.12);
+}
+
+.wok-food { position: absolute; bottom: 74px; left: 50%; transform: translateX(-50%); }
+.wok-bit {
+  position: absolute; width: 12px; height: 8px; border-radius: 50%;
+  box-shadow: inset -1px -1px 2px rgba(0,0,0,.3);
+  animation: wokToss 2.4s ease-in-out infinite;
+}
+.wok-bit.b1 { left: -30px; background: var(--accent);  animation-delay: 0s; }
+.wok-bit.b2 { left: -12px; background: var(--gold); width: 10px; height: 10px; animation-delay: .05s; }
+.wok-bit.b3 { left:   4px; background: #d9641a; width: 9px; height: 7px; animation-delay: .02s; }
+.wok-bit.b4 { left:  20px; background: #a8330f; animation-delay: .07s; }
+.wok-bit.b5 { left:  -2px; background: var(--gold); width: 8px; height: 8px; animation-delay: .1s; }
+@keyframes wokToss {
+  0%   { transform: translate(0,0) rotate(0deg); }
+  20%  { transform: translate(-4px,-7px) rotate(40deg); }
+  40%  { transform: translate(13px,-94px) rotate(200deg); }
+  62%  { transform: translate(31px,-16px) rotate(350deg); }
+  78%  { transform: translate(27px,3px) rotate(372deg); }
+  100% { transform: translate(0,0) rotate(360deg); }
+}
+
+.wok-beat {
+  position: absolute; top: 2px; left: 50%; transform: translateX(-50%);
+  font-family: 'Noto Serif SC', serif; font-size: 1.7rem; font-weight: 900;
+  letter-spacing: .4em; color: var(--accent);
+}
+.wok-beat span { display: inline-block; animation: wokPulse 2.4s linear infinite; }
+.wok-beat .s1 { animation-delay: .48s; }
+.wok-beat .s2 { animation-delay: .91s; }
+.wok-beat .s3 { animation-delay: 1.39s; }
+@keyframes wokPulse {
+  0%, 100% { opacity: 0; transform: scale(.8); }
+  4%       { opacity: 1; transform: scale(1.12); }
+  16%      { opacity: .2; transform: scale(1); }
+}
+.wok-tempo {
+  width: 100%; max-width: 320px; height: 5px; margin-top: 6px;
+  background: var(--paper3); border-radius: 5px; overflow: hidden;
+}
+.wok-tempo i {
+  display: block; height: 100%; width: 26%;
+  background: linear-gradient(90deg, var(--accent), var(--gold)); border-radius: 5px;
+  animation: wokSweep 2.4s linear infinite;
+}
+@keyframes wokSweep { 0% { transform: translateX(-100%); } 100% { transform: translateX(400%); } }
+
+/* 右：要点 */
+.wok-info { padding: 16px 20px 18px; display: flex; flex-direction: column; gap: 14px; }
+.wok-beats { display: flex; gap: 8px; }
+.wok-bc {
+  flex: 1; text-align: center; border: 1px solid var(--border); border-radius: 4px;
+  padding: 9px 6px; background: var(--paper);
+}
+.wok-bc .n { font-family:'JetBrains Mono',monospace; font-size: 10px; color: var(--accent); }
+.wok-bc .w { font-family:'Noto Serif SC',serif; font-size: 1.25rem; font-weight: 900; margin: 1px 0 3px; }
+.wok-bc .d { font-size: 10.5px; color: var(--muted); line-height: 1.45; }
+.wok-why {
+  font-size: 12.5px; line-height: 1.7; color: var(--ink2);
+  background: var(--paper2); border-radius: 4px; padding: 11px 14px;
+  border-left: 3px solid var(--accent2);
+}
+.wok-why::before { content: '∵ 为什么不会掉　'; color: var(--accent2); font-weight: 700; font-family:'Noto Serif SC',serif; }
+.wok-why b { color: var(--green); font-weight: 600; }
+.wok-traps { display: flex; flex-direction: column; gap: 7px; }
+.wok-traps .tt {
+  font-family:'Noto Serif SC',serif; font-size: 12.5px; font-weight: 700; color: var(--ink);
+  margin-bottom: 2px;
+}
+.wok-trap {
+  font-size: 11.5px; line-height: 1.55; color: var(--muted);
+  padding-left: 16px; position: relative;
+}
+.wok-trap::before {
+  content: '✕'; position: absolute; left: 0; color: var(--accent); font-size: 10px; top: 1px;
+}
+.wok-trap b { color: var(--ink2); font-weight: 600; }
+.wok-trap em { color: var(--green); font-style: normal; font-weight: 600; }
+.wok-tips { font-size: 11.5px; color: var(--muted); line-height: 1.7; }
+.wok-tips b { color: var(--accent); font-weight: 600; }
+
+@media(max-width: 720px) {
+  .wok-demo { grid-template-columns: 1fr; }
+  .wok-stage-wrap { border-right: none; border-bottom: 1px solid var(--border); }
+}
 </style>
 </head>
 <body>
@@ -1725,6 +1907,65 @@ details.case > summary .hint { font-family:'Noto Sans SC'; font-size: 12px; font
 
   <div class="tq-lead">
     <strong>怎么用、怎么加：</strong>下面每张卡 = 一条技法，包含「怎么做 + 为什么 + 出自哪道菜」三件套。顶部按分类筛选；想新增时，复制任意一张卡、改五个地方即可——分类（data-cat）、技法名、怎么做、为什么、出处。筛选条会根据卡片自动生成，新分类也能直接冒出来，不用改脚本。
+  </div>
+
+  <!-- ▼ 颠锅动态演示：跟着锅的弧线找手腕节奏 ▼ -->
+  <div class="wok-demo">
+    <div class="wok-head">
+      <span class="tag">动态演示</span>
+      <h4>颠锅 · 推 → 顶 → 收</h4>
+      <span class="pinyin">push · flip · catch</span>
+    </div>
+
+    <div class="wok-stage-wrap">
+      <div class="wok-stage">
+        <svg class="wok-arc" viewBox="0 0 320 240" preserveAspectRatio="xMidYMid meet">
+          <path d="M 142 170 Q 172 70 190 166" fill="none"
+                stroke="#c8401a" stroke-width="2"
+                stroke-dasharray="3 6" stroke-linecap="round"/>
+        </svg>
+        <div class="wok-beat"><span class="s1">推</span><span class="s2">顶</span><span class="s3">收</span></div>
+        <div class="wok-food">
+          <div class="wok-bit b1"></div>
+          <div class="wok-bit b2"></div>
+          <div class="wok-bit b3"></div>
+          <div class="wok-bit b4"></div>
+          <div class="wok-bit b5"></div>
+        </div>
+        <div class="wok-rig">
+          <div class="wok-pan"></div>
+          <div class="wok-handle"></div>
+        </div>
+        <div class="wok-stove"></div>
+        <div class="wok-flame"></div>
+        <div class="wok-flame"></div>
+        <div class="wok-flame"></div>
+      </div>
+      <div class="wok-tempo"><i></i></div>
+    </div>
+
+    <div class="wok-info">
+      <div class="wok-beats">
+        <div class="wok-bc"><div class="n">01</div><div class="w">推</div><div class="d">向前下方推，<br>食材甩向后上方</div></div>
+        <div class="wok-bc"><div class="n">02</div><div class="w">顶</div><div class="d">手腕上勾一抬，<br>抛起翻面</div></div>
+        <div class="wok-bc"><div class="n">03</div><div class="w">收</div><div class="d">锅往锅柄方向<br>迎上去接</div></div>
+      </div>
+
+      <div class="wok-why">
+        食材走的是<b>斜抛物线</b>（看那条虚线），推的时候被甩向后上方、在空中往锅柄方向飘。所以「收」不是把锅拉走，而是<b>锅主动往后迎接落点</b>——两者在空中碰头，食材就稳稳落回锅心。整个动作是一个<b>闭合的椭圆圈</b>，锅口始终在食材下方兜着。
+      </div>
+
+      <div class="wok-traps">
+        <div class="tt">三大翻车点</div>
+        <div class="wok-trap"><b>推太猛太靠前</b>，食材飞出接应范围。<em>→ 幅度小一点</em></div>
+        <div class="wok-trap"><b>收得太晚</b>，锅没回来食材已落地。<em>→ 主动迎上去接</em></div>
+        <div class="wok-trap"><b>抛太高</b>，滞空久落点难控。<em>→ 贴锅面翻，稳比帅重要</em></div>
+      </div>
+
+      <div class="wok-tips">
+        发力靠<b>手腕那一勾</b>，不是抡胳膊；先<b>空锅</b>练弧线，再用<b>生米/豆子</b>练抛接，匀速一秒一到两下。
+      </div>
+    </div>
   </div>
 
   <!-- 统计 + 分类筛选（按钮由脚本根据卡片 data-cat 自动生成）-->
