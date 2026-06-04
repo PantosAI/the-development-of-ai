@@ -156,6 +156,7 @@
     <button class="calcbtn" id="opencalc">🧮 剂量计算器</button>
     <button class="calcbtn" id="openpol" style="border-color:#a8581f;background:#fbf2e2;color:#8a5a12">📋 制度与目录</button>
     <button class="calcbtn" id="openquiz" style="border-color:#6a3a8a;background:#f0e9fb;color:#5b2a8a">🎯 自测</button>
+    <button class="calcbtn" id="openmem" style="border-color:#2f5fa0;background:#eaf1fa;color:#23507f">🧠 记忆法</button>
     <span class="count" id="count"></span>
   </div>
   <div class="chips">
@@ -307,6 +308,33 @@
     <div class="qbar"><span id="qprog"></span><span id="qscore"></span><button id="qend" class="qx">结束</button></div>
     <div id="qcard"></div>
    </div>
+  </div>
+ </div>
+</div>
+
+<!-- 记忆法 -->
+<div class="mask" id="memmask">
+ <div class="modal">
+  <div class="mhead"><h2>🧠 记忆法</h2><button class="mclose" id="closemem">×</button></div>
+  <div class="mbody">
+   <div style="font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:12px">核心原则：<b>这185个药不该逐个背，该按结构记</b>——把"散点"挂到"骨架"上。常规靠理解、能查的靠检索、力气全花在易混对和高危红线上。</div>
+
+   <div class="calc"><h3>① 别背能查的，背"查得快"</h3>
+    <div style="font-size:13px;line-height:1.7">这张表最大的价值是<b>把记忆负担外包</b>。先练"检索肌肉记忆"：熟悉筛选(分类/🚑抢救车/管制/服用时机)与搜索，做到3秒定位。真正需要脱口而出的很少——<b>抢救车那批、剂量算法、几条致命禁忌</b>；其余知道"在表里、怎么调出来"就够。</div></div>
+
+   <div class="calc"><h3>② 背"机制"，不背"结论"</h3>
+    <div style="font-size:13px;line-height:1.7">理解原理后结论自己长出来。卡片的"频次机制""理由"栏就是为这层做的。记住几条"为什么"，能覆盖几十个药：<br>· PPI/阿司匹林半衰期短却qd → <b>不可逆抑制</b><br>· 他汀有的睡前有的随便 → <b>半衰期长短 vs 夜间胆固醇合成</b><br>· 阿卡波糖随第一口饭 → <b>作用在肠道、随碳水才起效</b><br>· 肠溶阿司匹林空腹、缓释片整片吞 → <b>剂型决定</b></div></div>
+
+   <div class="calc"><h3>③ 按"药理分类成串"记，不按字母表</h3>
+    <div style="font-size:13px;line-height:1.7">用页面的分类色块做记忆单元，一个类记"代表药+类规律+类禁忌"，<b>记例外、不记常规</b>：<br>· 他汀：共性(肝代谢、查肝酶肌酶、孕妇禁)，差异只在半衰期<br>· 二氢吡啶CCB：常规外周降压，<b>例外=尼莫地平(脑选择性)</b><br>· 头孢按"代"记抗菌谱走向(一代偏G⁺、三代偏G⁻、抗铜绿看头孢他啶)</div></div>
+
+   <div class="calc"><h3>④ 力气全花在"易混对"和"高危红线"</h3>
+    <div style="font-size:13px;line-height:1.7">泛泛的药记大概即可，<b>会出事的细节必须钉死</b>(用🎯自测专练)：<br><b>易混对</b>：止血敏/止血芳酸 · 尼莫/尼群 · 茶碱/氨茶碱/喘定 · 感冒清热/感冒清 · 氨甲苯酸/氨甲环酸 · 654-2/间苯三酚<br><b>高危红线</b>：氯化钾绝不静推 · 异丙嗪不入动脉/皮下 · 深伤口不涂油膏 · 含雄黄/乌头碱中成药 · 麻醉药品红处方双人核对 · 缓/控释整片吞</div></div>
+
+   <div class="calc"><h3>⑤ 三个具体做法</h3>
+    <div style="font-size:13px;line-height:1.7">· <b>用就是记</b>：开药时顺手翻它的机制栏，临床场景+主动检索，胜过干背(天然的间隔重复)。<br>· <b>自测而非重读</b>：看药名先自己说频次/禁忌/易混点，再翻表核对，错的标记重点攻 → 用🎯自测。<br>· <b>抓异常</b>：遇到"为什么和那个不一样"就深究，符合直觉的略过；记忆资源花在反直觉处。</div></div>
+
+   <div style="font-size:12px;color:var(--ink2);line-height:1.7;background:#eaf1fa;border:1px solid #c5d8ef;border-radius:7px;padding:9px 11px;color:#23507f">一句话：<b>常规靠理解、能查的靠检索、力气钉在易混对与高危红线</b>。配合 🎯自测 做主动回忆 + 间隔重复，效率最高。</div>
   </div>
  </div>
 </div>
@@ -466,7 +494,12 @@ function calcPC(){
     "<small>小儿BSA ≈ "+bsa.toFixed(2)+" m²（"+bm+"）· 单位同成人量 · BSA法通常更贴合</small>";
 }
 ["pc_adult","pc_wt","pc_ht"].forEach(id=>document.getElementById(id).addEventListener('input',calcPC));
-document.addEventListener('keydown',e=>{if(e.key==="Escape"){mask.classList.remove('on');polmask.classList.remove('on');quizmask.classList.remove('on');}});
+document.addEventListener('keydown',e=>{if(e.key==="Escape"){mask.classList.remove('on');polmask.classList.remove('on');quizmask.classList.remove('on');memmask.classList.remove('on');}});
+
+const memmask=document.getElementById('memmask');
+document.getElementById('openmem').onclick=()=>memmask.classList.add('on');
+document.getElementById('closemem').onclick=()=>memmask.classList.remove('on');
+memmask.onclick=e=>{if(e.target===memmask)memmask.classList.remove('on')};
 
 /* ===== 🎯 自测 ===== */
 const quizmask=document.getElementById('quizmask');
