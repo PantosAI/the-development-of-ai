@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>医学知识供应链 · 从产生到床旁</title>
+<style>
+  :root{
+    --paper:#FAF8F3; --paper-2:#F4F1E9; --ink:#2A2824; --ink-soft:#5C574E; --line:#E2DCCF;
+    --coral:#C75D43; --coral-bg:#FBEEE9;
+    --amber:#A9772E; --amber-bg:#FBF2E0;
+    --teal:#357E74; --teal-bg:#E4F1EE;
+    --blue:#3F6E9E; --blue-bg:#E8F0F8;
+    --purple:#735399; --purple-bg:#F0E9F7;
+    --gray:#827D73; --gray-bg:#EFEDE7;
+    --serif:Georgia,"Songti SC","Noto Serif CJK SC",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    background-image:radial-gradient(circle at 12% 8%,rgba(199,93,67,.04),transparent 40%),
+                     radial-gradient(circle at 88% 92%,rgba(63,110,158,.04),transparent 42%);
+    color:var(--ink);font-family:var(--sans);line-height:1.75;
+    font-size:16px;-webkit-font-smoothing:antialiased;padding:0 18px 80px;
+  }
+  .wrap{max-width:860px;margin:0 auto}
+
+  /* header */
+  header{padding:64px 0 30px;border-bottom:2px solid var(--ink);margin-bottom:6px}
+  .kicker{font-family:var(--sans);font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--coral);font-weight:700;margin-bottom:14px}
+  h1{font-family:var(--serif);font-size:clamp(30px,6vw,46px);line-height:1.12;font-weight:700;letter-spacing:-.01em}
+  h1 em{font-style:italic;color:var(--coral)}
+  .sub{margin-top:16px;color:var(--ink-soft);font-size:16.5px;max-width:680px}
+
+  section{margin-top:54px;animation:rise .7s ease both}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  .stage-label{display:flex;align-items:baseline;gap:12px;margin-bottom:18px}
+  .stage-num{font-family:var(--serif);font-size:34px;font-weight:700;line-height:1;color:var(--coral)}
+  .stage-num.a{color:var(--coral)}.stage-num.b{color:var(--teal)}
+  .stage-num.c{color:var(--blue)}.stage-num.d{color:var(--purple)}
+  .stage-title{font-size:18.5px;font-weight:700}
+  .stage-hint{font-size:13.5px;color:var(--ink-soft);font-weight:400;margin-left:2px}
+
+  .card{border:1px solid var(--line);border-radius:13px;padding:18px 20px;margin-bottom:12px;
+    background:#fff;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
+  .card h3{font-size:16px;font-weight:700;margin-bottom:4px}
+  .card p{font-size:13.8px;color:var(--ink-soft);line-height:1.6}
+  .card .tag{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.04em;
+    padding:2px 9px;border-radius:99px;margin-bottom:7px}
+
+  .c-coral{background:var(--coral-bg)}.c-coral::before{background:var(--coral)}
+  .c-coral h3{color:var(--coral)}.c-coral .tag{background:var(--coral);color:#fff}
+  .c-amber{background:var(--amber-bg)}.c-amber::before{background:var(--amber)}
+  .c-amber h3{color:var(--amber)}
+  .c-teal{background:var(--teal-bg)}.c-teal::before{background:var(--teal)}
+  .c-blue{background:var(--blue-bg)}.c-blue::before{background:var(--blue)}
+  .c-blue h3{color:var(--blue)}
+  .c-purple{background:var(--purple-bg)}.c-purple::before{background:var(--purple)}
+  .c-purple h3{color:var(--purple)}
+  .c-gray{background:var(--gray-bg)}.c-gray::before{background:var(--gray)}
+  .c-gray h3{color:var(--gray)}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:600px){.two{grid-template-columns:1fr}}
+
+  .note{font-size:13px;color:var(--coral);font-weight:600;margin-top:8px;
+    padding-left:14px;border-left:2px solid var(--coral)}
+
+  /* pyramid */
+  .pyramid{display:flex;flex-direction:column;align-items:center;gap:6px;margin:6px 0 4px}
+  .tier{color:#fff;text-align:center;padding:12px 8px;border-radius:7px;font-weight:600;
+    font-size:14.5px;box-shadow:0 1px 0 rgba(0,0,0,.04);transition:transform .2s}
+  .tier:hover{transform:scale(1.015)}
+  .tier small{display:block;font-weight:400;font-size:11.5px;opacity:.85;margin-top:1px}
+  .t1{width:46%;background:#2E7068}.t2{width:62%;background:#357E74}
+  .t3{width:80%;background:#6FA89F}.t4{width:98%;background:#A7AFA9;color:#3a3a36}
+  @media(max-width:600px){.t1{width:64%}.t2{width:78%}.t3{width:90%}.t4{width:100%}}
+  .pyr-axis{text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:8px;letter-spacing:.03em}
+
+  /* connector arrow */
+  .flow{text-align:center;color:var(--gray);font-size:22px;line-height:1;margin:-2px 0 10px;opacity:.6}
+
+  /* reading guide */
+  .read{background:var(--paper-2);border:1px solid var(--line);border-radius:15px;padding:26px 26px 10px}
+  .read h2{font-family:var(--serif);font-size:24px;margin-bottom:6px}
+  .read .lead{font-size:14px;color:var(--ink-soft);margin-bottom:18px}
+  .step{display:flex;gap:14px;margin-bottom:16px}
+  .step .n{flex:0 0 auto;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+    font-family:var(--serif);font-weight:700;font-size:15px;color:#fff;margin-top:1px}
+  .step:nth-child(2) .n{background:var(--coral)}.step:nth-child(3) .n{background:var(--teal)}
+  .step:nth-child(4) .n{background:var(--blue)}.step:nth-child(5) .n{background:var(--purple)}
+  .step .body{font-size:14.5px}
+  .step .body b{color:var(--ink)}
+  .step .body .hl{background:linear-gradient(transparent 60%,rgba(199,93,67,.22) 60%);font-weight:600}
+
+  /* uses */
+  .uses h2{font-family:var(--serif);font-size:24px;margin-bottom:18px}
+  .use{border:1px solid var(--line);border-left:4px solid var(--coral);border-radius:10px;
+    padding:16px 18px;margin-bottom:12px;background:#fff}
+  .use h4{font-size:15.5px;margin-bottom:5px;display:flex;align-items:center;gap:8px}
+  .use h4 .dot{font-family:var(--serif);font-style:italic;color:var(--coral);font-size:18px}
+  .use:nth-child(3){border-left-color:var(--teal)}.use:nth-child(3) h4 .dot{color:var(--teal)}
+  .use:nth-child(4){border-left-color:var(--blue)}.use:nth-child(4) h4 .dot{color:var(--blue)}
+  .use p{font-size:13.8px;color:var(--ink-soft);line-height:1.65}
+  .use code{background:var(--paper-2);padding:1px 6px;border-radius:4px;font-size:12.5px;color:var(--coral)}
+
+  footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);
+    font-size:12.5px;color:var(--gray);text-align:center;letter-spacing:.02em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Evidence Map · 给临床医生 + AI 开发者</div>
+    <h1>医学知识<em>供应链</em><br>从产生到床旁</h1>
+    <p class="sub">教材、Nature/Science、OpenEvidence 不在同一根"厉害"的尺子上——它们是知识从<strong>产生 → 汇总 → 提炼 → 触达</strong>这条流水线上的不同环节。把环节认清，"谁能引用、谁只能参考、谁说了不算"就一目了然。</p>
+  </header>
+
+  <!-- STAGE 1 -->
+  <section>
+    <div class="stage-label">
+      <span class="stage-num a">①</span>
+      <div><span class="stage-title">知识在哪里"产生"</span>
+      <span class="stage-hint">— 越往上越前沿，唯一真正创造证据的环节</span></div>
+    </div>
+    <div class="card c-coral">
+      <span class="tag">一级文献</span>
+      <h3>原始研究论文</h3>
+      <p>发表在期刊上。论文本身的"分量"由下方的<strong>证据等级</strong>决定，而不是期刊名气。</p>
+    </div>
+    <div class="two">
+      <div class="card c-amber">
+        <h3>基础科学顶刊 · CNS</h3>
+        <p>Cell · Nature · Science<br>面向全科学界，发突破性的机制与发现。</p>
+      </div>
+      <div class="card c-amber">
+        <h3>临床医学四大刊</h3>
+        <p>NEJM · Lancet · JAMA · BMJ<br>与 CNS 平行，发能改变临床实践的证据。</p>
+      </div>
+    </div>
+    <div class="card c-amber">
+      <h3>你的赛道顶刊</h3>
+      <p>Nature Medicine　＞　npj Digital Medicine（Diagnosis(P) 目标，体面的一线刊，比 Nature Medicine 低一档）</p>
+    </div>
+  </section>
+
+  <!-- STAGE 2 -->
+  <section>
+    <div class="stage-label">
+      <span class="stage-num b">②</span>
+      <div><span class="stage-title">证据等级金字塔</span>
+      <span class="stage-hint">— 与期刊无关，真正决定"研究有多硬"</span></div>
+    </div>
+    <div class="pyramid">
+      <div class="tier t1">系统综述 / Meta 分析<small>最高 · 综合多项高质量研究</small></div>
+      <div class="tier t2">随机对照试验 RCT<small>因果证据的金标准</small></div>
+      <div class="tier t3">队列研究 · 病例对照研究<small>观察性证据</small></div>
+      <div class="tier t4">病例报告 · 专家意见<small>最低 · 提供线索而非定论</small></div>
+    </div>
+    <p class="pyr-axis">一篇病例报告就算登上 NEJM，证据分量也低于一篇普通期刊的大型 Meta 分析。</p>
+  </section>
+
+  <!-- STAGE 3 -->
+  <section>
+    <div class="stage-label">
+      <span class="stage-num c">③</span>
+      <div><span class="stage-title">知识被"汇总 → 提炼"</span>
+      <span class="stage-hint">— 越往下越权威、越系统，但也越滞后</span></div>
+    </div>
+    <div class="card c-blue">
+      <span class="tag" style="background:var(--blue);color:#fff">二级文献</span>
+      <h3>数据库 / 系统综述库</h3>
+      <p>PubMed（收录一切，本身不评级）· Cochrane（系统综述）。负责把已产生的证据收进来、做综合。</p>
+    </div>
+    <div class="card c-blue">
+      <span class="tag" style="background:var(--blue);color:#fff">三级文献</span>
+      <h3>教材 / 指南 / UpToDate</h3>
+      <p>把沉淀成共识的东西写成系统的知识，用来打地基。但落后前沿数年，而且<strong>论文里不能引用</strong>。</p>
+      <p class="note">← 你原来以为"最厉害"的教材，其实在这一层：最权威、最系统，也最滞后。</p>
+    </div>
+  </section>
+
+  <div class="flow">↓</div>
+
+  <!-- STAGE 4 -->
+  <section style="margin-top:8px">
+    <div class="stage-label">
+      <span class="stage-num d">④</span>
+      <div><span class="stage-title">你如何"触达"以上全部</span>
+      <span class="stage-hint">— 只是工具，本身不在证据链内</span></div>
+    </div>
+    <div class="two">
+      <div class="card c-purple">
+        <h3>检索工具 · OpenEvidence</h3>
+        <p>搬运 + 总结证据，地位等同 Google Scholar / UpToDate。不产生、不评级、不沉淀。</p>
+        <p class="note" style="color:var(--purple);border-left-color:var(--purple)">← 你原来以为的"临床顶尖"，其实是个高效的搬运工。</p>
+      </div>
+      <div class="card c-gray">
+        <h3>自媒体 · Substack</h3>
+        <p>零把关，谁都能发。游离在整条证据链之外，不在任何一根轴上。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- READING GUIDE -->
+  <section class="read">
+    <h2>怎么读这张图</h2>
+    <p class="lead">四个环节，其实是知识"从产生到你手上"的一条流水线。</p>
+    <div class="step">
+      <span class="n">①</span>
+      <p class="body"><b>产生</b>是唯一真正创造证据的环节，论文发在期刊上。期刊名气（CNS / 四大刊）只是"声望招牌"；论文到底硬不硬，看的是 <span class="hl">②证据等级</span>——这才是真正的"顶尖研究"标准。</p>
+    </div>
+    <div class="step">
+      <span class="n">②</span>
+      <p class="body"><b>证据等级</b>与期刊完全无关。哪怕同样发在 NEJM，一篇大型双盲 RCT 和一篇病例报告的分量也天差地别。"顶尖研究"严格说指的是这条轴的顶端。</p>
+    </div>
+    <div class="step">
+      <span class="n">③</span>
+      <p class="body"><b>汇总 → 提炼</b>是把已产生的证据打包：PubMed 把所有论文收进来（什么都有），教材 / 指南再把沉淀下来的共识写成系统的东西。<span class="hl">你原来以为"最厉害"的教材在这一层</span>——它最权威、最系统，但也最滞后，而且不能进论文引用。</p>
+    </div>
+    <div class="step">
+      <span class="n">④</span>
+      <p class="body"><b>触达</b>是你怎么够到上面这一切。OpenEvidence 在这一层——它不产生、不评级、不沉淀，只是帮你"快速、带引用地"找到 ① 里的原始证据。<span class="hl">你原来以为的"临床顶尖"其实是个高效的搬运工。</span>Substack 则干脆游离在整条链之外。</p>
+    </div>
+  </section>
+
+  <!-- USES -->
+  <section class="uses">
+    <h2>把这条链记牢，对你三件事直接有用</h2>
+    <div class="use">
+      <h4><span class="dot">✦</span>做 Diagnosis(P)</h4>
+      <p>路径是反着走的——先用 ④（OpenEvidence / PubMed）查文献，读 ① 里的原始论文，最后把成果投回 ① 自己那一格（npj Digital Medicine）。引用永远引 ① 的原文，<strong>绝不引 ③④</strong>。</p>
+    </div>
+    <div class="use">
+      <h4><span class="dot">✦</span>做 LitRound</h4>
+      <p>你的产品本质就是 ④ 这一层，和 OpenEvidence 同构。看清"④ 只是触达层、价值在于把人快速送到 ①"，你就知道自己卖的不是权威，是<strong>"到达原始证据的速度和可信度"</strong>。</p>
+    </div>
+    <div class="use">
+      <h4><span class="dot">✦</span>日常学习 / 查房</h4>
+      <p>教材打地基（③），指南定标准（③），遇到前沿争议回到 ① 的最新 RCT / Meta。你那本急诊手册的可信度上限，取决于你给每条结论挂的是哪一层的来源。</p>
+    </div>
+  </section>
+
+  <footer>医学知识供应链 · 把关强度 × 证据等级　|　OpenClaw 内部参考</footer>
+
+</div>
+</body>
+</html>
