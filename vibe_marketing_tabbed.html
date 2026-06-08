@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Marketing · 分栏完整指南</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4f1ea;--paper-2:#ece7dc;--ink:#1a1f1c;--ink-soft:#4a514c;--ink-faint:#7d837e;
+  --green:#1f4d3a;--green-bright:#2d6a4f;--ochre:#b5651d;--blue:#1d5a7a;--rule:#d6d0c4;--rule-soft:#e2ddd2;
+  --serif:'Newsreader',Georgia,serif;--serif-cn:'Noto Serif SC',serif;
+  --sans-cn:'Noto Sans SC',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans-cn);line-height:1.7;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(circle at 12% 12%,rgba(31,77,58,0.025) 0%,transparent 42%),radial-gradient(circle at 88% 78%,rgba(181,101,29,0.02) 0%,transparent 45%)}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0.4;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
+.wrap{max-width:1000px;margin:0 auto;padding:0 32px;position:relative;z-index:2}
+
+/* header */
+header{padding:54px 0 26px}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:var(--green-bright);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.kicker::before{content:"";width:32px;height:1px;background:var(--green-bright)}
+h1{font-family:var(--serif-cn);font-weight:700;font-size:clamp(30px,5vw,52px);line-height:1.08;letter-spacing:-0.01em;margin-bottom:14px}
+h1 .accent{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--green)}
+.dek{font-family:var(--serif);font-size:18px;line-height:1.5;color:var(--ink-soft);max-width:600px;font-style:italic}
+
+/* TAB NAV */
+.tabnav{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:2px solid var(--ink);margin-bottom:36px;padding:14px 0 0}
+.tabnav-inner{display:flex;gap:4px;overflow-x:auto;padding-bottom:0;scrollbar-width:thin;scrollbar-color:var(--rule) transparent}
+.tabnav-inner::-webkit-scrollbar{height:4px}
+.tabnav-inner::-webkit-scrollbar-thumb{background:var(--rule);border-radius:2px}
+.tab-btn{flex-shrink:0;font-family:var(--sans-cn);font-size:13px;font-weight:500;color:var(--ink-faint);background:none;border:none;padding:12px 18px;cursor:pointer;position:relative;white-space:nowrap;transition:color 0.2s;display:flex;align-items:center;gap:8px}
+.tab-btn .tb-idx{font-family:var(--mono);font-size:10px;opacity:0.6}
+.tab-btn:hover{color:var(--ink-soft)}
+.tab-btn.active{color:var(--ink);font-weight:700}
+.tab-btn.active::after{content:"";position:absolute;bottom:-2px;left:0;right:0;height:2px;background:var(--green)}
+.tab-btn.cli-tab.active::after{background:var(--blue)}
+
+/* panel */
+.panel{display:none;animation:fadeIn 0.4s cubic-bezier(0.16,1,0.3,1)}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.panel-head{margin-bottom:24px}
+.panel-head .ph-kicker{font-family:var(--mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--green-bright);margin-bottom:10px}
+.panel-head h2{font-family:var(--serif-cn);font-size:30px;font-weight:700;line-height:1.15;margin-bottom:8px}
+.panel-head .ph-sub{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--ink-soft);max-width:640px}
+
+/* def card */
+.def-card{background:var(--green);color:var(--paper);border-radius:3px;padding:32px 36px;margin-bottom:22px;position:relative;overflow:hidden}
+.def-card::before{content:"VIBE";position:absolute;bottom:-30px;right:20px;font-family:var(--serif);font-size:120px;font-style:italic;color:rgba(244,241,234,0.06);font-weight:500}
+.def-card .dc-main{font-family:var(--serif-cn);font-size:21px;font-weight:600;line-height:1.5;margin-bottom:16px;position:relative;z-index:2}
+.def-card .dc-main b{color:#a8d5ba}
+.def-card .dc-sub{font-size:14px;line-height:1.7;color:rgba(244,241,234,0.82);position:relative;z-index:2}
+
+.matrix{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.mx{background:var(--paper);padding:22px 20px}
+.mx.now{background:#eef2ee}
+.mx .mx-h{font-family:var(--serif-cn);font-size:15px;font-weight:600;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.mx.now .mx-h{color:var(--green)}
+.mx ul{list-style:none}
+.mx li{font-size:12.5px;color:var(--ink-soft);padding:4px 0 4px 14px;position:relative;line-height:1.5}
+.mx li::before{content:"–";position:absolute;left:0;color:var(--ink-faint)}
+.mx.now li::before{color:var(--green-bright)}
+
+.philo{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
+.ph{padding:26px 28px;border-radius:3px;border:1px solid var(--rule)}
+.ph.bad{background:var(--paper)}
+.ph.good{background:var(--ink);color:var(--paper)}
+.ph .ph-role{font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px}
+.ph.bad .ph-role{color:var(--ochre)}
+.ph.good .ph-role{color:#a8d5ba}
+.ph .ph-id{font-family:var(--serif-cn);font-size:20px;font-weight:600;margin-bottom:10px}
+.ph .ph-do{font-size:14px;line-height:1.6}
+.ph.bad .ph-do{color:var(--ink-soft)}
+.ph.good .ph-do{color:rgba(244,241,234,0.82)}
+.philo-note{font-family:var(--serif);font-size:18px;color:var(--ink);line-height:1.5;padding:18px 22px;background:var(--paper-2);border-left:3px solid var(--green);border-radius:0 3px 3px 0}
+.philo-note b{color:var(--green)}
+
+.order-flow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.of{flex:1;min-width:170px;background:var(--paper-2);border:1px solid var(--rule);border-radius:3px;padding:20px 22px}
+.of .of-n{font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:0.1em;margin-bottom:6px}
+.of .of-t{font-family:var(--serif-cn);font-size:17px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.of .of-d{font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.order-warn{background:#fcefe4;border:1px solid var(--ochre);border-radius:3px;padding:16px 20px;font-size:14px;color:#8a4a12;line-height:1.6}
+.order-warn b{color:var(--ochre)}
+
+.trap-table{width:100%;border-collapse:collapse;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.trap-table th{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-faint);text-align:left;padding:13px 16px;background:var(--paper-2);border-bottom:1px solid var(--rule)}
+.trap-table td{padding:16px;font-size:13.5px;line-height:1.55;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+.trap-table tr:last-child td{border-bottom:none}
+.trap-table .sym{color:var(--ink);font-weight:500}
+.trap-table .cause{color:var(--ochre)}
+.trap-table .sol{color:var(--green)}
+
+.levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.lv{padding:22px 24px;border-radius:3px;background:var(--paper);border:1px solid var(--rule);border-top:3px solid var(--green-bright)}
+.lv:nth-child(1){border-top-color:var(--ink-faint)}
+.lv:nth-child(2){border-top-color:var(--blue)}
+.lv:nth-child(3){border-top-color:var(--ochre)}
+.lv:nth-child(4){border-top-color:var(--green)}
+.lv .lv-n{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--ink-faint);margin-bottom:6px}
+.lv .lv-t{font-family:var(--serif-cn);font-size:17px;font-weight:600;color:var(--ink);margin-bottom:8px}
+.lv .lv-d{font-size:13px;color:var(--ink-soft);line-height:1.55}
+.lv .lv-you{margin-top:10px;font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:2px;background:var(--green);color:var(--paper);display:inline-block}
+
+/* plan / weeks */
+.plan-legend{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:22px}
+.lg{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
+.lg .dot{width:10px;height:10px;border-radius:2px}
+.lg .dot.task{background:var(--green-bright)}.lg .dot.cli{background:var(--blue)}.lg .dot.deliver{background:var(--ochre)}.lg .dot.buf{background:var(--rule);border:1px solid var(--ink-faint)}
+.toolbar{display:flex;gap:12px;margin-bottom:20px}
+.tb{font-family:var(--mono);font-size:11px;padding:8px 16px;background:var(--paper-2);border:1px solid var(--rule);border-radius:2px;cursor:pointer;color:var(--ink-soft);transition:all 0.2s}
+.tb:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.phase-banner{margin:30px 0 16px;display:flex;align-items:baseline;gap:16px}
+.phase-banner:first-of-type{margin-top:0}
+.phase-banner .pn{font-family:var(--serif);font-style:italic;font-size:34px;font-weight:500;color:var(--ochre);line-height:1}
+.phase-banner .pt{font-family:var(--serif-cn);font-size:21px;font-weight:600}
+.phase-banner .pr{font-family:var(--mono);font-size:11px;color:var(--green-bright);letter-spacing:0.05em;margin-left:auto;white-space:nowrap}
+.week-block{margin-bottom:14px;border:1px solid var(--rule);border-radius:3px;overflow:hidden;background:var(--paper)}
+.week-bar{display:flex;align-items:center;gap:12px;padding:13px 20px;background:var(--paper-2);border-bottom:1px solid var(--rule);cursor:pointer;user-select:none}
+.week-bar .wn{font-family:var(--mono);font-size:12px;color:var(--green);font-weight:500;letter-spacing:0.08em}
+.week-bar .wt{font-family:var(--serif-cn);font-size:15px;font-weight:600}
+.week-bar .chev{margin-left:auto;color:var(--ink-faint);font-size:12px;transition:transform 0.3s}
+.week-block.open .chev{transform:rotate(90deg)}
+.days{max-height:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(0.16,1,0.3,1)}
+.week-block.open .days{max-height:1400px}
+.day{display:flex;gap:14px;padding:14px 20px;border-bottom:1px solid var(--rule-soft);align-items:flex-start}
+.day:last-child{border-bottom:none}
+.day .dn{font-family:var(--mono);font-size:11px;color:var(--ink-faint);min-width:42px;padding-top:2px}
+.day .dbar{width:3px;align-self:stretch;border-radius:2px;background:var(--green-bright);flex-shrink:0}
+.day.cli .dbar{background:var(--blue)}.day.buf .dbar{background:var(--rule)}.day.deliver .dbar{background:var(--ochre)}
+.day .dc{flex:1}
+.day .dtask{font-size:14px;color:var(--ink);line-height:1.55}
+.day .dtask b{font-weight:600}
+.day .dmeta{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.tag{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:2px}
+.tag.tool{background:var(--paper-2);color:var(--ink-soft);border:1px solid var(--rule)}
+.tag.cli{background:var(--blue);color:var(--paper)}
+.tag.out{background:var(--green);color:var(--paper)}
+.tag.buf{background:transparent;color:var(--ink-faint);border:1px dashed var(--ink-faint)}
+.cli-note{margin:22px 0;padding:22px 26px;background:var(--green);color:var(--paper);border-radius:3px}
+.cli-note .cn-t{font-family:var(--mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,234,0.6);margin-bottom:10px}
+.cli-note p{font-size:14px;line-height:1.7}
+.cli-note p b{color:#a8d5ba}
+
+/* cases */
+.case-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-bottom:24px}
+.case{padding:26px 28px;border-radius:3px;border:1px solid var(--rule);background:var(--paper)}
+.case.good{border-left:3px solid var(--green-bright)}.case.warn{border-left:3px solid var(--ochre)}
+.case-badge{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-bottom:14px;display:inline-block}
+.case-badge.most{background:var(--green);color:var(--paper)}.case-badge.ceiling{background:var(--blue);color:var(--paper)}.case-badge.fail{background:var(--ochre);color:var(--paper)}.case-badge.win{background:var(--green-bright);color:var(--paper)}
+.case-name{font-family:var(--serif-cn);font-size:21px;font-weight:600;margin-bottom:4px}
+.case-role{font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin-bottom:14px}
+.case-body{font-size:14px;color:var(--ink-soft);line-height:1.65;margin-bottom:16px}
+.case-body b{color:var(--ink);font-weight:600}
+.case-lesson{font-size:13px;color:var(--ink-soft);line-height:1.6;padding:14px 16px;background:var(--paper-2);border-radius:2px}
+.case-lesson b{color:var(--green);font-weight:600}
+.case-lesson .ll{display:block;font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px}
+.case-takeaway{padding:30px 34px;background:var(--ink);color:var(--paper);border-radius:3px}
+.case-takeaway .ct-label{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,241,234,0.5);margin-bottom:20px}
+.ct-row{display:flex;gap:16px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(244,241,234,0.1)}
+.ct-row:last-child{border-bottom:none}
+.ct-n{font-family:var(--serif);font-style:italic;font-size:24px;color:#a8d5ba;line-height:1;min-width:24px}
+.ct-t{font-size:14.5px;color:rgba(244,241,234,0.85);line-height:1.6}
+.ct-t b{color:var(--paper);font-weight:600}
+
+/* nav buttons */
+.panel-nav{display:flex;justify-content:space-between;margin:36px 0;gap:12px}
+.pn-btn{font-family:var(--sans-cn);font-size:13px;font-weight:500;padding:12px 22px;border:1px solid var(--ink);border-radius:2px;background:var(--paper);color:var(--ink);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:8px}
+.pn-btn:hover{background:var(--ink);color:var(--paper)}
+.pn-btn.next{margin-left:auto}
+.pn-btn:disabled{opacity:0.3;cursor:not-allowed}
+.pn-btn:disabled:hover{background:var(--paper);color:var(--ink)}
+
+footer{padding:30px 0 70px;text-align:center}
+footer .mark{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--ink-soft);margin-bottom:8px}
+footer .src{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:0.05em}
+
+@media(max-width:640px){
+  .wrap{padding:0 18px}
+  .matrix{grid-template-columns:1fr}
+  .philo{grid-template-columns:1fr}
+  .panel-head h2{font-size:24px}
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="wrap">
+
+<header>
+  <div class="kicker">分栏完整指南 · 点标签切换</div>
+  <h1>Vibe Marketing<br><span class="accent">认知 · 执行 · 落地</span></h1>
+  <p class="dek">认知 → 执行 → 案例，全部拆成独立板块。点上面的标签，一次只看一个。</p>
+</header>
+
+<!-- TAB NAV -->
+<nav class="tabnav">
+  <div class="tabnav-inner" id="tabnav">
+    <button class="tab-btn active" data-tab="0"><span class="tb-idx">01</span>是什么</button>
+    <button class="tab-btn" data-tab="1"><span class="tb-idx">02</span>核心哲学</button>
+    <button class="tab-btn" data-tab="2"><span class="tb-idx">03</span>工作流顺序</button>
+    <button class="tab-btn" data-tab="3"><span class="tb-idx">04</span>三大陷阱</button>
+    <button class="tab-btn" data-tab="4"><span class="tb-idx">05</span>四个层级</button>
+    <button class="tab-btn cli-tab" data-tab="5"><span class="tb-idx">06</span>84 天执行</button>
+    <button class="tab-btn" data-tab="6"><span class="tb-idx">07</span>真实案例</button>
+  </div>
+</nav>
+
+<!-- ===== PANEL 0: 是什么 ===== -->
+<section class="panel active" data-panel="0">
+  <div class="panel-head">
+    <div class="ph-kicker">Definition</div>
+    <h2>什么是 Vibe Marketing</h2>
+    <p class="ph-sub">先把它和"用 AI 写点东西"区分开——这是两件完全不同的事。</p>
+  </div>
+  <div class="def-card">
+    <div class="dc-main">它是 Vibe Coding 的营销版——<b>不是让 AI 帮你写一篇孤立的推文，而是构建一套端到端的自动化引擎</b>：抓取真实数据 → 分析痛点 → 生成内容 → 自动分发。</div>
+    <div class="dc-sub">源头是 Andrej Karpathy 提出的 vibe coding：人类提供战略意图与直觉，AI 补全繁琐的执行节点。营销圈把这套哲学搬了过来——你负责"做什么、为什么"，AI 负责"怎么做"。</div>
+  </div>
+  <div class="matrix">
+    <div class="mx"><div class="mx-h">传统营销 · 过去</div><ul><li>依赖人力猜测与手工研究</li><li>耗时数周做竞品分析</li><li>昂贵且低效</li></ul></div>
+    <div class="mx"><div class="mx-h">初级 AI 营销 · 盲区</div><ul><li>把 AI 当超级打字机</li><li>靠散落的提示词工作</li><li>缺乏上下文，产出 AI 味废话</li></ul></div>
+    <div class="mx now"><div class="mx-h">共鸣营销 · 现在</div><ul><li>把 AI 当系统引擎</li><li>用 API 串联真实数据源</li><li>输出可直接转化的业务资产</li></ul></div>
+  </div>
+</section>
+
+<!-- ===== PANEL 1: 核心哲学 ===== -->
+<section class="panel" data-panel="1">
+  <div class="panel-head">
+    <div class="ph-kicker">Philosophy</div>
+    <h2>核心哲学：流程架构 &gt; 提示词微调</h2>
+    <p class="ph-sub">这是整套方法论里最重要的一句话。再好的提示词，也补不了糟糕的底层逻辑。</p>
+  </div>
+  <div class="philo">
+    <div class="ph bad"><div class="ph-role">Prompts · 提示词</div><div class="ph-id">战术执行者</div><div class="ph-do">向 AI 索要最终结果——"帮我写一篇广告"。每次从零开始，AI 没有全局认知，输出极不稳定，需要反复微调。</div></div>
+    <div class="ph good"><div class="ph-role">Process · 系统流程</div><div class="ph-id">战略架构师</div><div class="ph-do">向 AI 提供执行框架——"去爬竞品网站，提取痛点，输出三条测试文案"。你设计流程，AI 在流程里跑。</div></div>
+  </div>
+  <div class="philo-note">从"<b>战术执行者</b>"升级为"<b>战略架构师</b>"——这是新手和高手之间唯一真正的差别。工具谁都会用，差别在你是要结果，还是设计产出结果的系统。</div>
+</section>
+
+<!-- ===== PANEL 2: 工作流顺序 ===== -->
+<section class="panel" data-panel="2">
+  <div class="panel-head">
+    <div class="ph-kicker">Workflow</div>
+    <h2>标准工作流：顺序决定成败</h2>
+    <p class="ph-sub">四个节点，顺序不能乱。绝大多数人失败，就是因为跳过了第一个。</p>
+  </div>
+  <div class="order-flow">
+    <div class="of"><div class="of-n">节点 01</div><div class="of-t">研究 Research</div><div class="of-d">强制 AI 爬真实数据（Reddit 痛点、竞品 API），绝不凭空捏造</div></div>
+    <div class="of"><div class="of-n">节点 02</div><div class="of-t">定位 Positioning</div><div class="of-d">基于抓取的数据，提取独特的商业切入点与战略意图</div></div>
+    <div class="of"><div class="of-n">节点 03</div><div class="of-t">内容 Content</div><div class="of-d">注入人类同理心，基于真实痛点生成高转化素材</div></div>
+    <div class="of"><div class="of-n">节点 04</div><div class="of-t">分发 Distribution</div><div class="of-d">通过 API 自动推送到平台，或生成代码部署</div></div>
+  </div>
+  <div class="order-warn"><b>致命警告：</b>跳过研究节点直接生成内容，是制造 AI 垃圾的根本原因。没有真实数据打底，再好的文案也是空中楼阁。</div>
+</section>
+
+<!-- ===== PANEL 3: 三大陷阱 ===== -->
+<section class="panel" data-panel="3">
+  <div class="panel-head">
+    <div class="ph-kicker">Diagnosis</div>
+    <h2>赢家与输家的三大陷阱</h2>
+    <p class="ph-sub">这三个症状，几乎是所有失败案例的共同点。每个都有对应的系统解法。</p>
+  </div>
+  <table class="trap-table">
+    <thead><tr><th>症状 Symptom</th><th>根本原因 Root Cause</th><th>系统解法 Solution</th></tr></thead>
+    <tbody>
+      <tr><td class="sym">内容空洞、浓厚 AI 味</td><td class="cause">跳过研究，直接要 AI 生成文案</td><td class="sol">在工作流前端强制加入竞品抓取 + 痛点分析节点</td></tr>
+      <tr><td class="sym">失去品牌灵魂与用户信任</td><td class="cause">全自动发布，未经人类审核即上线</td><td class="sol">设置"人在回路"断点：AI 起草，人类裁判点击确认</td></tr>
+      <tr><td class="sym">沉迷生成海量垃圾信息</td><td class="cause">追求虚荣产出量，偏离真实转化目标</td><td class="sol">始终把最终输出锚定在核心业务指标（ROI）上</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===== PANEL 4: 四个层级 ===== -->
+<section class="panel" data-panel="4">
+  <div class="panel-head">
+    <div class="ph-kicker">Roadmap</div>
+    <h2>共鸣营销的四个进阶层级</h2>
+    <p class="ph-sub">从手动复制粘贴到多智能体自主运行。看清自己在哪，下一步往哪走。</p>
+  </div>
+  <div class="levels">
+    <div class="lv"><div class="lv-n">LEVEL 1</div><div class="lv-t">孤立的 LLM 使用</div><div class="lv-d">手动复制粘贴，用 Claude 做基础对话。</div><span class="lv-you">你现在大概在这里</span></div>
+    <div class="lv"><div class="lv-n">LEVEL 2</div><div class="lv-t">工作流自动化</div><div class="lv-d">用 n8n 串联 API，实现特定任务的条件式流转。</div></div>
+    <div class="lv"><div class="lv-n">LEVEL 3</div><div class="lv-t">共鸣编程</div><div class="lv-d">用 Cursor / Claude Code + MCP 搭定制微型应用和内部系统。</div></div>
+    <div class="lv"><div class="lv-n">LEVEL 4</div><div class="lv-t">自主智能体</div><div class="lv-d">终极形态：设定目标后，多智能体自主规划、抓取、生成并实时优化。</div></div>
+  </div>
+</section>
+
+<!-- ===== PANEL 5: 84 天执行 ===== -->
+<section class="panel" data-panel="5">
+  <div class="panel-head">
+    <div class="ph-kicker">Execution · 84 Days</div>
+    <h2>84 天逐日执行</h2>
+    <p class="ph-sub">认知有了就动手。每周 6 个任务日 + 1 天缓冲，每天一件事，30–60 分钟。</p>
+  </div>
+  <div class="plan-legend">
+    <div class="lg"><span class="dot task"></span>常规任务</div>
+    <div class="lg"><span class="dot cli"></span>用到 CLI</div>
+    <div class="lg"><span class="dot deliver"></span>阶段产出</div>
+    <div class="lg"><span class="dot buf"></span>缓冲 / 复盘</div>
+  </div>
+  <div class="toolbar">
+    <div class="tb" onclick="this.closest('.panel').querySelectorAll('.week-block').forEach(w=>w.classList.add('open'))">展开全部周</div>
+    <div class="tb" onclick="this.closest('.panel').querySelectorAll('.week-block').forEach(w=>w.classList.remove('open'))">收起全部周</div>
+  </div>
+
+  <div class="phase-banner"><span class="pn">I</span><span class="pt">研究 + 定位</span><span class="pr">WEEK 1–2</span></div>
+  <div class="week-block open">
+    <div class="week-bar" onclick="this.parentElement.classList.toggle('open')"><span class="wn">WEEK 01</span><span class="wt">竞品内容研究</span><span class="chev">▸</span></div>
+    <div class="days">
+      <div class="day"><span class="dn">D1</span><div class="dbar"></div><div class="dc"><div class="dtask">列出对标账号，选定 <b>5 个目标</b>（微信 3 + YT 2），记录链接和粉丝量</div></div></div>
+      <div class="day"><span class="dn">D2</span><div class="dbar"></div><div class="dc"><div class="dtask">用 Gemini 分析<b>账号 1–2</b>：发什么、多久发、什么形式</div><div class="dmeta"><span class="tag tool">Gemini</span></div></div></div>
+      <div class="day"><span class="dn">D3</span><div class="dbar"></div><div class="dc"><div class="dtask">分析<b>账号 3–5</b>，记录每个账号最高互动的 3 条内容</div><div class="dmeta"><span class="tag tool">Gemini</span></div></div></div>
+      <div class="day"><span class="dn">D4</span><div class="dbar"></div><div class="dc"><div class="dtask">汇总归类：<b>什么话题/形式反响最好</b></div></div></div>
+      <div class="day"><span class="dn">D5</span><div class="dbar"></div><div class="dc"><div class="dtask">找 gap——他们<b>都没覆盖的角度</b>，尤其你的临床视角能填的空白</div></div></div>
+      <div class="day deliver"><span class="dn">D6</span><div class="dbar"></div><div class="dc"><div class="dtask">写一页纸的<b>竞品 gap 报告</b>，存进 GitHub</div><div class="dmeta"><span class="tag out">产出 · gap 报告</span></div></div></div>
+      <div class="day buf"><span class="dn">D7</span><div class="dbar"></div><div class="dc"><div class="dtask">缓冲 / 复盘</div><div class="dmeta"><span class="tag buf">休息</span></div></div></div>
+    </div>
+  </div>
+  <div class="week-block open">
+    <div class="week-bar" onclick="this.parentElement.classList.toggle('open')"><span class="wn">WEEK 02</span><span class="wt">定位 + 独特机制</span><span class="chev">▸</span></div>
+    <div class="days">
+      <div class="day"><span class="dn">D1</span><div class="dbar"></div><div class="dc"><div class="dtask">列出你的<b>全部能力点</b>：临床、AI 开发、产品、写作</div></div></div>
+      <div class="day"><span class="dn">D2</span><div class="dbar"></div><div class="dc"><div class="dtask">目标人群的<b>真实痛点</b>：医生用 AI 时卡在哪</div></div></div>
+      <div class="day"><span class="dn">D3</span><div class="dbar"></div><div class="dc"><div class="dtask">找交叉点：<b>能做 × 有人要 × 别人难复制</b></div></div></div>
+      <div class="day"><span class="dn">D4</span><div class="dbar"></div><div class="dc"><div class="dtask">跑定位框架，生成 <b>3 个候选定位角度</b></div><div class="dmeta"><span class="tag tool">Claude</span></div></div></div>
+      <div class="day"><span class="dn">D5</span><div class="dbar"></div><div class="dc"><div class="dtask">每个角度写成<b>一句话定位</b>，共 3 版</div></div></div>
+      <div class="day deliver"><span class="dn">D6</span><div class="dbar"></div><div class="dc"><div class="dtask">发给 3 个同行测反馈，<b>定稿定位</b> + 内容方向文档</div><div class="dmeta"><span class="tag out">产出 · 定位文档</span></div></div></div>
+      <div class="day buf"><span class="dn">D7</span><div class="dbar"></div><div class="dc"><div class="dtask">缓冲 / 复盘</div><div class="dmeta"><span class="tag buf">休息</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="phase-banner"><span class="pn">II</span><span class="pt">建立 Skills 系统</span><span class="pr">WEEK 3–5</span></div>
+  <div class="week-block">
+    <div class="week-bar" onclick="this.parentElement.classList.toggle('open')"><span class="wn">WEEK 03</span><span class="wt">前 3 个 skill 文件</span><span class="chev">▸</span></div>
+    <div class="days">
+      <div class="day"><span class="dn">D1</span><div class="dbar"></div><div class="dc"><div class="dtask">在 GitHub 建 <b>vibe-marketing/</b> 文件夹，创建 6 个空 .md</div><div class="dmeta"><span class="tag tool">GitHub</span></div></div></div>
+      <div class="day"><span class="dn">D2</span><div class="dbar"></div><div class="dc"><div class="dtask">写 <b>brand-voice.md</b>：风格、禁用词、读者画像</div></div></div>
+      <div class="day"><span class="dn">D3</span><div class="dbar"></div><div class="dc"><div class="dtask">写 <b>positioning-angle.md</b>：8 种角度模板</div></div></div>
+      <div class="day"><span class="dn">D4</span><div class="dbar"></div><div class="dc"><div class="dtask">写 <b>content-brief.md</b>：选题→大纲→论点流程</div></div></div>
+      <div class="day"><span class="dn">D5</span><div class="dbar"></div><div class="dc"><div class="dtask">测试：3 个文件喂给 Claude 生成 1 篇草稿</div><div class="dmeta"><span class="tag tool">Claude</span></div></div></div>
+      <div class="day"><span class="dn">D6</span><div class="dbar"></div><div class="dc"><div class="dtask">不满意的地方<b>回头改 skill 文件</b>，不是改文章</div></div></div>
+      <div class="day buf"><span class="dn">D7</span><div class="dbar"></div><div class="dc"><div class="dtask">缓冲 / 复盘</div><div class="dmeta"><span class="tag buf">休息</span></div></div></div>
+    </div>
+  </div>
+  <div class="week-block">
+    <div class="week-bar" onclick="this.parentElement.classList.toggle('open')"><span class="wn">WEEK 04</span><span class="wt">后 3 个 skill 文件</span><span class="chev">▸</span></div>
+    <div class="days">
+      <div class="day"><span class="dn">D1</span><div class="dbar"></div><div class="dc"><div class="dtask">写 <b>direct-response-copy.md</b>：Ogilvy / Schwartz 框架</div></div></div>
+      <div class="day"><span class="dn">D2</span><div class="dbar"></div><div class="dc"><div class="dtask">写 <b>hook-generator.md</b>：标题 + 缩略图文案 + 钩子</div></div></div>
+      <div class="day"><span class="dn">D3</span><div class="dbar"></div><div class="dc"><div class="dtask">写 <b>repurpose.md</b>：长文拆解规则</div></div></div>
+      <div class="day"><span class="dn">D4</span><div class="dbar"></div><div class="dc"><div class="dtask">用<b>全套 skill</b> 写第一篇正式文章（CaseLog 话题）</div><div class="dmeta"><span class="tag tool">Claude</span></div></div></div>
+      <div class="day"><span class="dn">D5</span><div class="dbar"></div><div class="dc"><div class="dtask">用 repurpose <b>拆成 3 个平台版本</b></div></div></div>
+      <div class="day deliver"><span class="dn">D6</span><div class="dbar"></div><div class="dc"><div class="dtask">精修定稿，<b>6 个 skill 全部就绪</b></div><div class="dmeta"><span class="tag out">产出 · 完整 skill 库</span></div></div></div>
+      <div class="day buf"><span class="dn">D7</span><div class="dbar"></div><div class="dc"><div class="dtask">缓冲 / 复盘</div><div class="dmeta"><span class="tag buf">休息</span></div></div></div>
+    </div>
+  </div>
+  <div class="week-block">
+    <div class="week-bar" onclick="this.parentElement.classList.toggle('open')"><span class="wn">WEEK 05</span><span class="wt">串联 + 首批发布</span><span class="chev">▸</span></div>
+    <div class="days">
+      <div class="day"><span class="dn">D1</span><div class="dbar"></div><div class="dc"><div class="dtask">写 <b>start-here.md</b> 编排文件，定义调用顺序</div></div></div>
+      <div class="day"><span class="dn">D2</span><div class="dbar"></div><div class="dc"><div class="dtask">完整跑一遍，<b>记录每步耗时</b></div></div></div>
+      <div class="day"><span class="dn">D3</span><div class="dbar"></div><div class="dc"><div class="dtask">准备微信发布：排版、配图、标题</div></div></div>
+      <div class="day"><span class="dn">D4</span><div class="dbar"></div><div class="dc"><div class="dtask"><b>微信发布第 1 篇</b></div><div class="dmeta"><span class="tag out">里程碑</span></div></div></div>
+      <div class="day"><span class="dn">D5</span><div class="dbar"></div><div class="dc"><div class="dtask">准备 YT 内容：脚本 → 录制/图文</div></div></div>
+      <div class="day deliver"><span class="dn">D6</span><div class="dbar"></div><div class="dc"><div class="dtask"><b>YT 发布第 1 条</b>。标记最费时环节 → 自动化目标</div><div class="dmeta"><span class="tag out">产出 · 首批内容上线</span></div></div></div>
+      <div class="day buf"><span class="dn">D7</span><div class="dbar"></div><div class="dc"><div class="dtask">缓冲 / 复盘</div><div class="dmeta"><span class="tag buf">休息</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="cli-note">
+    <div class="cn-t">⌘ 从这里开始用到 CLI</div>
+    <p>前 5 周内容生产，<b>用 claude.ai + skill 文件就够，不碰 CLI</b>。第 6 周起搭自动化流水线时，Claude Code CLI 才下场——写脚本、调 API、串 n8n 节点。下面带 <b>CLI</b> 标记的天，就是它出场的时候。</p>
+  </div>
+
+  <div class="phase-banner"><span class="pn">III</span><span class="pt">自动化 Workflow</span><span class="pr">WEEK 6–9 · CLI 主场</span></div>
+  <div class="week-block">
+    <div class="week-bar" onclick="this.parentElement.classList.toggle('open')"><span class="wn">WEEK 06</span><span class="wt">n8n 基础 + CLI 入门</span><span class="chev">▸</span></div>
+    <div class="days">
+      <div class="day"><span class="dn">D1</span><div class="dbar"></div><div class="dc"><div class="dtask">装 n8n，跑通 hello world</div><div class="dmeta"><span class="tag tool">n8n</span></div></div></div>
+      <div class="day"><span class="dn">D2</span><div class="dbar"></div><div class="dc"><div class="dtask">学 n8n 三概念：节点、触发器、连接</div></div></div>
+      <div class="day cli"><span class="dn">D3</span><div class="dbar"></div><div class="dc"><div class="dtask">用 CLI 写<b>第一个 API 调用脚本</b>测试连接</div><div class="dmeta"><span class="tag cli">CLI</span></div></div></div>
+      <div class="day cli"><span class="dn">D4</span><div class="dbar"></div><div class="dc"><div class="dtask">跑通：<b>定时触发 → 调 API → 输出到文件</b></div><div class="dmeta"><span class="tag cli">CLI</span><span class="tag tool">n8n</span></div></div></div>
+      <div class="day"><span class="dn">D5</span><div class="dbar"></div><div class="dc"><div class="dtask">参考 Boring Marketer 的 n8n 模板结构</div></div></div>
+      <div class="day"><span class="dn">D6</span><div class="dbar"></div><div class="dc"><div class="dtask">搭一个最简单的<b>端到端流程</b></div></div></div>
+      <div class="day buf"><span class="dn">D7</span><div class="dbar"></div><div class="dc"><div class="dtask">缓冲 / 复盘</div><div class="dmeta"><span class="tag buf">休息</span></div></div></div>
+    </div>
+  </div>
+  <div class="week-block">
+    <div class="week-bar" onclick="this.parentElement.classList.toggle('open')"><span class="wn">WEEK 07</span><span class="wt">选题自动化</span><span class="chev">▸</span></div>
+    <div class="days">
+      <div class="day"><span class="dn">D1</span><div class="dbar"></div><div class="dc"><div class="dtask">配置数据源：RSS / X 列表</div></div></div>
+      <div class="day cli"><span class="dn">D2</span><div class="dbar"></div><div class="dc"><div class="dtask">用 CLI 写<b>抓取 + 解析脚本</b></div><div class="dmeta"><span class="tag cli">CLI</span></div></div></div>
+      <div class="day cli"><span class="dn">D3</span><div class="dbar"></div><div class="dc"><div class="dtask">接 Grok 4 API 做<b>话题过滤</b></div><div class="dmeta"><span class="tag cli">CLI</span><span class="tag tool">Grok</span></div></div></div>
+      <div class="day"><span class="dn">D4</span><div class="dbar"></div><div class="dc"><div class="dtask">过滤逻辑封装成 n8n 节点</div></div></div>
+      <div class="day"><span class="dn">D5</span><div class="dbar"></div><div class="dc"><div class="dtask">结果<b>推送到飞书 / Notion</b></div></div></div>
+      <div class="day deliver"><span class="dn">D6</span><div class="dbar"></div><div class="dc"><div class="dtask">端到端测试，跑通<b>每日自动选题</b></div><div class="dmeta"><span class="tag out">产出 · 选题 pipeline</span></div></div></div>
+      <div class="day buf"><span class="dn">D7</span><div class="dbar"></div><div class="dc"><div class="dtask">缓冲 / 复盘</div><div class="dmeta"><span class="tag buf">休息</span></div></div></div>
+    </div>
+  </div>
+  <div class="week-block">
+    <div class="week-bar" onclick="this.parentElement.classList.toggle('open')"><span class="wn">WEEK 08</span><span class="wt">内容生产自动化</span><span class="chev">▸</span></div>
+    <div class="days">
+      <div class="day cli"><span class="dn">D1</span><div class="dbar"></div><div class="dc"><div class="dtask">用 CLI 写<b>调用 Claude API 的脚本</b>，加载 skill 文件</div><div class="dmeta"><span class="tag cli">CLI</span></div></div></div>
+      <div class="day cli"><span class="dn">D2</span><div class="dbar"></div><div class="dc"><div class="dtask">skill 文件<b>接入自动化流程</b></div><div class="dmeta"><span class="tag cli">CLI</span></div></div></div>
+      <div class="day"><span class="dn">D3</span><div class="dbar"></div><div class="dc"><div class="dtask">测试自动草稿质量，调 prompt 链</div></div></div>
+      <div class="day cli"><span class="dn">D4</span><div class="dbar"></div><div class="dc"><div class="dtask">写<b>双平台格式化逻辑</b></div><div class="dmeta"><span class="tag cli">CLI</span></div></div></div>
+      <div class="day"><span class="dn">D5</span><div class="dbar"></div><div class="dc"><div class="dtask">接入 n8n，<b>串联选题 → 生产</b></div></div></div>
+      <div class="day deliver"><span class="dn">D6</span><div class="dbar"></div><div class="dc"><div class="dtask">端到端测试：热点到草稿全自动</div><div class="dmeta"><span class="tag out">产出 · 生产 pipeline</span></div></div></div>
+      <div class="day buf"><span class="dn">D7</span><div class="dbar"></div><div class="dc"><div class="dtask">缓冲 / 复盘</div><div class="dmeta"><span class="tag buf">休息</span></div></div></div>
+    </div>
+  </div>
+  <div class="week-block">
+    <div class="week-bar" onclick="this.parentElement.classList.toggle('open')"><span class="wn">WEEK 09</span><span class="wt">发布 + 数据回收</span><span class="chev">▸</span></div>
+    <div class="days">
+      <div class="day"><span class="dn">D1</span><div class="dbar"></div><div class="dc"><div class="dtask">接入 Buffer 或排期工具</div></div></div>
+      <div class="day"><span class="dn">D2</span><div class="dbar"></div><div class="dc"><div class="dtask">配置自动排期逻辑</div></div></div>
+      <div class="day cli"><span class="dn">D3</span><div class="dbar"></div><div class="dc"><div class="dtask">用 CLI 写<b>数据抓取脚本</b></div><div class="dmeta"><span class="tag cli">CLI</span></div></div></div>
+      <div class="day cli"><span class="dn">D4</span><div class="dbar"></div><div class="dc"><div class="dtask">数据<b>回写到数据库 / 表格</b></div><div class="dmeta"><span class="tag cli">CLI</span></div></div></div>
+      <div class="day"><span class="dn">D5</span><div class="dbar"></div><div class="dc"><div class="dtask">Claude 自动<b>生成周报</b></div></div></div>
+      <div class="day deliver"><span class="dn">D6</span><div class="dbar"></div><div class="dc"><div class="dtask">全流水线测试 —— <b>选题→生产→发布→复盘全自动</b></div><div class="dmeta"><span class="tag out">产出 · 完整流水线</span></div></div></div>
+      <div class="day buf"><span class="dn">D7</span><div class="dbar"></div><div class="dc"><div class="dtask">缓冲 / 复盘</div><div class="dmeta"><span class="tag buf">休息</span></div></div></div>
+    </div>
+  </div>
+
+  <div class="phase-banner"><span class="pn">IV</span><span class="pt">Build in Public + 变现</span><span class="pr">WEEK 10–12</span></div>
+  <div class="week-block">
+    <div class="week-bar" onclick="this.parentElement.classList.toggle('open')"><span class="wn">WEEK 10</span><span class="wt">Build in Public 启动</span><span class="chev">▸</span></div>
+    <div class="days">
+      <div class="day"><span class="dn">D1</span><div class="dbar"></div><div class="dc"><div class="dtask">列出 CaseLog 可写的<b>迭代点</b></div></div></div>
+      <div class="day"><span class="dn">D2</span><div class="dbar"></div><div class="dc"><div class="dtask">写<b>第 1 篇</b>：为什么做这个功能</div></div></div>
+      <div class="day"><span class="dn">D3</span><div class="dbar"></div><div class="dc"><div class="dtask">发布 + 拆成短内容铺开</div></div></div>
+      <div class="day"><span class="dn">D4</span><div class="dbar"></div><div class="dc"><div class="dtask">写<b>第 2 篇</b>：遇到的问题 + 解决</div></div></div>
+      <div class="day"><span class="dn">D5</span><div class="dbar"></div><div class="dc"><div class="dtask">发布 + 认真回复每条评论</div></div></div>
+      <div class="day deliver"><span class="dn">D6</span><div class="dbar"></div><div class="dc"><div class="dtask">复盘<b>哪类话题反响好</b></div><div class="dmeta"><span class="tag out">产出 · 方向验证</span></div></div></div>
+      <div class="day buf"><span class="dn">D7</span><div class="dbar"></div><div class="dc"><div class="dtask">缓冲 / 复盘</div><div class="dmeta"><span class="tag buf">休息</span></div></div></div>
+    </div>
+  </div>
+  <div class="week-block">
+    <div class="week-bar" onclick="this.parentElement.classList.toggle('open')"><span class="wn">WEEK 11</span><span class="wt">Diagnosis(P) 内容化</span><span class="chev">▸</span></div>
+    <div class="days">
+      <div class="day"><span class="dn">D1</span><div class="dbar"></div><div class="dc"><div class="dtask">论文框架拆成 <b>3–5 个科普选题</b></div></div></div>
+      <div class="day"><span class="dn">D2</span><div class="dbar"></div><div class="dc"><div class="dtask">写第 1 篇：<b>临床思维 × AI 注意力机制</b></div></div></div>
+      <div class="day"><span class="dn">D3</span><div class="dbar"></div><div class="dc"><div class="dtask">发布</div></div></div>
+      <div class="day"><span class="dn">D4</span><div class="dbar"></div><div class="dc"><div class="dtask">建<b>邮件列表 / 私域入口</b></div></div></div>
+      <div class="day"><span class="dn">D5</span><div class="dbar"></div><div class="dc"><div class="dtask">内容里<b>植入导流钩子</b></div></div></div>
+      <div class="day deliver"><span class="dn">D6</span><div class="dbar"></div><div class="dc"><div class="dtask">写第 2 篇，<b>建立内容序列</b></div><div class="dmeta"><span class="tag out">产出 · 私域入口</span></div></div></div>
+      <div class="day buf"><span class="dn">D7</span><div class="dbar"></div><div class="dc"><div class="dtask">缓冲 / 复盘</div><div class="dmeta"><span class="tag buf">休息</span></div></div></div>
+    </div>
+  </div>
+  <div class="week-block">
+    <div class="week-bar" onclick="this.parentElement.classList.toggle('open')"><span class="wn">WEEK 12</span><span class="wt">变现路径设计</span><span class="chev">▸</span></div>
+    <div class="days">
+      <div class="day cli"><span class="dn">D1</span><div class="dbar"></div><div class="dc"><div class="dtask">用 CLI 导出 <b>12 周全部数据</b></div><div class="dmeta"><span class="tag cli">CLI</span></div></div></div>
+      <div class="day"><span class="dn">D2</span><div class="dbar"></div><div class="dc"><div class="dtask">分析<b>最高转化的内容类型</b></div></div></div>
+      <div class="day"><span class="dn">D3</span><div class="dbar"></div><div class="dc"><div class="dtask">设计变现钩子：<b>CaseLog 付费 / 咨询 / PassRound 导流</b></div></div></div>
+      <div class="day"><span class="dn">D4</span><div class="dbar"></div><div class="dc"><div class="dtask">写一个<b>变现测试内容</b>（软导流）</div></div></div>
+      <div class="day"><span class="dn">D5</span><div class="dbar"></div><div class="dc"><div class="dtask">发布测试，观察转化</div></div></div>
+      <div class="day deliver"><span class="dn">D6</span><div class="dbar"></div><div class="dc"><div class="dtask">整理<b>个人 Playbook</b> —— 你自己的 SOP</div><div class="dmeta"><span class="tag out">产出 · 变现闭环</span></div></div></div>
+      <div class="day buf"><span class="dn">D7</span><div class="dbar"></div><div class="dc"><div class="dtask">总复盘 —— 12 周完成</div><div class="dmeta"><span class="tag buf">收官</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PANEL 6: 真实案例 ===== -->
+<section class="panel" data-panel="6">
+  <div class="panel-head">
+    <div class="ph-kicker">Case Studies</div>
+    <h2>真实案例参考</h2>
+    <p class="ph-sub">公开记录的真实结果——成功的、失败的都看。挑了对你（临床医生 × 一人公司）最有参考价值的几个。</p>
+  </div>
+  <div class="case-grid">
+    <div class="case good">
+      <span class="case-badge most">最像你</span>
+      <div class="case-name">Oren Greenberg</div>
+      <div class="case-role">独立营销顾问 · 自建超个性化触达系统</div>
+      <p class="case-body">没有现成系统满足需求，就自己在 Replit 里写 workflow：过滤 5 万家公司数据集、排除已有联系人、为每家按其阶段生成定制触达内容。结果"具体到只对目标接收者才有意义"。</p>
+      <div class="case-lesson"><span class="ll">关键启示</span>超个性化只在你深刻理解目标客户时才有效。<b>你比任何人都懂临床医生的真实痛点，这是你的不可替代之处。</b></div>
+    </div>
+    <div class="case good">
+      <span class="case-badge ceiling">天花板</span>
+      <div class="case-name">Pieter Levels</div>
+      <div class="case-role">一人运营 · $3M ARR 产品矩阵</div>
+      <p class="case-body">一个人运营 300 万美元年收入的产品组合。同期 Midjourney 约 11 人做到 2 亿美元 ARR。2026 年，36.3% 的新创业是单人创办。</p>
+      <div class="case-lesson"><span class="ll">关键启示</span>"一人公司"不是幻想，是反复验证的模式。<b>vibe CEO 只设方向、做决策，让 AI 执行。</b></div>
+    </div>
+    <div class="case warn">
+      <span class="case-badge fail">前车之鉴</span>
+      <div class="case-name">某匿名独立开发者</div>
+      <div class="case-role">20 万订阅 · 零付费用户</div>
+      <p class="case-body">2026 年公开记录：20 万订阅的邮件列表，因为<b>角度错了</b>，花 750 欧元只换来 124 次点击、零付费。超过一半已上线的单人项目从未获得一个付费用户。</p>
+      <div class="case-lesson"><span class="ll">关键启示</span>粉丝数是虚荣指标，付费转化才是真的。<b>大列表 + 错角度 = 零。这是你要正视的基线。</b></div>
+    </div>
+    <div class="case good">
+      <span class="case-badge win">突破模式</span>
+      <div class="case-name">突破者的共同模式</div>
+      <div class="case-role">从 2025–2026 真实案例提炼</div>
+      <p class="case-body">能突破的一人公司几乎从不靠运气，跑的是同一个模式：挑一个<b>窄到一个真人会用它描述自己</b>的受众，成为这群人的唯一选择。</p>
+      <div class="case-lesson"><span class="ll">对你的翻译</span>别想"医疗 AI"。<b>想"用 AI 做临床决策的中国主治医生"——窄到这群人一看就知道说的是自己。</b></div>
+    </div>
+  </div>
+  <div class="case-takeaway">
+    <div class="ct-label">三条提炼</div>
+    <div class="ct-row"><span class="ct-n">1</span><span class="ct-t">优势不在工具，在你对<b>临床医生这个窄人群的深度理解</b>。这是 AI 给不了的。</span></div>
+    <div class="ct-row"><span class="ct-n">2</span><span class="ct-t"><b>付费转化才是真指标</b>，粉丝数是虚荣指标。</span></div>
+    <div class="ct-row"><span class="ct-n">3</span><span class="ct-t"><b>窄，再窄一点。</b>窄到目标用户会主动用这个标签描述自己。</span></div>
+  </div>
+</section>
+
+<!-- nav buttons -->
+<div class="panel-nav">
+  <button class="pn-btn prev" id="prevBtn">← 上一栏</button>
+  <button class="pn-btn next" id="nextBtn">下一栏 →</button>
+</div>
+
+<footer>
+  <p class="mark">先懂，再做，最后跑通。每天一件事，84 天成系统。</p>
+  <p class="src">框架来源：The Boring Marketer · 案例：公开记录 2025–2026 · 为 PantosAI / OpenClaw 定制</p>
+</footer>
+
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab-btn');
+const panels = document.querySelectorAll('.panel');
+const total = panels.length;
+let current = 0;
+
+function show(i){
+  current = Math.max(0, Math.min(total-1, i));
+  tabs.forEach((t,idx)=>t.classList.toggle('active', idx===current));
+  panels.forEach((p,idx)=>p.classList.toggle('active', idx===current));
+  document.getElementById('prevBtn').disabled = current===0;
+  document.getElementById('nextBtn').disabled = current===total-1;
+  // scroll active tab into view
+  tabs[current].scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+  // scroll page to top of content
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+tabs.forEach(t=>t.addEventListener('click', ()=>show(parseInt(t.dataset.tab))));
+document.getElementById('prevBtn').addEventListener('click', ()=>show(current-1));
+document.getElementById('nextBtn').addEventListener('click', ()=>show(current+1));
+show(0);
+</script>
+</body>
+</html>
