@@ -429,6 +429,64 @@ section{padding-top:64px}
 .ppl-box .pr{display:grid;grid-template-columns:90px 1fr;gap:6px 14px;font-size:.9rem;align-items:baseline}
 .ppl-box .pr b{font-family:'Noto Serif SC';font-weight:700;color:var(--accent)}
 @media(max-width:560px){.split-table{font-size:.8rem}.split-table th,.split-table td{padding:8px 6px}.ppl-box .pr{grid-template-columns:64px 1fr}}
+/* 落到每一天：每日固定项 + 一周日程 */
+.daily-fix{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:20px}
+.daily-fix .df{background:var(--paper);padding:14px 16px}
+.daily-fix .dft{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.daily-fix .dfc{font-size:.82rem;color:var(--ink);line-height:1.5}
+.daily-fix .dfc b{color:var(--accent)}
+.week{margin-top:22px;border-top:2px solid var(--ink)}
+.wd{display:grid;grid-template-columns:118px 1fr;gap:16px;padding:13px 0 13px 14px;border-bottom:1px solid var(--line)}
+.wd:last-child{border-bottom:0}
+.wd.train{background:rgba(154,36,23,.035);border-left:3px solid var(--accent)}
+.wd.rest{border-left:3px solid var(--line)}
+.wd .wday{font-family:'Bodoni Moda',serif;font-style:italic;font-size:1.12rem;color:var(--ink);line-height:1.1}
+.wd .wtype{display:block;font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin-top:4px}
+.wd.rest .wtype{color:var(--muted)}
+.wd .wcontent{font-size:.86rem;color:var(--ink);line-height:1.7}
+.wd .code{font-family:'Space Mono',monospace;font-size:.66rem;color:var(--muted)}
+.wd .fin{color:var(--accent);font-weight:700}
+@media(max-width:560px){.daily-fix{grid-template-columns:1fr 1fr}.wd{grid-template-columns:1fr;gap:5px;padding-top:14px}}
+/* 基线快照（启动日实测值） */
+.baseline{border:1px solid var(--ink);margin-top:20px}
+.baseline .bl-head{background:var(--ink);color:var(--paper);padding:10px 18px;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.baseline .bl-head .d{color:var(--gold)}
+.baseline .bl-sub{padding:6px 18px;background:var(--paper-deep);font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.baseline .bl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}
+.baseline .bl{background:var(--paper);padding:11px 16px}
+.baseline .bl .k{font-size:.76rem;color:var(--muted)}
+.baseline .bl .v{font-family:'Bodoni Moda',serif;font-size:1.18rem;font-weight:600;margin-top:1px;line-height:1.1}
+.baseline .bl .v .u{font-size:.62rem;color:var(--muted);font-family:'Space Mono',monospace;font-weight:400}
+.baseline .bl.hi .v{color:var(--accent)}
+.baseline .bl.hi .v::after{content:" ↑";font-size:.66rem}
+.baseline .bl.lo .v{color:var(--gold)}
+.baseline .bl.lo .v::after{content:" ↓";font-size:.66rem}
+.baseline .bl .note{font-size:.68rem;color:var(--muted);margin-top:2px;line-height:1.4}
+@media(max-width:560px){.baseline .bl-grid{grid-template-columns:1fr 1fr}}
+/* 练的时候：顺序条 + 避坑 */
+.seq{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:18px;font-family:'Bodoni Moda',serif}
+.seq .step{border:1px solid var(--ink);padding:8px 16px;font-size:.95rem;text-align:center}
+.seq .step.mid{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.seq .step small{display:block;font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.seq .step.mid small{color:rgba(244,239,230,.75)}
+.seq .arr{color:var(--accent);font-family:'Space Mono',monospace;font-size:1.1rem}
+.avoid{list-style:none;margin-top:16px}
+.avoid li{position:relative;padding:9px 0 9px 28px;border-bottom:1px dotted var(--line);font-size:.9rem}
+.avoid li:last-child{border-bottom:0}
+.avoid li::before{content:"✕";position:absolute;left:0;top:9px;color:var(--accent);font-family:'Space Mono',monospace;font-weight:700}
+.avoid li b{color:var(--accent)}
+/* 核心方案 · 一页纸 */
+.core-plan{border:2px solid var(--ink);background:rgba(255,255,255,.5);padding:24px 28px;margin-top:24px}
+.core-plan .cp-tag{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.core-plan .cp-lead{font-size:.92rem;color:var(--ink);margin-bottom:8px}
+.core-plan .cp-lead b{color:var(--accent)}
+.core-plan ol{list-style:none;counter-reset:cp;margin-top:6px}
+.core-plan li{position:relative;padding:11px 0 11px 40px;border-bottom:1px dotted var(--line);font-size:.94rem;line-height:1.6}
+.core-plan li:last-child{border-bottom:0}
+.core-plan li::before{counter-increment:cp;content:counter(cp);position:absolute;left:0;top:11px;width:25px;height:25px;border:1.5px solid var(--accent);color:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bodoni Moda',serif;font-style:italic;font-size:.85rem}
+.core-plan li .lbl{font-family:'Noto Serif SC';font-weight:700;color:var(--accent);margin-right:6px}
+.core-plan .cp-foot{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:.86rem;color:var(--muted)}
+.core-plan .cp-foot b{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -734,6 +792,20 @@ section{padding-top:64px}
 
     <p class="lead reveal" style="font-size:1.02rem"><span class="drop">先</span>说清两件事。其一，AI 样图里"瘦下来"的部分是真实可达的——你瘦到 80kg，确实会是"清爽版的圆方脸"。其二，发型一周内能换，但脸部线条、下颌、颈部的清爽，<b style="color:var(--accent)">只有减重能给</b>。这一栏就是把"想减"变成"在减"的章法。</p>
 
+    <div class="core-plan reveal">
+      <div class="cp-tag">核心方案 · 减肚子看这一块就够（下面是展开细节，备查）</div>
+      <p class="cp-lead">肚子（内脏脂肪）<b>减不了局部</b>，但它对热量缺口最敏感、掉得最早。所以方案就一句话——<b>制造温和缺口、保住肌肉、睡够、多走</b>，剩下的是坚持。</p>
+      <ol>
+        <li><span class="lbl">吃</span>每天缺口 ~500 kcal（吃到 1800–2000）；蛋白管够 ~140g；吃饭顺序 菜→肉蛋→主食(粗粮)。</li>
+        <li><span class="lbl">戒</span>含糖饮料 / 果糖 + 酒 + 夜宵——对你的脂肪肝和尿酸是<b>医嘱级</b>，不只是减脂。</li>
+        <li><span class="lbl">练</span>力量 ×3/周（全身、器械为主），每次完后椭圆 / 快走 15–20 分钟。<b>别跑步</b>（护膝）。</li>
+        <li><span class="lbl">睡 + 走</span>睡 7 小时以上、尽量规律；每天 8000–10000 步。</li>
+        <li><span class="lbl">测</span>每天晨起空腹称重，<b>看周趋势别盯单日</b>；每两周量一次腰围。</li>
+        <li><span class="lbl">尿酸</span>意外查出来的，别慌——<b>减重本身就会降它</b>；多喝水、少酒少糖。要不要吃药跟风湿科定（详见下方专项）；若关节红肿热痛及时就医。</li>
+      </ol>
+      <div class="cp-foot"><b>预期：</b>肚子和脸 2–3 个月就明显瘦，约 6 个月到 80kg；重度脂肪肝是最早受益的那个。慢就是稳，不反弹、不掉肌肉。</div>
+    </div>
+
     <!-- 基础盘三支柱 -->
     <h3 style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:1.4rem;margin-top:32px" class="reveal">基础盘 · 三根支柱</h3>
     <p class="reveal" style="font-size:.92rem;color:var(--muted);margin-top:6px">不靠极端节食，靠把这三件事稳定做对。大基数前期，光做好这三样，3 个月掉 8–12kg 是现实目标。</p>
@@ -1009,13 +1081,135 @@ section{padding-top:64px}
 
     <!-- 监测指标 -->
     <h3 style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:1.4rem;margin-top:36px" class="reveal">盯这几个指标（你是临床的，按这个查）</h3>
+
+    <div class="baseline reveal">
+      <div class="bl-head"><span>基线快照 · 启动日（照此追踪）</span><span class="d">Day 0</span></div>
+      <div class="bl-sub">身体 · Body</div>
+      <div class="bl-grid">
+        <div class="bl"><div class="k">体重</div><div class="v">97<span class="u"> kg</span></div></div>
+        <div class="bl hi"><div class="k">腰围</div><div class="v">110<span class="u"> cm</span></div><div class="note">目标 &lt; 87.5</div></div>
+        <div class="bl hi"><div class="k">腰高比</div><div class="v">0.63</div><div class="note">健康线 &lt; 0.5</div></div>
+        <div class="bl hi"><div class="k">体脂率（估算）</div><div class="v">~31<span class="u"> %</span></div><div class="note">RFM / BMI 法，非 DEXA</div></div>
+        <div class="bl hi"><div class="k">BMI</div><div class="v">31.7</div></div>
+        <div class="bl hi"><div class="k">肝脏（B 超）</div><div class="v" style="font-size:.95rem">重度脂肪肝</div><div class="note">最该攻、也响应最快</div></div>
+      </div>
+      <div class="bl-sub">血液 · Labs（启动日抽血）</div>
+      <div class="bl-grid">
+        <div class="bl hi"><div class="k">尿酸 UA</div><div class="v">600.9<span class="u"> μmol/L</span></div><div class="note">高，减重早期防痛风</div></div>
+        <div class="bl hi"><div class="k">谷草 AST / 谷丙 ALT</div><div class="v" style="font-size:1rem">45 / 28<span class="u"> U/L</span></div><div class="note">AST&gt;ALT，建议算 FIB-4</div></div>
+        <div class="bl hi"><div class="k">总胆红素 TBIL</div><div class="v">22.2<span class="u"> μmol/L</span></div><div class="note">轻度，记基线复查</div></div>
+        <div class="bl lo"><div class="k">高密度 HDL-C</div><div class="v">1.05<span class="u"> mmol/L</span></div><div class="note">偏低，随减重回升</div></div>
+        <div class="bl"><div class="k">空腹血糖</div><div class="v">5.79<span class="u"> mmol/L</span></div><div class="note">正常 ✓（糖化未做）</div></div>
+        <div class="bl"><div class="k">肌酐 / 肾功</div><div class="v">77.6<span class="u"> μmol/L</span></div><div class="note">正常 ✓ 高蛋白安全</div></div>
+      </div>
+    </div>
+    <p class="reveal" style="font-size:.8rem;color:var(--muted);margin-top:10px;line-height:1.7">读片小结：早期代谢综合征画像（中心性肥胖 + 低 HDL + 高尿酸 + 重度脂肪肝），但<b style="color:var(--ink)">血糖、肾功、大部分血脂都还好</b>——意味着减重的临床获益会来得快而明显。下面是之后<b style="color:var(--ink)">怎么持续追踪</b>：</p>
     <div class="metric-track reveal">
       <div class="mt-head">指标 · 频率 · 意义</div>
       <div class="mt-row"><span>体重</span><span>每天晨起空腹固定时间称</span><b>看周均值，别盯单日</b></div>
       <div class="mt-row"><span>腰围</span><span>每两周一次</span><b>比体重更反映内脏脂肪</b></div>
       <div class="mt-row"><span>空腹血糖 / 糖化</span><span>启动前 + 每 3 月</span><b>代谢核心指标</b></div>
       <div class="mt-row"><span>血脂四项</span><span>启动前 + 每 3 月</span><b>甘油三酯对减重最敏感</b></div>
-      <div class="mt-row"><span>肝功 / 血压</span><span>启动前查一次基线</span><b>脂肪肝、血压随减重改善</b></div>
+      <div class="mt-row"><span>肝功（ALT / AST / GGT）</span><span>重度脂肪肝 → 每 1–2 月复查</span><b>转氨酶下降是方案见效最直观的反馈</b></div>
+      <div class="mt-row"><span>肝纤维化 FIB-4</span><span>加查血小板即可算（本次未查）</span><b>AST&gt;ALT，需分层排除进展性纤维化</b></div>
+      <div class="mt-row"><span>尿酸</span><span>启动前 + 每 3 月（随血脂一起）</span><b>肥胖 + 减重早期易一过性升高，防痛风</b></div>
+      <div class="mt-row"><span>体脂率 / 身体成分</span><span>家用体脂秤看趋势 / 每月 InBody</span><b>验证掉的是脂肪不是肌肉（贴合"保肌肉"）</b></div>
+      <div class="mt-row"><span>肾功（肌酐 / eGFR）</span><span>启动前查一次基线</span><b>高蛋白安全性基线，将来上 GLP-1 也用得着</b></div>
+    </div>
+    <p class="reveal" style="font-size:.8rem;color:var(--muted);margin-top:10px;line-height:1.7">按需加（有诱因再查，别常规上）：<b style="color:var(--accent)">TSH</b>——明显卡平台或持续乏力怕冷时排甲减；<b style="color:var(--accent)">静息心率</b>——有手环就顺手记，反映心肺改善与过度训练；<b style="color:var(--accent)">睡眠呼吸（OSA）</b>——打鼾 / 白天嗜睡值得做睡眠监测，与肥胖互相加重、减下去可改善。<br>注：腰高比（腰围 ÷ 身高，<0.5 为健康线）已并入上方"每日固定项 · 测"，比 BMI 更准，继续盯即可。</p>
+
+    <!-- 落到每一天：把吃练睡/分化/器械/监测拼成一周日程 -->
+    <h3 style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:1.4rem;margin-top:38px" class="reveal">尿酸专项 · 要不要现在用药（OpenEvidence 循证）</h3>
+    <p class="reveal" style="font-size:.92rem;color:var(--muted);margin-top:6px">针对基线那个 <b style="color:var(--accent)">尿酸 600.9 ↑</b>。这是真实的指南分歧：<b style="color:var(--ink)">ACR 2020 对无症状高尿酸不推荐用药</b>（SU>9mg/dL 者 5 年内仅 ~20% 发痛风，NNT 24/3 年）；<b style="color:var(--ink)">中国共识（2019/23）则推荐</b>——尿酸 ≥540，或 ≥480 + 合并症（高血压 / 脂代谢异常 / 糖尿病 / 肥胖 / CKD / 心脑血管 / MASLD）。你 600 + 肥胖 + 重度 MASLD + 低 HDL，<b style="color:var(--accent)">按中国指南两条线都达标，按 ACR 不达标</b>——属 shared decision，最终你和风湿科定。决策表如下：</p>
+
+    <table class="split-table reveal">
+      <thead><tr><th>决策点</th><th>建议</th></tr></thead>
+      <tbody>
+        <tr><td class="sname">ULT 指征 · ACR 2020</td><td>不推荐（无症状一律不起始）</td></tr>
+        <tr class="pick-row"><td class="sname">ULT 指征 · 中国共识</td><td>推荐（≥540，或 ≥480+合并症）—— <b style="color:var(--accent)">你达标</b></td></tr>
+        <tr class="pick-row"><td class="sname">用别嘌醇前 HLA-B*5801</td><td>汉族强烈建议先筛（携带 6–12%，阳性禁用，关联 SJS/TEN）</td></tr>
+        <tr><td class="sname">一线 · HLA 阴性</td><td>别嘌醇 100 mg/日 起，每月加 100 mg 滴定</td></tr>
+        <tr><td class="sname">一线 · HLA 阳性</td><td>非布司他 40 mg/日 起，2 周未达标加到 80</td></tr>
+        <tr class="pick-row"><td class="sname">苯溴马隆</td><td><b style="color:var(--accent)">避开</b>——特异性加重肥胖 / MASLD 脂肪变</td></tr>
+        <tr><td class="sname">急性发作预防</td><td>起始 ULT 时配小剂量秋水仙碱 ×3–6 月（你有肝病→剂量保守、监肝功）</td></tr>
+        <tr><td class="sname">达标值</td><td>血尿酸 &lt; 360 μmol/L（有痛风石可 &lt;300）</td></tr>
+        <tr><td class="sname">减重时机</td><td>可同步进行，<b>缓慢减（0.5–1 kg/周）+ 多喝水</b>，避免一过性升尿酸</td></tr>
+        <tr><td class="sname">非布司他心血管</td><td>FAST 示非劣于别嘌醇、不增死亡；有 CVD 史才慎用（你无）</td></tr>
+        <tr><td class="sname">肝功监测</td><td>启动前查基线 + 治疗中定期（你 MASLD 更要盯）</td></tr>
+      </tbody>
+    </table>
+
+    <div class="verdict reveal">
+      <h5>三个对你特别的点（OpenEvidence 补强）</h5>
+      <p><b>① 苯溴马隆别用</b>——不只是常规肝毒性，它经 PPARγ 激动 + 肝内药物滞留<b>特异性加重肥胖人群的脂肪变</b>，正好坑你这种 MASLD + 肥胖。<br>
+      <b>② 非布司他对你的肝反而可能友好</b>——脂肪肝痛风对比研究里它肝毒性显著低于别嘌醇（9.4% vs 35.3%），还可能减轻 NASH 炎症 / 胰岛素抵抗。万一 HLA 阳性，它不只是替补。<br>
+      <b>③ 减重对尿酸"长期降、短期升"</b>——DIRECT 试验 24 月降 65–83 μmol/L、BMI 降>5% 复发痛风少 ~40%；但快速减重早期会一过性升、诱发痛风。中等缺口 + 抗阻训练风险小，缓慢减 + 补水即可。</p>
+    </div>
+
+    <div class="reveal" style="border:1px solid var(--ink);background:rgba(255,255,255,.4);padding:16px 20px;margin-top:18px;font-size:.86rem;line-height:1.8">
+      <span style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)">若决定起始 ULT · 推荐路径</span><br>
+      查 HLA-B*5801 → <b>阴性</b>用别嘌醇 / <b>阳性</b>用非布司他（均低剂量起）+ 秋水仙碱预防 → 滴定到尿酸 &lt; 360 → 同步缓慢减重 → 监测肝功 → <b>体重稳定后复查尿酸（持续减重可能允许减量甚至停药）</b>
+    </div>
+    <p class="reveal" style="font-size:.76rem;color:var(--muted);margin-top:10px">※ 本块为 OpenEvidence 循证综合 + 决策支持，非处方医嘱；用药与否、选药、剂量请结合完整病史由你与风湿科确定。</p>
+
+    <!-- 落到每一天：把吃练睡/分化/器械/监测拼成一周日程 -->
+    <h3 style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:1.4rem;margin-top:38px" class="reveal">落到每一天 · 照着做的一周</h3>
+    <p class="reveal" style="font-size:.92rem;color:var(--muted);margin-top:6px">把上面所有零件拼起来：分化选<b style="color:var(--ink)">全身 ×3</b>（一周练三次力量，每次全身、轮流侧重推 / 拉 / 腿，呼应"推拉蹲"），其余是有氧与恢复。吃、睡、步数、称重这几件<b style="color:var(--ink)">每天都一样</b>，先单列；再看七天怎么排。</p>
+
+    <p class="reveal" style="font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-top:24px">① 每天都做（不分练不练）</p>
+    <div class="daily-fix reveal">
+      <div class="df"><div class="dft">吃 · Eat</div><div class="dfc"><b>1800–2000</b> kcal<br>蛋白 <b>135–180g</b><br>顺序：菜→肉蛋→主食(粗粮)<br>戒夜宵 · <b>护肝控尿酸</b>：戒糖饮/果糖 + 戒酒</div></div>
+      <div class="df"><div class="dft">睡 · Sleep</div><div class="dfc"><b>7 小时以上</b><br>尽量固定作息<br>倒夜班后补觉优先<br>白天补觉要遮光</div></div>
+      <div class="df"><div class="dft">动 · Move</div><div class="dfc">日常步数 <b>8000–10000</b><br>查房 / 楼梯凑数<br>少坐多走</div></div>
+      <div class="df"><div class="dft">测 · Track</div><div class="dfc">晨起空腹<b>称重并记录</b><br>每两周量腰围<br>+ 腰高比 + 拍正侧照</div></div>
+    </div>
+
+    <p class="reveal" style="font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-top:26px">② 七天怎么排（力量 ×3 · 全身）</p>
+    <div class="week reveal">
+      <div class="wd train"><div><span class="wday">周一</span><span class="wtype">力量 · 推主导</span></div>
+        <div class="wcontent">坐姿腿举 <span class="code">B-03</span> · 坐姿推胸 <span class="code">B-01</span> · 高位下拉 <span class="code">B-02</span> · 哑铃肩推 <span class="code">A-02</span> · 卷腹 <span class="code">D-01</span> 各 3×12 → <span class="fin">椭圆 15 分钟</span> <span class="code">C-01</span></div></div>
+      <div class="wd rest"><div><span class="wday">周二</span><span class="wtype">主动恢复</span></div>
+        <div class="wcontent">不练力量。走满 8000–10000 步；想动可轻松踩立式单车 <span class="code">C-04</span> 20 分钟。</div></div>
+      <div class="wd train"><div><span class="wday">周三</span><span class="wtype">力量 · 拉主导</span></div>
+        <div class="wcontent">坐姿腿举 <span class="code">B-03</span> · 坐姿划船 <span class="code">B-02</span> · 坐姿推胸 <span class="code">B-01</span> · 绳索面拉 <span class="code">B-06</span> · 平板支撑 各 3 组 → <span class="fin">动感单车 15 分钟</span> <span class="code">C-03</span></div></div>
+      <div class="wd rest"><div><span class="wday">周四</span><span class="wtype">主动恢复</span></div>
+        <div class="wcontent">不练力量。走满步数；倒夜班那天就拿来补觉，别硬凑。</div></div>
+      <div class="wd train"><div><span class="wday">周五</span><span class="wtype">力量 · 腿主导</span></div>
+        <div class="wcontent">坐姿腿举 <span class="code">B-03</span>(加量) · 腿屈伸 <span class="code">B-04</span> · 腿弯举 <span class="code">B-05</span> · 哑铃卧推 <span class="code">A-02/03</span> · 高位下拉 <span class="code">B-02</span> 各 3×12 → <span class="fin">椭圆 15 分钟</span> <span class="code">C-01</span></div></div>
+      <div class="wd rest"><div><span class="wday">周六</span><span class="wtype">有氧日</span></div>
+        <div class="wcontent">椭圆或坡度快走 <span class="code">C-01/C-02</span> 30 分钟 + 走满步数。轻松活动，不上力量。</div></div>
+      <div class="wd rest"><div><span class="wday">周日</span><span class="wtype">完全休息</span></div>
+        <div class="wcontent">睡饱、散步即可。给身体一天彻底恢复——这天也照常晨起称重。</div></div>
+    </div>
+
+    <div class="warnbox reveal" style="margin-top:22px">
+      <b>每月怎么调（细节见上方"3 个月·分阶段执行"）：</b>第 1 月照上表执行，力量动作<b>以固定器械 + 哑铃为主</b>，只追"学会动作 + 来满 3 次"，别追重量；第 2 月把周五的腿举逐步换成<b>架内深蹲</b>、卧推从哑铃过渡到<b>杠铃</b> <span class="code">A-01</span>，并酌情把有氧加到 20 分钟；第 3 月到 ~85kg 看周趋势，平台或代谢异常即进入健康决策点。<br><br>
+      <b>排班冲突就这么办：</b>顺序可整体平移（如周二三五练），<b>睡眠永远优先于训练</b>；倒夜班那周少练一次不影响大局，靠步数顶上即可。
+    </div>
+
+    <!-- 练的时候：顺序、避坑、补水（来自实战教训） -->
+    <h3 style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:1.4rem;margin-top:38px" class="reveal">练的时候 · 顺序、避坑与补水</h3>
+    <p class="reveal" style="font-size:.92rem;color:var(--muted);margin-top:6px">知道练什么之后，<b style="color:var(--ink)">怎么练才不打折、不受伤</b>。先把顺序锁死——力量在前、有氧在后，你把哪件事放前面，就是把满电状态留给了它（力量靠它保肌肉，有氧累着做也行）。</p>
+
+    <div class="seq reveal">
+      <span class="step">热身<small>轻有氧 5 min</small></span>
+      <span class="arr">→</span>
+      <span class="step mid">力量<small>主项 · 满电做</small></span>
+      <span class="arr">→</span>
+      <span class="step">有氧<small>椭圆/单车 收尾</small></span>
+    </div>
+
+    <p class="reveal" style="font-size:.9rem;color:var(--muted);margin-top:18px">几件实战里别再踩的坑（对照你那次"先跑 10 分钟→力量→卷腹→打很久乒乓"）：</p>
+    <ul class="avoid reveal">
+      <li><b>别跑步。</b>你 97kg + 重度脂肪肝 + 高尿酸，跑步对膝踝是纯风险——换<b>椭圆 / 坡度快走 / 单车</b>，零冲击且烧脂不输。</li>
+      <li><b>别先做正式有氧再练力量。</b>腿先软了，力量上不去、动作易代偿受伤（练前那 5 分钟低强度热身不算，那个要留着）。</li>
+      <li><b>乒乓球当娱乐没问题，但别接在大训练量后面再打"很久"。</b>下肢从跑到练到打连轴转、透支，正是抽筋的温床——要么那天以打球为主、力量减量，要么打球控制在轻松范围。</li>
+    </ul>
+
+    <div class="verdict reveal">
+      <h5>关于昨天的双下肢抽筋 + 补水</h5>
+      <p>多半是<b>肌肉过度疲劳 + 大汗丢电解质（钠钾镁）+ 脱水</b>三样叠加。处理你都懂：反向牵拉、热敷、把水和电解质补上。往后<b>练前中后都补水</b>（你高尿酸本就该多喝），大汗的日子补点钠钾镁（淡盐水 / 电解质饮 / 香蕉）。</p>
+      <p><b>但尿酸 600+ 要多一个心眼：</b>普通抽筋问题不大，可一旦出现<b>单关节（大脚趾 / 踝 / 膝）红肿热痛</b>，那不是抽筋、是痛风，按痛风处理——大强度 + 脱水正是诱因，这两天尤其记得多喝水。</p>
     </div>
 
     <div class="warnbox reveal">
