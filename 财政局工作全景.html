@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>财政局是怎么运转的 · 地方财政工作全景</title>
+<style>
+:root{
+  --ink:#16241f;
+  --treasury:#195a40;
+  --treasury-deep:#0f3d2b;
+  --paper:#fcfbf7;
+  --card:#ffffff;
+  --seal:#bf3a2b;
+  --seal-soft:#f6e7e4;
+  --line:#dde6e0;
+  --dim:#6b7a72;
+  --gold:#a8853c;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono",Consolas,monospace;
+  --serif:"Songti SC","STSong","Noto Serif SC","SimSun",serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--paper);color:var(--ink);line-height:1.75;font-size:15.5px;
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ============ HERO：国库账册封面 ============ */
+.hero{
+  background:linear-gradient(160deg,var(--treasury-deep) 0%,var(--treasury) 100%);
+  color:#f2efe6;padding:56px 24px 48px;position:relative;overflow:hidden;
+}
+.hero::after{ /* 账册封面的烫印边框 */
+  content:"";position:absolute;inset:14px;border:1px solid rgba(242,239,230,.25);
+  pointer-events:none;
+}
+.hero-inner{max-width:980px;margin:0 auto;position:relative}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:12px;letter-spacing:.35em;
+  color:rgba(242,239,230,.65);margin-bottom:18px;
+}
+.hero h1{
+  font-family:var(--serif);font-weight:700;font-size:clamp(30px,5.5vw,52px);
+  letter-spacing:.06em;line-height:1.3;margin-bottom:16px;
+}
+.hero h1 .seal-char{
+  display:inline-block;border:2px solid var(--seal);color:#ffb4a6;
+  border-radius:6px;padding:0 10px;margin-left:10px;transform:rotate(-3deg);
+  background:rgba(191,58,43,.18);font-size:.55em;vertical-align:middle;letter-spacing:.2em;
+}
+.hero p{max-width:620px;color:rgba(242,239,230,.85);font-size:16px}
+.hero-meta{
+  margin-top:26px;display:flex;gap:26px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:12px;color:rgba(242,239,230,.55);
+}
+.hero-meta span b{color:#f2efe6;font-weight:600}
+
+/* ============ TAB NAV ============ */
+nav{
+  position:sticky;top:0;z-index:50;background:var(--paper);
+  border-bottom:2px solid var(--treasury);overflow-x:auto;-webkit-overflow-scrolling:touch;
+}
+.nav-inner{max-width:980px;margin:0 auto;display:flex;min-width:max-content}
+.tab-btn{
+  appearance:none;border:none;background:none;cursor:pointer;
+  padding:13px 16px;font-size:14px;color:var(--dim);font-family:inherit;
+  border-bottom:3px solid transparent;white-space:nowrap;transition:color .15s;
+}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn:focus-visible{outline:2px solid var(--seal);outline-offset:-2px}
+.tab-btn.active{color:var(--treasury);border-bottom-color:var(--seal);font-weight:600}
+.tab-btn .no{font-family:var(--mono);font-size:11px;color:var(--gold);margin-right:5px}
+
+/* ============ LAYOUT ============ */
+main{max-width:980px;margin:0 auto;padding:40px 20px 90px}
+section.panel{display:none}
+section.panel.active{display:block;animation:fadein .35s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+h2{
+  font-family:var(--serif);font-size:26px;letter-spacing:.05em;
+  margin-bottom:6px;color:var(--treasury-deep);
+}
+.sub{color:var(--dim);margin-bottom:28px;font-size:14.5px}
+h3{
+  font-family:var(--serif);font-size:19px;margin:36px 0 14px;
+  padding-left:12px;border-left:4px solid var(--seal);letter-spacing:.04em;
+}
+h3:first-of-type{margin-top:28px}
+p+p{margin-top:10px}
+em{font-style:normal;color:var(--seal);font-weight:600}
+strong{color:var(--treasury-deep)}
+
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:20px 22px;margin:14px 0;
+}
+.note{
+  background:var(--seal-soft);border:none;border-left:4px solid var(--seal);
+  border-radius:0 10px 10px 0;padding:14px 18px;margin:18px 0;font-size:14.5px;
+}
+.note b{color:var(--seal)}
+
+/* 账册式表格：红色界格 */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;background:var(--card)}
+th{
+  background:var(--treasury);color:#f2efe6;text-align:left;
+  padding:9px 12px;font-weight:600;letter-spacing:.05em;
+}
+td{padding:9px 12px;border-bottom:1px solid #ecc9c3;vertical-align:top}
+tr:last-child td{border-bottom:2px solid var(--seal)}
+td:first-child{font-weight:600;color:var(--treasury-deep);white-space:nowrap}
+.table-wrap{overflow-x:auto;margin:14px 0}
+.table-wrap table{margin:0;min-width:560px}
+
+ul.tight{padding-left:20px;margin:8px 0}
+ul.tight li{margin:5px 0}
+.kbd{
+  font-family:var(--mono);font-size:12.5px;background:#eef3f0;
+  border:1px solid var(--line);border-radius:4px;padding:1px 7px;white-space:nowrap;
+}
+
+/* ============ 科室卡片 ============ */
+.dept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:16px 0}
+.dept{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:14px 16px;cursor:pointer;transition:border-color .15s, box-shadow .15s;
+}
+.dept:hover{border-color:var(--treasury)}
+.dept:focus-visible{outline:2px solid var(--seal)}
+.dept-head{display:flex;align-items:baseline;gap:8px}
+.dept-head .tag{
+  font-family:var(--mono);font-size:10.5px;color:var(--gold);
+  border:1px solid var(--gold);border-radius:3px;padding:0 5px;flex-shrink:0;
+}
+.dept-head .name{font-weight:700;font-size:15px;color:var(--treasury-deep)}
+.dept .gist{font-size:13px;color:var(--dim);margin-top:3px}
+.dept .detail{
+  display:none;margin-top:10px;padding-top:10px;border-top:1px dashed #ecc9c3;
+  font-size:13.5px;
+}
+.dept.open .detail{display:block}
+.dept.open{border-color:var(--seal);box-shadow:0 2px 10px rgba(191,58,43,.08)}
+
+/* ============ 一年节奏时间轴 ============ */
+.timeline{position:relative;margin:20px 0 10px;padding-left:30px}
+.timeline::before{
+  content:"";position:absolute;left:9px;top:6px;bottom:6px;width:2px;
+  background:repeating-linear-gradient(to bottom,var(--seal) 0 6px,transparent 6px 11px);
+}
+.t-item{position:relative;margin-bottom:22px}
+.t-item::before{
+  content:"";position:absolute;left:-27px;top:7px;width:12px;height:12px;
+  border-radius:50%;background:var(--paper);border:3px solid var(--treasury);
+}
+.t-item.hot::before{border-color:var(--seal);background:var(--seal-soft)}
+.t-when{font-family:var(--mono);font-size:12px;color:var(--seal);letter-spacing:.08em}
+.t-what{font-weight:700;color:var(--treasury-deep);margin:1px 0 3px;font-size:15.5px}
+.t-desc{font-size:14px;color:#3c4a44}
+
+/* ============ 签名交互：一笔钱的旅程 ============ */
+.journey{margin:24px 0}
+.j-track{
+  display:grid;grid-template-columns:repeat(8,1fr);gap:0;position:relative;
+}
+.j-node{
+  appearance:none;border:none;background:none;cursor:pointer;font-family:inherit;
+  display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 2px 12px;
+  position:relative;
+}
+.j-node::before{ /* 连接账线 */
+  content:"";position:absolute;top:21px;left:-50%;width:100%;height:2px;background:var(--line);z-index:0;
+}
+.j-node:first-child::before{display:none}
+.j-node .dot{
+  width:32px;height:32px;border-radius:50%;background:var(--card);
+  border:2px solid var(--treasury);color:var(--treasury);
+  font-family:var(--mono);font-size:13px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;z-index:1;transition:all .18s;
+}
+.j-node .lbl{font-size:12px;color:var(--dim);line-height:1.3;text-align:center}
+.j-node:hover .dot{transform:scale(1.12)}
+.j-node:focus-visible .dot{outline:2px solid var(--seal);outline-offset:2px}
+.j-node.active .dot{background:var(--seal);border-color:var(--seal);color:#fff;transform:scale(1.18)}
+.j-node.active .lbl{color:var(--seal);font-weight:700}
+.j-node.passed::before{background:var(--seal)}
+.j-node.passed .dot{border-color:var(--seal);color:var(--seal)}
+.j-detail{
+  background:var(--card);border:1px solid var(--line);border-top:3px solid var(--seal);
+  border-radius:0 0 10px 10px;padding:18px 22px;min-height:150px;
+}
+.j-detail h4{font-family:var(--serif);font-size:17px;color:var(--treasury-deep);margin-bottom:6px}
+.j-detail .who{
+  font-family:var(--mono);font-size:11.5px;color:var(--gold);letter-spacing:.1em;margin-bottom:8px;
+}
+.j-detail p{font-size:14px}
+.j-detail .pitfall{margin-top:10px;font-size:13.5px;color:var(--seal)}
+.j-ctrl{display:flex;gap:10px;margin-top:12px}
+.btn{
+  appearance:none;cursor:pointer;font-family:inherit;font-size:13.5px;
+  border:1px solid var(--treasury);background:var(--card);color:var(--treasury);
+  border-radius:6px;padding:6px 16px;transition:all .15s;
+}
+.btn:hover{background:var(--treasury);color:#fff}
+.btn:focus-visible{outline:2px solid var(--seal);outline-offset:2px}
+.btn.primary{background:var(--treasury);color:#fff}
+.btn.primary:hover{background:var(--treasury-deep)}
+@media(max-width:720px){
+  .j-track{grid-template-columns:repeat(4,1fr);row-gap:14px}
+  .j-node:nth-child(5)::before{display:none}
+}
+
+/* ============ 平行记账演示 ============ */
+.ledger-demo{margin:18px 0}
+.case-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.case-btn{
+  appearance:none;cursor:pointer;font-family:inherit;font-size:13.5px;
+  border:1px solid var(--line);background:var(--card);color:var(--ink);
+  border-radius:20px;padding:6px 16px;transition:all .15s;
+}
+.case-btn:hover{border-color:var(--treasury)}
+.case-btn.active{background:var(--treasury);border-color:var(--treasury);color:#fff;font-weight:600}
+.ledger-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:720px){.ledger-pair{grid-template-columns:1fr}}
+.ledger-book{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;
+}
+.ledger-book .head{
+  padding:9px 16px;font-weight:700;font-size:14px;letter-spacing:.06em;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.ledger-book.fin .head{background:var(--treasury);color:#f2efe6}
+.ledger-book.bud .head{background:var(--seal);color:#fff}
+.ledger-book .basis{font-family:var(--mono);font-size:10.5px;opacity:.85;font-weight:400}
+.ledger-book .entries{padding:14px 18px;font-family:var(--mono);font-size:13px;line-height:2}
+.ledger-book .entries .dr{color:var(--treasury-deep)}
+.ledger-book .entries .cr{color:var(--seal);padding-left:2.5em}
+.ledger-book .none{color:var(--dim);font-family:inherit;font-style:italic}
+.ledger-why{
+  margin-top:12px;font-size:13.5px;background:#f3f6f4;border-radius:8px;padding:12px 16px;color:#3c4a44;
+}
+
+/* ============ 一天 timeline ============ */
+.day-item{display:flex;gap:16px;margin-bottom:4px}
+.day-time{
+  font-family:var(--mono);font-size:13px;color:var(--seal);font-weight:700;
+  width:54px;flex-shrink:0;padding-top:16px;text-align:right;
+}
+.day-body{
+  border-left:2px solid var(--line);padding:12px 0 16px 18px;flex:1;position:relative;
+}
+.day-body::before{
+  content:"";position:absolute;left:-6px;top:20px;width:10px;height:10px;
+  border-radius:50%;background:var(--seal);
+}
+.day-body b{color:var(--treasury-deep)}
+.day-body p{font-size:14px;color:#3c4a44;margin-top:2px}
+
+/* ============ 黑话词典 ============ */
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;margin-top:16px}
+.gloss{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+}
+.gloss dt{font-weight:700;color:var(--seal);font-size:15px;margin-bottom:4px;font-family:var(--serif);letter-spacing:.04em}
+.gloss dd{font-size:13.5px;color:#3c4a44}
+
+/* 级别对比三栏 */
+.level-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+@media(max-width:720px){.level-grid{grid-template-columns:1fr}}
+.level{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+  border-top:4px solid var(--treasury);
+}
+.level.county{border-top-color:var(--seal)}
+.level h4{font-family:var(--serif);font-size:17px;margin-bottom:4px;color:var(--treasury-deep)}
+.level .role{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:.1em;margin-bottom:8px}
+.level ul{padding-left:18px;font-size:13.5px}
+.level li{margin:4px 0}
+
+/* 四本账 */
+.book-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:16px 0}
+.book{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+  position:relative;overflow:hidden;
+}
+.book::before{
+  content:attr(data-no);position:absolute;right:10px;top:2px;
+  font-family:var(--serif);font-size:46px;color:#f0ebe0;font-weight:700;line-height:1;
+}
+.book h4{font-size:15.5px;color:var(--treasury-deep);position:relative;margin-bottom:6px}
+.book p{font-size:13px;color:#3c4a44;position:relative}
+.book .src{font-family:var(--mono);font-size:11px;color:var(--gold);margin-top:8px;position:relative}
+
+footer{
+  border-top:2px solid var(--treasury);margin-top:30px;padding:24px 20px 50px;
+  text-align:center;color:var(--dim);font-size:12.5px;
+}
+footer .stamp{
+  font-family:var(--serif);display:inline-block;border:2px solid var(--seal);color:var(--seal);
+  border-radius:6px;padding:2px 14px;transform:rotate(-2deg);letter-spacing:.25em;margin-bottom:10px;
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">地方财政工作全景 · LOCAL PUBLIC FINANCE</div>
+    <h1>财政局是怎么运转的<span class="seal-char">国库专用</span></h1>
+    <p>它确实很像会计——但记的是"全县这本总账"。从一张预算指标到一笔工资到账，从四本预算到平行记账，这里把县、市、省财政部门的日常拆开给你看。</p>
+    <div class="hero-meta">
+      <span>体例 <b>八章</b></span>
+      <span>视角 <b>县级为主 · 市省对照</b></span>
+      <span>依据 <b>预算法 · 政府会计制度 · 预算管理一体化规范</b></span>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="章节导航"><div class="nav-inner" id="navInner"></div></nav>
+
+<main id="main">
+
+<!-- ===================== 01 它是什么 ===================== -->
+<section class="panel" data-title="它是什么" id="p0">
+  <h2>第一章 · 财政局到底是干什么的</h2>
+  <p class="sub">一句话：政府的钱袋子管理员 —— 兼任 CFO、出纳、预算委员会和内部审计前哨。</p>
+
+  <p>你的理解"下面申请、上面审批、发钱"，描述的只是财政局五分之一的工作（预算执行里的支付环节）。完整地看，财政局围绕<strong>一笔钱的完整生命周期</strong>转：</p>
+
+  <div class="card">
+    <p style="font-family:var(--mono);font-size:14px;text-align:center;letter-spacing:.05em">
+      <span style="color:var(--treasury)">筹钱</span> → <span style="color:var(--treasury)">分钱</span>（预算编制）→ <span style="color:var(--seal)">付钱</span>（预算执行）→ <span style="color:var(--treasury)">记账</span>（总预算会计）→ <span style="color:var(--treasury)">算账</span>（决算）→ <span style="color:var(--treasury)">问效</span>（绩效与监督）
+    </p>
+  </div>
+
+  <h3>它和会计像在哪、不像在哪</h3>
+  <div class="table-wrap"><table>
+    <tr><th style="width:120px">维度</th><th>很像会计的部分</th><th>完全不是会计的部分</th></tr>
+    <tr><td>国库股</td><td>就是"政府的总会计"：管国库存款账、和人民银行/税务/各单位天天对账、日清月结、编库款月报和总决算——纯粹的会计核算岗。</td><td>——</td></tr>
+    <tr><td>预算股</td><td>审部门预算时要看懂报表和定额。</td><td>本质是<em>分配权力</em>：定支出标准、切蛋糕、平衡收支盘子，更像 CFO 办公室 + 预算委员会。</td></tr>
+    <tr><td>支付中心</td><td>审核凭证、附件、科目，会计味很浓。</td><td>同时是清算枢纽：对接代理银行和人行国库，像一个小型银行后台。</td></tr>
+    <tr><td>监督/绩效</td><td>查账要懂账。</td><td>查的是别人的账，更像内审 + 巡查。</td></tr>
+    <tr><td>债务/金融股</td><td>——</td><td>发债、化债、管融资平台，是投行 + 风控的活。</td></tr>
+  </table></div>
+
+  <div class="note"><b>关键区别：</b>企业会计记"我自己花了多少钱"；财政总预算会计记"全县的钱从哪来、到哪去"。单位会计是树叶，财政是树干。而且财政局除了记账，还握着两样会计没有的东西——<b>分配权</b>（预算）和<b>闸门</b>（支付审核）。</div>
+
+  <h3>它在政府里的位置</h3>
+  <p>财政局是政府组成部门，对本级政府负责，业务上受上级财政部门指导（省财政厅 ← 财政部）。它的特殊之处是：<strong>几乎所有政府部门都要跟它打交道</strong>——教育局要经费、住建局要工程款、人社局要社保补助，全都从财政这个口出。所以机关里流传一句话："财政局是政府部门里的甲方。"但反过来，财政局自己头上有四座山：人大（审预算）、审计（查执行）、上级财政（考核 + 给转移支付）、本级党委政府（无穷的"追加"要求）。</p>
+</section>
+
+<!-- ===================== 02 科室地图 ===================== -->
+<section class="panel" data-title="科室地图" id="p1">
+  <h2>第二章 · 科室地图：每个股室管哪本账</h2>
+  <p class="sub">以一个典型县财政局为例（约 14 个股室 + 3 个二级机构 + 乡镇财政所），点卡片展开细节。市局叫"科"，省厅叫"处"，结构高度同构。</p>
+  <div class="dept-grid" id="deptGrid"></div>
+
+  <h3>县 / 市 / 省 三级有什么不一样</h3>
+  <div class="level-grid">
+    <div class="level"><h4>省财政厅</h4><div class="role">规则制定者 · 资金分配者</div>
+      <ul><li>对接财政部，争取中央转移支付和债券额度</li><li>制定全省财政体制、支出标准、一体化系统规则</li><li>把转移支付和债券额度切分给各市县（"省直管县"地区直接分到县）</li><li>发行地方政府债券（只有省级有发债资格，市县靠"转贷"）</li><li>人多、分工细，一个处只管一个行业口</li></ul>
+    </div>
+    <div class="level"><h4>市财政局</h4><div class="role">承上启下 · 二传手</div>
+      <ul><li>管市本级预算（市直部门），同时指导监督各县区</li><li>分解省下达的转移支付，组织全市决算汇审</li><li>市本级往往集中了大医院、大学校、大平台公司，债务和基建压力集中</li></ul>
+    </div>
+    <div class="level county"><h4>县财政局</h4><div class="role">最贴近钱的最后一公里</div>
+      <ul><li>财政供养人员工资、乡村教师、村干部补贴都从这里出</li><li>"三保"（保基本民生、保工资、保运转）压力最大的一级</li><li>人少事多，一人多岗：白天审支付，晚上编报表</li><li>下辖乡镇财政所，管惠农补贴"一卡通"直达农户</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 03 一年节奏 ===================== -->
+<section class="panel" data-title="一年节奏" id="p2">
+  <h2>第三章 · 财政的一年：预算年度日历</h2>
+  <p class="sub">财政工作是强周期的。理解了"两上两下→人代会→执行→决算"这个循环，就理解了财政局一年在忙什么。</p>
+
+  <div class="timeline">
+    <div class="t-item"><div class="t-when">上年 8–9 月</div><div class="t-what">布置编制 · 项目入库</div><div class="t-desc">财政局下发下年度预算编制通知，定基调（比如"过紧日子、一般性支出压减 5%"）。各部门把想花钱的事项录入<strong>预算项目库</strong>——没入库的项目原则上不安排钱，这是"先谋事、再排钱"。</div></div>
+    <div class="t-item"><div class="t-when">上年 9–10 月</div><div class="t-what">「一上」：部门报需求</div><div class="t-desc">各预算单位把人员经费、公用经费、项目支出需求报给财政局。预算股逐户审核：人员按编制和工资标准算，公用经费按定额算，项目挨个砍。</div></div>
+    <div class="t-item"><div class="t-when">上年 10–11 月</div><div class="t-what">「一下」：财政下控制数</div><div class="t-desc">财政局根据收入预测和财力盘子，给每个部门下达支出<strong>控制数</strong>（天花板）。这一步是博弈最激烈的环节——各局长找财政局长"汇报工作"的高峰期。</div></div>
+    <div class="t-item"><div class="t-when">上年 11–12 月</div><div class="t-what">「二上二下」：细化与汇总</div><div class="t-desc">部门按控制数把预算细化到经济分类科目和具体项目（二上），财政审定后汇总成政府预算草案（二下），同步编制"四本预算"和政府债务、"三公"经费等报表。</div></div>
+    <div class="t-item hot"><div class="t-when">1–2 月</div><div class="t-what">本级人代会审查批准 ★</div><div class="t-desc">财政局长向人民代表大会作预算报告，预算草案经人大批准才合法生效。批准前只能按上年基数安排必保支出（工资、运转、续建项目）。</div></div>
+    <div class="t-item"><div class="t-when">批准后 20 / 30 日内</div><div class="t-what">批复部门预算 · 预算公开</div><div class="t-desc">预算法规定：批准后 20 日内批复各部门预算；批复后 20 日内部门预算向社会公开。批复的指标导入一体化系统，钱才能正式开闸。</div></div>
+    <div class="t-item"><div class="t-when">全年滚动</div><div class="t-what">预算执行 · 库款调度</div><div class="t-desc">日常审支付、批用款计划、调度库款保工资发放；按月编收支快报、库款报表；按季向人大常委会报告执行情况；盯直达资金、专项债支出进度（上级按月通报排名）。</div></div>
+    <div class="t-item"><div class="t-when">6–9 月</div><div class="t-what">上年决算 · 接受审计</div><div class="t-desc">组织部门决算汇审，编全县财政总决算上报，向人大常委会报告决算并公开；同期审计局进场审计上年预算执行，财政局是头号被审计对象。</div></div>
+    <div class="t-item"><div class="t-when">9–11 月</div><div class="t-what">预算调整（如有）· 绩效评价</div><div class="t-desc">收入不及预期或有大额新增支出时，编预算调整方案报人大常委会批准。同时对重点项目做绩效评价，结果与下年预算安排挂钩（"花钱必问效"）。</div></div>
+    <div class="t-item"><div class="t-when">12 月</div><div class="t-what">年终关账 · 结转结余清理</div><div class="t-desc">支付系统年底封账前是全年最忙的支付高峰；清理结转结余资金，连续两年没花掉的收回总预算统筹（"盘活存量"）。然后，新一轮循环已经开始了。</div></div>
+  </div>
+</section>
+
+<!-- ===================== 04 一笔钱的旅程 ===================== -->
+<section class="panel" data-title="一笔钱的旅程" id="p3">
+  <h2>第四章 · 一笔钱的旅程：从指标到到账</h2>
+  <p class="sub">这就是你说的"申请—审批—发钱"，但真实流程是 8 个环节，而且大部分审批已经交给了<strong>预算管理一体化系统</strong>的自动校验。点击节点查看每一步发生了什么。</p>
+
+  <div class="journey">
+    <div class="j-track" id="jTrack"></div>
+    <div class="j-detail" id="jDetail"></div>
+    <div class="j-ctrl">
+      <button class="btn primary" id="jPlay">▶ 自动走一遍</button>
+      <button class="btn" id="jPrev">上一步</button>
+      <button class="btn" id="jNext">下一步</button>
+    </div>
+  </div>
+
+  <h3>国库单一账户体系：钱其实一直躺在人民银行</h3>
+  <p>关键认知：预算单位账上<strong>平时没有钱</strong>。所有财政资金集中存放在人民银行的<strong>国库单一账户</strong>里，单位手里只有"零余额账户"——日间可以付款（代理银行先垫资），日终与人行清算后余额归零。钱在支付的最后一刻才离开国库，直达最终收款人。</p>
+  <div class="table-wrap"><table>
+    <tr><th>账户</th><th>开在哪</th><th>干什么用</th></tr>
+    <tr><td>国库单一账户</td><td>人民银行（国库）</td><td>所有预算资金的总池子，财政的"母账户"</td></tr>
+    <tr><td>财政零余额账户</td><td>代理商业银行</td><td>财政直接支付用：工资统发、大额工程款直接付给最终收款人</td></tr>
+    <tr><td>单位零余额账户</td><td>代理商业银行</td><td>财政授权支付用：单位日常小额支出自己操作，日终清算归零</td></tr>
+    <tr><td>财政专户</td><td>商业银行（须省级备案）</td><td>社保基金、教育收费等法定专项资金，专款专用</td></tr>
+  </table></div>
+  <div class="note"><b>改革趋势：</b>一体化改革后，部分省份已取消"直接支付/授权支付"的区分，统一为"国库集中支付"，控制逻辑从"给银行下额度"变成"<b>预算指标直接控制每一笔支付</b>"。控制口径精确到：单位 + 指标类型 + 资金性质 + 支出功能分类 + 经济分类 + 预算项目。没有指标，一分钱都付不出去——"先有预算、后有支出"被系统写死了。</div>
+</section>
+
+<!-- ===================== 05 四本账 ===================== -->
+<section class="panel" data-title="四本账" id="p4">
+  <h2>第五章 · 政府的四本账 + 钱从哪来</h2>
+  <p class="sub">"全口径预算"= 四本预算。看懂这四本账，就看懂了政府财力的全貌。</p>
+
+  <div class="book-grid">
+    <div class="book" data-no="壹"><h4>一般公共预算</h4><p>主账本。税收 + 非税收入，养政府运转、教育医疗、基建民生，统筹使用。人代会上吵的主要是这本。</p><div class="src">来源：税收 · 非税 · 转移支付 · 一般债券</div></div>
+    <div class="book" data-no="贰"><h4>政府性基金预算</h4><p>"以收定支、专款专用"。最大一块是国有土地出让收入——所以地价直接决定很多城市的命脉。专项债券资金也走这本账。</p><div class="src">来源：土地出让金 · 各类基金 · 专项债券</div></div>
+    <div class="book" data-no="叁"><h4>国有资本经营预算</h4><p>国企上缴的利润和股利。县级体量通常很小，省市级（有大国企的）才像样。可调出部分进一般公共预算。</p><div class="src">来源：国企利润上缴 · 股权分红 · 产权转让</div></div>
+    <div class="book" data-no="肆"><h4>社会保险基金预算</h4><p>养老、医疗、失业、工伤等保险的收支，专款专用，不得挪作他用。财政对它只能"补"不能"取"。</p><div class="src">来源：单位个人缴费 · 财政补助 · 投资收益</div></div>
+  </div>
+  <p>四本账之间有规定的"管道"：政府性基金结余可调入一般公共预算；一般公共预算每年给社保基金大额补助（养老金能足额发，财政补贴是重要支柱）。</p>
+
+  <h3>一个县的钱到底从哪来（收入端真相）</h3>
+  <div class="table-wrap"><table>
+    <tr><th>来源</th><th>说明</th><th>县级体感</th></tr>
+    <tr><td>税收分成</td><td>税务局统一征收后按比例分成：增值税央地五五分，地方部分再省市县分；所得税央地六四分。县里真正拿到手的只是一小块。</td><td>经济强县的底气；一般县占可用财力 20–40%</td></tr>
+    <tr><td>非税收入</td><td>行政事业性收费、罚没收入、国有资源有偿使用收入等，财政局综合股/非税局管，收缴分离、票款同步。</td><td>占比过高（尤其罚没）会被上级预警</td></tr>
+    <tr><td>转移支付</td><td>上级给的钱：①一般性转移支付（均衡性、县级基本财力保障等，自主使用）②专项转移支付（指定用途）③共同财政事权转移支付。</td><td><em>多数县的最大财源</em>，占可用财力一半以上很常见</td></tr>
+    <tr><td>政府债券</td><td>省级统一发行、转贷市县。一般债券补一般公共预算赤字，专项债券对应有收益的项目（进基金预算）。</td><td>项目建设的主要资金来源；还本付息压力是"化债"主题</td></tr>
+    <tr><td>调入与结转</td><td>从基金预算调入、动用预算稳定调节基金、上年结转资金。</td><td>年底平衡预算的"工具箱"</td></tr>
+  </table></div>
+  <div class="note"><b>所以财政局长最盯的三个数：</b>当日<b>库款余额</b>（够不够发下月工资）、<b>税收进度</b>（完成序时进度没有）、<b>上级转移支付到账</b>（什么时候下达）。"库款保障水平"低于警戒线，省厅会直接打电话。</div>
+</section>
+
+<!-- ===================== 06 账目体系 ===================== -->
+<section class="panel" data-title="账目体系" id="p5">
+  <h2>第六章 · 账目体系：财政到底在记哪些账</h2>
+  <p class="sub">这是最"会计"的一章。两套主体（财政自己 / 预算单位）、两种基础（收付实现制 / 权责发生制）、一个独门绝技（平行记账）。</p>
+
+  <h3>① 财政总预算会计：财政局自己的账</h3>
+  <p>国库股记的账，核算对象是<strong>整个本级政府</strong>的预算收支，以收付实现制为主。典型科目长这样：</p>
+  <div class="table-wrap"><table>
+    <tr><th>类别</th><th>代表科目</th><th>记什么</th></tr>
+    <tr><td>资产类</td><td><span class="kbd">国库存款</span> <span class="kbd">财政专户存款</span> <span class="kbd">借出款项</span></td><td>政府的钱躺在哪</td></tr>
+    <tr><td>负债类</td><td><span class="kbd">应付政府债券</span> <span class="kbd">与上级往来</span> <span class="kbd">与下级往来</span></td><td>欠谁的、和上下级的资金往来</td></tr>
+    <tr><td>收入类</td><td><span class="kbd">一般公共预算本级收入</span> <span class="kbd">补助收入</span> <span class="kbd">债务转贷收入</span></td><td>钱从哪来（按四本账分设）</td></tr>
+    <tr><td>支出类</td><td><span class="kbd">一般公共预算本级支出</span> <span class="kbd">上解支出</span> <span class="kbd">债务还本支出</span></td><td>钱到哪去</td></tr>
+    <tr><td>净资产类</td><td><span class="kbd">预算稳定调节基金</span> <span class="kbd">预算周转金</span> <span class="kbd">一般公共预算结转结余</span></td><td>家底和"蓄水池"</td></tr>
+  </table></div>
+  <p>国库股的日常就是围绕这套账：每天和人民银行国库对账（税款入库数）、和代理银行对账（支付清算数）、和预算单位对账（指标与支付数），<strong>日清月结</strong>，月初编上月收支报表和库款月报，年终编全县财政总决算。</p>
+
+  <h3>② 政府会计制度：预算单位的"双轨账"（2019 年起）</h3>
+  <p>每个预算单位（学校、医院、各局机关）执行《政府会计制度》，独门特征是<em>平行记账</em>：一笔涉及预算资金的业务，要同时在两套账里各记一笔分录——</p>
+  <ul class="tight">
+    <li><strong>财务会计</strong>：权责发生制，5 要素（资产 / 负债 / 净资产 / 收入 / 费用），回答"家底和成本"；</li>
+    <li><strong>预算会计</strong>：收付实现制，3 要素（预算收入 / 预算支出 / 预算结余），回答"预算执行到哪了"。</li>
+  </ul>
+  <p>点下面的业务场景，看同一笔钱怎么记两本账：</p>
+
+  <div class="ledger-demo">
+    <div class="case-btns" id="caseBtns"></div>
+    <div class="ledger-pair">
+      <div class="ledger-book fin"><div class="head"><span>财务会计</span><span class="basis">权责发生制 · 5要素</span></div><div class="entries" id="finEntries"></div></div>
+      <div class="ledger-book bud"><div class="head"><span>预算会计</span><span class="basis">收付实现制 · 3要素</span></div><div class="entries" id="budEntries"></div></div>
+    </div>
+    <div class="ledger-why" id="ledgerWhy"></div>
+  </div>
+
+  <h3>③ 报表家族：财政局产出 / 审核的"账目种类"全景</h3>
+  <div class="table-wrap"><table>
+    <tr><th>报表 / 账目</th><th>频率</th><th>谁编 → 谁看</th></tr>
+    <tr><td>财政收支快报</td><td>月</td><td>国库股 → 政府领导、上级财政（当月收入完成情况）</td></tr>
+    <tr><td>库款报表</td><td>旬 / 月</td><td>国库股 → 上级财政（库款保障水平监测）</td></tr>
+    <tr><td>预算执行情况报告</td><td>季 / 半年</td><td>财政局 → 人大常委会</td></tr>
+    <tr><td>部门决算报表</td><td>年</td><td>各单位编 → 财政汇审 → 上级财政</td></tr>
+    <tr><td>财政总决算</td><td>年</td><td>国库股 → 人大常委会批准 + 逐级上报财政部</td></tr>
+    <tr><td>政府综合财务报告</td><td>年</td><td>权责发生制编制，反映政府资产负债"家底"（含政府资产负债表）</td></tr>
+    <tr><td>"三公"经费报表</td><td>年（随预决算公开）</td><td>公务接待、公务用车、因公出国境，社会监督焦点</td></tr>
+    <tr><td>直达资金台账</td><td>实时监控</td><td>中央直达资金从下达到末端发放全程标识、单独监控</td></tr>
+    <tr><td>债务报表</td><td>月 / 年</td><td>债务股 → 财政部地方债务监测平台（法定债务 + 隐性债务）</td></tr>
+    <tr><td>行政事业性国有资产报告</td><td>年</td><td>资产股汇总 → 政府 → 人大常委会</td></tr>
+  </table></div>
+</section>
+
+<!-- ===================== 07 一天 ===================== -->
+<section class="panel" data-title="科员的一天" id="p6">
+  <h2>第七章 · 国库股科员小李的一天</h2>
+  <p class="sub">把前面所有抽象流程落到一个具体的人身上。日期设定在 25 日——工资统发日。</p>
+
+  <div id="dayList"></div>
+
+  <h3>高频业务 Top 10（按出现频率排）</h3>
+  <div class="table-wrap"><table>
+    <tr><th>业务</th><th>本质</th></tr>
+    <tr><td>支付申请审核</td><td>系统校验拦下来的单子做人工审核：附件齐不齐、经济分类对不对、有没有合同/验收材料、是否超指标</td></tr>
+    <tr><td>指标文件下达</td><td>上级专项资金到了 / 本级追加批了，在一体化系统里把指标切给具体单位和项目</td></tr>
+    <tr><td>用款计划批复</td><td>批单位的分月用款计划，本质是管国库现金流量，错峰排队</td></tr>
+    <tr><td>三方对账</td><td>人行国库、代理银行、预算单位，日对账 + 月结</td></tr>
+    <tr><td>工资统发</td><td>每月固定动作：核名册 → 关联工资指标 → 自动生成支付 → 银行直发到个人卡</td></tr>
+    <tr><td>账户审批</td><td>单位要开/变更/撤销银行账户，财政审批备案（防"小金库"）</td></tr>
+    <tr><td>退票处理</td><td>收款人卡号错误、户名不符，资金退回零余额账户重新支付（不得退到单位实有账户）</td></tr>
+    <tr><td>报表填报</td><td>给上级财政、政府办、人大的各类报表，永远在截止日前夜</td></tr>
+    <tr><td>催进度</td><td>催单位花钱：专项债、直达资金支出进度按月被通报，钱趴在账上同样要挨批</td></tr>
+    <tr><td>接待与解释</td><td>给单位财务讲为什么这笔不能付、科目怎么改——财政局的"客服"属性</td></tr>
+  </table></div>
+
+  <div class="note"><b>一个反直觉：</b>财政局既要"看住钱"（不该花的一分不付），又要"催花钱"（该花的尽快花——支出进度是硬考核）。一个科员上午刚拒掉一笔手续不全的工程款，下午就要打电话催同一个局加快项目支出。这对矛盾贯穿全年。</div>
+</section>
+
+<!-- ===================== 08 黑话词典 ===================== -->
+<section class="panel" data-title="黑话词典" id="p7">
+  <h2>第八章 · 财政黑话词典</h2>
+  <p class="sub">听懂这些词，就能听懂财政局的饭桌谈话和政府工作报告。</p>
+  <dl class="gloss-grid" id="glossGrid"></dl>
+</section>
+
+</main>
+
+<footer>
+  <div class="stamp">仅供学习参考</div>
+  <p>地方财政工作全景 · 依据《预算法》《政府会计制度》《预算管理一体化规范》及各地财政局三定方案整理 · 各地机构设置与流程细节存在差异</p>
+</footer>
+
+<script>
+/* =============== 数据层 =============== */
+const DEPTS=[
+ {tag:"中枢",name:"办公室",gist:"机关运转：文电、会务、人事、机关自身财务",detail:"局里的大管家。文件收发、会议安排、信访、政务公开、规范性文件合法性审核，还管局机关和下属单位自己的人事与财务。"},
+ {tag:"核心",name:"预算股",gist:"编预算、审部门预算、管项目库、切转移支付",detail:"全局权力最重的股室。提出财政体制和中长期规划建议；审核各部门年度预算并下控制数；管支出标准体系和预算项目库；办理预算追加；汇总全县预算草案上人代会。各局局长最想请吃饭的就是这里。"},
+ {tag:"核心",name:"国库股",gist:"预算执行、总预算会计、账户管理、决算",detail:"最像会计的股室。组织预算执行与分析预测；实施国库集中收付制度；管财政和单位账户；做财政总会计核算（日清月结、三方对账）；编库款报表、总决算和权责发生制政府财务报告；做国库现金管理。"},
+ {tag:"收入",name:"税政法规股",gist:"税收政策跟踪、收入分析、法制工作",detail:"跟踪税收政策对本地财政的影响，与税务局对接收入征管；办理权限内税收减免事项；承担行政复议、行政诉讼和普法工作。注意：收税的是税务局（垂直管理），财政只管政策与分析。"},
+ {tag:"收入",name:"综合股 / 非税",gist:"非税收入、土地矿产收入、票据、彩票",detail:"管行政事业性收费、罚没收入、国有资源有偿使用收入；土地出让收支管理（和自然资源局对接）；财政票据管理（电子票据改革）；彩票公益金管理。"},
+ {tag:"支出",name:"经济建设股",gist:"基建与政府投资项目资金",detail:"政府投资项目的财政拨款审核与监督；参与拟订建设投资政策；管政策性补贴和专项储备资金；对接发改委的项目盘子。工程款支付的归口审核就在这。"},
+ {tag:"支出",name:"农业农村股",gist:"乡村振兴资金、惠农补贴一卡通",detail:"衔接推进乡村振兴补助资金、耕地地力保护补贴、农业保险保费补贴等涉农资金管理；惠农补贴'一卡通'直达农户；资金量大、检查多、最怕审计出问题的口子之一。"},
+ {tag:"支出",name:"社会保障股",gist:"社保、医保、就业、救助资金",detail:"会同人社、医保部门管理社保和就业及医疗卫生支出；审核社保基金预决算；管财政对各项保险基金的补助。账目专业性强，基金安全是红线。"},
+ {tag:"支出",name:"教科文股",gist:"教育、科技、文化、体育经费",detail:"管教育经费（最大支出科目之一，'两个只增不减'的法定要求）、科技投入、文体资金。义务教育教师工资保障是重点监测事项。"},
+ {tag:"支出",name:"行政政法股",gist:"党政机关、政法系统经费",detail:"管党委、人大、政府、政协、公检法司等机关运行经费；公务员津补贴规范；'三公'经费管理；机关运行经费定额标准。"},
+ {tag:"管理",name:"资产管理股",gist:"行政事业单位国有资产",detail:"管全县行政事业单位的房子、车、设备：配置审批、处置审批（卖资产要走这里）、出租出借备案；年度资产报告；公务用车编制管理。"},
+ {tag:"管理",name:"金融与债务股",gist:"政府债券、化债、平台公司监管",detail:"管政府债务限额与还本付息预算；专项债项目申报与额度争取；隐性债务化解方案；融资平台公司监管与转型；政府与社会资本合作项目财政承受能力论证。近年最忙、压力最大的口子。"},
+ {tag:"管理",name:"绩效管理股",gist:"花钱必问效：目标—监控—评价",detail:"预算绩效目标审核（申报项目必须先定绩效目标）、运行监控、重点项目绩效评价；评价结果与下年预算挂钩。'无效必问责'的执行者。"},
+ {tag:"监督",name:"监督股 / 会计股",gist:"财经纪律检查、会计行业管理",detail:"监督检查财税法规执行：单位私设小金库、虚列支出、挤占挪用专项资金都归它查；管会计人员继续教育、代理记账机构审批、注册会计师行业属地监管。"},
+ {tag:"二级",name:"国库集中支付中心",gist:"支付审核与清算的操作枢纽",detail:"事业编二级机构。处理全县所有支付申请的审核与凭证签发，对接代理银行；工资统发的具体执行者；很多县把它和国库股合署办公。"},
+ {tag:"二级",name:"投资评审中心（财评）",gist:"工程造价的'砍价师'",detail:"政府投资项目预算评审（概算审减率是业绩指标，砍掉 10–20% 很常见）、结算评审。工程进财政支付前先过财评，是基建资金的第一道闸。"},
+ {tag:"二级",name:"乡镇财政所",gist:"财政的神经末梢",detail:"县财政局派驻或乡镇属地管理。管村级财务'村财乡管'、惠农补贴发放、乡镇预算执行、辖区内财政资金监管。一个所往往就两三个人。"}
+];
+
+const JOURNEY=[
+ {n:1,lbl:"预算批复\n指标导入",who:"预算股 → 一体化系统",h:"人代会批准、财政批复后，预算变成系统里的「指标」",
+  d:"每一分钱在系统里都是一条指标记录，控制口径精确到：单位 + 指标类型 + 资金性质 + 支出功能分类科目 + 经济分类科目 + 预算项目。没有指标，后面所有步骤都走不动——「先有预算、后有支出」是被系统写死的铁律。",
+  pit:"常见卡点：上级专项资金年中才下达，要走「追加指标」流程重新切分。"},
+ {n:2,lbl:"用款计划",who:"单位编报 → 财政批复",h:"单位按季编报分月用款计划",
+  d:"用款计划的本质是帮财政管国库现金流量：全县几百家单位如果都挤在同一天付大钱，库款会被瞬间抽干。基本口径是「单位 + 资金性质 + 金额」。改革后部分地区已简化甚至取消按项目编计划。",
+  pit:"月底工资统发前几天，大额工程款计划经常被「排队」。"},
+ {n:3,lbl:"支付申请",who:"预算单位财务",h:"单位在一体化系统里填报支付申请",
+  d:"选指标、填收款人和金额、选支出经济分类、上传附件（合同、发票、验收单、会议纪要……），单位负责人电子签章后提交。这就是你理解的「下面单位申请」。",
+  pit:"附件不全、经济分类选错（办公费 vs 印刷费）是被退回的头号原因。"},
+ {n:4,lbl:"系统校验",who:"一体化系统（自动）",h:"机器先审：事中自动校验",
+  d:"系统按预设规则校验：指标够不够、要素匹不匹配、收款人信息合不合规、是否触碰负面清单（比如向个人账户大额支付）。校验通过的直接生成支付凭证——大部分单子根本到不了人工环节。",
+  pit:"这是流程里最大的认知更新：日常「审批」主要是机器在做。"},
+ {n:5,lbl:"人工审核",who:"支付中心 / 国库股",h:"机器拦下来的，财政人工审",
+  d:"校验不通过或命中预警规则的单子转人工：科员看附件、打电话核实、必要时退回。大额支付、敏感科目（如奖金、咨询费）通常强制人工复核。这才是财政科员每天敲电脑干的活。",
+  pit:"「这笔为什么不能付」——科员每天要解释 N 遍的问题。"},
+ {n:6,lbl:"银行支付",who:"代理商业银行",h:"凭证发给代理银行，先垫资付款",
+  d:"电子支付凭证（带电子签章）发送代理银行，银行按凭证把钱付到最终收款人账户——施工方、供货商、职工工资卡。注意此刻付的是银行垫的钱，国库的钱还没动。",
+  pit:"收款人卡号/户名错误会退票，资金只能退回零余额账户重付，不得截留。"},
+ {n:7,lbl:"国库清算",who:"代理银行 ↔ 人民银行",h:"日终轧账：国库的钱补给银行",
+  d:"代理银行每日按约定时点与财政对账，对账一致后向人民银行国库申请资金清算，国库单一账户把垫付资金划给银行。「先支付、后对账、再清算」——钱在最后一刻才真正离开国库。",
+  pit:"国库股的日常：每天盯清算数和库款余额，月末年末加班对账。"},
+ {n:8,lbl:"回单记账",who:"单位 + 财政（双边）",h:"回单返回，两边各记各的账",
+  d:"银行回单通过系统返给单位和财政：单位据此做平行记账（财务 + 预算两套分录），财政国库股据此记总预算会计。至此一笔钱的旅程结束，留下完整的电子留痕——每个环节谁在几点几分操作都可追溯。",
+  pit:"审计来了第一件事就是调这条流水的全链路记录。"}
+];
+
+const CASES=[
+ {name:"财政资金买5万元设备",
+  fin:[["借：固定资产","50,000"],["　贷：财政拨款收入","50,000"]],
+  bud:[["借：行政支出（或事业支出）","50,000"],["　贷：财政拨款预算收入","50,000"]],
+  why:"两套账都记，但科目含义不同：财务会计形成「资产」（以后逐年计提折旧），预算会计直接列「支出」（钱花出去了，预算执行 +5万）。这就是平行记账的标准形态。"},
+ {name:"月末计提本月工资（未发放）",
+  fin:[["借：业务活动费用","80,000"],["　贷：应付职工薪酬","80,000"]],
+  bud:[["—","（不记账）"]],
+  why:"权责发生制下，工资归属本月就要确认费用和负债；但收付实现制下钱还没付出去，预算会计不动。等下月实际统发时，预算会计才记「借：行政支出 / 贷：财政拨款预算收入（或资金结存）」。「财务记了预算不记」是两套账产生差异的典型来源。"},
+ {name:"计提固定资产折旧",
+  fin:[["借：业务活动费用——折旧费","2,000"],["　贷：固定资产累计折旧","2,000"]],
+  bud:[["—","（不记账）"]],
+  why:"折旧不涉及任何现金流，纯粹是权责发生制下的成本分摊，所以只有财务会计记。政府会计引入折旧后，才第一次能回答「政府提供一项服务的真实成本是多少」。"},
+ {name:"收到财政返还的上年额度",
+  fin:[["借：财政应返还额度","30,000"],["　贷：财政拨款收入","30,000"]],
+  bud:[["借：资金结存——财政应返还额度","30,000"],["　贷：财政拨款预算收入","30,000"]],
+  why:"年末单位预算指标没用完，形成「财政应返还额度」——这是政府会计特有的科目：钱还在国库，但额度归你，明年接着用。年末预算指标数与实际支付数的差额就这样挂账。"}
+];
+
+const DAY=[
+ {t:"8:30",b:"<b>开机三件事</b><p>登录一体化系统：①看昨日库款余额和今晨人行对账单（昨天税款入库多少、上级补助到没到）②看支付审核队列里压了多少单 ③看今天清算了多少。群里财政局长已经在问：「这个月工资的钱稳不稳？」</p>"},
+ {t:"9:00",b:"<b>清审核队列</b><p>系统自动校验拦下 23 笔转人工。逐笔看：某局一笔 12 万「会议费」没附会议通知和签到表——退回；某校设备采购把经济分类选成了「办公费」——电话让财务改单重提；一笔 200 万工程款，附件齐全、财评结论和合同都在，复核签章放行。</p>"},
+ {t:"10:30",b:"<b>处理一个「为什么不能付」</b><p>教育局财务来电：拨给某乡镇小学的修缮款怎么还没到？查系统——卡在指标环节，上级专项文件到了但本级追加指标还没走完流程。转预算股催办，顺便解释一遍流程。</p>"},
+ {t:"11:00",b:"<b>库款调度</b><p>下午要统发全县财政供养人员工资约 4,300 万，看了眼库款余额有点紧，给国库股长报告：建议把两笔非急的工程款计划推到 28 号，优先保工资。「三保」顺序就是优先级：民生、工资、运转。</p>"},
+ {t:"14:30",b:"<b>工资统发日</b><p>核对人社部门推送的人员名册与工资指标，系统按预设规则关联指标、自动生成用款计划和直接支付，签章后发送代理银行——银行按明细表直发到每个人的工资卡。下午四点起，全县的老师、医生、公务员陆续收到到账短信。</p>"},
+ {t:"16:00",b:"<b>对账与退票</b><p>代理银行回传支付回单和支出日报，与系统数据核对一致后登记。处理 3 笔退票：都是收款人卡号录错，通知单位改信息后从零余额账户重新支付。</p>"},
+ {t:"17:00",b:"<b>报表与材料</b><p>填库款旬报上报市局；更新直达资金监控台账（市里明天要通报支出进度排名）；局长要一份「三保」保障情况说明，给县长明天开会用。写到一半，预算股同事探头：「明年预算的『一上』数据，你们国库的执行数明早要。」</p>"},
+ {t:"18:30",b:"<b>没完</b><p>月底前还有：月度收支快报、和人行的月结对账、专项债支出进度自查。关电脑前看了眼明天日历——审计局进点会。</p>"}
+];
+
+const GLOSS=[
+ ["三保","保基本民生、保工资、保运转——县级财政的底线任务，排序就是优先级。上级对县级「三保」预算单独审核、库款单独监测，出问题要追责。"],
+ ["过紧日子","压减一般性支出（会议、差旅、培训、楼堂馆所）的长期国策。预算编制通知里的固定开场白。"],
+ ["两上两下","部门预算编制流程：部门报需求（一上）→财政下控制数（一下）→部门细化（二上）→财政审定批复（二下）。"],
+ ["零基预算","不以上年基数为起点、一切支出从零论证的编制方法。近年多省推行的改革方向，专治「基数 + 增长」的惯性。"],
+ ["指标","预算在一体化系统里的存在形式。「有没有指标」是单位能不能花钱的第一问。"],
+ ["盘子","可用财力总额。「盘子就这么大」= 拒绝追加的标准话术。"],
+ ["口径","统计/控制的范围和标准。「全口径预算」「按可比口径增长」——口径不同，数字可以差很远。"],
+ ["库款","国库单一账户的存款余额。库款保障水平 = 库款余额 ÷ 月均支出，低于警戒线会被上级约谈。"],
+ ["直达资金","中央财政资金「一竿子插到底」直达市县基层、直接惠企利民，全程单独标识、实时监控，挪用是高压线。"],
+ ["专项债","地方政府专项债券，对应有收益的公益项目（园区、管网、医院），走政府性基金预算。申报、发行、支出进度、绩效全链条考核。"],
+ ["化债","化解隐性债务（融资平台等替政府举借的债）。一揽子化债方案、债务置换、平台转型，是近年地方财政头号主题。"],
+ ["盘活存量","把趴在账上不动的钱收回来统筹：结转两年以上的资金收回总预算，闲置资产处置变现。"],
+ ["财评","财政投资评审。工程概算先砍一刀再进预算，审减率是评审中心的 KPI。"],
+ ["花钱必问效","预算绩效管理的口号，全句是「花钱必问效、无效必问责」。每个项目要先定绩效目标，事后评价，结果挂钩下年安排。"],
+ ["收缴分离","非税收入由执收单位开票、缴款人直接缴入财政账户，执收单位不碰钱——防截留挪用的制度设计。"],
+ ["小金库","单位在法定账册外私存私放的资金。财政监督检查的传统重点，发现即严肃处理。"],
+ ["上解 / 下划","下级按体制规定交给上级的钱叫上解；上级划给下级的叫下划/补助。财政体制结算的日常用语。"],
+ ["追加","年中预算之外的新增支出申请。财政最常说「不」的对象；真要办，走预备费或预算调整程序。"]
+];
+
+/* =============== 渲染层 =============== */
+const $=s=>document.querySelector(s);
+
+/* tabs */
+const panels=[...document.querySelectorAll("section.panel")];
+const navInner=$("#navInner");
+panels.forEach((p,i)=>{
+  const b=document.createElement("button");
+  b.className="tab-btn";
+  b.innerHTML=`<span class="no">${String(i+1).padStart(2,"0")}</span>${p.dataset.title}`;
+  b.addEventListener("click",()=>{
+    panels.forEach(x=>x.classList.remove("active"));
+    [...navInner.children].forEach(x=>x.classList.remove("active"));
+    p.classList.add("active");b.classList.add("active");
+    window.scrollTo({top:0});
+    b.scrollIntoView({block:"nearest",inline:"center",behavior:"smooth"});
+  });
+  navInner.appendChild(b);
+});
+panels[0].classList.add("active");navInner.children[0].classList.add("active");
+
+/* depts */
+const dg=$("#deptGrid");
+DEPTS.forEach(d=>{
+  const el=document.createElement("div");
+  el.className="dept";el.tabIndex=0;el.setAttribute("role","button");
+  el.innerHTML=`<div class="dept-head"><span class="tag">${d.tag}</span><span class="name">${d.name}</span></div>
+    <div class="gist">${d.gist}</div><div class="detail">${d.detail}</div>`;
+  const tg=()=>el.classList.toggle("open");
+  el.addEventListener("click",tg);
+  el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();tg();}});
+  dg.appendChild(el);
+});
+
+/* journey */
+const jTrack=$("#jTrack"),jDetail=$("#jDetail");
+let jIdx=0,jTimer=null;
+JOURNEY.forEach((s,i)=>{
+  const b=document.createElement("button");
+  b.className="j-node";
+  b.innerHTML=`<span class="dot">${s.n}</span><span class="lbl">${s.lbl.replace("\n","<br>")}</span>`;
+  b.addEventListener("click",()=>{stopPlay();setJ(i);});
+  jTrack.appendChild(b);
+});
+function setJ(i){
+  jIdx=i;
+  [...jTrack.children].forEach((n,k)=>{
+    n.classList.toggle("active",k===i);
+    n.classList.toggle("passed",k<i);
+  });
+  const s=JOURNEY[i];
+  jDetail.innerHTML=`<div class="who">STEP ${s.n} / 8 · ${s.who}</div><h4>${s.h}</h4><p>${s.d}</p><p class="pitfall">⚠ ${s.pit}</p>`;
+}
+function stopPlay(){if(jTimer){clearInterval(jTimer);jTimer=null;$("#jPlay").textContent="▶ 自动走一遍";}}
+$("#jPlay").addEventListener("click",()=>{
+  if(jTimer){stopPlay();return;}
+  $("#jPlay").textContent="⏸ 暂停";
+  if(jIdx>=JOURNEY.length-1)setJ(0);
+  jTimer=setInterval(()=>{
+    if(jIdx>=JOURNEY.length-1){stopPlay();return;}
+    setJ(jIdx+1);
+  },3200);
+});
+$("#jPrev").addEventListener("click",()=>{stopPlay();setJ(Math.max(0,jIdx-1));});
+$("#jNext").addEventListener("click",()=>{stopPlay();setJ(Math.min(JOURNEY.length-1,jIdx+1));});
+setJ(0);
+
+/* ledger demo */
+const cb=$("#caseBtns");
+function renderEntries(el,rows){
+  if(rows.length===1&&rows[0][0]==="—"){
+    el.innerHTML=`<span class="none">本笔业务不涉及现金收付，预算会计不记账。</span>`;return;
+  }
+  el.innerHTML=rows.map(r=>{
+    const cls=r[0].startsWith("借")?"dr":"cr";
+    return `<div class="${cls}">${r[0]}　${r[1]}</div>`;
+  }).join("");
+}
+function setCase(i){
+  [...cb.children].forEach((b,k)=>b.classList.toggle("active",k===i));
+  const c=CASES[i];
+  renderEntries($("#finEntries"),c.fin);
+  renderEntries($("#budEntries"),c.bud);
+  $("#ledgerWhy").innerHTML="<b>为什么这样记：</b>"+c.why;
+}
+CASES.forEach((c,i)=>{
+  const b=document.createElement("button");
+  b.className="case-btn";b.textContent=c.name;
+  b.addEventListener("click",()=>setCase(i));
+  cb.appendChild(b);
+});
+setCase(0);
+
+/* day */
+$("#dayList").innerHTML=DAY.map(d=>
+  `<div class="day-item"><div class="day-time">${d.t}</div><div class="day-body">${d.b}</div></div>`
+).join("");
+
+/* gloss */
+$("#glossGrid").innerHTML=GLOSS.map(g=>
+  `<div class="gloss"><dt>${g[0]}</dt><dd>${g[1]}</dd></div>`
+).join("");
+</script>
+</body>
+</html>
