@@ -334,6 +334,54 @@
   }
   .ritual li b{color:#fff}
 
+  /* ---------- 信源直达 chips（Rx③） ---------- */
+  .feeds{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:6px}
+  .feedlink{
+    display:block;background:var(--card);border:1px solid var(--line);
+    border-left:3px solid #1d4ed8;border-radius:3px;padding:12px 14px;
+    text-decoration:none;color:inherit;transition:transform .12s,border-color .15s;
+  }
+  .feedlink:hover{transform:translateY(-2px);border-color:#1d4ed8}
+  .feedlink .fn{font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+  .feedlink .fn .go{font-family:var(--mono);font-size:11px;color:#1d4ed8}
+  .feedlink .fdesc{font-size:12px;color:var(--ink-soft);margin-top:3px}
+  .feedlink .ftier{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:#1d4ed8;text-transform:uppercase;margin-top:6px;display:block}
+
+  /* ---------- 主权立论（Rx⑤ 顶） ---------- */
+  .sov{
+    display:grid;grid-template-columns:1fr 1fr;gap:0;
+    border:1px solid var(--rule);border-radius:4px;overflow:hidden;margin-bottom:24px;
+  }
+  .sov > div{padding:18px 20px}
+  .sov .walled{background:#efe9df;border-right:1px solid var(--rule)}
+  .sov .base{background:#0d5c4f;color:#dcefe8}
+  .sov .sl{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px}
+  .sov .walled .sl{color:#9a8f7a}
+  .sov .base .sl{color:#8fc4b8}
+  .sov p{font-size:13.5px}
+  .sov .walled p{color:#6b6354}
+  .sov .base p{color:#dcefe8}
+  .sov .base b{color:#fff}
+  @media(max-width:560px){
+    .sov{grid-template-columns:1fr}
+    .sov .walled{border-right:none;border-bottom:1px solid var(--rule)}
+  }
+
+  /* ---------- 实战引擎（Rx⑤ 底） ---------- */
+  .engine{background:var(--card);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-top:18px}
+  .engine .ehead{
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:#0d5c4f;padding:14px 20px 0;
+  }
+  .leg{display:flex;gap:16px;padding:16px 20px;border-bottom:1px solid var(--line)}
+  .leg .lnum{font-family:var(--serif);font-style:italic;font-size:24px;color:#0d5c4f;flex-shrink:0;width:26px;line-height:1.2}
+  .leg .lt{font-weight:700;font-size:14.5px}
+  .leg .lt a{color:#0d5c4f;text-decoration:none;border-bottom:1px solid #9ccabf}
+  .leg .lt a:hover{border-bottom-color:#0d5c4f}
+  .leg .ld{font-size:12.5px;color:var(--ink-soft);margin-top:3px}
+  .engine .strat{background:#0d5c4f;color:#dcefe8;padding:14px 20px;font-size:13px}
+  .engine .strat b{color:#fff}
+
   @media(max-width:560px){
     .asset{flex-direction:column;gap:5px}
     .asset .file{width:auto}
@@ -491,6 +539,33 @@
       </div>
     </div>
 
+    <!-- 信源直达（可点） -->
+    <div class="phase">
+      <div class="phase-title radar"><span class="n">源</span> 信源直达 · 取代付费群的开放世界</div>
+      <div class="feeds">
+        <a class="feedlink" href="https://github.com" target="_blank" rel="noopener">
+          <span class="fn">GitHub <span class="go">↗</span></span>
+          <span class="fdesc">watch 你领域核心仓库，读 README 和近期 issue。</span>
+          <span class="ftier">工程层 · 周级</span>
+        </a>
+        <a class="feedlink" href="https://arxiv.org/list/cs.AI/recent" target="_blank" rel="noopener">
+          <span class="fn">arXiv <span class="go">↗</span></span>
+          <span class="fdesc">扫摘要，挑能喂养 Diagnosis(P) 的精读。</span>
+          <span class="ftier">思想层 · 季级</span>
+        </a>
+        <a class="feedlink" href="https://www.anthropic.com/news" target="_blank" rel="noopener">
+          <span class="fn">官方发布 <span class="go">↗</span></span>
+          <span class="fdesc">闭源世界往哪走，GitHub 看不到的风向。</span>
+          <span class="ftier">产品层 · 月级</span>
+        </a>
+        <a class="feedlink" href="https://www.competehub.dev" target="_blank" rel="noopener">
+          <span class="fn">AI 赛事通 <span class="go">↗</span></span>
+          <span class="fdesc">全球黑客松聚合，「健康 + 线上赛」一键筛。</span>
+          <span class="ftier">赛事雷达</span>
+        </a>
+      </div>
+    </div>
+
     <!-- 雷达建立动作 -->
     <div class="phase">
       <div class="phase-title radar"><span class="n">建</span> 一次性搭好雷达（搭完就半自动了）</div>
@@ -559,6 +634,18 @@
     </div>
     <p class="sec-sub">姜学长卖的“知识库 + 前沿追踪 + 社群”，你手里<b>已有 80% 的零件</b>，只是四散着、没连成回路。不必续费——把自己的东西连起来，让它自转。</p>
 
+    <!-- 主权立论 -->
+    <div class="sov">
+      <div class="walled">
+        <div class="sl">✕ 付费学习群</div>
+        <p>别人的房间，钥匙在别人手里。他哪天开心了发点东西，还摆着高姿态。涨价、断更、掐断——你说了都不算。中心化，可掐断。</p>
+      </div>
+      <div class="base">
+        <div class="sl">✓ 你自己的基地</div>
+        <p>前沿<b>自己流进来</b>，你自己判断、沉淀、实践。信源是整个开放世界，<b>没有一个老板能对你摆姿态，也没有谁能把它掐断。</b></p>
+      </div>
+    </div>
+
     <!-- 资产盘点 -->
     <div class="phase">
       <div class="phase-title" style="color:#0d5c4f"><span class="n" style="border-color:#0d5c4f;color:#0d5c4f">产</span> 你已经有的零件（不是从零开始）</div>
@@ -620,6 +707,26 @@
         <li>留下的写进 Obsidian / 一个 HTML，并在 <b>ai-map 上更新它的位置</b>。</li>
         <li>选其中<b>一个，花一下午接进 CaseLog / PassRound</b> 试。试不通也是收获。</li>
       </ol>
+    </div>
+
+    <!-- 实战引擎（接「实践」节点） -->
+    <div class="engine">
+      <div class="ehead">实战引擎 · 回路「实践」节点的真实产出口</div>
+      <div class="leg">
+        <div class="lnum">壹</div>
+        <div class="lb">
+          <div class="lt"><a href="https://tianchi.aliyun.com/competition/" target="_blank" rel="noopener">天池 · 学习赛</a>（今天就能开始）</div>
+          <div class="ld">常驻、无截止、给数据集。现在注册，今天跑通第一次提交——把“拿数据→建模→提交→迭代”这条工程链走通一遍。破冰。</div>
+        </div>
+      </div>
+      <div class="leg">
+        <div class="lnum">贰</div>
+        <div class="lb">
+          <div class="lt"><a href="https://www.competehub.dev" target="_blank" rel="noopener">AI 赛事通</a>（限时赛雷达）</div>
+          <div class="ld">按「健康 + 线上赛」筛限时黑客松。黑客松的价值是“逼你在压力下做出东西”——这价值不必向任何付费群购买。</div>
+        </div>
+      </div>
+      <div class="strat"><b>策略 · 医疗赛优先：</b>纯技术综合赛你未必拼得过科班，但医疗方向的赛，你带着临床判断进场<b>就是降维</b>——可能是全场唯一真懂临床的人。一场赛逼出的东西，常能直接变成 OpenClaw 的产品雏形。</div>
     </div>
   </section>
 
