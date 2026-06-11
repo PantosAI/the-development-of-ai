@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 进阶诊疗方案 · OpenClaw</title>
+<style>
+  :root{
+    --ink:#1b2733;          /* 主文字，深蓝黑 */
+    --ink-soft:#52606d;     /* 次要文字 */
+    --paper:#f6f4ef;        /* 病历纸底 */
+    --card:#ffffff;
+    --line:#dfe3e8;         /* 表格细线 */
+    --rule:#c4ccd4;
+    --accent:#0f6f6a;       /* 处方青绿（治本/纵深） */
+    --accent-soft:#e3efed;
+    --warn:#c2410c;         /* 随访橙（AI跟踪） */
+    --warn-soft:#fbe9df;
+    --done:#0f6f6a;
+    --mono:"SFMono-Regular",ui-monospace,"DejaVu Sans Mono",Consolas,monospace;
+    --serif:Georgia,"Songti SC","SimSun",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    padding:0 18px 80px;
+  }
+  .wrap{max-width:860px;margin:0 auto}
+
+  /* ---------- 抬头：病历样式 ---------- */
+  header{
+    border-bottom:2px solid var(--ink);
+    padding:38px 0 18px;
+    margin-bottom:8px;
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:14px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:clamp(30px,6vw,46px);
+    line-height:1.1;
+    letter-spacing:-.5px;
+  }
+  h1 small{
+    display:block;
+    font-family:var(--sans);
+    font-weight:400;
+    font-size:15px;
+    color:var(--ink-soft);
+    letter-spacing:0;
+    margin-top:12px;
+    line-height:1.6;
+  }
+  /* 病历信息条 */
+  .vitals{
+    display:flex;flex-wrap:wrap;gap:0;
+    border:1px solid var(--rule);
+    border-radius:3px;
+    margin-top:24px;
+    background:var(--card);
+    font-size:13px;
+  }
+  .vitals div{
+    flex:1 1 50%;
+    padding:11px 16px;
+    border-bottom:1px solid var(--line);
+  }
+  .vitals div:nth-child(odd){border-right:1px solid var(--line)}
+  .vitals div:nth-last-child(-n+2){border-bottom:none}
+  .vitals .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:2px}
+  .vitals .v{color:var(--ink);font-weight:600}
+
+  /* ---------- 进度环 ---------- */
+  .progress-bar{
+    display:flex;align-items:center;gap:14px;
+    margin:30px 0 8px;
+    font-family:var(--mono);font-size:13px;color:var(--ink-soft);
+  }
+  .track{flex:1;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+  .fill{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+
+  /* ---------- 诊断综述 ---------- */
+  .impression{
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-left:4px solid var(--ink);
+    border-radius:3px;
+    padding:22px 24px;
+    margin:26px 0 40px;
+  }
+  .impression .label{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
+  .impression p{font-size:15.5px;color:var(--ink)}
+  .impression b{color:var(--accent)}
+  .impression .warn-em{color:var(--warn)}
+
+  /* ---------- 区块 ---------- */
+  section{margin-bottom:52px}
+  .sec-head{
+    display:flex;align-items:baseline;gap:14px;
+    border-bottom:1.5px solid var(--ink);
+    padding-bottom:8px;margin-bottom:4px;
+  }
+  .rx{
+    font-family:var(--serif);font-size:34px;font-style:italic;font-weight:700;
+    line-height:1;flex-shrink:0;
+  }
+  .rx-treat{color:var(--accent)}
+  .rx-follow{color:var(--warn)}
+  .sec-head h2{font-family:var(--sans);font-size:19px;font-weight:700;flex:1}
+  .sec-head .tag{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+    padding:3px 9px;border-radius:99px;white-space:nowrap;
+  }
+  .tag-treat{background:var(--accent-soft);color:var(--accent)}
+  .tag-follow{background:var(--warn-soft);color:var(--warn)}
+  .sec-sub{font-size:13.5px;color:var(--ink-soft);margin:10px 0 22px}
+
+  /* ---------- 阶段卡 ---------- */
+  .phase{margin-bottom:14px}
+  .phase-title{
+    font-family:var(--mono);font-size:12px;letter-spacing:.08em;
+    color:var(--ink-soft);text-transform:uppercase;
+    display:flex;align-items:center;gap:10px;margin:24px 0 12px;
+  }
+  .phase-title .n{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:22px;height:22px;border:1.5px solid var(--accent);color:var(--accent);
+    border-radius:50%;font-size:11px;font-weight:700;flex-shrink:0;
+  }
+  .phase-title.follow .n{border-color:var(--warn);color:var(--warn)}
+
+  /* 任务行 = 病历医嘱条目 */
+  .task{
+    display:flex;gap:14px;align-items:flex-start;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:14px 16px;
+    margin-bottom:8px;
+    cursor:pointer;
+    transition:border-color .15s,background .15s;
+  }
+  .task:hover{border-color:var(--rule)}
+  .task .box{
+    flex-shrink:0;width:20px;height:20px;margin-top:1px;
+    border:1.5px solid var(--rule);border-radius:4px;
+    position:relative;transition:all .15s;
+  }
+  .task .body{flex:1}
+  .task .t{font-size:15px;font-weight:600;color:var(--ink)}
+  .task .d{font-size:13px;color:var(--ink-soft);margin-top:3px}
+  .task .d a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-soft)}
+  .task .d a:hover{border-bottom-color:var(--accent)}
+  .task.done{background:#fbfaf8}
+  .task.done .box{background:var(--done);border-color:var(--done)}
+  .task.done .box::after{
+    content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;
+    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);
+  }
+  .task.done .t{color:var(--ink-soft);text-decoration:line-through;text-decoration-color:var(--rule)}
+
+  /* 跟踪区信息源卡 */
+  .feed{
+    background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:16px 18px;margin-bottom:8px;
+  }
+  .feed .ft{font-weight:600;font-size:14.5px;margin-bottom:3px}
+  .feed .fd{font-size:13px;color:var(--ink-soft)}
+
+  .principle{
+    border-left:3px solid var(--warn);
+    background:var(--warn-soft);
+    padding:14px 18px;border-radius:0 3px 3px 0;
+    font-size:14px;margin:18px 0 24px;
+  }
+  .principle b{color:var(--warn)}
+
+  /* ---------- Rx③ 雷达：分层监测表 ---------- */
+  .rx-radar{color:#1d4ed8}
+  .tag-radar{background:#e4ecfb;color:#1d4ed8}
+  .phase-title.radar .n{border-color:#1d4ed8;color:#1d4ed8}
+
+  .radar-table{
+    border:1px solid var(--rule);border-radius:3px;overflow:hidden;
+    background:var(--card);margin-bottom:6px;
+  }
+  .radar-row{
+    display:grid;grid-template-columns:84px 1fr 96px;
+    border-bottom:1px solid var(--line);
+  }
+  .radar-row:last-child{border-bottom:none}
+  .radar-row.head{background:#f1f4f8;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+  .radar-row.head > div{padding:9px 14px}
+  .radar-row > div{padding:13px 14px;font-size:13.5px;display:flex;flex-direction:column;justify-content:center}
+  .radar-row .layer{font-weight:700;color:var(--ink)}
+  .radar-row .layer small{display:block;font-weight:400;font-size:11px;color:var(--ink-soft);font-family:var(--mono);margin-top:2px}
+  .radar-row .src b{color:var(--ink);font-weight:600}
+  .radar-row .src{color:var(--ink-soft);font-size:13px}
+  .radar-row .freq{font-family:var(--mono);font-size:12px;font-weight:700;text-align:center;align-items:center}
+  .freq.week{color:var(--accent)}
+  .freq.month{color:var(--warn)}
+  .freq.quarter{color:#1d4ed8}
+
+  /* 过滤尺：交互判断器 */
+  .filter-box{
+    background:#0f1722;color:#e6edf3;border-radius:6px;
+    padding:22px 24px;margin:20px 0 8px;
+  }
+  .filter-box .fl-label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#7d8da0;margin-bottom:6px}
+  .filter-box .fl-q{font-size:17px;font-weight:600;font-family:var(--serif);font-style:italic;margin-bottom:18px;color:#fff}
+  .fl-btns{display:flex;gap:10px;flex-wrap:wrap}
+  .fl-btns button{
+    flex:1;min-width:130px;border:none;border-radius:4px;padding:12px 14px;
+    font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;transition:transform .1s,opacity .15s;
+  }
+  .fl-yes{background:var(--accent);color:#fff}
+  .fl-no{background:#2a3543;color:#cdd7e2}
+  .fl-btns button:hover{transform:translateY(-1px)}
+  .fl-result{
+    margin-top:16px;font-size:14px;line-height:1.65;min-height:1px;
+    border-left:2px solid transparent;padding-left:0;transition:all .2s;
+  }
+  .fl-result.show{padding-left:14px}
+  .fl-result.yes{border-color:var(--accent)}
+  .fl-result.no{border-color:#7d8da0}
+  .fl-result .rt{font-weight:700;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:4px}
+  .fl-result.yes .rt{color:#5fd0a0}
+  .fl-result.no .rt{color:#9fb0c2}
+
+  @media(max-width:560px){
+    .radar-row{grid-template-columns:70px 1fr 64px}
+    .radar-row > div{padding:11px 10px;font-size:12.5px}
+  }
+
+  /* ---------- Rx④ 手法 ---------- */
+  .rx-hand{color:#6d28d9}
+  .tag-hand{background:#efe9fb;color:#6d28d9}
+  .phase-title.hand .n{border-color:#6d28d9;color:#6d28d9}
+  .task.hand-acc .box{border-color:#b89ae8}
+  .task.hand-acc.done .box{background:#6d28d9;border-color:#6d28d9}
+  .principle.hand{border-color:#6d28d9;background:#f3eefc}
+  .principle.hand b{color:#6d28d9}
+
+  /* ---------- Rx⑤ 自转回路 ---------- */
+  .rx-loop{color:#0d5c4f}
+  .tag-loop{background:#d9efe9;color:#0d5c4f}
+
+  /* 资产盘点条 */
+  .assets{
+    display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:8px;
+  }
+  .asset{
+    display:flex;gap:14px;align-items:flex-start;
+    background:var(--card);border:1px solid var(--line);
+    border-left:3px solid #0d5c4f;border-radius:3px;padding:13px 16px;
+  }
+  .asset.off{border-left-color:var(--rule);opacity:.7}
+  .asset .file{
+    font-family:var(--mono);font-size:12px;color:#0d5c4f;font-weight:700;
+    flex-shrink:0;width:172px;line-height:1.5;
+  }
+  .asset.off .file{color:var(--ink-soft)}
+  .asset .role{font-size:13.5px;color:var(--ink)}
+  .asset .role b{color:#0d5c4f}
+
+  /* 自转回路图（signature） */
+  .loop{
+    position:relative;
+    margin:8px 0 4px;
+    padding-left:34px;
+  }
+  .loop::before{
+    content:"";position:absolute;left:11px;top:14px;bottom:46px;
+    width:2px;background:linear-gradient(#0d5c4f,#7cc4b6);
+  }
+  .loop-node{
+    position:relative;margin-bottom:14px;
+  }
+  .loop-node .dot{
+    position:absolute;left:-34px;top:2px;
+    width:24px;height:24px;border-radius:50%;
+    background:#0d5c4f;color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:12px;font-weight:700;
+  }
+  .loop-node .nbody{
+    background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:12px 16px;
+  }
+  .loop-node .step{font-weight:700;font-size:14.5px;color:var(--ink)}
+  .loop-node .step .via{
+    font-family:var(--mono);font-size:11px;font-weight:600;color:#0d5c4f;
+    background:#d9efe9;padding:2px 7px;border-radius:10px;margin-left:8px;white-space:nowrap;
+  }
+  .loop-node .sd{font-size:13px;color:var(--ink-soft);margin-top:3px}
+  .loop-return{
+    position:relative;margin-top:2px;padding-left:0;
+    font-family:var(--mono);font-size:12px;color:#0d5c4f;font-weight:700;
+    display:flex;align-items:center;gap:8px;
+  }
+  .loop-return .arc{
+    position:absolute;left:-34px;top:-2px;width:24px;height:20px;
+    border:2px solid #7cc4b6;border-top:none;border-right:none;
+    border-radius:0 0 0 12px;
+  }
+  .ritual{
+    background:#0d5c4f;color:#e6f3ef;border-radius:6px;padding:20px 22px;margin-top:18px;
+  }
+  .ritual .rl{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#9cc9bf;margin-bottom:8px}
+  .ritual .rt{font-family:var(--serif);font-style:italic;font-size:17px;color:#fff;margin-bottom:14px}
+  .ritual ol{list-style:none;counter-reset:r;margin:0;padding:0}
+  .ritual li{
+    counter-increment:r;position:relative;padding-left:30px;margin-bottom:9px;font-size:13.5px;line-height:1.55;
+  }
+  .ritual li:last-child{margin-bottom:0}
+  .ritual li::before{
+    content:counter(r);position:absolute;left:0;top:0;
+    width:20px;height:20px;border:1.5px solid #5fb3a3;color:#7cc4b6;
+    border-radius:50%;font-family:var(--mono);font-size:11px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .ritual li b{color:#fff}
+
+  @media(max-width:560px){
+    .asset{flex-direction:column;gap:5px}
+    .asset .file{width:auto}
+    .loop-node .step .via{display:inline-block;margin:4px 0 0}
+  }
+
+  footer{
+    border-top:1px solid var(--rule);
+    margin-top:40px;padding-top:18px;
+    font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  }
+  .reset{
+    background:none;border:1px solid var(--rule);color:var(--ink-soft);
+    font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:3px;cursor:pointer;
+  }
+  .reset:hover{border-color:var(--warn);color:var(--warn)}
+
+  @media(max-width:560px){
+    .vitals div{flex:1 1 100%;border-right:none!important}
+    .vitals div:nth-last-child(2){border-bottom:1px solid var(--line)}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">OpenClaw · 个人成长诊疗方案</div>
+    <h1>紧跟 AI，先扎根<small>一位临床医生 + 独立开发者的工程纵深路线。核心判断：AI 越快变，底层越值钱——补的是浪潮里的不变量，而非追每一个新工具。</small></h1>
+
+    <div class="vitals">
+      <div><span class="k">现状 / Status</span><span class="v">会用 AI 造东西，缺底层；GitHub 是宝库也是天书</span></div>
+      <div><span class="k">主诉 / Chief Complaint</span><span class="v">想深入 GitHub，同时不掉队</span></div>
+      <div><span class="k">治疗原则 / Principle</span><span class="v">70% 纵深治本 · 30% 低成本随访</span></div>
+      <div><span class="k">关于续费班 / Note</span><span class="v">若仍讲 prompt/工具测评，不续——你已过此阶段</span></div>
+    </div>
+
+    <div class="progress-bar">
+      <span id="pct">0%</span>
+      <div class="track"><div class="fill" id="fill"></div></div>
+      <span id="count">0 / 0</span>
+    </div>
+  </header>
+
+  <div class="impression">
+    <div class="label">综合诊断 · Impression</div>
+    <p>AI 再热，真正把它压榨到极致的仍是有工程能力的人。你的 gap 不在“会不会用 AI”，而在<b>底层与 GitHub 的工程纵深</b>。五联处方：<b>Rx①「治本」</b>逐层深入工程纵深；<b class="warn-em">Rx②「随访」</b>极简跟踪；Rx③「雷达」把不错过前沿变成半自动系统；<b style="color:#6d28d9">Rx④「手法」</b>像程序员一样把 AI 放进工程流；<b class="rx-loop" style="color:#0d5c4f">Rx⑤「自转」</b>把你现有的 HTML 连成能自主更新的知识回路——<b class="rx-loop" style="color:#0d5c4f">不必续费姜学长，你已有 80% 的零件</b>。别用追叶子的焦虑，耽误扎根。</p>
+  </div>
+
+  <!-- ============ Rx① 治本 ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="rx rx-treat">℞</span>
+      <h2>Rx ① 治本 · 工程纵深</h2>
+      <span class="tag tag-treat">主疗程 · 70%</span>
+    </div>
+    <p class="sec-sub">把 GitHub 从“天书”变成“工作台”。不要试图读懂每一行——像看病历一样先抓主干。</p>
+
+    <!-- Phase 1 -->
+    <div class="phase">
+      <div class="phase-title"><span class="n">1</span> 从「用仓库」到「读仓库」</div>
+      <div class="task" data-id="t1a"><div class="box"></div><div class="body"><div class="t">用任何开源项目前，先读它的 README</div><div class="d">只问一件事：它解决什么问题。看主诉，不看每一行。</div></div></div>
+      <div class="task" data-id="t1b"><div class="box"></div><div class="body"><div class="t">看项目的文件夹结构</div><div class="d">文件怎么组织 = 架构思维。这是你做 CaseLog/PassRound 最该偷师的部分。</div></div></div>
+      <div class="task" data-id="t1c"><div class="box"></div><div class="body"><div class="t">翻最近几个 commit 和 issue</div><div class="d">真实工程怎么演进、怎么吵架、怎么取舍——一手的、活的工程现场。</div></div></div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase">
+      <div class="phase-title"><span class="n">2</span> 从「读」到「改并提」</div>
+      <div class="task" data-id="t2a"><div class="box"></div><div class="body"><div class="t">挑一个你在用、规模不大的项目</div><div class="d">门槛越低越好。目标是走通流程，不是写惊艳代码。</div></div></div>
+      <div class="task" data-id="t2b"><div class="box"></div><div class="body"><div class="t">做一次最低门槛贡献</div><div class="d">改文档错别字、补中文说明、修一个小 bug——任选其一。</div></div></div>
+      <div class="task" data-id="t2c"><div class="box"></div><div class="body"><div class="t">提出你的第一个 PR，走完整闭环</div><div class="d">fork → 分支 → commit 规范 → PR → review → （被拒）→ 改 → 合并。走通一次，GitHub 就变工作台了。</div></div></div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase">
+      <div class="phase-title"><span class="n">3</span> 补「手动挡」CS 底层（按你的开发卡点排序）</div>
+      <div class="task" data-id="t3a"><div class="box"></div><div class="body"><div class="t">Git / 版本控制原理</div><div class="d">立刻就用。分支模型、merge vs rebase、冲突解决——不是背命令，是理解它在干嘛。</div></div></div>
+      <div class="task" data-id="t3b"><div class="box"></div><div class="body"><div class="t">一门语言吃透（建议就 JS 或 Python）</div><div class="d">别贪多。选你天天写的那门，从语法走到“它为什么这样设计”。</div></div></div>
+      <div class="task" data-id="t3c"><div class="box"></div><div class="body"><div class="t">HTTP 与 API 怎么工作</div><div class="d">你 CaseLog 的云函数全靠这个：请求/响应、状态码、鉴权、超时。</div></div></div>
+      <div class="task" data-id="t3d"><div class="box"></div><div class="body"><div class="t">数据库基础</div><div class="d">表怎么设计、查询为什么慢。够支撑 CaseLog 数据与你的研究方向即可。</div></div></div>
+      <div class="task" data-id="t3e"><div class="box"></div><div class="body"><div class="t">算法 / 操作系统 → 暂缓</div><div class="d">你不是要刷题进大厂，往后放。先把上面四块变成肌肉记忆。</div></div></div>
+    </div>
+  </section>
+
+  <!-- ============ Rx② 随访 ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="rx rx-follow">℞</span>
+      <h2>Rx ② 随访 · 紧跟 AI</h2>
+      <span class="tag tag-follow">维持 · 30%</span>
+    </div>
+    <p class="sec-sub">三个动作就够，且必须低成本——不能让跟踪吃掉纵深时间。</p>
+
+    <div class="principle">
+      <b>核心原则：</b>模型、工具、框架每月换一茬，今天的技巧明年就过时。Git 怎么工作、系统怎么分层，十年不变。<b>底层是根，AI 跟踪是叶。</b>
+    </div>
+
+    <div class="phase">
+      <div class="phase-title follow"><span class="n">A</span> 信息源做减法</div>
+      <div class="task" data-id="f1"><div class="box"></div><div class="body"><div class="t">停刷碎片化「AI 日报 / 又一个神器」</div><div class="d">那是噪音。锁定 2–3 个高信噪比来源即可。</div></div></div>
+      <div class="task" data-id="f2"><div class="box"></div><div class="body"><div class="t">固定几个真正在做事的人的 GitHub 动态 + 官方发布</div><div class="d">Anthropic / OpenAI 官方 + Hacker News 的 AI 板块，足矣。</div></div></div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-title follow"><span class="n">B</span> 用项目代替资讯</div>
+      <div class="task" data-id="f3"><div class="body" style="margin-left:34px"><div class="t" style="color:var(--warn)">⇄ 这一步与 Rx① 重合</div><div class="d">想懂某领域趋势，别读十篇测评——去 GitHub 找该领域 star 增长最快的项目，读 README 和近期 issue。这才是一手的工程趋势。</div></div></div>
+      <div class="task" data-id="f4"><div class="box"></div><div class="body"><div class="t">每月锁定一个高增长开源项目，读懂它</div><div class="d">跟踪 AI 和深入 GitHub 是同一个动作——一举两得。</div></div></div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-title follow"><span class="n">C</span> 亲手做，不亲手追</div>
+      <div class="task" data-id="f5"><div class="box"></div><div class="body"><div class="t">新东西的唯一判断标准：能否解决你的具体问题</div><div class="d">能解决 CaseLog / PassRound 某个痛点 → 花一下午试；不能 → 记个名字就过。</div></div></div>
+    </div>
+  </section>
+
+  <!-- ============ Rx③ 雷达 ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="rx rx-radar">℞</span>
+      <h2>Rx ③ 雷达 · 不错过前沿</h2>
+      <span class="tag tag-radar">监测 · 自动流入</span>
+    </div>
+    <p class="sec-sub">目标不是“不错过任何前沿”，而是“不错过<b>对我有用</b>的前沿，且用最少的时间”。让前沿主动流到你面前，而不是你天天去追。</p>
+
+    <div class="principle" style="border-color:#1d4ed8;background:#eef2fc">
+      <b style="color:#1d4ed8">前沿是分层的，刷新速度也不同——别用同一个频率去追。</b>工程层周级、产品层月级、思想层季级。错开频率，焦虑就散了。
+    </div>
+
+    <!-- 分层监测表 -->
+    <div class="phase">
+      <div class="phase-title radar"><span class="n">表</span> 三层雷达 · 各层只锁 2–3 个源，关掉其余</div>
+      <div class="radar-table">
+        <div class="radar-row head">
+          <div>层 / Layer</div><div>看什么 · 信源</div><div>频率</div>
+        </div>
+        <div class="radar-row">
+          <div class="layer">工程层<small>你的主场</small></div>
+          <div class="src">某领域 <b>star 增长最快的仓库</b> + 你在用项目的 issue／release；GitHub Trending。看“怎么用、踩了什么坑”。</div>
+          <div class="freq week">周级</div>
+        </div>
+        <div class="radar-row">
+          <div class="layer">产品层<small>风向</small></div>
+          <div class="src"><b>Anthropic / OpenAI 等官方</b>发布与技术博客。看闭源世界在往哪走——这部分 GitHub 看不到。</div>
+          <div class="freq month">月级</div>
+        </div>
+        <div class="radar-row">
+          <div class="layer">思想层<small>源头</small></div>
+          <div class="src"><b>arXiv</b> 你领域的方向（医疗 AI／诊断推理，正好接 Diagnosis(P)）。看“新方法”，不求全读，扫摘要即可。</div>
+          <div class="freq quarter">季级</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 雷达建立动作 -->
+    <div class="phase">
+      <div class="phase-title radar"><span class="n">建</span> 一次性搭好雷达（搭完就半自动了）</div>
+      <div class="task" data-id="r1"><div class="box"></div><div class="body"><div class="t">在 GitHub 上 watch / star 你领域的 3–5 个核心仓库</div><div class="d">它们的 release 和讨论会自动进你的 feed。这是“前沿主动找你”的开关。</div></div></div>
+      <div class="task" data-id="r2"><div class="box"></div><div class="body"><div class="t">固定 2 个官方信源，加进书签或订阅</div><div class="d">月初花 20 分钟扫一遍即可，不用天天看。</div></div></div>
+      <div class="task" data-id="r3"><div class="box"></div><div class="body"><div class="t">设一个季度提醒：扫一次 arXiv 你的方向</div><div class="d">只读摘要和图，挑 1–2 篇可能喂养 Diagnosis(P) 的精读。其余归档。</div></div></div>
+      <div class="task" data-id="r4"><div class="body" style="margin-left:34px"><div class="t" style="color:#1d4ed8">⇄ 与 Rx① 完全重合</div><div class="d">“每月读一个高增长开源项目”同时满足：补工程纵深 + 跟踪工程前沿。一个动作，两份收益。</div></div></div>
+    </div>
+
+    <!-- 过滤尺：交互判断器 -->
+    <div class="phase">
+      <div class="phase-title radar"><span class="n">尺</span> 看到新东西时，用这把尺子过一遍</div>
+      <div class="filter-box">
+        <div class="fl-label">The Filter · 过滤判断器</div>
+        <div class="fl-q">“这个新东西，能解决我手上的具体问题吗？”</div>
+        <div class="fl-btns">
+          <button class="fl-yes" id="flYes">能 · 解决某个真实痛点</button>
+          <button class="fl-no" id="flNo">不能 · 只是看着新</button>
+        </div>
+        <div class="fl-result" id="flResult" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Rx④ 手法 ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="rx rx-hand">℞</span>
+      <h2>Rx ④ 手法 · 像程序员一样用 AI</h2>
+      <span class="tag tag-hand">操作技术</span>
+    </div>
+    <p class="sec-sub">程序员用得好，不是 AI 技巧高，是<b>判断力强</b>——知道该信什么、改什么、拒什么。核心差异：把 AI 放进<b>工程流</b>，而不是当聊天框。</p>
+
+    <div class="phase">
+      <div class="phase-title hand"><span class="n">1</span> 喂上下文，再提问</div>
+      <div class="task hand-acc" data-id="h1"><div class="box"></div><div class="body"><div class="t">提问前先想：“它要看到什么才能答对？”</div><div class="d">在 Cursor 里让 AI 读整个库，而不是复制片段出来问。主动喂相关文件、报错、项目约定——答案精度差一个量级。</div></div></div>
+    </div>
+    <div class="phase">
+      <div class="phase-title hand"><span class="n">2</span> AI 做脏活，人定架构</div>
+      <div class="task hand-acc" data-id="h2"><div class="box"></div><div class="body"><div class="t">重复劳动甩给 AI，设计判断自己留着</div><div class="d">写测试、改样板、重构、翻译报错 → 交给 AI。怎么分层、要不要这个依赖、设计对不对 → 自己定。AI 写“怎么做”，你定“做什么、为什么”。</div></div></div>
+    </div>
+    <div class="phase">
+      <div class="phase-title hand"><span class="n">3</span> 永远 review，从不盲信</div>
+      <div class="task hand-acc" data-id="h3"><div class="box"></div><div class="body"><div class="t">AI 生成的代码，逐行读懂再用</div><div class="d">资深程序员用得快，是因为能一眼看出坑和幻觉。你判断力还在长——所以每次 review 都当成读源码训练，这恰恰是 Rx① 的纵深。</div></div></div>
+    </div>
+    <div class="phase">
+      <div class="phase-title hand"><span class="n">4</span> 把 AI 当源码私教</div>
+      <div class="task hand-acc" data-id="h4"><div class="box"></div><div class="body"><div class="t">看不懂的 GitHub 代码，贴给 AI 逐行讲</div><div class="d">“逐行解释这在干嘛、为什么这么写。”望而生畏的天书 → 带私教的源码课。这一条直接打通你“深入 GitHub”的卡点。</div></div></div>
+    </div>
+    <div class="phase">
+      <div class="phase-title hand"><span class="n">5</span> git / 终端 / 报错，边用边问</div>
+      <div class="task hand-acc" data-id="h5"><div class="box"></div><div class="body"><div class="t">不只问“怎么做”，追问“为什么是这样”</div><div class="d">写 commit、解释报错堆栈、查 git 操作——随手问。把你正在补的 Git/HTTP 底层，变成边用边学。工具即老师。</div></div></div>
+    </div>
+
+    <div class="principle hand">
+      <b>一句话：</b>你想“像程序员一样用得好”，真正要补的不是 AI 技巧，是 Rx① 那套纵深。你越懂底层，AI 在你手里就越强——这俩是同一件事。
+    </div>
+  </section>
+
+  <!-- ============ Rx⑤ 自转 ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="rx rx-loop">℞</span>
+      <h2>Rx ⑤ 自转 · 自主更新知识架构</h2>
+      <span class="tag tag-loop">出院 · 自我管理</span>
+    </div>
+    <p class="sec-sub">姜学长卖的“知识库 + 前沿追踪 + 社群”，你手里<b>已有 80% 的零件</b>，只是四散着、没连成回路。不必续费——把自己的东西连起来，让它自转。</p>
+
+    <!-- 资产盘点 -->
+    <div class="phase">
+      <div class="phase-title" style="color:#0d5c4f"><span class="n" style="border-color:#0d5c4f;color:#0d5c4f">产</span> 你已经有的零件（不是从零开始）</div>
+      <div class="assets">
+        <div class="asset">
+          <div class="file">cs-venues.html<br>CS 顶会速查</div>
+          <div class="role"><b>思想层信源</b> · arXiv／NeurIPS／CVPR 你都整理好了，生物交叉栏正好接 Diagnosis(P)。这就是 Rx③ 雷达的入口，不是静态表。</div>
+        </div>
+        <div class="asset">
+          <div class="file">ai-map.html<br>技术栈全景地图</div>
+          <div class="role"><b>结构底盘</b> · L1 算力→L5 应用分层清晰，标了 Cursor✓、CaseLog✓、MCP 重点关注。任何新东西都能往这张图上定位。</div>
+        </div>
+        <div class="asset">
+          <div class="file">ai-knowledge-tools.html<br>知识库工具对比</div>
+          <div class="role"><b>沉淀选型</b> · 你已把 Obsidian 高亮成“第二大脑”，说明知识往哪存你想清楚了。</div>
+        </div>
+        <div class="asset off">
+          <div class="file">vibe_marketing.html<br>Vibe Marketing</div>
+          <div class="role">属于<b style="color:var(--ink-soft)">另一条线（内容／分发）</b>，跟“像程序员一样用 AI”关系不大，不进工程回路。它有用，但不是这次主线。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 自转回路（signature） -->
+    <div class="phase">
+      <div class="phase-title" style="color:#0d5c4f"><span class="n" style="border-color:#0d5c4f;color:#0d5c4f">环</span> 知识自转回路 · 让内容自己流动起来</div>
+      <div class="loop">
+        <div class="loop-node">
+          <div class="dot">1</div>
+          <div class="nbody"><div class="step">接收<span class="via">Rx③ 雷达</span></div><div class="sd">工程层看 GitHub，思想层用 cs-venues 扫 arXiv。新东西从这里进来。</div></div>
+        </div>
+        <div class="loop-node">
+          <div class="dot">2</div>
+          <div class="nbody"><div class="step">判断<span class="via">过滤尺</span></div><div class="sd">“能解决我手上的具体问题吗？”能→深入；不能→归档。挡掉 90% 的噪音。</div></div>
+        </div>
+        <div class="loop-node">
+          <div class="dot">3</div>
+          <div class="nbody"><div class="step">沉淀<span class="via">Obsidian / 单文件 HTML</span></div><div class="sd">留下的，写进你的第二大脑。双轨：私密思考用 Obsidian，可分享的做成 HTML 挂 GitHub Pages。</div></div>
+        </div>
+        <div class="loop-node">
+          <div class="dot">4</div>
+          <div class="nbody"><div class="step">定位<span class="via">ai-map.html</span></div><div class="sd">这个新东西落在技术栈哪一层？更新你的地图——地图越新，你的全局判断越准。</div></div>
+        </div>
+        <div class="loop-node">
+          <div class="dot">5</div>
+          <div class="nbody"><div class="step">实践<span class="via">CaseLog / PassRound / LitRound</span></div><div class="sd">用真实项目检验。这是终点，也是产出——OpenClaw 的产品就是你知识架构的“临床验证”。</div></div>
+        </div>
+        <div class="loop-return"><span class="arc"></span>↺ 回到「接收」——实践中冒出的新问题，又驱动下一轮雷达</div>
+      </div>
+    </div>
+
+    <!-- 自更新仪式 -->
+    <div class="ritual">
+      <div class="rl">The Ritual · 每月一次，30 分钟</div>
+      <div class="rt">“知识架构自更新”——把回路跑一圈，它就活着</div>
+      <ol>
+        <li>扫一遍雷达：GitHub watch 列表 + cs-venues 里你的方向，<b>挑出本月 1–2 个值得关注的东西</b>。</li>
+        <li>每个都过一遍过滤尺，<b>只留能碰你项目的</b>。</li>
+        <li>留下的写进 Obsidian / 一个 HTML，并在 <b>ai-map 上更新它的位置</b>。</li>
+        <li>选其中<b>一个，花一下午接进 CaseLog / PassRound</b> 试。试不通也是收获。</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    <span>OpenClaw · PantosAI　|　进度自动保存在本机浏览器</span>
+    <button class="reset" id="reset">重置进度</button>
+  </footer>
+
+</div>
+
+<script>
+  const KEY = 'openclaw_ai_roadmap_v1';
+  const tasks = [...document.querySelectorAll('.task[data-id]')];
+  const fill = document.getElementById('fill');
+  const pct = document.getElementById('pct');
+  const count = document.getElementById('count');
+
+  let state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ state = {}; }
+
+  function render(){
+    let done = 0;
+    tasks.forEach(t=>{
+      const id = t.dataset.id;
+      if(state[id]){ t.classList.add('done'); done++; }
+      else t.classList.remove('done');
+    });
+    const total = tasks.length;
+    const p = total ? Math.round(done/total*100) : 0;
+    fill.style.width = p + '%';
+    pct.textContent = p + '%';
+    count.textContent = done + ' / ' + total;
+  }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+  tasks.forEach(t=>{
+    const id = t.dataset.id;
+    if(!t.querySelector('.box')) return; // 跳过纯说明行
+    t.setAttribute('tabindex','0');
+    t.setAttribute('role','checkbox');
+    const toggle = ()=>{ state[id] = !state[id]; save(); render(); t.setAttribute('aria-checked', !!state[id]); };
+    t.addEventListener('click', toggle);
+    t.addEventListener('keydown', e=>{ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); toggle(); } });
+  });
+
+  document.getElementById('reset').addEventListener('click', ()=>{
+    if(confirm('清空所有勾选进度？')){ state = {}; save(); render(); }
+  });
+
+  // 过滤判断器
+  const flResult = document.getElementById('flResult');
+  document.getElementById('flYes').addEventListener('click', ()=>{
+    flResult.className = 'fl-result show yes';
+    flResult.innerHTML = '<span class="rt">→ 深入</span>花一个下午，把它接到 CaseLog / PassRound 的那个具体痛点上动手试。这才是值得花的前沿时间。';
+  });
+  document.getElementById('flNo').addEventListener('click', ()=>{
+    flResult.className = 'fl-result show no';
+    flResult.innerHTML = '<span class="rt">→ 归档</span>记个名字，放进“以后也许有用”清单，然后回去扎根。不能解决问题的前沿，错过它没有任何损失。';
+  });
+
+  render();
+</script>
+</body>
+</html>
