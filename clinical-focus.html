@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>方向校准 · 把本职做到顶尖</title>
+<style>
+  :root{
+    --ink:#1b2733;
+    --ink-soft:#52606d;
+    --paper:#f6f4ef;
+    --card:#ffffff;
+    --line:#e1e4e8;
+    --rule:#c4ccd4;
+    --teal:#0f6f6a;
+    --teal-soft:#e3efed;
+    --dim:#9aa4ad;
+    --strike:#b9343a;
+    --strike-soft:#f6e7e7;
+    --serif:Georgia,"Songti SC","STSong","SimSun",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);color:var(--ink);font-family:var(--sans);
+    line-height:1.75;-webkit-font-smoothing:antialiased;padding:0 20px 90px;
+  }
+  .wrap{max-width:780px;margin:0 auto}
+
+  header{padding:56px 0 26px;border-bottom:2px solid var(--ink)}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);margin-bottom:16px}
+  h1{font-family:var(--serif);font-weight:700;font-size:clamp(28px,5.2vw,42px);line-height:1.12;letter-spacing:-.4px}
+  h1 em{font-style:italic;color:var(--teal)}
+  .lede{font-size:16px;color:var(--ink-soft);margin-top:18px;max-width:62ch}
+  .lede b{color:var(--ink)}
+
+  /* 分诊：两个目标 */
+  .fork{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:38px 0 16px}
+  .goal{border:1px solid var(--rule);border-radius:5px;padding:20px 22px;position:relative;background:var(--card)}
+  .goal .gk{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+  .goal .gt{font-family:var(--serif);font-size:20px;font-weight:700;line-height:1.25}
+  .goal .gd{font-size:13.5px;color:var(--ink-soft);margin-top:8px}
+  .goal.chosen{border-color:var(--teal);border-width:2px;background:var(--teal-soft)}
+  .goal.chosen .gk{color:var(--teal)}
+  .goal.chosen .stamp{
+    position:absolute;top:-13px;right:16px;background:var(--teal);color:#fff;
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;padding:3px 12px;border-radius:99px;
+  }
+  .goal.aside{opacity:.62}
+  .goal.aside .gk{color:var(--dim)}
+  .goal.aside .gt{color:var(--ink-soft)}
+  .goal.aside .stamp{
+    position:absolute;top:-13px;right:16px;background:#eceae3;color:var(--ink-soft);
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;padding:3px 12px;border-radius:99px;border:1px solid var(--rule);
+  }
+  .fork-note{font-size:13px;color:var(--ink-soft);font-style:italic;margin-bottom:48px}
+  @media(max-width:560px){.fork{grid-template-columns:1fr}}
+
+  /* 核心区分：用 vs 造 —— signature */
+  .split-label{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);text-align:center;margin-bottom:14px}
+  .split{display:grid;grid-template-columns:1fr 64px 1fr;align-items:stretch;gap:0;margin-bottom:10px}
+  .side{padding:24px 24px;border-radius:6px}
+  .side .st{font-family:var(--serif);font-size:26px;font-weight:700;line-height:1}
+  .side .ss{font-family:var(--mono);font-size:11px;letter-spacing:.08em;margin-top:6px}
+  .side .sb{font-size:13.5px;margin-top:14px;line-height:1.65}
+  .use{background:var(--teal);color:#eaf4f1}
+  .use .ss{color:#9fd0c7}
+  .use b{color:#fff}
+  .build{background:#eceae3;color:var(--ink-soft)}
+  .build .st{color:var(--ink)}
+  .build .ss{color:var(--dim)}
+  .build .impact{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--strike);background:var(--strike-soft);padding:2px 9px;border-radius:99px}
+  .neq{display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:30px;color:var(--ink);font-style:italic}
+  @media(max-width:560px){
+    .split{grid-template-columns:1fr;gap:10px}
+    .neq{padding:4px 0}
+  }
+  .split-foot{font-size:14px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:0 4px 4px 0;padding:14px 18px;margin-bottom:52px}
+  .split-foot b{color:var(--teal)}
+
+  section{margin-bottom:50px}
+  .sec-head{display:flex;align-items:baseline;gap:13px;border-bottom:1.5px solid var(--ink);padding-bottom:8px;margin-bottom:20px}
+  .sec-head .mk{font-family:var(--serif);font-style:italic;font-size:24px;line-height:1;flex-shrink:0}
+  .keep .mk{color:var(--teal)}
+  .stop .mk{color:var(--dim)}
+  .home .mk{color:var(--strike)}
+  .sec-head h2{font-family:var(--sans);font-size:19px;font-weight:700;flex:1}
+  .sec-sub{font-size:13.5px;color:var(--ink-soft);margin:-8px 0 20px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:16px 18px;margin-bottom:10px}
+  .card .ct{font-weight:700;font-size:15px}
+  .card .cd{font-size:13.5px;color:var(--ink-soft);margin-top:4px}
+  .card.keepc{border-left:3px solid var(--teal)}
+  .card.stopc{border-left:3px solid var(--dim);background:#fbfaf8}
+  .card.stopc .ct{color:var(--ink-soft)}
+
+  .home-list{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:6px 4px}
+  .home-list .row{display:flex;gap:14px;padding:13px 16px;border-bottom:1px solid var(--line);align-items:baseline}
+  .home-list .row:last-child{border-bottom:none}
+  .home-list .rk{font-family:var(--mono);font-size:11px;color:var(--strike);white-space:nowrap;flex-shrink:0;width:64px}
+  .home-list .rt{font-size:14px}
+  .home-list .rt b{color:var(--ink)}
+
+  .closer{background:var(--ink);color:#dfe7ea;border-radius:6px;padding:26px 28px;margin-top:8px}
+  .closer .cl{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#7f9ca0;margin-bottom:10px}
+  .closer p{font-family:var(--serif);font-size:18px;line-height:1.5;color:#fff}
+  .closer p .t{color:#5fb3a3;font-style:italic}
+
+  footer{border-top:1px solid var(--rule);margin-top:40px;padding-top:18px;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  a.back{color:var(--teal);text-decoration:none}
+  a.back:hover{text-decoration:underline}
+  :focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">方案校准 · Recalibration</div>
+    <h1>你要的是<br><em>把本职做到顶尖</em></h1>
+    <p class="lede">这个答案一落地，过去一年关于“该不该深学 GitHub、要不要追前沿 AI”的纠结就结束了。<b>纠结的根源，是把两个不同的目标搅在了一起。</b>把它们分开，方向立刻清晰。</p>
+  </header>
+
+  <!-- 分诊：两个目标 -->
+  <div class="fork">
+    <div class="goal chosen">
+      <span class="stamp">✓ 你的选择</span>
+      <div class="gk">目标 A · 主业</div>
+      <div class="gt">把本职做到顶尖</div>
+      <div class="gd">在本职领域做得更准、更深、更可靠。路径是专业的——实战、复盘、读一手资料、向高手学、钻知识体系。</div>
+    </div>
+    <div class="goal aside">
+      <span class="stamp">暂缓</span>
+      <div class="gk">目标 B · 工程</div>
+      <div class="gt">成为会造产品的人</div>
+      <div class="gd">做产品、写论文、靠产品走向财务自由。路径需要工程纵深——Git、源码、前沿 AI。</div>
+    </div>
+  </div>
+  <p class="fork-note">两个目标都值得尊敬，也不矛盾——但它们抢同一份时间。你的焦虑，是时间在替你投票，而你此前还没想清要投给谁。现在票投给了 A。</p>
+
+  <!-- signature：用 ≠ 造 -->
+  <div class="split-label">那么，AI 对“把本职做到顶尖”到底有没有用？关键在这个区分 ——</div>
+  <div class="split">
+    <div class="side use">
+      <div class="st">用 AI</div>
+      <div class="ss">low cost · 对本职真有用</div>
+      <div class="sb">让 AI 帮你读一手资料、辅助复杂判断、当第二意见。<b>一行代码都不用写，GitHub 碰都不用碰。</b>它让你成为跟得上前沿、思路更广的人。</div>
+    </div>
+    <div class="neq">≠</div>
+    <div class="side build">
+      <div class="st">造 AI</div>
+      <div class="ss">high cost · Vibe Coding / Git / 源码 / 前沿</div>
+      <div class="sb">亲手把工具造出来、写那篇论文时才有回报。它的产出是<b>“更好的产品”和“一篇论文”</b>——服务目标 B。</div>
+      <span class="impact">对本职能力 ≈ 0</span>
+    </div>
+  </div>
+  <div class="split-foot">所以诚实地说：<b>前沿 AI 和 GitHub 对你的“本职能力”帮助几乎为零。</b>它们服务的是目标 B。此前的烦躁，是你拿为 B 准备的工具，去量它对 A 有没有用——尺子量错了东西，工具本身没错。</div>
+
+  <!-- 保留 -->
+  <section class="keep">
+    <div class="sec-head"><span class="mk">℞</span><h2>保留 · 这三样真能让你在本职上更强</h2></div>
+    <p class="sec-sub">全是“用”，不是“造”。投入低，回报直接落在本职上。</p>
+    <div class="card keepc"><div class="ct">① 用 AI 啃一手资料与证据</div><div class="cd">把权威资料、综述、核心研究喂给 NotebookLM 那类工具，对话、抓核心与局限。能高效消化前沿的人，几年下来判断力的差距是巨大的。</div></div>
+    <div class="card keepc"><div class="ct">② 用 AI 当复杂判断的陪练</div><div class="cd">复杂案例把背景丢给它，让它列方案、提你可能漏的方向。是陪你想，不是替你定——拍板永远是你的专业判断。尤其拓宽少见情形的思路。</div></div>
+    <div class="card keepc"><div class="ct">③ 保持对 AI 的基本判断力</div><div class="cd">不必懂它怎么造，但要懂它什么时候会胡说。行业 AI 工具进到你的工作里时，你不被忽悠、也不盲信。跟着领域里靠谱的人、读读权威来源就够，不需要 GitHub。</div></div>
+  </section>
+
+  <!-- 可以停下 -->
+  <section class="stop">
+    <div class="sec-head"><span class="mk">⏸</span><h2>可以停下 · 工程纵深停在“够用”</h2></div>
+    <p class="sec-sub">对“把本职做到顶尖”这个目标，下面这些投入产出比很低。把时间还给本职。</p>
+    <div class="card stopc"><div class="ct">Rx① 的手动挡：Git、读源码、HTTP、数据库</div><div class="cd">这是为“造工具吃饭的人”准备的。你是靠本职立身的人，停在够用即可，不必再往深挖。</div></div>
+    <div class="card stopc"><div class="ct">你做的那些工具 · 那十几个 HTML</div><div class="cd">没浪费——它们已是合格的帮手。继续用、缺啥补啥，但别再为“做成产品 / 学会底层工程”无限投入。它们是工具，不是事业。</div></div>
+  </section>
+
+  <!-- 真正主场 -->
+  <section class="home">
+    <div class="sec-head"><span class="mk">⌂</span><h2>真正的主场 · 回到本职</h2></div>
+    <p class="sec-sub">这里才是你功力最深、回报最高的地方。重心移回来。</p>
+    <div class="home-list">
+      <div class="row"><span class="rk">证据</span><span class="rt">把<b>权威资料和一手研究</b>读透，用 AI 当放大镜加速消化。</span></div>
+      <div class="row"><span class="rk">实战</span><span class="rt">多上手实战，<b>系统复盘失误与复杂案例</b>——这是判断力长进最快的地方。</span></div>
+      <div class="row"><span class="rk">传承</span><span class="rt">跟着高手<b>实战</b>，把本职那套知识体系越钻越深。</span></div>
+      <div class="row"><span class="rk">真资产</span><span class="rt">你刚为一场大考准备的那套深度材料——<b>多年真题分析、笔记系统、结构化知识库</b>。你在这上面的功力远比在 GitHub 上深，继续往这里加码。</span></div>
+    </div>
+  </section>
+
+  <div class="closer">
+    <div class="cl">结论 · The Call</div>
+    <p>AI 对你是<span class="t">“读一手资料的放大镜”</span>和<span class="t">“复杂判断的陪练”</span>，不是要你转行的方向。这一年的工程探索没白费——它让你成了一个懂 AI、不会被忽悠的人。但探索到此可以收了。<br><br>接下来，回到本职。</p>
+  </div>
+
+  <footer>
+    <a class="back" href="index.html">← 返回 The Development of AI</a>
+    <span>方向校准单 · Recalibration</span>
+  </footer>
+
+</div>
+</body>
+</html>
