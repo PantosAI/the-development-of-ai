@@ -487,6 +487,31 @@ section{padding-top:64px}
 .core-plan li .lbl{font-family:'Noto Serif SC';font-weight:700;color:var(--accent);margin-right:6px}
 .core-plan .cp-foot{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:.86rem;color:var(--muted)}
 .core-plan .cp-foot b{color:var(--accent)}
+/* 运动分类树（有氧/无氧总纲） */
+.tax{margin-top:20px}
+.tax .tax-root{display:inline-block;font-family:'Bodoni Moda',serif;font-style:italic;font-size:1.1rem;border:1.5px solid var(--ink);padding:5px 20px}
+.tax .tax-two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+.tax .tax-cat{border:1px solid var(--ink);background:rgba(255,255,255,.4);padding:16px 18px}
+.tax .tax-cat.strength{border-width:2px;border-color:var(--accent)}
+.tax .tc-h{font-family:'Noto Serif SC';font-weight:700;font-size:1.05rem}
+.tax .tc-h .en{font-family:'Space Mono',monospace;font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-left:6px}
+.tax .tc-eg{font-size:.82rem;color:var(--ink);margin-top:6px}
+.tax .tc-role{font-size:.76rem;color:var(--muted);margin-top:7px;padding-top:7px;border-top:1px dotted var(--line)}
+.tax .splits{margin-top:11px;padding-top:11px;border-top:1px dashed var(--accent)}
+.tax .splits .sp-tag{font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
+.tax .splits .chips{display:flex;flex-wrap:wrap;gap:6px}
+.tax .splits .chip{border:1px solid var(--line);background:var(--paper);padding:4px 10px;font-size:.78rem}
+.tax .splits .chip.hot{border-color:var(--accent);color:var(--accent);font-weight:700}
+@media(max-width:560px){.tax .tax-two{grid-template-columns:1fr}}
+/* 尿酸饮食红绿灯 */
+.ua-diet{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.ua-diet .uad{border:1px solid var(--line);padding:14px 16px;font-size:.86rem;line-height:1.75}
+.ua-diet .uad.bad{border-left:3px solid var(--accent)}
+.ua-diet .uad.ok{border-left:3px solid #3c7a4e}
+.ua-diet .uad-h{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px}
+.ua-diet .uad.bad .uad-h{color:var(--accent)}
+.ua-diet .uad.ok .uad-h{color:#3c7a4e}
+@media(max-width:560px){.ua-diet{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -851,6 +876,36 @@ section{padding-top:64px}
       <div class="kcal-row"><span>预期速度</span><b>0.5–1 kg/周（前期更快）</b></div>
     </div>
 
+    <!-- 运动分类总纲：先分有氧/无氧，几分法在无氧之下 -->
+    <h3 style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:1.4rem;margin-top:36px" class="reveal">先分清类别 · 有氧 vs 无氧</h3>
+    <p class="reveal" style="font-size:.92rem;color:var(--muted);margin-top:6px">先把辈分理清：最顶层只有<b style="color:var(--ink)">有氧 / 无氧</b>两类；"三分、五分、推拉蹲"全是<b style="color:var(--ink)">无氧（力量）里"怎么分天练"的下级花样</b>，不是和有氧平级的东西。</p>
+
+    <div class="tax reveal">
+      <span class="tax-root">运动</span>
+      <div class="tax-two">
+        <div class="tax-cat">
+          <div class="tc-h">有氧<span class="en">Aerobic</span></div>
+          <div class="tc-eg">跑步 / 快走 / 椭圆 / 单车 / 游泳</div>
+          <div class="tc-role">靠氧气持续供能，强度中低、能持久 · 作用：加大热量缺口、练心肺</div>
+        </div>
+        <div class="tax-cat strength">
+          <div class="tc-h">无氧 = 力量训练<span class="en">Anaerobic</span></div>
+          <div class="tc-eg">举铁 / 固定器械 / 冲刺</div>
+          <div class="tc-role">靠糖原快速供能，强度高、维持不久 · 作用：保肌肉、塑形、提代谢</div>
+          <div class="splits">
+            <div class="sp-tag">↳ 力量内部：怎么分天练（分化方案）</div>
+            <div class="chips">
+              <span class="chip">全身</span>
+              <span class="chip">两分 · 上下</span>
+              <span class="chip hot">三分 = 推拉蹲 PPL</span>
+              <span class="chip">五分 · 部位</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="reveal" style="font-size:.84rem;color:var(--muted);margin-top:12px">一句话：<b style="color:var(--accent)">第一刀切有氧 / 无氧；几分法只在"无氧"里再切，差一个辈分。</b>减脂两类都要——无氧保肌肉打底，有氧帮着烧。下面就是"无氧"那一支怎么选：</p>
+
     <!-- 训练分化汇总（并入减重方案·练这一支柱） -->
     <h3 style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:1.4rem;margin-top:36px" class="reveal">训练怎么分 · 全身 / 上下 / 推拉腿 / 五分</h3>
     <p class="reveal" style="font-size:.92rem;color:var(--muted);margin-top:6px">"几分法""推拉蹲"其实是同一件事的不同切法，都在回答：<b style="color:var(--ink)">一周训练怎么把全身肌肉摊到不同天。</b>原理就一句——一块肌肉练完要 48–72 小时恢复，所以拆开轮流练、轮流歇。从粗到细排成一张表：</p>
@@ -1120,7 +1175,19 @@ section{padding-top:64px}
 
     <!-- 落到每一天：把吃练睡/分化/器械/监测拼成一周日程 -->
     <h3 style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:1.4rem;margin-top:38px" class="reveal">尿酸专项 · 要不要现在用药（OpenEvidence 循证）</h3>
-    <p class="reveal" style="font-size:.92rem;color:var(--muted);margin-top:6px">针对基线那个 <b style="color:var(--accent)">尿酸 600.9 ↑</b>。这是真实的指南分歧：<b style="color:var(--ink)">ACR 2020 对无症状高尿酸不推荐用药</b>（SU>9mg/dL 者 5 年内仅 ~20% 发痛风，NNT 24/3 年）；<b style="color:var(--ink)">中国共识（2019/23）则推荐</b>——尿酸 ≥540，或 ≥480 + 合并症（高血压 / 脂代谢异常 / 糖尿病 / 肥胖 / CKD / 心脑血管 / MASLD）。你 600 + 肥胖 + 重度 MASLD + 低 HDL，<b style="color:var(--accent)">按中国指南两条线都达标，按 ACR 不达标</b>——属 shared decision，最终你和风湿科定。决策表如下：</p>
+    <p class="reveal" style="font-size:.92rem;color:var(--muted);margin-top:6px">针对基线那个 <b style="color:var(--accent)">尿酸 600.9 ↑</b>。这是真实的指南分歧：<b style="color:var(--ink)">ACR 2020 对无症状高尿酸不推荐用药</b>（SU>9mg/dL 者 5 年内仅 ~20% 发痛风，NNT 24/3 年）；<b style="color:var(--ink)">中国共识（2019/23）则推荐</b>——尿酸 ≥540，或 ≥480 + 合并症（高血压 / 脂代谢异常 / 糖尿病 / 肥胖 / CKD / 心脑血管 / MASLD）。你 600 + 肥胖 + 重度 MASLD + 低 HDL，<b style="color:var(--accent)">按中国指南两条线都达标，按 ACR 不达标</b>——属 shared decision，最终你和风湿科定。<b style="color:var(--ink)">但你现在的实际主线是「先减重 + 饮食管理」，用药只是后手。</b></p>
+
+    <div class="ua-diet reveal">
+      <div class="uad bad"><div class="uad-h">少碰 · 升尿酸</div>浓肉汤 · 海鲜 · 酒（尤其啤酒）· 含糖 / 碳酸饮料 · 烧烤 · 火锅（久涮的汤底嘌呤高）</div>
+      <div class="uad ok"><div class="uad-h">放心吃 · 中性或有益</div>牛奶 / 低脂奶（乳制品反而<b>降</b>尿酸）· 蔬菜水果（含嘌呤的菜也不增痛风风险）· 足量白水</div>
+    </div>
+    <p class="reveal" style="font-size:.88rem;color:var(--ink);margin-top:14px;line-height:1.85">
+      · <b>先减重是主线</b>：你这高尿酸主要是肥胖 / 代谢综合征的一环，减下来它会跟着降——最对因。<br>
+      · <b>出汗多记得补液</b>：减重 + 运动大汗会让血液浓缩、诱发痛风，水要跟上。<br>
+      · <b>血压顺带盯</b>：代谢综合征常合并高血压，你目前 122/79 正常，继续保持。<br>
+      · <b>药留后手</b>：先减重 + 饮食 2–3 个月，复查若尿酸仍不降再议；且 HLA-B*5801 只在"要用别嘌醇时"才需筛。
+    </p>
+    <p class="reveal" style="font-size:.86rem;color:var(--muted);margin-top:16px">若日后决定起始降尿酸治疗（ULT），下表是循证参考：</p>
 
     <table class="split-table reveal">
       <thead><tr><th>决策点</th><th>建议</th></tr></thead>
