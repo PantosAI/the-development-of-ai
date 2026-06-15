@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>医院职能分工总览</title>
+<style>
+  :root{
+    --paper:#EEF1EF;
+    --paper-2:#F6F8F7;
+    --ink:#1B2422;
+    --ink-soft:#46524E;
+    --ink-faint:#7C8884;
+    --line:#CDD6D2;
+    --line-soft:#E0E6E3;
+    --seal:#B23A33;
+    --seal-deep:#9A2D27;
+    /* 两条线的主题色 */
+    --pillar-a:#2B4257;      /* 院长兼书记 黛蓝 */
+    --pillar-a-soft:#E7ECF1;
+    --pillar-b:#1F5C54;      /* 分管院长 松青 */
+    --pillar-b-soft:#E4EEEB;
+    --serif:"Songti SC","STSong","SimSun","Noto Serif SC",serif;
+    --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB","Noto Sans SC",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 12% 0%, rgba(43,66,87,.04), transparent 45%),
+      radial-gradient(circle at 88% 0%, rgba(31,92,84,.04), transparent 45%);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1140px;margin:0 auto;padding:0 22px 90px;}
+
+  /* ——— 红头 / 标题 ——— */
+  .masthead{
+    text-align:center;
+    padding:48px 0 26px;
+    position:relative;
+  }
+  .redrule{height:3px;background:var(--seal);max-width:760px;margin:0 auto 4px;}
+  .redrule.thin{height:1px;max-width:760px;margin:0 auto 30px;opacity:.85;}
+  .masthead h1{
+    font-family:var(--serif);
+    font-weight:600;
+    letter-spacing:.18em;
+    font-size:clamp(28px,5vw,42px);
+    margin:18px 0 8px;
+    color:var(--ink);
+  }
+  .masthead .sub{
+    font-size:14px;
+    color:var(--ink-faint);
+    letter-spacing:.28em;
+    margin:0;
+  }
+  .corner-seal{
+    display:inline-block;
+    font-family:var(--serif);
+    color:#fff;background:var(--seal);
+    width:46px;height:46px;line-height:46px;
+    font-size:24px;border-radius:7px;
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,.35);
+    transform:rotate(-4deg);
+    margin-bottom:6px;
+  }
+
+  /* ——— 控制条 ——— */
+  .controls{
+    display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+    justify-content:space-between;
+    padding:14px 18px;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:12px;
+    margin-bottom:30px;
+  }
+  .controls .legend{
+    display:flex;align-items:center;gap:9px;
+    font-size:13px;color:var(--ink-soft);
+  }
+  .seal{
+    display:inline-flex;align-items:center;justify-content:center;
+    font-family:var(--serif);color:#fff;background:var(--seal);
+    width:20px;height:20px;font-size:12px;border-radius:4px;
+    box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.4);
+    flex:none;
+  }
+  .btns{display:flex;gap:8px;flex-wrap:wrap;}
+  button.ctl{
+    font-family:var(--sans);font-size:13px;
+    color:var(--ink-soft);background:#fff;
+    border:1px solid var(--line);
+    padding:7px 14px;border-radius:8px;cursor:pointer;
+    transition:all .15s ease;
+  }
+  button.ctl:hover{border-color:var(--ink-faint);color:var(--ink);}
+  button.ctl.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  button.ctl:focus-visible{outline:2px solid var(--seal);outline-offset:2px;}
+
+  /* ——— 两大条线 ——— */
+  .pillars{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
+  @media(max-width:840px){.pillars{grid-template-columns:1fr;}}
+
+  .pillar{
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:16px;
+    overflow:hidden;
+  }
+  .pillar-head{
+    padding:22px 24px 20px;
+    border-bottom:1px solid var(--line-soft);
+    position:relative;
+  }
+  .pillar-head::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:6px;
+  }
+  .pillar[data-accent="a"] .pillar-head::before{background:var(--pillar-a);}
+  .pillar[data-accent="b"] .pillar-head::before{background:var(--pillar-b);}
+  .pillar-tag{
+    display:inline-block;font-size:12px;letter-spacing:.2em;
+    padding:3px 10px;border-radius:20px;margin-bottom:10px;
+  }
+  .pillar[data-accent="a"] .pillar-tag{background:var(--pillar-a-soft);color:var(--pillar-a);}
+  .pillar[data-accent="b"] .pillar-tag{background:var(--pillar-b-soft);color:var(--pillar-b);}
+  .pillar-role{
+    font-family:var(--serif);font-size:24px;font-weight:600;
+    letter-spacing:.06em;margin:0 0 6px;
+  }
+  .pillar[data-accent="a"] .pillar-role{color:var(--pillar-a);}
+  .pillar[data-accent="b"] .pillar-role{color:var(--pillar-b);}
+  .pillar-note{font-size:13px;color:var(--ink-faint);margin:0;}
+  .pillar-count{font-size:12px;color:var(--ink-faint);float:right;margin-top:4px;}
+
+  .domains{padding:14px 16px 20px;}
+
+  /* ——— 职能卡 ——— */
+  .domain{
+    border:1px solid var(--line-soft);
+    border-radius:11px;background:#fff;
+    margin-bottom:11px;overflow:hidden;
+    transition:border-color .15s ease;
+  }
+  .domain:last-child{margin-bottom:0;}
+  .domain-head{
+    display:flex;align-items:flex-start;gap:11px;
+    padding:14px 15px;cursor:pointer;
+    user-select:none;
+  }
+  .domain-head:focus-visible{outline:2px solid var(--seal);outline-offset:-2px;border-radius:11px;}
+  .domain.has-children .domain-head:hover{background:#FAFBFB;}
+  .toggle{
+    flex:none;width:18px;height:18px;margin-top:3px;
+    color:var(--ink-faint);font-size:11px;
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .2s ease;
+  }
+  .domain.open .toggle{transform:rotate(90deg);}
+  .domain:not(.has-children) .toggle{visibility:hidden;}
+  .domain-main{flex:1;min-width:0;}
+  .domain-title{
+    font-family:var(--serif);font-size:17px;font-weight:600;
+    letter-spacing:.04em;display:flex;align-items:center;gap:8px;
+    flex-wrap:wrap;
+  }
+  .domain-desc{font-size:12.5px;color:var(--ink-faint);margin-top:4px;line-height:1.55;}
+  .subcount{font-size:11px;color:var(--ink-faint);font-family:var(--sans);font-weight:400;}
+
+  /* 子项 */
+  .children{
+    display:none;padding:2px 15px 14px 44px;
+  }
+  .domain.open > .children{display:block;}
+  .child{
+    padding:9px 0;border-top:1px dashed var(--line-soft);
+  }
+  .child-title{
+    font-size:14px;font-weight:600;color:var(--ink);
+    display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+  }
+  /* 核心三项强调 */
+  .child.is-core{
+    margin:6px -8px;padding:11px 12px 11px 10px;
+    background:linear-gradient(90deg, rgba(178,58,51,.07), rgba(178,58,51,0));
+    border:1px solid rgba(178,58,51,.22);
+    border-left:3px solid var(--seal);
+    border-radius:9px;border-top-style:solid;
+  }
+  .child.is-core + .child{border-top:none;}
+  .child.is-core .child-title{color:var(--seal-deep);font-size:15px;}
+  .core-tag{
+    font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.12em;
+    color:#fff;background:var(--seal);
+    padding:2px 7px;border-radius:5px;flex:none;
+  }
+  .num{
+    flex:none;display:inline-flex;align-items:center;justify-content:center;
+    width:20px;height:20px;border-radius:50%;
+    font-family:var(--sans);font-size:10.5px;font-weight:700;
+    color:var(--pillar-a);background:var(--pillar-a-soft);
+    font-variant-numeric:tabular-nums;
+  }
+  .mon-tag{
+    font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.1em;
+    color:var(--ink-faint);background:var(--line-soft);
+    padding:1px 6px;border-radius:4px;flex:none;
+  }
+  .child-desc{font-size:12px;color:var(--ink-faint);margin-top:2px;}
+  /* 三级（如五大卫生下设） */
+  .grandchildren{margin-top:8px;padding-left:14px;border-left:2px solid var(--line-soft);}
+  .gchild{padding:5px 0;}
+  .gchild-title{font-size:13px;color:var(--ink-soft);font-weight:600;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .gchild-desc{font-size:11.5px;color:var(--ink-faint);}
+
+  .note-tag{font-size:11px;color:var(--ink-faint);font-weight:400;font-family:var(--sans);}
+
+  /* 高亮津贴模式 */
+  body.hl .domain:has(.seal) > .domain-head{background:#FBF1F0;}
+  body.hl .child .seal,body.hl .gchild .seal{transform:scale(1.12);}
+
+  /* 补充位 */
+  .add-hint{
+    margin:6px 16px 4px;padding:11px 14px;
+    border:1px dashed var(--line);border-radius:10px;
+    font-size:12.5px;color:var(--ink-faint);text-align:center;
+  }
+
+  footer{
+    margin-top:36px;padding-top:20px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--ink-faint);line-height:1.7;
+  }
+  footer code{background:var(--paper-2);padding:1px 6px;border-radius:4px;font-size:11.5px;}
+
+  /* ——— 财务专题 ——— */
+  .finance{margin-top:48px;}
+  .fin-head{text-align:center;margin-bottom:6px;}
+  .fin-eyebrow{font-size:12px;letter-spacing:.32em;color:var(--seal);font-weight:600;}
+  .fin-title{font-family:var(--serif);font-size:clamp(22px,4vw,30px);font-weight:600;letter-spacing:.1em;margin:9px 0 6px;color:var(--ink);}
+  .fin-sub{font-size:13px;color:var(--ink-faint);margin:0;}
+  .sankey-wrap{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:16px;
+    padding:16px 14px 12px;margin:20px 0 22px;overflow-x:auto;
+  }
+  #sankey{width:100%;min-width:580px;height:auto;display:block;}
+  .sk-label{font-family:var(--sans);font-size:12.5px;fill:var(--ink);}
+  .sk-pct{font-weight:700;fill:var(--ink-soft);}
+  .sk-cap{font-family:var(--serif);font-size:13px;letter-spacing:.34em;fill:var(--ink-faint);}
+  .ribbon{transition:fill-opacity .15s ease;cursor:default;}
+  .ribbon:hover{fill-opacity:.58 !important;}
+  .sankey-tip{font-size:12px;color:var(--ink-faint);text-align:center;margin:9px 0 0;}
+
+  .insights{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
+  @media(max-width:780px){.insights{grid-template-columns:1fr;}}
+  .insight{
+    background:#fff;border:1px solid var(--line-soft);border-radius:13px;
+    padding:18px 18px 16px;
+  }
+  .insight-seal{
+    display:inline-flex;align-items:center;justify-content:center;
+    font-family:var(--serif);color:#fff;background:var(--seal);
+    width:32px;height:32px;font-size:19px;border-radius:6px;
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,.38);
+    margin-bottom:11px;
+  }
+  .insight h3{font-family:var(--serif);font-size:17px;font-weight:600;margin:0 0 7px;color:var(--ink);letter-spacing:.04em;}
+  .insight p{font-size:13px;color:var(--ink-soft);line-height:1.66;margin:0;}
+
+  .fin-foot{display:grid;grid-template-columns:1fr 1.25fr;gap:16px;align-items:stretch;}
+  @media(max-width:780px){.fin-foot{grid-template-columns:1fr;}}
+  .fin-vars{background:var(--pillar-a-soft);border-radius:13px;padding:16px 18px;}
+  .fin-vars strong{display:block;font-size:13.5px;color:var(--pillar-a);margin-bottom:9px;letter-spacing:.04em;}
+  .fin-vars ul{margin:0;padding-left:17px;}
+  .fin-vars li{font-size:12.5px;color:var(--ink-soft);margin-bottom:6px;line-height:1.5;}
+  .fin-vars li b{color:var(--ink);}
+  .fin-note{font-size:12px;color:var(--ink-faint);line-height:1.72;margin:0;background:var(--paper-2);border:1px dashed var(--line);border-radius:13px;padding:14px 16px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="redrule"></div>
+    <div class="redrule thin"></div>
+    <div class="corner-seal">医</div>
+    <h1>医院职能分工总览</h1>
+    <p class="sub">党 政 统 管 · 业 务 分 管 · 津 贴 对 应</p>
+  </div>
+
+  <div class="controls">
+    <div class="legend">
+      <span class="seal">津</span>
+      <span>标注此印者，对应设有津贴补助</span>
+    </div>
+    <div class="btns">
+      <button class="ctl" id="hlBtn">高亮带津贴项</button>
+      <button class="ctl" id="expandBtn">展开全部</button>
+      <button class="ctl" id="collapseBtn">收起全部</button>
+    </div>
+  </div>
+
+  <div class="pillars" id="pillars"></div>
+
+  <section class="finance" id="finance">
+    <div class="fin-head">
+      <div class="redrule thin" style="margin-top:6px;"></div>
+      <span class="fin-eyebrow">财 务 专 题</span>
+      <h2 class="fin-title">资金流向 · 收支占比</h2>
+      <p class="fin-sub">差额拨款基层机构：钱从哪来、到哪去，以及它们怎样对冲</p>
+    </div>
+
+    <div class="sankey-wrap">
+      <svg id="sankey" viewBox="0 0 800 430" role="img" aria-label="医院资金收支流向桑基图，左侧为公卫经费、医疗收入、差额拨款、其他收入，右侧为工资、药品耗材、运行"></svg>
+      <p class="sankey-tip">色带宽度＝资金流占比，悬停查看每条流向 · 数值为差额拨款基层机构典型区间</p>
+    </div>
+
+    <div class="insights">
+      <div class="insight">
+        <span class="insight-seal">冲</span>
+        <h3>药耗两端对冲</h3>
+        <p>医疗收入毛数看着不小，但零差率后药品耗材基本是走账。扣掉这块成本，真正落下的只是诊察、治疗、检查等技术劳务费——别拿医疗收入毛额理解"赚了多少"。</p>
+      </div>
+      <div class="insight">
+        <span class="insight-seal">养</span>
+        <h3>养人靠公卫＋差额</h3>
+        <p>发工资的钱，主要来自"净收入高"的两块。公卫经费几乎全额可转化为人员经费，不像医疗收入要先垫药耗——这正是公卫成为收入大头的财务原因，实际分量比账面还重。</p>
+      </div>
+      <div class="insight">
+        <span class="insight-seal">阀</span>
+        <h3>差额拨款是调节阀</h3>
+        <p>它不是独立来源，而是"核定的工资＋运行 − 自己挣的医疗结余和公卫绩效"这个缺口的残差。医疗、公卫挣得越多，财政补得越少，三块占比是联动的。</p>
+      </div>
+    </div>
+
+    <div class="fin-foot">
+      <div class="fin-vars">
+        <strong>决定本院"几成"的三个变量</strong>
+        <ul>
+          <li><b>门诊住院量 / 医保结算额</b> — 定医疗收入占比</li>
+          <li><b>服务人口 × 99 元</b> — 定公卫经费的绝对值</li>
+          <li><b>在编人数 ＋ 当地财政强弱</b> — 定工资刚性与差额补多少</li>
+        </ul>
+      </div>
+      <p class="fin-note">注：占比为差额拨款基层医疗卫生机构（乡镇卫生院 / 社区卫生服务中心）的典型区间，非本院实际值。公卫经费按 2025 年人均财政补助标准 <b>99 元/人</b> 测算（较上年 +5 元）。如需精确占比，把年医疗收入、服务人口、在编人数、年工资总额填进 <code>FLOW</code> 数据即可重算。</p>
+    </div>
+  </section>
+
+  <footer>
+    <strong>说明 ·</strong> 本表按领导分管条线整理，点击带 <span class="seal" style="width:16px;height:16px;font-size:10px;">▸</span> 标记的职能可展开下设具体项目。
+    "<span class="seal" style="width:16px;height:16px;font-size:10px;">津</span>" 表示该项对应设有津贴补助。<br>
+    <strong>补充方式 ·</strong> 全部内容由文件底部 <code>DATA</code> 数据生成；新增职能 / 项目只需在对应数组里加一条 <code>{ name, desc, allowance, children }</code> 即可，无需改动样式。
+  </footer>
+
+</div>
+
+<script>
+/* ============================================================
+   医院职能数据 —— 后续补充只需修改此处
+   字段：name 名称 | desc 说明 | allowance 是否带津贴(显示"津"印)
+        children 下设子项（可继续嵌套 children）
+   ============================================================ */
+const DATA = [
+  {
+    role:"院长 兼 党委书记",
+    accent:"a",
+    tag:"党 政 统 管",
+    note:"全面主持医院党政工作，统管以下职能领域",
+    domains:[
+      {
+        name:"公共卫生", allowance:false, open:true,
+        desc:"基本公共卫生「十三项考核」＋重大公共卫生项目；核心项已标注。另含从业人员健康证等委托项目",
+        children:[
+          { no:"1",  name:"组织管理", desc:"项目组织实施、人员与经费管理、培训、信息系统及台账档案" },
+          { no:"2",  name:"健康档案", desc:"居民电子健康档案的建立、更新与规范化管理" },
+          { no:"3",  name:"健康教育", desc:"健康知识宣传、健康讲座、宣传栏与材料发放、咨询活动" },
+          { no:"4",  name:"预防接种", allowance:false, core:true, desc:"免疫规划疫苗接种、冷链管理及接种异常反应（AEFI）监测" },
+          { no:"5",  name:"儿童保健", desc:"0–6 岁儿童健康管理与生长发育随访" },
+          { no:"6",  name:"妇女保健", desc:"孕产妇健康管理（含计划生育技术服务）" },
+          { no:"7",  name:"老年人保健", core:true, desc:"65 岁以上老年人健康管理，含年度免费健康体检；2025 年起增加胸片与糖化血红蛋白" },
+          {
+            no:"8", name:"慢性病", allowance:false, core:true,
+            desc:"第 8 项考核仅含高血压、2 型糖尿病；带“监测”者为同线开展的慢性病监测项目，不计入基本公卫考核",
+            children:[
+              { name:"高血压患者健康管理", desc:"35 岁以上原发性高血压患者：筛查、随访评估、分类干预与年度体检" },
+              { name:"2 型糖尿病患者健康管理", desc:"35 岁以上 2 型糖尿病患者规范化随访管理" },
+              { name:"死因监测", monitor:true, desc:"居民死亡原因监测、死亡医学证明网报" },
+              { name:"肿瘤随访登记", monitor:true, desc:"新发肿瘤报告与随访登记" },
+              { name:"心脑血管事件报告", monitor:true, desc:"心血管病、脑卒中发病报告" }
+            ]
+          },
+          { no:"9",  name:"严重精神障碍", allowance:false, desc:"在册患者随访、服药与危险性评估管理" },
+          { no:"10", name:"结核病", allowance:false, desc:"肺结核患者健康管理与全程督导随访" },
+          { no:"11", name:"中医药服务", desc:"老年人、0–3 岁儿童中医药健康管理（体质辨识与调养指导）" },
+          { no:"12", name:"传染病", allowance:false, desc:"传染病及突发公共卫生事件的报告与处理" },
+          {
+            no:"13", name:"卫生监督协管",
+            desc:"基层“协助监督执法、非执法本身”；国家规范第三版含下列 5 项（部分地区另设职业卫生、妇幼健康协管）。注：传统“五大卫生”属监督执法范畴、主体在执法机构，且不含放射卫生",
+            children:[
+              { name:"食源性疾病信息报告", desc:"发现食源性疾病、食品污染等线索及时上报（食品实质监管主体已归市场监管）" },
+              { name:"饮用水卫生安全巡查", desc:"协助巡查农村集中式供水、二次供水、学校供水并协助抽检报告" },
+              { name:"学校卫生服务", desc:"协助学校 / 托幼机构传染病防控巡访、健康教育与卫生宣传栏" },
+              { name:"非法行医和非法采供血信息报告", desc:"摸排辖区诊所、村卫生室，发现线索上报执法机构" },
+              { name:"计划生育相关信息报告", desc:"协助巡查计生机构及相关活动并报告" }
+            ]
+          },
+          {
+            name:"重大公共卫生项目",
+            desc:"13 项之外、同期考核的专项（多归口妇幼 / 计生）",
+            children:[
+              { name:"避孕药具", desc:"免费避孕药具发放与随访管理" },
+              { name:"增补叶酸", desc:"预防神经管缺陷，孕前及孕早期补服叶酸" },
+              { name:"孕前优生", desc:"免费孕前优生健康检查" },
+              { name:"两癌筛查", desc:"适龄妇女宫颈癌、乳腺癌筛查" }
+            ]
+          },
+          {
+            name:"慢性病监测",
+            desc:"监测 / 防控项目，与第 8 项慢病管理分开；不计入 13 项考核，多为中央转移支付或疾控主导、基层承担报告",
+            children:[
+              { name:"死因监测", desc:"居民死亡原因监测，死亡医学证明填报与网络报告" },
+              { name:"肿瘤随访登记", desc:"新发恶性肿瘤报告与随访登记" },
+              { name:"心脑血管事件报告", desc:"心血管病、脑卒中等急性事件发病报告" }
+            ]
+          }
+        ]
+      },
+      {
+        name:"财务", allowance:false,
+        desc:"预算、核算、收支结算与资产财务管理（资金流向详见下方专题）",
+        children:[
+          {
+            name:"收入端", desc:"差额拨款基层机构四类收入",
+            children:[
+              { name:"公卫经费", desc:"人均99元×服务人口，约 3.5–4 成，几乎净到账" },
+              { name:"医疗收入", desc:"医保结算＋个人自付，约 3 成，大半是药耗过路钱" },
+              { name:"差额拨款", desc:"核定收支后的差额补助，约 2.5–3 成，填人员与运行缺口" },
+              { name:"其他收入", desc:"上级补助、利息等，约半成" }
+            ]
+          },
+          {
+            name:"支出端", desc:"两大成本＋运行",
+            children:[
+              { name:"工资·人员经费", desc:"大头，约 5–6 成" },
+              { name:"药品·卫生材料", desc:"约 2.5–3.5 成，与医疗收入端基本对冲" },
+              { name:"运行·其他", desc:"水电、维修、办公、折旧、培训，约 1–1.5 成" }
+            ]
+          }
+        ]
+      },
+      { name:"审计", allowance:false, desc:"内部审计、经济责任审计与专项审计监督" },
+      { name:"工程建设", allowance:false, desc:"基建项目、修缮工程的立项与建设管理" },
+      { name:"人事", allowance:false, desc:"人员编制、招聘、考核、职称与薪酬人事管理" }
+    ]
+  },
+  {
+    role:"分管院长",
+    accent:"b",
+    tag:"业 务 分 管",
+    note:"受院长委托，分管以下业务领域",
+    domains:[
+      {
+        name:"医疗", allowance:false,
+        desc:"全院临床及基础科室医疗业务管理（含医疗津贴）",
+        children:[
+          { name:"临床 / 基础科室", allowance:false, desc:"全院与医疗相关的临床及基础科室" },
+          { name:"药库", allowance:false, desc:"药品采购、储存与出入库管理" }
+        ]
+      },
+      {
+        name:"护理", allowance:true,
+        desc:"全院护理管理与护理质量（含护理津贴）"
+      },
+      { name:"院感", allowance:false, desc:"医院感染监测、防控制度与培训管理" },
+      {
+        name:"后勤", allowance:false,
+        desc:"后勤保障管理",
+        children:[
+          { name:"食堂", allowance:false, desc:"职工 / 患者餐饮供应与食品安全管理" }
+        ]
+      },
+      {
+        name:"医保", allowance:false,
+        desc:"医保政策执行与结算管理",
+        children:[
+          { name:"质控", allowance:false, desc:"医保病历与费用质量控制" }
+        ]
+      }
+    ]
+  }
+];
+
+/* ============================================================
+   渲染
+   ============================================================ */
+const sealEl = () => '<span class="seal" title="设有津贴补助">津</span>';
+
+function countItems(domains){
+  let n = 0;
+  domains.forEach(d=>{
+    n++;
+    if(d.children) n += countItems(d.children);
+  });
+  return n;
+}
+
+function renderGrand(items){
+  return `<div class="grandchildren">` + items.map(g=>`
+    <div class="gchild">
+      <div class="gchild-title">${g.name}${g.allowance?sealEl():''}${g.monitor?'<span class="mon-tag">监测</span>':''}</div>
+      ${g.desc?`<div class="gchild-desc">${g.desc}</div>`:''}
+    </div>`).join('') + `</div>`;
+}
+
+function renderChildren(items){
+  return items.map(c=>`
+    <div class="child ${c.core?'is-core':''}">
+      <div class="child-title">${c.no?`<span class="num">${c.no}</span>`:''}${c.core?'<span class="core-tag">核心</span>':''}${c.name}${c.allowance?sealEl():''}
+        ${c.children?`<span class="note-tag">（${c.children.length} 项）</span>`:''}
+      </div>
+      ${c.desc?`<div class="child-desc">${c.desc}</div>`:''}
+      ${c.children?renderGrand(c.children):''}
+    </div>`).join('');
+}
+
+function renderDomain(d){
+  const hasKids = !!(d.children && d.children.length);
+  const isOpen = hasKids && d.open;
+  return `
+    <div class="domain ${hasKids?'has-children':''} ${isOpen?'open':''}">
+      <div class="domain-head" ${hasKids?`role="button" tabindex="0" aria-expanded="${isOpen?'true':'false'}"`:''}>
+        <span class="toggle">▸</span>
+        <div class="domain-main">
+          <div class="domain-title">${d.name}${d.allowance?sealEl():''}
+            ${hasKids?`<span class="subcount">· 下设 ${d.children.length} 项</span>`:''}
+          </div>
+          ${d.desc?`<div class="domain-desc">${d.desc}</div>`:''}
+        </div>
+      </div>
+      ${hasKids?`<div class="children">${renderChildren(d.children)}</div>`:''}
+    </div>`;
+}
+
+function render(){
+  const root = document.getElementById('pillars');
+  root.innerHTML = DATA.map(p=>`
+    <div class="pillar" data-accent="${p.accent}">
+      <div class="pillar-head">
+        <span class="pillar-count">职能 ${p.domains.length} 项 · 含项目 ${countItems(p.domains)} 条</span>
+        <span class="pillar-tag">${p.tag}</span>
+        <h2 class="pillar-role">${p.role}</h2>
+        <p class="pillar-note">${p.note}</p>
+      </div>
+      <div class="domains">
+        ${p.domains.map(renderDomain).join('')}
+        <div class="add-hint">＋ 在 DATA 中追加条目即可继续补充</div>
+      </div>
+    </div>`).join('');
+  bind();
+}
+
+function bind(){
+  document.querySelectorAll('.domain.has-children > .domain-head').forEach(h=>{
+    const toggle = () => {
+      const d = h.closest('.domain');
+      const open = d.classList.toggle('open');
+      h.setAttribute('aria-expanded', open);
+    };
+    h.addEventListener('click', toggle);
+    h.addEventListener('keydown', e=>{
+      if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+    });
+  });
+}
+
+document.getElementById('expandBtn').onclick = ()=>{
+  document.querySelectorAll('.domain.has-children').forEach(d=>{
+    d.classList.add('open');
+    d.querySelector('.domain-head').setAttribute('aria-expanded','true');
+  });
+};
+document.getElementById('collapseBtn').onclick = ()=>{
+  document.querySelectorAll('.domain.has-children').forEach(d=>{
+    d.classList.remove('open');
+    d.querySelector('.domain-head').setAttribute('aria-expanded','false');
+  });
+};
+document.getElementById('hlBtn').onclick = (e)=>{
+  document.body.classList.toggle('hl');
+  e.target.classList.toggle('active');
+};
+
+/* ============================================================
+   资金流向数据 (桑基图) —— 占比为差额拨款基层机构典型值
+   value 单位：占全院预算的百分比；income/expense 各自合计≈100
+   links：from(收入) → to(支出) 的资金流，体现"对冲/养人"关系
+   想换成本院真实数据，按比例改 value 即可，结构不用动
+   ============================================================ */
+const FLOW = {
+  income:[
+    { id:"gw",  name:"公卫经费",   value:37, color:"#2B4257" },
+    { id:"med", name:"医疗收入",   value:30, color:"#1F5C54" },
+    { id:"fin", name:"差额拨款",   value:28, color:"#B8893B" },
+    { id:"oth", name:"其他收入",   value:5,  color:"#9AA6A1" }
+  ],
+  expense:[
+    { id:"sal", name:"工资·人员", value:55, color:"#34403C" },
+    { id:"mat", name:"药品·耗材", value:30, color:"#717C77" },
+    { id:"run", name:"运行·其他", value:15, color:"#A7B0AB" }
+  ],
+  links:[
+    { from:"med", to:"mat", value:24 },  /* 医疗收入主要对冲药耗 */
+    { from:"med", to:"sal", value:4  },
+    { from:"med", to:"run", value:2  },
+    { from:"gw",  to:"sal", value:34 },  /* 公卫经费几乎全额养人 */
+    { from:"gw",  to:"run", value:3  },
+    { from:"fin", to:"sal", value:15 },  /* 差额拨款填工资+运行缺口 */
+    { from:"fin", to:"run", value:8  },
+    { from:"fin", to:"mat", value:5  },
+    { from:"oth", to:"sal", value:2  },
+    { from:"oth", to:"run", value:2  },
+    { from:"oth", to:"mat", value:1  }
+  ]
+};
+
+function renderSankey(){
+  const svg = document.getElementById('sankey');
+  if(!svg) return;
+  const W=800, H=430, nodeW=15, padX=110, scale=3.0;
+  const leftX=padX, rightX=W-padX-nodeW;
+  const inc=FLOW.income, exp=FLOW.expense;
+
+  const layout=(nodes,gap)=>{
+    const bars=nodes.reduce((s,n)=>s+n.value,0)*scale;
+    const total=bars+gap*(nodes.length-1);
+    let y=(H-total)/2 + 6;
+    nodes.forEach(n=>{ n.y=y; n.h=n.value*scale; y+=n.h+gap; });
+  };
+  layout(inc,24);
+  layout(exp,34);
+
+  const byId={}; inc.concat(exp).forEach(n=>byId[n.id]=n);
+  const incIdx={}; inc.forEach((n,i)=>incIdx[n.id]=i);
+  const expIdx={}; exp.forEach((n,i)=>expIdx[n.id]=i);
+
+  inc.forEach(s=>{
+    let off=s.y;
+    FLOW.links.filter(l=>l.from===s.id)
+      .sort((a,b)=>expIdx[a.to]-expIdx[b.to])
+      .forEach(l=>{ l._sy=off; l._sh=l.value*scale; off+=l._sh; });
+  });
+  exp.forEach(t=>{
+    let off=t.y;
+    FLOW.links.filter(l=>l.to===t.id)
+      .sort((a,b)=>incIdx[a.from]-incIdx[b.from])
+      .forEach(l=>{ l._ty=off; l._th=l.value*scale; off+=l._th; });
+  });
+
+  const x0=leftX+nodeW, x1=rightX, cx=(x0+x1)/2;
+  let s='';
+  s+=`<text class="sk-cap" x="${leftX+nodeW/2}" y="20" text-anchor="middle">收 入</text>`;
+  s+=`<text class="sk-cap" x="${rightX+nodeW/2}" y="20" text-anchor="middle">支 出</text>`;
+
+  FLOW.links.forEach(l=>{
+    const src=byId[l.from], tgt=byId[l.to];
+    const ay0=l._sy, ay1=l._sy+l._sh, by0=l._ty, by1=l._ty+l._th;
+    const d=`M${x0},${ay0} C${cx},${ay0} ${cx},${by0} ${x1},${by0} L${x1},${by1} C${cx},${by1} ${cx},${ay1} ${x0},${ay1} Z`;
+    s+=`<path class="ribbon" d="${d}" fill="${src.color}" fill-opacity="0.26"><title>${src.name} → ${tgt.name}　约 ${l.value}%</title></path>`;
+  });
+
+  inc.forEach(n=>{
+    s+=`<rect x="${leftX}" y="${n.y}" width="${nodeW}" height="${n.h}" rx="3" fill="${n.color}"/>`;
+    s+=`<text class="sk-label" x="${leftX-9}" y="${n.y+n.h/2}" text-anchor="end" dominant-baseline="central">${n.name} <tspan class="sk-pct">${n.value}%</tspan></text>`;
+  });
+  exp.forEach(n=>{
+    s+=`<rect x="${rightX}" y="${n.y}" width="${nodeW}" height="${n.h}" rx="3" fill="${n.color}"/>`;
+    s+=`<text class="sk-label" x="${rightX+nodeW+9}" y="${n.y+n.h/2}" text-anchor="start" dominant-baseline="central"><tspan class="sk-pct">${n.value}%</tspan> ${n.name}</text>`;
+  });
+
+  svg.innerHTML=s;
+}
+
+render();
+renderSankey();
+</script>
+</body>
+</html>

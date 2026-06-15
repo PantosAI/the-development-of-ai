@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>以己为镜 · 性格自我勘测仪</title>
+<style>
+:root{
+  --glass:#D7D9DF;
+  --glass-2:#C9CCD4;
+  --glass-card:#E8EAEF;
+  --glass-card-2:#EFF1F5;
+  --ink:#1F2129;
+  --ink-soft:#565963;
+  --ink-faint:#878A93;
+  --bronze:#9A7B3F;
+  --bronze-deep:#6E5526;
+  --bronze-light:#B89A5E;
+  --cinnabar:#B23A2E;
+  --t-green:#5E8466;
+  --t-blue:#456C8C;
+  --t-amber:#A8842F;
+  --t-plum:#6E5A86;
+  --t-rust:#A85A42;
+  --line:rgba(31,33,41,.14);
+  --line-soft:rgba(31,33,41,.08);
+  --serif:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong",serif;
+  --sans:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+  --mono:"SF Mono","JetBrains Mono",Consolas,monospace;
+  --clarity:0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{
+  background:var(--glass);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;line-height:1.85;
+  background-image:radial-gradient(120% 80% at 50% -10%,rgba(255,255,255,.5),transparent 60%);
+}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+
+/* ===== nav ===== */
+nav{position:sticky;top:0;z-index:50;background:rgba(215,217,223,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+nav .brand{font-family:var(--serif);font-weight:600;color:var(--bronze-deep);font-size:16px;letter-spacing:.16em;padding:13px 16px 13px 0;white-space:nowrap;flex:none}
+nav a.nl{font-size:13px;color:var(--ink-soft);text-decoration:none;padding:14px 11px;white-space:nowrap;flex:none}
+nav a.nl:hover{color:var(--bronze-deep)}
+nav .clarity-mini{margin-left:auto;flex:none;display:flex;align-items:center;gap:8px;padding-left:14px;font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
+nav .clarity-mini .cm-track{width:60px;height:5px;background:var(--glass-2);border-radius:99px;overflow:hidden}
+nav .clarity-mini .cm-fill{height:100%;width:0;background:linear-gradient(90deg,var(--bronze),var(--bronze-light));transition:width .5s}
+
+/* ===== hero ===== */
+header{padding:64px 0 52px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1fr 340px;gap:40px;align-items:center}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:24px}}
+.eyebrow{font-family:var(--serif);font-size:15px;letter-spacing:.5em;color:var(--bronze);margin-bottom:18px}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,7vw,68px);line-height:1.18;letter-spacing:.04em}
+.hero-sub{margin-top:24px;max-width:560px;color:var(--ink-soft);font-size:16.5px;line-height:1.9}
+.hero-sub b{color:var(--ink);font-weight:600}
+.hero-methods{display:flex;gap:0;margin-top:34px;border:1px solid var(--line);border-radius:10px;overflow:hidden;max-width:560px;background:rgba(255,255,255,.25)}
+.hero-methods div{flex:1;padding:13px 14px;border-right:1px solid var(--line);text-align:center}
+.hero-methods div:last-child{border-right:none}
+.hero-methods .hm-n{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--bronze-deep)}
+.hero-methods .hm-l{font-size:11px;color:var(--ink-faint);margin-top:2px;letter-spacing:.05em}
+
+/* 铜镜 */
+.mirror-stage{position:relative;width:300px;height:300px;margin:0 auto}
+.mirror-stage svg{display:block;width:100%;height:100%}
+.reflection{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:0 40px;pointer-events:none}
+.reflection .rf-word{font-family:var(--serif);font-weight:600;color:var(--bronze-deep);font-size:19px;letter-spacing:.18em;line-height:1.5;
+  filter:blur(calc((1 - var(--clarity)) * 7px));opacity:calc(.12 + var(--clarity) * .88);transition:filter .6s,opacity .6s}
+.reflection .rf-empty{font-family:var(--serif);font-size:14px;color:var(--ink-faint);letter-spacing:.2em;
+  filter:blur(calc((1 - var(--clarity)) * 4px));opacity:calc(.4 + var(--clarity)*.5)}
+.clarity-line{margin-top:18px;text-align:center}
+.clarity-line .cl-bar{height:6px;background:var(--glass-2);border-radius:99px;overflow:hidden;max-width:240px;margin:0 auto}
+.clarity-line .cl-fill{height:100%;width:0;background:linear-gradient(90deg,var(--bronze),var(--bronze-light));transition:width .5s}
+.clarity-line .cl-txt{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);margin-top:7px;letter-spacing:.06em}
+
+/* ===== sections ===== */
+section{padding:60px 0;border-bottom:1px solid var(--line)}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+.sec-no{font-family:var(--serif);font-size:46px;font-weight:500;color:var(--bronze);line-height:1;flex:none;opacity:.85}
+.sec-titles{flex:1}
+.sec-tag{font-size:12px;color:var(--bronze);letter-spacing:.24em;font-weight:600;margin-bottom:3px}
+h2{font-family:var(--serif);font-weight:600;font-size:clamp(24px,3.6vw,32px);line-height:1.3;letter-spacing:.02em}
+.lead{max-width:740px;color:var(--ink-soft);font-size:16px;margin:14px 0 30px;line-height:1.9}
+.lead b{color:var(--ink);font-weight:600}
+h3{font-family:var(--serif);font-weight:600;font-size:19px;margin:32px 0 12px;letter-spacing:.02em;display:flex;align-items:center;gap:10px}
+h3::before{content:"";width:22px;height:1.5px;background:var(--bronze)}
+
+/* ===== 行为镜卡片 ===== */
+.bcard{background:var(--glass-card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:14px;transition:border-color .25s,box-shadow .25s,transform .25s}
+.bcard.confirmed{border-color:var(--bronze);box-shadow:0 0 0 1px var(--bronze),0 6px 20px rgba(110,85,38,.1)}
+.bcard.dismissed{opacity:.55}
+.bcard .bc-top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.bcard .bc-kw{font-family:var(--serif);font-weight:600;font-size:22px;color:var(--ink);letter-spacing:.06em}
+.bcard .bc-en{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.05em}
+.bc-block{margin-top:12px}
+.bc-block .bl-label{font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--bronze);margin-bottom:3px}
+.bc-block p{font-size:14.5px;color:var(--ink-soft);line-height:1.82}
+.bc-block.shadow{border-left:2px solid var(--cinnabar);padding-left:14px;background:rgba(178,58,46,.035);border-radius:0 6px 6px 0;padding-top:8px;padding-bottom:8px;margin-top:14px}
+.bc-block.shadow .bl-label{color:var(--cinnabar)}
+.bc-block.shadow p{color:var(--ink)}
+.bc-actions{display:flex;gap:10px;margin-top:18px;align-items:center;flex-wrap:wrap}
+.bc-btn{font-family:var(--sans);font-size:13.5px;font-weight:600;padding:7px 18px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.4);color:var(--ink);cursor:pointer;transition:all .18s}
+.bc-btn:hover{border-color:var(--bronze)}
+.bc-btn.act-yes.on{background:var(--bronze);color:#fff;border-color:var(--bronze)}
+.bc-btn.act-no.on{background:var(--ink-soft);color:#fff;border-color:var(--ink-soft)}
+.bc-btn:focus-visible{outline:2px solid var(--cinnabar);outline-offset:2px}
+.bc-state{font-size:12.5px;color:var(--ink-faint);font-family:var(--mono)}
+
+.note-box{border:1px dashed var(--bronze);border-radius:10px;padding:18px 22px;background:rgba(154,123,63,.05);margin-top:8px}
+.note-box .nb-t{font-family:var(--serif);font-weight:600;font-size:15px;color:var(--bronze-deep);margin-bottom:6px}
+.note-box p{font-size:14.5px;color:var(--ink-soft);line-height:1.85}
+
+.portrait-box{border:1.5px solid var(--bronze);border-radius:12px;padding:24px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(232,234,239,.5));margin-top:20px}
+.portrait-box h4{font-family:var(--serif);font-weight:600;font-size:18px;margin-bottom:10px}
+.portrait-box .pb-line{font-size:15px;color:var(--ink-soft);line-height:1.9}
+.portrait-box .pb-empty{font-size:14px;color:var(--ink-faint)}
+
+/* ===== 情境题 ===== */
+.scn{background:var(--glass-card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:14px}
+.scn .scn-no{font-family:var(--mono);font-size:12px;color:var(--bronze);letter-spacing:.1em;margin-bottom:6px}
+.scn .scn-q{font-size:15.5px;line-height:1.8;margin-bottom:14px}
+.scn .scn-q b{font-weight:600}
+.scn .opt{display:block;width:100%;text-align:left;font-family:var(--sans);font-size:14.5px;line-height:1.7;color:var(--ink);
+  padding:12px 16px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.35);cursor:pointer;margin-bottom:8px;transition:all .16s}
+.scn .opt:hover{border-color:var(--bronze);background:rgba(255,255,255,.6)}
+.scn .opt.sel{border-color:var(--bronze);background:var(--bronze);color:#fff;box-shadow:0 4px 14px rgba(110,85,38,.18)}
+.scn .opt:focus-visible{outline:2px solid var(--cinnabar);outline-offset:2px}
+.scn .opt .opt-k{font-family:var(--mono);font-size:12px;opacity:.7;margin-right:8px}
+
+.stress-out{border:1.5px solid var(--bronze);border-radius:12px;padding:24px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(232,234,239,.5));margin-top:18px}
+.stress-out h4{font-family:var(--serif);font-weight:600;font-size:18px;margin-bottom:4px}
+.stress-out .so-sub{font-size:13px;color:var(--ink-faint);margin-bottom:14px}
+.so-dim{padding:13px 0;border-top:1px dashed var(--line)}
+.so-dim:first-of-type{border-top:none}
+.so-dim .sd-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:10px}
+.so-dim .sd-name{font-family:var(--serif);font-weight:600;font-size:15.5px}
+.so-dim .sd-val{font-size:13px;font-weight:700;color:var(--bronze-deep);font-family:var(--mono);text-align:right;flex:none}
+.so-dim .sd-desc{font-size:14px;color:var(--ink-soft);line-height:1.8}
+.so-empty{font-size:14px;color:var(--ink-faint)}
+
+/* ===== 叙事镜 ===== */
+.narr-prompt{background:var(--glass-card);border:1px solid var(--line);border-radius:11px;padding:18px 20px;margin-bottom:12px}
+.narr-prompt label{display:block;font-size:15px;font-weight:600;margin-bottom:8px}
+.narr-prompt textarea{width:100%;min-height:70px;font-family:var(--sans);font-size:14.5px;line-height:1.7;color:var(--ink);
+  border:1px solid var(--line);border-radius:8px;padding:11px 13px;background:rgba(255,255,255,.45);resize:vertical}
+.narr-prompt textarea:focus{outline:none;border-color:var(--bronze)}
+.lens-box{border:1px solid var(--line);border-radius:11px;padding:20px 22px;background:rgba(255,255,255,.3);margin-top:6px}
+.lens-box h4{font-family:var(--serif);font-weight:600;font-size:16px;margin-bottom:12px;color:var(--bronze-deep)}
+.lens-row{padding:11px 0;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.8;color:var(--ink-soft)}
+.lens-row:first-of-type{border-top:none}
+.lens-row b{color:var(--ink);font-family:var(--serif);font-weight:600}
+
+/* ===== Johari ===== */
+.johari{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+.jq{border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--glass-card)}
+.jq.blind{border-color:var(--cinnabar);background:rgba(178,58,46,.05)}
+.jq .jq-t{font-family:var(--serif);font-weight:600;font-size:15px;margin-bottom:5px}
+.jq .jq-t span{font-size:11px;font-family:var(--mono);color:var(--ink-faint);font-weight:400;margin-left:6px;letter-spacing:0}
+.jq.blind .jq-t{color:var(--cinnabar)}
+.jq p{font-size:13.5px;color:var(--ink-soft);line-height:1.75}
+.ask-box{border:1.5px solid var(--cinnabar);border-radius:11px;padding:20px 22px;background:rgba(178,58,46,.04);margin-top:8px}
+.ask-box .ab-t{font-family:var(--serif);font-weight:600;font-size:16px;color:var(--cinnabar);margin-bottom:8px}
+.ask-box .ab-q{font-size:15px;font-style:normal;background:rgba(255,255,255,.5);border-left:3px solid var(--cinnabar);padding:12px 16px;border-radius:0 8px 8px 0;margin:10px 0;line-height:1.8}
+.ask-box p{font-size:14px;color:var(--ink-soft);line-height:1.8}
+
+/* ===== 大五校准 ===== */
+.b5cal{background:var(--glass-card);border:1px solid var(--line);border-radius:12px;padding:22px 24px}
+.b5row{padding:16px 0;border-top:1px dashed var(--line)}
+.b5row:first-of-type{border-top:none}
+.b5row .b5-name{font-family:var(--serif);font-weight:600;font-size:16px;margin-bottom:2px}
+.b5row .b5-name span{font-family:var(--mono);font-size:11px;color:var(--ink-faint);font-weight:400;margin-left:8px;letter-spacing:0}
+.b5row .b5-evi{font-size:13px;margin:4px 0 10px;color:var(--ink-soft)}
+.b5row .b5-evi b{color:var(--bronze-deep);font-weight:700}
+.b5row input[type=range]{width:100%;accent-color:var(--bronze)}
+.b5row .b5-scale{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-faint);margin-top:2px}
+.b5-flag{margin-top:8px;font-size:13px;font-weight:600;padding:6px 12px;border-radius:7px;display:none}
+.b5-flag.show{display:block}
+.b5-flag.gap{background:rgba(178,58,46,.1);color:var(--cinnabar)}
+.b5-flag.match{background:rgba(94,132,102,.14);color:var(--t-green)}
+
+/* ===== 合 / synthesis ===== */
+.synth{border:1.5px solid var(--bronze);border-radius:14px;padding:28px;background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(232,234,239,.55))}
+.synth h3{margin-top:24px}
+.synth h3:first-child{margin-top:0}
+.synth p{font-size:15.5px;color:var(--ink-soft);line-height:1.92}
+.synth p b{color:var(--ink);font-weight:600}
+blockquote{border-left:3px solid var(--bronze);padding:10px 20px;margin:22px 0;font-family:var(--serif);font-size:17px;line-height:1.85;color:var(--ink);background:rgba(154,123,63,.05);border-radius:0 8px 8px 0;letter-spacing:.01em}
+
+footer{padding:44px 0 70px;text-align:center;color:var(--ink-faint)}
+footer .f-mark{font-family:var(--serif);font-size:24px;color:var(--bronze);letter-spacing:.3em;margin-bottom:14px}
+footer .disclaimer{max-width:680px;margin:0 auto;font-size:12.5px;line-height:1.8}
+
+/* ===== 关系之镜 ===== */
+.mapbox{background:var(--glass-card);border:1px solid var(--line);border-radius:11px;padding:16px;overflow-x:auto;margin-bottom:8px}
+.mapbox svg{display:block;min-width:560px;width:100%}
+.color-pick,.att-pick{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.cp-btn{flex:1;min-width:120px;font-family:var(--serif);font-weight:600;font-size:16px;padding:14px 10px;border-radius:10px;border:2px solid var(--line);background:var(--glass-card);cursor:pointer;color:var(--ink);transition:all .18s;border-top-width:4px}
+.cp-btn:hover{transform:translateY(-2px)}
+.cp-btn.on{box-shadow:0 6px 18px rgba(31,33,41,.12)}
+.cp-btn:focus-visible{outline:2px solid var(--cinnabar);outline-offset:2px}
+.cp-btn .cp-sub{display:block;font-family:var(--sans);font-weight:400;font-size:11.5px;color:var(--ink-faint);margin-top:2px}
+.color-out,.att-out,.redline-out{margin-top:6px}
+.relcard{border:1.5px solid var(--bronze);border-radius:12px;padding:22px 24px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(232,234,239,.5))}
+.relcard h4{font-family:var(--serif);font-weight:600;font-size:19px;margin-bottom:10px}
+.relcard .rc-block{margin-top:12px}
+.relcard .rc-lab{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--bronze);margin-bottom:3px}
+.relcard .rc-block p{font-size:14.5px;color:var(--ink-soft);line-height:1.82}
+.relcard .rc-block.warn{border-left:2px solid var(--cinnabar);padding-left:14px;background:rgba(178,58,46,.04);border-radius:0 6px 6px 0;padding-top:8px;padding-bottom:8px}
+.relcard .rc-block.warn .rc-lab{color:var(--cinnabar)}
+.relcard .rc-block.warn p{color:var(--ink)}
+.dyn-row{padding:10px 0;border-top:1px dashed var(--line);font-size:14.5px;line-height:1.78}
+.dyn-row:first-of-type{border-top:none}
+.dyn-row b{font-family:var(--serif);font-weight:600;color:var(--ink)}
+.dyn-row.flag b{color:var(--cinnabar)}
+.dyn-row.flag{background:rgba(178,58,46,.04);border-radius:6px;padding-left:10px;padding-right:10px}
+.redline-pick{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.rl-chip{font-size:14px;font-weight:600;padding:9px 16px;border-radius:99px;border:1.5px solid var(--line);background:var(--glass-card);cursor:pointer;color:var(--ink-soft);transition:all .16s}
+.rl-chip:hover{border-color:var(--cinnabar)}
+.rl-chip.on{background:var(--cinnabar);color:#fff;border-color:var(--cinnabar)}
+.rl-chip:focus-visible{outline:2px solid var(--cinnabar);outline-offset:2px}
+.rl-detail{font-size:13.5px;color:var(--ink-soft);line-height:1.8;margin-top:4px}
+.redline-note{border:1px dashed var(--cinnabar);border-radius:10px;padding:14px 18px;background:rgba(178,58,46,.04);margin-top:10px;font-size:14.5px;line-height:1.82;color:var(--ink)}
+.grid-mbti{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.mbti-axis{border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--glass-card)}
+.mbti-axis .ma-t{font-family:var(--mono);font-weight:700;font-size:15px;color:var(--bronze-deep);margin-bottom:5px}
+.mbti-axis p{font-size:13.5px;color:var(--ink-soft);line-height:1.75}
+.synth-dyn{border:1px solid var(--bronze);border-radius:10px;padding:16px 20px;background:rgba(154,123,63,.05);margin-top:6px}
+.synth-dyn .sd-empty{font-size:14px;color:var(--ink-faint)}
+/* ===== 终 · 自画像 ===== */
+.gen-btn{font-family:var(--serif);font-weight:600;font-size:17px;padding:14px 44px;border-radius:10px;border:none;background:var(--bronze);color:#fff;cursor:pointer;letter-spacing:.12em;box-shadow:0 6px 18px rgba(110,85,38,.25);transition:transform .15s}
+.gen-btn:hover{transform:translateY(-2px)}
+.gen-btn:focus-visible{outline:2px solid var(--cinnabar);outline-offset:3px}
+.portrait{border:1.5px solid var(--bronze);border-radius:14px;padding:clamp(20px,4vw,34px);background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(232,234,239,.6))}
+.portrait .pt-epi{font-family:var(--serif);font-size:21px;text-align:center;color:var(--bronze-deep);margin-bottom:5px;letter-spacing:.03em}
+.portrait .pt-date{text-align:center;font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin-bottom:20px;letter-spacing:.12em}
+.portrait .pt-headline{font-family:var(--serif);font-size:18px;line-height:1.75;text-align:center;padding:18px 12px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:8px}
+.portrait .pt-headline b{color:var(--bronze-deep)}
+.pt-sec{margin-top:20px}
+.pt-sec .pt-h{font-family:var(--serif);font-weight:600;font-size:16px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.pt-sec .pt-h::before{content:"";width:16px;height:1.5px;background:var(--bronze);flex:none}
+.pt-sec p{font-size:14.5px;color:var(--ink-soft);line-height:1.85}
+.pt-sec p b{color:var(--ink);font-weight:600}
+.pt-sec .pt-empty{color:var(--ink-faint);font-size:13.5px}
+.pt-list{border-left:3px solid var(--bronze);padding:8px 16px 8px 0;background:rgba(154,123,63,.05);border-radius:0 8px 8px 0;margin-top:6px;list-style:none}
+.pt-list li{font-size:14.5px;color:var(--ink);line-height:1.78;padding-left:26px;position:relative;margin-bottom:7px}
+.pt-list li:last-child{margin-bottom:0}
+.pt-list li::before{content:"→";position:absolute;left:8px;color:var(--bronze)}
+.pt-flag{color:var(--cinnabar);font-weight:600}
+.pt-copy{display:block;margin:22px auto 0;font-family:var(--sans);font-size:14px;font-weight:600;padding:11px 30px;border-radius:8px;border:1px solid var(--bronze);background:transparent;color:var(--bronze-deep);cursor:pointer}
+.pt-copy:hover{background:var(--bronze);color:#fff}
+.pt-close{font-family:var(--serif);font-size:15.5px;line-height:1.85;color:var(--ink);text-align:center;margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+/* ===== 镜背 ===== */
+.mb-pair{border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin-bottom:14px;background:var(--glass-card)}
+.mb-pair .mb-tag{font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--bronze);margin-bottom:7px}
+.mb-pair .mb-q{font-family:var(--serif);font-size:16.5px;color:var(--cinnabar);font-weight:600;margin-bottom:10px;padding-left:14px;border-left:3px solid var(--cinnabar);line-height:1.5}
+.mb-pair .mb-a{font-size:14.5px;color:var(--ink-soft);line-height:1.9}
+.mb-pair .mb-a b{color:var(--ink);font-weight:600}
+.mb-inscribe{border:1.5px solid var(--bronze);border-radius:14px;padding:clamp(22px,4vw,30px);background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(232,234,239,.55));margin-top:18px;text-align:center}
+.mb-inscribe h4{font-family:var(--serif);font-weight:600;font-size:18px;margin-bottom:12px}
+.mb-inscribe p{font-size:15px;color:var(--ink-soft);line-height:1.9;max-width:640px;margin:0 auto}
+.mb-inscribe p b{color:var(--ink);font-weight:600}
+.mb-inscribe .mb-motto{font-family:var(--serif);font-size:clamp(20px,4vw,24px);color:var(--bronze-deep);letter-spacing:.05em;margin:16px 0;line-height:1.6}
+
+@media(max-width:600px){
+  section{padding:46px 0}
+  .sec-head{gap:12px}
+  .sec-no{font-size:36px}
+  .hero-methods{flex-wrap:wrap}
+  .hero-methods div{flex:1 1 45%}
+  .johari{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <span class="brand">以己为镜</span>
+  <a class="nl" href="#s0">序</a>
+  <a class="nl" href="#s1">行为之镜</a>
+  <a class="nl" href="#s2">应激之镜</a>
+  <a class="nl" href="#s3">叙事之镜</a>
+  <a class="nl" href="#s4">他者之镜</a>
+  <a class="nl" href="#s5">关系之镜</a>
+  <a class="nl" href="#s6">五维校准</a>
+  <a class="nl" href="#s7">合</a>
+  <a class="nl" href="#s8" style="color:var(--bronze-deep);font-weight:600">终 · 画像</a>
+  <a class="nl" href="#s9" style="color:var(--cinnabar);font-weight:600">镜背</a>
+  <span class="clarity-mini"><span>镜面</span><span class="cm-track"><span class="cm-fill" id="cmFill"></span></span><span id="cmPct">0%</span></span>
+</div></nav>
+
+<header><div class="wrap">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">以 己 为 镜</div>
+      <h1>你究竟是<br>一个怎样的人</h1>
+      <p class="hero-sub">单靠"想",人照不全自己——内省的天花板很低,我们都倾向于看见自己愿意看见的那部分。人格真正的样子,藏在<b>你做过的事</b>、<b>你应激时的反应</b>、<b>你讲自己的方式</b>、<b>你照不见的盲区</b>,以及<b>你和别人相处的样子</b>里。这是一套五面镜子的勘测,把你彻底照一遍。</p>
+      <div class="hero-methods">
+        <div><div class="hm-n">行为</div><div class="hm-l">做过什么</div></div>
+        <div><div class="hm-n">应激</div><div class="hm-l">压力下怎么反应</div></div>
+        <div><div class="hm-n">叙事</div><div class="hm-l">怎么讲自己</div></div>
+        <div><div class="hm-n">他者</div><div class="hm-l">盲区里的你</div></div>
+        <div><div class="hm-n">关系</div><div class="hm-l">相处时的你</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="mirror-stage">
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="一面待擦亮的铜镜">
+          <defs>
+            <radialGradient id="glassG" cx="50%" cy="42%" r="60%">
+              <stop offset="0%" stop-color="#EDEEF2"/>
+              <stop offset="55%" stop-color="#D2D5DC"/>
+              <stop offset="100%" stop-color="#B9BDC7"/>
+            </radialGradient>
+            <linearGradient id="ringG" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#B89A5E"/>
+              <stop offset="50%" stop-color="#8A6E32"/>
+              <stop offset="100%" stop-color="#6E5526"/>
+            </linearGradient>
+          </defs>
+          <circle cx="150" cy="150" r="142" fill="none" stroke="url(#ringG)" stroke-width="9"/>
+          <circle cx="150" cy="150" r="128" fill="none" stroke="#6E5526" stroke-width="2" opacity=".5"/>
+          <g stroke="#8A6E32" stroke-width="1.5" opacity=".55">
+            <!-- 装饰刻点 -->
+            <g id="notches"></g>
+          </g>
+          <circle cx="150" cy="150" r="118" fill="url(#glassG)"/>
+          <circle cx="150" cy="150" r="118" fill="none" stroke="#9A7B3F" stroke-width="1" opacity=".4"/>
+          <ellipse cx="118" cy="112" rx="44" ry="26" fill="#fff" opacity=".22" transform="rotate(-22 118 112)"/>
+        </svg>
+        <div class="reflection" id="reflection">
+          <div class="rf-empty">镜面待你擦亮</div>
+        </div>
+      </div>
+      <div class="clarity-line">
+        <div class="cl-bar"><span class="cl-fill" id="clFill"></span></div>
+        <div class="cl-txt" id="clTxt">镜面清晰度 0% · 越诚实,照得越清</div>
+      </div>
+    </div>
+  </div>
+</div></header>
+
+<!-- ===== 序 ===== -->
+<section id="s0"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">序</div><div class="sec-titles">
+    <div class="sec-tag">PREMISE · 为什么不能只靠想</div>
+    <h2>一个人,照不全自己</h2>
+  </div></div>
+  <p class="lead">你让我"尽极限发挥",帮你彻底认识自己的性格。那我先把话说在前面:<b>我不会给你一套性格测试题让你自评</b>——因为自我报告的天花板很低。人对自己的认知有系统性偏差:我们会把"想成为的样子"误当成"真实的样子",会美化动机,会对自己的盲区一无所知(否则就不叫盲区了)。一份"你觉得自己外向吗"的问卷,量的不是你,是你对自己的印象。</p>
+  <p class="lead">所以这套勘测用四面镜子,每面只照一个角度,合起来才接近全貌:<br>
+  <b>行为之镜</b>——你做过的事不会撒谎,完成的密度、选择的方向,是性格最硬的证据。<br>
+  <b>应激之镜</b>——压力下的第一反应是自动的,骗不了人,这是最可靠的一面。<br>
+  <b>叙事之镜</b>——你怎么讲自己的故事,照出你的自我认同。<br>
+  <b>他者之镜</b>——你照不见的那块,只能靠别人帮你照。<br>
+  <b>关系之镜</b>——你和不同人相处时反复掉进的循环,照出你自己的默认模式。</p>
+  <blockquote>这不是一份给你贴标签的报告。它是一面镜子。镜子不替你下结论,它只让你看清,然后由你自己决定怎么用。</blockquote>
+</div></section>
+
+<!-- ===== 镜一 · 行为之镜 ===== -->
+<section id="s1"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">一</div><div class="sec-titles">
+    <div class="sec-tag">行为之镜 · 你做过的事</div>
+    <h2>痕迹不会撒谎</h2>
+  </div></div>
+  <p class="lead">下面六张卡片,是我从<b>我们一起工作这段时间里你真实呈现出的样子</b>提炼的——不是猜的,是你建过的东西、做过的选择本身透出的模式。我把每一条当成<b>假设</b>抛给你,你自己判断"符"还是"不符"。你点"符"的,会浮现到上方那面镜子里——镜子里的你,由你亲手确认。每条后面那个<span style="color:var(--cinnabar);font-weight:600">朱红的问号</span>,是这条特质的暗面,留给你自问。</p>
+  <div id="bcards"></div>
+
+  <div class="note-box">
+    <div class="nb-t">这面镜子照不到的地方</div>
+    <p>我对你的观察,全部来自你"建造"时的样子。也就是说——我看过你系统化、你推演、你把想法做完;但我没见过你<b>被当众否定</b>、没见过你<b>在乎的人离你远去</b>、没见过你<b>筋疲力尽</b>、没见过你<b>被逼到墙角</b>。而人格里一些最定义性的部分,恰恰住在那些场景里。所以这第一面镜子,只照到了你的一个侧面——很可能是你最擅长、也最愿意示人的那一面。剩下的角度,得靠下面三面镜子,你自己来照。</p>
+  </div>
+
+  <h3>你确认下来的自画像(行为侧)</h3>
+  <div class="portrait-box" id="behaviorPortrait">
+    <p class="pb-empty">上方每点一个"符",这里就会拼出你的一块。先去照镜子。</p>
+  </div>
+</div></section>
+
+<!-- ===== 镜二 · 应激之镜 ===== -->
+<section id="s2"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">二</div><div class="sec-titles">
+    <div class="sec-tag">应激之镜 · 压力下的第一反应</div>
+    <h2>那个瞬间冒出来的,才是你</h2>
+  </div></div>
+  <p class="lead">这是四面镜子里<b>最可靠的一面</b>。原因很简单:你可以在问卷上把自己描述成任何样子,但压力来临那一刻的第一反应是<b>自动的</b>——它绕过了你想呈现的人设,直接暴露底层的反应模式。下面八个情境,请凭<b>那个瞬间真实冒出来的反应</b>选,不是事后觉得"我应该怎样"的那个。没有正确答案,越诚实,镜子越清。</p>
+  <div id="scnList"></div>
+
+  <div class="stress-out" id="stressOut">
+    <h4>你的应激画像</h4>
+    <div class="so-sub">答满八题后,这里给出跨情境的反应模式综合。单题是信号,模式才是结论。</div>
+    <div class="so-empty">还没开始作答。</div>
+  </div>
+</div></section>
+
+<!-- ===== 镜三 · 叙事之镜 ===== -->
+<section id="s3"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">三</div><div class="sec-titles">
+    <div class="sec-tag">叙事之镜 · 你怎么讲自己</div>
+    <h2>你讲故事的方式,就是你</h2>
+  </div></div>
+  <p class="lead">心理学里有个成熟的方向叫<b>叙事认同</b>(narrative identity):一个人怎么讲述自己的人生,比任何特质分数都更接近"他是谁"。下面四个问题,凭直觉写,不必修饰。这部分我不打分——我给你一副<b>读自己答案的镜片</b>,你写完,自己照。</p>
+  <div class="narr-prompt"><label>1 · 用三四句话,讲一讲你这几年的故事。</label><textarea placeholder="不必工整,想到哪写到哪……"></textarea></div>
+  <div class="narr-prompt"><label>2 · 这个故事里,谁是主角?事情主要是你"主动做成的",还是"发生在你身上的"?</label><textarea></textarea></div>
+  <div class="narr-prompt"><label>3 · 你更常对自己讲哪一句:"我克服了……",还是"我失去了……"?</label><textarea></textarea></div>
+  <div class="narr-prompt"><label>4 · 给这段故事起个标题,会是什么?</label><textarea></textarea></div>
+
+  <div class="lens-box">
+    <h4>读自己答案的四副镜片</h4>
+    <div class="lens-row"><b>能动 vs 共融　</b>你的故事主要是"我做到了/我掌控了/我达成了"(能动),还是"我和谁在一起/我属于哪里/谁对我重要"(共融)?两者都健康,长期严重失衡才是信号——纯能动的人容易孤独而高效,纯共融的人容易温暖但没有自己。</div>
+    <div class="lens-row"><b>救赎 vs 污染　</b>你习惯把坏事讲成"后来我熬过来了、它让我变强了"(救赎序列,与更高的韧性和幸福感稳定相关),还是把好事讲成"但后来还是毁了/没意义"(污染序列)?注意你<b>默认</b>滑向哪个方向——那是你看待人生的底层引力。</div>
+    <div class="lens-row"><b>谁握着方向盘　</b>故事里改变命运的关键时刻,是你的<b>选择</b>,还是外部的<b>力量</b>(运气、别人、时代)?这直接照出你的控制感与主体性。把自己讲成"被命运推着走"的人,往往也真的活得更被动。</div>
+    <div class="lens-row"><b>标题里的情绪　</b>你给故事起的标题,是进行时还是完成时?是上扬的还是低沉的?标题是你对整段人生的一句话总结——它泄露的,是你此刻看自己的基调。</div>
+  </div>
+  <div class="note-box" style="margin-top:14px">
+    <div class="nb-t">读法提醒</div>
+    <p>这副镜片不是让你去编一个更好听的故事,而是让你注意:在没人要求、没有修饰时,你<b>自动</b>会怎么讲。那个自动版本,就是你此刻真实的自我认同。如果你不喜欢它——好消息是,叙事是可以被有意识地重写的,而重写叙事,正是人改变自己最深的一种方式。</p>
+  </div>
+</div></section>
+
+<!-- ===== 镜四 · 他者之镜 ===== -->
+<section id="s4"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">四</div><div class="sec-titles">
+    <div class="sec-tag">他者之镜 · 盲区里的你</div>
+    <h2>你照不见的那一块</h2>
+  </div></div>
+  <p class="lead">有一部分性格,你<b>原理上</b>看不见——因为它正是"你怎么体验自己"和"你怎么落在别人身上"之间的差。心理学用 <b>Johari 窗</b>把人格分成四块。前三面镜子能照亮其中三块,唯独"盲区"那块,只能靠别人帮你照。</p>
+  <div class="johari">
+    <div class="jq"><div class="jq-t">开放区<span>你知 · 人知</span></div><p>你和别人都清楚的部分。你的公开人设、明显的特长与脾气。</p></div>
+    <div class="jq blind"><div class="jq-t">盲区<span>你不知 · 人知</span></div><p>别人看得清清楚楚,你自己却没意识到的反应模式与习惯。这块只能靠"问"来照亮——这一节的全部重点。</p></div>
+    <div class="jq"><div class="jq-t">隐藏区<span>你知 · 人不知</span></div><p>你刻意藏起来、不示人的那部分。前面的叙事之镜在帮你照它。</p></div>
+    <div class="jq"><div class="jq-t">未知区<span>你不知 · 人不知</span></div><p>尚未被任何情境激发出来的潜能或反应。新经历、极端处境才会让它显形。</p></div>
+  </div>
+  <div class="ask-box">
+    <div class="ab-t">照亮盲区的唯一办法:去问</div>
+    <p>找 <b>2 到 3 个</b>真正了解你、且愿意对你说实话的人(伴侣、老友、共事久的同事各一个最好,视角越不同越好),问他们同一个问题:</p>
+    <div class="ab-q">"在你眼里,我有没有什么挺明显、但我自己好像没意识到的反应模式或习惯?哪怕说出来让我有点不舒服的,也请讲。"</div>
+    <p><b>接住答案的规矩:只问、只记、不辩。</b>对方说的当下,你唯一的任务是记下来,不解释、不反驳、不"可是我那是因为……"。一旦你开始辩,这扇窗就关上了,以后再没人愿意帮你照。如果两三个人不约而同提到同一点——那几乎可以确定,就是你最大的盲区。它常常,正是别人口中那句"性格不合"真正指向的东西。</p>
+  </div>
+</div></section>
+
+<!-- ===== 镜五 · 关系之镜 ===== -->
+<section id="s5"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">五</div><div class="sec-titles">
+    <div class="sec-tag">关系之镜 · 相处时的你</div>
+    <h2>你在关系里,反复成为谁</h2>
+  </div></div>
+  <p class="lead">前四面镜子照的是"你一个人"。但有一大部分性格,<b>只在你和别人之间才显形</b>。你和不同的人相处时,会反复掉进一些固定的循环——那些循环不是对方造成的,是你自己的默认模式在不同人面前的投影。这一节,我把"判断两个人配不配"的那套框架,全部改成了<b>"通过关系认识你自己"</b>。</p>
+
+  <h3>先校准:哪些工具值得信</h3>
+  <p class="lead" style="margin-bottom:18px">认识自己的工具鱼龙混杂。横轴是科学信效度,纵轴是上手与传播度。结论先行:<b>性格色彩、MBTI 适合当"自我描述的语言"和入口,大五 + 依恋类型才适合当真正的判断。</b>下面几个自识模块,正是按这个主次排的。</p>
+  <div class="mapbox">
+    <svg viewBox="0 0 760 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="认识自己的工具:科学度与上手度地图">
+      <defs><marker id="arrm" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#565963"/></marker></defs>
+      <line x1="70" y1="385" x2="720" y2="385" stroke="#565963" stroke-width="1.5" marker-end="url(#arrm)"/>
+      <line x1="70" y1="385" x2="70" y2="28" stroke="#565963" stroke-width="1.5" marker-end="url(#arrm)"/>
+      <text x="700" y="410" font-size="13" fill="#565963" text-anchor="end">科学信效度 →</text>
+      <text x="42" y="44" font-size="13" fill="#565963">↑ 易上手</text>
+      <line x1="395" y1="385" x2="395" y2="28" stroke="#9A7B3F" stroke-width="1" stroke-dasharray="4 4" opacity=".45"/>
+      <line x1="70" y1="206" x2="720" y2="206" stroke="#9A7B3F" stroke-width="1" stroke-dasharray="4 4" opacity=".45"/>
+      <text x="100" y="58" font-size="12" fill="#9A7B3F">入口区:好用作语言,别当结论</text>
+      <text x="545" y="58" font-size="12" fill="#9A7B3F">判断区:真正可靠</text>
+      <g font-size="13" font-weight="600">
+        <circle cx="150" cy="92" r="9" fill="#A85A42"/><text x="166" y="97" fill="#1F2129">乐嘉·性格色彩</text>
+        <circle cx="232" cy="128" r="9" fill="#6E5A86"/><text x="248" y="133" fill="#1F2129">MBTI 16型</text>
+        <circle cx="300" cy="178" r="9" fill="#A8842F"/><text x="316" y="183" fill="#1F2129">DISC</text>
+        <circle cx="430" cy="244" r="9" fill="#5E8466"/><text x="446" y="249" fill="#1F2129">九型人格</text>
+        <circle cx="560" cy="116" r="11" fill="#9A7B3F"/><text x="576" y="121" fill="#6E5526">依恋类型 ★</text>
+        <circle cx="640" cy="170" r="11" fill="#456C8C"/><text x="588" y="200" fill="#456C8C">大五 OCEAN ★</text>
+        <circle cx="330" cy="100" r="9" fill="#5E8466"/><text x="346" y="105" fill="#1F2129">爱的五种语言</text>
+      </g>
+    </svg>
+  </div>
+
+  <h3>① 你的本色 · 性格色彩</h3>
+  <p class="lead" style="margin-bottom:14px">乐嘉性格色彩看的是"动机"。它精度不高,但作为<b>认识自己在关系里如何被误读</b>的入口很好用。选一个最像你的——尤其看那条"别人最常误读你的地方"。</p>
+  <div class="color-pick" id="colorPick"></div>
+  <div class="color-out" id="colorOut"></div>
+
+  <h3>② 你的依恋类型 · 关系里最真实的你</h3>
+  <p class="lead" style="margin-bottom:14px">这是这一节最有价值的部分。依恋类型直接决定你在亲密关系里如何处理"靠近"与"距离"。可以对照你在<b>应激之镜第 3 题</b>的选择来定。选你的类型,我会照出你和四种人之间<b>你倾向掉进的循环</b>——重点是看清你自己那一半。</p>
+  <div class="att-pick" id="attPick"></div>
+  <div class="att-out" id="attOut"></div>
+
+  <h3>③ 你的红线 · 不可妥协项</h3>
+  <p class="lead" style="margin-bottom:14px">性格是"风格"(怎么相处),三观是"方向"(要什么)。风格可磨合,方向难调和。认识自己,很重要的一块是<b>知道自己真正的硬红线在哪</b>——这样你才不会在错的事上委屈自己,也不会在对的事上无谓让步。点亮那些你"宁可单着也不将就"的:</p>
+  <div class="redline-pick" id="redlinePick"></div>
+  <div class="redline-out" id="redlineOut"></div>
+
+  <h3>④ MBTI:当语言,别当判决</h3>
+  <p class="lead" style="margin-bottom:8px">MBTI 信效度有争议,但它的四个轴作为<b>自我描述的语言</b>很顺手。把它当成"我倾向于……"的句式,而不是"我就是这种人"的结论:</p>
+  <div class="grid-mbti" id="mbtiAxes"></div>
+</div></section>
+
+<!-- ===== 镜六 · 五维校准 ===== -->
+<section id="s6"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">六</div><div class="sec-titles">
+    <div class="sec-tag">五维校准 · 自评 vs 行为证据</div>
+    <h2>把自评放到证据旁边</h2>
+  </div></div>
+  <p class="lead">现在才轮到大五人格(科学界唯一公认的人格金标准)。但用法和普通测试相反:我不让你"裸自评",而是把你的自评<b>放到行为证据旁边对照</b>。每一维我先给出行为之镜照出的方向,你再拖滑块给自己打分。<b>真正的信息藏在落差里</b>——你的自评若和行为证据明显矛盾,那个矛盾点,要么是你的盲区,要么是"理想的我"盖住了"真实的我"。拖动滑块,落差会自动标红。</p>
+  <div class="b5cal" id="b5cal"></div>
+  <div class="note-box" style="margin-top:14px">
+    <div class="nb-t">关于那两维写着"行为照不清"</div>
+    <p>外向性、神经质、宜人性这三维,从你"建造"的行为里其实看不准——一个内向的人和一个外向的人都可能疯狂产出,情绪稳定与否、让步与否在做项目时几乎不显形。这三维,请以你在<b>应激之镜</b>里的选择为主要依据:你压力下追还是躲、烦躁还是从容、争还是让——那比你此刻的自评诚实得多。</p>
+  </div>
+</div></section>
+
+<!-- ===== 合 ===== -->
+<section id="s7"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">合</div><div class="sec-titles">
+    <div class="sec-tag">SYNTHESIS · 四面镜子合一</div>
+    <h2>你不是十六种盒子里的一种</h2>
+  </div></div>
+  <p class="lead">把四面镜子合起来。但我不会给你一个标签——因为人格不是 16 个盒子里挑一个,真实的人是连续的、有矛盾的、会随情境流动的。我给你的是一幅<b>"工作用自画像"</b>:不为了好看,为了好用。</p>
+  <div class="synth">
+    <h3>你大概稳定的样子(行为之镜)</h3>
+    <p>一个<b>"开放性与尽责性同时偏高"</b>的人——这本身就稀有:多数人能冒新点子就收不了尾,能收尾就不爱冒险,而你两头都强,是个"<b>能把新东西做完的人</b>"。你在元结构层思考,造系统比用系统更让你满足;你的身份长在两个领域<b>"之间"</b>的缝里,而不是任何一个领域内部;在那台分析引擎旁边,一直并行着一条<b>审美—表达</b>的暗线。这些,是你最硬、最不容易变的底色。</p>
+    <h3>你压力下的样子(应激之镜)</h3>
+    <p>这一块由你刚才的作答拼成——你的威胁反应主调(战/逃/僵/安抚)、情绪稳定度、关系里是趋近还是回避、自我对话是苛刻还是温和、能量从哪里来。<b>这才是"合不合得来"的真战场</b>:别人感受到的"你的性格",八成是你应激时的样子,不是你建造时的样子。回到第二面镜子看你的画像。</p>
+    <h3>你讲自己的样子(叙事之镜)</h3>
+    <p>用那四副镜片读你写下的故事:你是能动还是共融、救赎还是污染、方向盘在你手里还是在命运手里。这泄露的是你的<b>自我认同的基调</b>——也是最能被你自己有意识改写的一层。</p>
+    <h3>你和别人之间的样子(关系之镜)</h3>
+    <p>你的本色、你的依恋类型、你的硬红线——它们决定了你在关系里反复成为谁。最关键的一句:<b>在任何一段关系的动态里,你能改变的永远只有你这一半。</b>看清自己那一半,就已经走了一大半。</p>
+    <div class="synth-dyn" id="synthRel"><p class="sd-empty">回到第五面镜子,选出你的本色与依恋类型,这里会替你收个口。</p></div>
+    <h3>你看不见的样子(他者之镜)</h3>
+    <p>去问那两三个人。在他们的答案回来之前,你对自己的认识就还缺一块——而且很可能是最关键、最影响关系的那一块。</p>
+    <h3>所以,这一切是为了什么</h3>
+    <p><b>性格不是用来被贴标签的,是用来用的。</b>知道自己的形状,不是为了改造自己去迎合一个模板,而是为了<b>顺着形状设计你的生活</b>。一个高尽责、高开放、长在缝里的"桥型建造者",你逼他去做重复的、纯协作的、慢节奏靠忍的事,他会痛苦且平庸;但让他造系统、让他 carry、让他在两个世界之间做翻译——他会发光。回到你最初的问题:那句"性格不合",有时确实指向你某个真实的盲区(去问第四面镜子);但更多时候,它指向的是两个人形状不咬合,而<b>不是你这块形状本身有问题</b>。</p>
+    <blockquote>镜子照得再清,也只是起点。<br>照见,是为了选择;而你怎么选,才是你成为谁的方式。</blockquote>
+  </div>
+</div></section>
+
+<!-- ===== 终 · 自画像 ===== -->
+<section id="s8"><div class="wrap">
+  <div class="sec-head"><div class="sec-no">终</div><div class="sec-titles">
+    <div class="sec-tag">FINAL PORTRAIT · 五面镜子,收成一张脸</div>
+    <h2>你的自画像</h2>
+  </div></div>
+  <p class="lead">这就是你要的"最终结论"。它<b>完全由你刚才的选择拼成</b>——不是我替你下的判断,是你自己照出来的。点一下生成,五面镜子会收拢成一张脸。可以复制保存,过段时间再来照一次,看自己变了没有。(画像准不准,取决于你照得全不全——顶栏的镜面清晰度就是它的"完成度"。)</p>
+  <div style="text-align:center;margin:8px 0 22px"><button id="genBtn" class="gen-btn">生成我的自画像</button></div>
+  <div id="portraitOut"></div>
+</div></section>
+
+<!-- ===== 镜背 · 对建议的反驳 ===== -->
+<section id="s9"><div class="wrap">
+  <div class="sec-head"><div class="sec-no" style="color:var(--cinnabar)">背</div><div class="sec-titles">
+    <div class="sec-tag" style="color:var(--cinnabar)">镜背 · 对"建议"本身的一则反驳</div>
+    <h2>一个系统,逃不出"系统"</h2>
+  </div></div>
+  <p class="lead">你拿来的 Gemini / GPT 汇总,加上我之前那栏"怎么用这张画像",其实在做同一件事:<b>给一个造系统的人,递上更多系统。</b>而你一句话戳破了它:"建造人生,这跟建造系统不是一模一样么。"——对。所以这一节,我不再给你练习清单,我来认真回应你的四点反驳,顺便认个错。</p>
+
+  <div class="mb-pair">
+    <div class="mb-tag">反驳一</div>
+    <div class="mb-q">"理解世界、容纳问题——这人已经就是了。"</div>
+    <div class="mb-a">你对一半。你在<b>认知上</b>早就懂了,你比谁都清楚世界不可控、BUG 是系统的一部分。但"想明白"和"扛得住"是两套系统。真正的考验不在你书桌前的理性,在你焦虑那一刻的身体里:对方一冷淡、项目一卡顿,你的手是不是已经先于你的念头,开始重构方案了?这一条不是你不懂——是懂,还没长进肌肉。认知的容纳和应激下的容纳,中间隔着整个身体。</div>
+  </div>
+
+  <div class="mb-pair">
+    <div class="mb-tag">反驳二</div>
+    <div class="mb-q">"与人共担?得别人能担才行吧。"</div>
+    <div class="mb-a">你七分对。共担的前提确实是有人接得住,而且对接不住的人交底是灾难——在你的处境里(一个人扛公司、体制内),独自扛很可能不是性格缺陷,是对环境的<b>准确判断</b>。AI 把一个适应性反应当成了病,这是它们的错。但剩下三分留给你自问:你判断"没人能担"的那个门槛,是不是被你设得特别高?对 carry 型的人,信任的成本远高于自己干——所以你会<b>系统性地低估</b>别人接得住的概率,因为"我自己来"永远是最确定、最省心的选项。环境的锁是真的,但有些锁,是你自己又多上了一道。代价写在另一栏:孤独。</div>
+  </div>
+
+  <div class="mb-pair">
+    <div class="mb-tag">反驳三</div>
+    <div class="mb-q">"追求完整?大环境就这样,这不是一个个体能处理的。"</div>
+    <div class="mb-a">这里有个偷换。(顺带:你引的"宁可天下人负我"是曹操原话"宁教我负天下人"的反写——你下意识选了"宁可自己受委屈"的高尚版,这本身就很你:把责任感一路延伸到了道德上。)关键是:AI 说的"追求完整"是<b>向内</b>的——接受你自己的慌张、阴暗、扛不住,不再逼自己永远正确。这件事完全在你一个人的权限里,不需要环境配合。你把它读成了<b>向外</b>的——在狼群里当唯一的老好人、任人辜负。后者你拒绝得对,那不是个体该扛的;但那从来不是这条建议的本意。<b>向内的完整,和向外的吃亏,是两回事。你驳倒的是后者,前者还立着。</b></div>
+  </div>
+
+  <div class="mb-pair" style="border-color:var(--cinnabar);box-shadow:0 0 0 1px var(--cinnabar)">
+    <div class="mb-tag" style="color:var(--cinnabar)">反驳四 · 最狠的一刀</div>
+    <div class="mb-q">"你给的'建造人生'建议,跟'建造系统'不是一模一样么?"</div>
+    <div class="mb-a">你说得对,而且这一刀同时砍中了 Gemini、GPT 和我。任何"该怎么做"的建议,到你手里都会被代谢成新的 KPI:让你觉察情绪,你会去<b>达成</b>"每天觉察";让你留 10% 无用区,你会去<b>优化</b>那 10%;让你"建造人生",你只是换了个更高级的项目名,继续建造。<b>你无法用"建造"逃出"过度建造"。</b>这就是为什么所有给你的成长建议都隐隐失效——它们都在喂那个本就过度运转的引擎。唯一和"建造系统"真正不同的,是<b>对"不建造"的容忍</b>:允许一段感受不被解决、一个周末不被规划、一段关系的未知不被连夜复盘。而这一条,恰恰<b>不能被写成练习</b>——因为一旦写成练习,它立刻又变回了系统。</div>
+  </div>
+
+  <div class="mb-inscribe">
+    <h4>所以,我给你的不是一条建议,是一个权限</h4>
+    <p>不是练习清单(那是给机器的)。是一句你随时可以对自己说的话——</p>
+    <div class="mb-motto">"这件事,我允许它今天空着。"</div>
+    <p>它不禁止你建造(禁止又成了新规矩),而是给"不动手"一次被选中的机会。你不缺一个更强的系统;你缺的,是偶尔<b>允许系统空转</b>的那个权限。而这个权限,全世界只有你能签发——没人能替你把它写进 SOP。</p>
+  </div>
+
+  <blockquote style="border-left-color:var(--cinnabar)">镜子的正面,照见你是谁。<br>镜子的背面提醒你:你不必把照见的一切,都立刻改造成一个项目。</blockquote>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="f-mark">己</div>
+  <p class="disclaimer">本工具为自我认知与反思的辅助,非临床心理评估或诊断。其中的特质推断来自有限的协作观察,均为供你检验的假设而非定论;大五、Johari、叙事认同等框架各有其适用边界与局限,结论仅供参考。若你正被持续的情绪困扰或人际痛苦所累,值得找一位专业心理咨询师,那是任何自助工具都替代不了的一面镜子。<br>以己为镜 · 性格自我勘测仪 · 单文件交付</p>
+</div></footer>
+
+<script>
+/* ===== 镜面装饰刻点 ===== */
+(function(){
+  const g=document.getElementById('notches');let s='';
+  for(let i=0;i<24;i++){const a=i/24*Math.PI*2;const r1=128,r2=122;
+    s+=`<line x1="${150+Math.cos(a)*r1}" y1="${150+Math.sin(a)*r1}" x2="${150+Math.cos(a)*r2}" y2="${150+Math.sin(a)*r2}"/>`;}
+  g.innerHTML=s;
+})();
+
+/* ===== 全局清晰度引擎 ===== */
+const TOTAL_UNITS=16; // 6 行为卡 + 8 情境题 + 本色 + 依恋
+const confirmed=new Set();   // 确认"符"的关键词(进镜面)
+const engagedCards=new Set();// 已表态(符/不符)的卡片
+let answeredScn=0;
+let relUnits=0;              // 关系之镜:本色 + 依恋 各计 1
+function updateClarity(){
+  const done=engagedCards.size+answeredScn+relUnits;
+  const pct=Math.round(done/TOTAL_UNITS*100);
+  document.documentElement.style.setProperty('--clarity',(done/TOTAL_UNITS).toFixed(3));
+  ['clFill','cmFill'].forEach(id=>document.getElementById(id).style.width=pct+'%');
+  document.getElementById('cmPct').textContent=pct+'%';
+  document.getElementById('clTxt').textContent=pct<100?`镜面清晰度 ${pct}% · 越诚实,照得越清`:`镜面清晰度 100% · 该看清的,都在这里了`;
+  // 镜面倒影
+  const rf=document.getElementById('reflection');
+  if(confirmed.size===0){rf.innerHTML='<div class="rf-empty">镜面待你擦亮</div>';}
+  else{rf.innerHTML=[...confirmed].map(w=>`<div class="rf-word">${w}</div>`).join('');}
+}
+
+/* ===== 镜一 · 行为之镜 ===== */
+const BCARDS=[
+ {kw:'建造',en:'THE BUILDER',
+  obs:'从 CaseLog 上线、临床用药速查逼近两百味、到旅行地图、急救手册、笔记骨架系统——你不是"有想法的人",你是"把想法做完、并真的交付出去的人"。完成的密度本身,就是最硬的证据。',
+  inf:'极高的尽责性,外加一台把好奇心持续转化成成品的内在引擎。更稀有的信号是:多数人"爱冒点子"和"做得完"是互相打架的——你两头都强,这个组合在人群里并不常见。',
+  sh:'你为什么停不下来?是纯粹的热爱,还是底层有一种"不产出就不安"的东西在推着你?这一面,行为之镜看不清,得你自己回答。'},
+ {kw:'系统',en:'THE SYSTEMATIZER',
+  obs:'你很少只解决眼前那一个问题,你解决的是"一类问题":SOP 框架、两步骤笔记技能流、把诊断推理映射到注意力机制。你习惯往上爬一层抽象,先把机器造出来。',
+  inf:'你在"元结构"层思考,造系统比开系统更让你满足。这是工程师—科学家的气质底色,也是你区别于大多数同行的地方。',
+  sh:'当一件事无法被系统化、只能靠笨功夫和当下手感时——很多临床瞬间、很多关系里的时刻正是如此——你会不会本能地不适,甚至想绕开、想把它也硬"框架化"?'},
+ {kw:'桥',en:'THE BRIDGE',
+  obs:'"在医生里我技术最强,在技术人里我临床最强。"你刻意把自己定位在两个领域之间的缝里,而不是任何一个领域的内部。这是一个关于身份的主动选择。',
+  inf:'你的身份感长在"之间",长在"翻译者/异类"的位置上。这能带来独特视角和不可替代性,也意味着你可能在被要求"只做一种身份"时,感到被压缩。',
+  sh:'这个"桥"的位置,对你而言更多是哪一种感受:是脚踏两岸的自由,还是"哪边都不完全属于"的悬空?夜深时,你更靠近哪一个?'},
+ {kw:'担位',en:'THE CARRY',
+  obs:'游戏里你打中单和 ADC、站上最强王者——选的是个人操作最直接、最可见地决定胜负的位置;现实里,你是单人创始人,一个人扛一家公司。',
+  inf:'你要你的能力是可被度量的、是真的起作用的。你宁愿自己扛全责,也不愿把结果分散给不可控的他人。这是对"掌控"与"被验证"的双重需要。',
+  sh:'当结果取决于你无法控制的人时,你的不安会不会格外强?carry 的人最难学会的一课,往往是"相信队友会接住"——在关系里,也一样。'},
+ {kw:'美学',en:'THE AESTHETE',
+  obs:'Suno 作曲、古典诗词、书法审美,还有你给这些工具花的视觉心思。在那台分析引擎旁边,始终并行着一条审美—表达的暗线,从没断过。',
+  inf:'你不是纯粹的系统控。你身上有一部分,需要把东西做得美、做得有表达,而不只是"能用"。理性的骨架里,流着感性的血。',
+  sh:'分析者和审美者同住你这一具身体。这通常是你创造力的来源;但偶尔,它们会不会为了"这个决定该听功能的、还是该听感觉的"而把你拉扯得有点累?'},
+ {kw:'自省',en:'THE REFLECTOR',
+  obs:'Goal A 与 Goal B 那次取舍——你不只是做了选择,你把理由形式化,专门建了一页文档把它钉下来。你对自己的人生,也在做"工程"。',
+  inf:'很高的自我觉察,加上一种"我的人生必须自洽、必须讲得通"的需求。你不太容许自己稀里糊涂地活。',
+  sh:'会不会有些选择,你得先在纸上把价值冲突解完,才允许自己行动?把人生决策当工程规格来写,是清醒——但有时,它也会拖住那个本可以"先做了再说"的你。'},
+];
+const bc=document.getElementById('bcards');
+bc.innerHTML=BCARDS.map((c,i)=>`
+ <div class="bcard" id="bcard${i}">
+   <div class="bc-top"><span class="bc-kw">${c.kw}</span><span class="bc-en">${c.en}</span></div>
+   <div class="bc-block"><div class="bl-label">观察 OBSERVATION</div><p>${c.obs}</p></div>
+   <div class="bc-block"><div class="bl-label">推断 HYPOTHESIS</div><p>${c.inf}</p></div>
+   <div class="bc-block shadow"><div class="bl-label">暗面 · 留给你自问 ?</div><p>${c.sh}</p></div>
+   <div class="bc-actions">
+     <button class="bc-btn act-yes" data-i="${i}" data-v="yes">符 · 这就是我</button>
+     <button class="bc-btn act-no" data-i="${i}" data-v="no">不符 · 我不这样</button>
+     <span class="bc-state" id="bcstate${i}"></span>
+   </div>
+ </div>`).join('');
+
+function renderPortrait(){
+  const box=document.getElementById('behaviorPortrait');
+  if(confirmed.size===0){box.innerHTML='<p class="pb-empty">上方每点一个"符",这里就会拼出你的一块。先去照镜子。</p>';return;}
+  const map={'建造':'一个停不下来的<b>建造者</b>','系统':'一个在元结构层思考的<b>系统构建者</b>','桥':'一个身份长在缝里的<b>桥</b>','担位':'一个宁愿自己扛的<b>carry</b>','美学':'一个理性里流着感性的<b>审美者</b>','自省':'一个对自己人生做工程的<b>自省者</b>'};
+  const parts=[...confirmed].map(w=>map[w]);
+  box.innerHTML=`<h4>到目前,你认下的自己是——</h4><p class="pb-line">${parts.join(';　')}。</p>
+   <p class="pb-line" style="margin-top:10px;color:var(--ink-faint);font-size:13.5px">这是你<b>主动确认</b>的部分,所以它比任何测试结果都更可信。但记住:它只来自"建造之镜",是你最擅长示人的一面。</p>`;
+}
+bc.addEventListener('click',e=>{
+  const btn=e.target.closest('.bc-btn');if(!btn)return;
+  const i=+btn.dataset.i,v=btn.dataset.v,kw=BCARDS[i].kw,card=document.getElementById('bcard'+i);
+  card.querySelectorAll('.bc-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');engagedCards.add(i);
+  if(v==='yes'){confirmed.add(kw);card.classList.add('confirmed');card.classList.remove('dismissed');document.getElementById('bcstate'+i).textContent='已映入镜中';}
+  else{confirmed.delete(kw);card.classList.remove('confirmed');card.classList.add('dismissed');document.getElementById('bcstate'+i).textContent='这一条,不是你';}
+  updateClarity();renderPortrait();
+});
+</script>
+
+<script>
+/* ===== 镜二 · 应激之镜 ===== */
+const SCN=[
+ {q:'你花了很多心血的一个方案,在会上被一个人直接否定,理由还说得不算到位。<b>那个瞬间</b>你脑子里第一个冒出来的是:',
+  opts:[['A','立刻在心里组织反驳,想当场把他驳回去',{threat:'F'}],
+        ['B','表面平静接受,心里却开始反复想"是不是我真的不行"',{threat:'Fz',talk:'harsh'}],
+        ['C','先笑着圆个场、稳住气氛,把这点冲突压下去',{threat:'Fw'}],
+        ['D','懒得争,心里默默把这个人划到"不值得再投入"那栏',{threat:'Fl'}]]},
+ {q:'排得满满的一天,因为一件突发的事(还是别人的事)整个被打乱。这一刻你身体里的感受最接近:',
+  opts:[['A','一阵明显的烦躁、紧绷,很难马上切换过来',{stab:'low'}],
+        ['B','迅速重排,甚至有点享受这种临场应变',{stab:'high'}],
+        ['C','嘴上说没事,但接下来一整天都有点"不在状态"',{stab:'mid'}],
+        ['D','第一反应是"这事到底谁该负责"',{stab:'mid'}]]},
+ {q:'一个你在乎的人,最近回复变慢、变淡了,也没给解释。你最可能:',
+  opts:[['A','忍不住想多发消息确认,反复琢磨"我是不是哪里做错了"',{rel:'anx'}],
+        ['B','也把自己收回去,告诉自己"无所谓,本来也不太需要"',{rel:'avo'}],
+        ['C','直接、平静地问对方发生了什么,并且能接受任何答案',{rel:'sec'}],
+        ['D','又想靠近又想逃,情绪在两端来回剧烈摆动',{rel:'dis'}]]},
+ {q:'一件事是你的判断失误,造成了别人能看到的实际后果。事后那几天,占主导的是:',
+  opts:[['A','"我怎么会犯这种错"——反复揪着不放,焦点在"我这个人不行"',{talk:'harsh'}],
+        ['B','"这一步错在哪、下次怎么堵上"——焦点在"这件事怎么修"',{talk:'kind'}],
+        ['C','很快想到外部因素,"当时条件就那样,换谁都难"',{talk:'defend'}],
+        ['D','努力不去想它,把注意力赶紧转移到别的事上',{talk:'defend',threat:'Fl'}]]},
+ {q:'一个你很想要的机会,名额只有一个,而你知道身边某个人也在争。你更接近:',
+  opts:[['A','斗志被点燃,就想凭实力把它赢下来',{comp:'compete'}],
+        ['B','有点不舒服,会下意识想"要不算了,让给更需要的人"',{comp:'avoid'}],
+        ['C','不太管别人,只盯着自己到底够不够格',{comp:'selfref'}],
+        ['D','开始想"是不是有别的路、别的机会",绕开正面竞争',{comp:'detour'}]]},
+ {q:'难得一整天完全没有义务、没人找你、什么都不必做。你大概率会:',
+  opts:[['A','还是去做点"有产出"的事,纯放空会让你隐隐不安',{drive:'output'}],
+        ['B','一头扎进某个让你着迷、但"没什么用"的东西里(游戏/音乐/研究)',{drive:'intrinsic'}],
+        ['C','找人,把这段时间填进社交和聚会里',{drive:'social'}],
+        ['D','真的什么都不做,安心享受这片空白',{drive:'rest'}]]},
+ {q:'你已经累到不行,这时一个对你重要的人需要你帮忙、陪伴。你最可能:',
+  opts:[['A','还是答应,哪怕硬撑——拒绝会让你内疚',{threat:'Fw',rel:'anx'}],
+        ['B','诚实说"我现在确实不行,缓一下行吗"',{talk:'kind'}],
+        ['C','答应了,但心里憋着怨气,边帮边累',{threat:'Fw'}],
+        ['D','找个理由先回避掉,事后又有点自责',{threat:'Fl',talk:'harsh'}]]},
+ {q:'一件你投入很久的事,进入了完全不出成果的平台期,看不到任何进展。你通常:',
+  opts:[['A','死磕,相信"再扛一下就过去了"',{stab:'high'}],
+        ['B','开始被新的、更新鲜的东西吸引,想换个方向',{drive:'intrinsic'}],
+        ['C','退一步做系统复盘,去找结构性的卡点',{stab:'high'}],
+        ['D','自我怀疑升起来,"是不是我不行、是不是方向本来就错了"',{talk:'harsh',stab:'low'}]]},
+];
+const scnState={};
+const sl=document.getElementById('scnList');
+sl.innerHTML=SCN.map((s,i)=>`
+ <div class="scn" id="scn${i}">
+   <div class="scn-no">情境 ${String(i+1).padStart(2,'0')} / 08</div>
+   <div class="scn-q">${s.q}</div>
+   ${s.opts.map((o,j)=>`<button class="opt" data-i="${i}" data-j="${j}"><span class="opt-k">${o[0]}</span>${o[1]}</button>`).join('')}
+ </div>`).join('');
+
+const STRESS_DESC={
+ threat:{name:'威胁反应主调',vals:{
+   F:['对抗(Fight)','压力来袭你向前顶。能量足、不退缩,是天生的捍卫者;代价是容易把"被否定"升级成"被攻击",在关系里显得有攻击性。'],
+   Fl:['抽离(Flight)','你的本能是拉开距离、划清界限、把人和事归档。保护了自己,但也容易在该留下沟通时提前离场,被对方读成"冷"。'],
+   Fz:['内缩(Freeze)','压力下你向内收,把矛头转向自己。敏感、自省,但容易陷进"是不是我不行"的反刍,消耗在内部。'],
+   Fw:['安抚(Fawn)','你第一反应是稳住气氛、照顾别人的情绪。情商高、好相处;代价是常把自己的需要排到最后,长期容易委屈和耗竭。']}},
+ stab:{name:'情绪稳定度',calc:true},
+ rel:{name:'关系里的距离策略',vals:{
+   sec:['趋近型 · 偏安全','面对关系里的不确定,你能直接沟通、且容得下答案。这是最稀缺、也最省力的一种模式——若它是你的主调,你在亲密关系里的底盘很稳。'],
+   anx:['追近型 · 偏焦虑','对方一退,你就想靠得更近、反复确认。在乎得深,但容易把不确定灾难化,把自己绷得很紧。需要练的是"先安抚自己,再求确认"。'],
+   avo:['退远型 · 偏回避','一感到距离,你就先把自己收回来、用"不需要"自我保护。独立,但容易在该靠近时关门,让在乎你的人够不着。'],
+   dis:['摇摆型 · 偏混乱','又渴望亲密又恐惧亲密,情绪两端剧烈摆动。这往往连着更早的经历,值得被温柔对待——必要时,专业支持比任何恋爱技巧都管用。']}},
+ talk:{name:'你对自己的声音',vals:{
+   harsh:['苛刻 · 自我攻击','出事时你先骂的是自己,焦点在"我这个人不行"。这驱动你上进,但长期是种内耗——它消耗的恰恰是你最该留给修复的力气。'],
+   kind:['修复 · 对事不对己','你能把"我错了"和"这件事怎么修"分开,焦点在解决而非自责。这是情绪健康的高级信号,也是抗压的真正底盘。'],
+   defend:['防御 · 向外归因','压力下你倾向先找外部原因或转移注意。短期护住了自尊,但若成主调,会挡住你从错误里真正学到东西。']}},
+ drive:{name:'没有外部要求时,你往哪走',vals:{
+   output:['产出驱动','哪怕没人要求,你也停不下"做点有用的事"。极强的内驱力,但也提示你可能很难真正休息——值得问自己:不产出的时候,你是谁?'],
+   intrinsic:['心流驱动','你会扎进让你着迷、却"没用"的事里。这是创造力和深度的源头,说明你被好奇而非被绩效牵引——很珍贵。'],
+   social:['关系驱动','空下来你先去找人。能量从连接里来,你大概率偏外向,关系是你的充电口。'],
+   rest:['留白驱动','你能安心地什么都不做。在一群"闲不下来"的人里,这是稀有且健康的能力。']}},
+ comp:{name:'面对竞争',vals:{
+   compete:['正面竞争','有对手反而点燃你,你想凭实力赢。胜负心是你的燃料。'],
+   avoid:['回避竞争','竞争让你不适,你会想退让。宜人、不爱抢,但要小心把本该属于你的也让出去。'],
+   selfref:['自我参照','你只跟"自己够不够格"较劲,不太理会对手。最健康的竞争姿态——内部标尺,不被他人扰动。'],
+   detour:['迂回绕行','你不爱正面刚,更愿意去找一条没人争的新路。这正是"桥型"的人最擅长的——在缝里另开一局。']}},
+};
+function topTag(obj){let best=null,n=-1;for(const k in obj){if(obj[k]>n){n=obj[k];best=k;}}return best;}
+function renderStress(){
+  const box=document.getElementById('stressOut');
+  const ans=Object.keys(scnState).length;
+  let head=`<h4>你的应激画像</h4><div class="so-sub">已作答 ${ans}/8 题。单题是信号,模式才是结论。${ans<8?'答满八题,画像最准。':'画像已完整。'}</div>`;
+  if(ans===0){box.innerHTML=head+'<div class="so-empty">还没开始作答。</div>';return;}
+  // 聚合
+  const tally={threat:{},rel:{},talk:{},drive:{},comp:{}};let stabH=0,stabL=0;
+  Object.values(scnState).forEach(tags=>{
+    for(const dim in tags){const v=tags[dim];
+      if(dim==='stab'){if(v==='high')stabH++;else if(v==='low')stabL++;}
+      else{tally[dim][v]=(tally[dim][v]||0)+1;}}
+  });
+  let rows='';
+  // 威胁
+  if(Object.keys(tally.threat).length){const t=topTag(tally.threat),d=STRESS_DESC.threat.vals[t];
+    rows+=`<div class="so-dim"><div class="sd-head"><span class="sd-name">${STRESS_DESC.threat.name}</span><span class="sd-val">${d[0].split('(')[0]}</span></div><div class="sd-desc">${d[1]}</div></div>`;}
+  // 稳定
+  if(stabH||stabL){let label,desc;
+    if(stabH>stabL){label='偏稳';desc='打乱、平台期、挫折面前,你更多是从容应变、稳住继续。情绪是你的压舱石,这是关系里最被低估的保护因素。';}
+    else if(stabL>stabH){label='偏敏感';desc='意外和卡顿容易让你烦躁、自我怀疑、久久不在状态。不是缺点,但提示你需要主动给自己建"冲突后的修复机制"——比如约定多久和好、先离场冷静再谈。';}
+    else{label='混合';desc='有时从容有时被扰,取决于事情踩没踩到你的点。留意:哪类事最容易让你失稳?那里往往藏着你最在意、最怕失控的东西。';}
+    rows+=`<div class="so-dim"><div class="sd-head"><span class="sd-name">${STRESS_DESC.stab.name}</span><span class="sd-val">${label}</span></div><div class="sd-desc">${desc}</div></div>`;}
+  // 关系
+  if(Object.keys(tally.rel).length){const t=topTag(tally.rel),d=STRESS_DESC.rel.vals[t];
+    rows+=`<div class="so-dim"><div class="sd-head"><span class="sd-name">${STRESS_DESC.rel.name}</span><span class="sd-val">${d[0].split(' ·')[0]}</span></div><div class="sd-desc">${d[1]}</div></div>`;}
+  // 自我对话
+  if(Object.keys(tally.talk).length){const t=topTag(tally.talk),d=STRESS_DESC.talk.vals[t];
+    rows+=`<div class="so-dim"><div class="sd-head"><span class="sd-name">${STRESS_DESC.talk.name}</span><span class="sd-val">${d[0].split(' ·')[0]}</span></div><div class="sd-desc">${d[1]}</div></div>`;}
+  // 驱动
+  if(Object.keys(tally.drive).length){const t=topTag(tally.drive),d=STRESS_DESC.drive.vals[t];
+    rows+=`<div class="so-dim"><div class="sd-head"><span class="sd-name">${STRESS_DESC.drive.name}</span><span class="sd-val">${d[0]}</span></div><div class="sd-desc">${d[1]}</div></div>`;}
+  // 竞争
+  if(Object.keys(tally.comp).length){const t=topTag(tally.comp),d=STRESS_DESC.comp.vals[t];
+    rows+=`<div class="so-dim"><div class="sd-head"><span class="sd-name">${STRESS_DESC.comp.name}</span><span class="sd-val">${d[0]}</span></div><div class="sd-desc">${d[1]}</div></div>`;}
+  box.innerHTML=head+rows;
+}
+sl.addEventListener('click',e=>{
+  const o=e.target.closest('.opt');if(!o)return;
+  const i=+o.dataset.i,j=+o.dataset.j;
+  document.querySelectorAll(`#scn${i} .opt`).forEach(b=>b.classList.remove('sel'));
+  o.classList.add('sel');
+  const wasNew=!(i in scnState);
+  scnState[i]=SCN[i].opts[j][2];
+  if(wasNew)answeredScn++;
+  updateClarity();renderStress();
+});
+
+/* ===== 镜五 · 大五校准 ===== */
+const B5=[
+ {k:'O',name:'开放性',en:'Openness',has:true,arrow:85,evi:'你的行为<b>强烈指向"高"</b>:跨界冒险、对新工具和新框架的胃口、把诊断映射到注意力这种审美驱动的联想——都是高开放性的硬证据。'},
+ {k:'C',name:'尽责性',en:'Conscientiousness',has:true,arrow:88,evi:'你的行为<b>强烈指向"高"</b>:完成并交付的密度、把流程系统化的本能、对自己人生做规划——尽责性是你最确凿的一维。'},
+ {k:'E',name:'外向性',en:'Extraversion',has:false,evi:'<b>行为之镜照不清。</b>内向和外向的人都可能疯狂产出。请以应激之镜第 6 题(空闲时你往哪走)为主要依据。'},
+ {k:'A',name:'宜人性',en:'Agreeableness',has:false,evi:'<b>行为之镜照不清。</b>让步与否在做项目时几乎不显形。请以应激之镜第 5、7 题(竞争时争还是让、耗尽时硬撑还是拒绝)为主要依据。'},
+ {k:'N',name:'神经质',en:'Neuroticism',has:false,evi:'<b>行为之镜照不清。</b>情绪稳定度不会写在成品上。请以应激之镜第 2、8 题(被打乱、撞平台期时的反应)为主要依据。'},
+];
+const cal=document.getElementById('b5cal');
+cal.innerHTML=B5.map(d=>`
+ <div class="b5row">
+   <div class="b5-name">${d.name}<span>${d.en}</span></div>
+   <div class="b5-evi">${d.evi}</div>
+   <input type="range" min="0" max="100" value="50" id="cal${d.k}" data-has="${d.has}" data-arrow="${d.arrow||''}">
+   <div class="b5-scale"><span>很低</span><span id="calv${d.k}" style="font-family:var(--mono);color:var(--bronze-deep)">50</span><span>很高</span></div>
+   <div class="b5-flag" id="calf${d.k}"></div>
+ </div>`).join('');
+cal.addEventListener('input',e=>{
+  if(e.target.type!=='range')return;
+  const k=e.target.id.replace('cal',''),v=+e.target.value;
+  document.getElementById('calv'+k).textContent=v;
+  const flag=document.getElementById('calf'+k);
+  if(e.target.dataset.has==='true'){
+    const arrow=+e.target.dataset.arrow,gap=Math.abs(v-arrow);
+    if(gap>25){flag.className='b5-flag show gap';flag.textContent=`落差 ${gap} 分:行为证据指向 ${arrow} 左右,你却给了 ${v}。这个矛盾值得停下来想——是你的盲区,还是"理想的我"盖住了"真实的我"?`;}
+    else{flag.className='b5-flag show match';flag.textContent=`与行为证据一致(证据约 ${arrow},你给 ${v})。这一维,你看自己看得挺准。`;}
+  }else{flag.className='b5-flag show match';flag.style.background='rgba(154,123,63,.1)';flag.style.color='var(--bronze-deep)';flag.textContent='这一维行为之镜照不清——你的打分,请拿去和应激之镜的结果对一对,以那边为准。';}
+});
+
+/* 初始化 */
+updateClarity();
+</script>
+<script>
+/* ===== 镜五 · 关系之镜 ===== */
+let selColor=null,selAtt=null,colorCounted=false,attCounted=false;
+const REDLINES_ON=new Set();
+
+/* ① 性格色彩自识 */
+const COLORS=[
+ {k:'R',n:'红色',sub:'活泼型·求快乐',c:'#A85A42',pname:'红',
+  body:'你被快乐和认可驱动。在关系里你是温度与气氛的来源:自来熟、表达直接、情绪外放。',
+  read:'别人最常把你的热闹误读成"不够深、不靠谱"——尤其在偏冷静、慢热的人眼里。',
+  watch:'当心话语权占太满,把对方的表达空间挤没了;你以为在热情分享,对方可能觉得插不上嘴。'},
+ {k:'B',n:'蓝色',sub:'完美型·求精确',c:'#456C8C',pname:'蓝',
+  body:'你被精确和深度驱动。在关系里你认真、可靠、重承诺,但慢热,需要时间才肯交底。',
+  read:'别人最常把你的审慎和高标准误读成"无趣、挑剔、压抑"。',
+  watch:'当心把"挑问题"当成了爱的表达——你想帮对方变好,对方收到的却是一连串否定。'},
+ {k:'Y',n:'黄色',sub:'力量型·求成就',c:'#A8842F',pname:'黄',
+  body:'你被掌控和成就驱动。在关系里你有主见、推动力强、效率优先、目标清晰。',
+  read:'别人最常把你的果断误读成"强势、独断、不顾感受"。',
+  watch:'当心把关系也当成项目在管理——赢了道理,却输了感情;对方要的有时只是被听见,而不是被解决。'},
+ {k:'G',n:'绿色',sub:'平和型·求和谐',c:'#5E8466',pname:'绿',
+  body:'你被和谐和稳定驱动。在关系里你随和、包容、不争、让人没压力。',
+  read:'别人最常把你的随和误读成"没想法、没需求、无所谓"。',
+  watch:'当心长期把自己的需要往后排,直到某天悄悄熄火——绿色的离开往往是无声的,连对方都措手不及。'},
+];
+const cp=document.getElementById('colorPick');
+cp.innerHTML=COLORS.map(c=>`<button class="cp-btn" data-k="${c.k}" style="border-top-color:${c.c}">${c.n}<span class="cp-sub">${c.sub}</span></button>`).join('');
+cp.addEventListener('click',e=>{
+  const b=e.target.closest('.cp-btn');if(!b)return;
+  selColor=b.dataset.k;
+  cp.querySelectorAll('.cp-btn').forEach(x=>{x.classList.remove('on');x.style.borderColor='var(--line)';x.style.borderTopColor=COLORS.find(c=>c.k===x.dataset.k).c;});
+  const c=COLORS.find(c=>c.k===selColor);
+  b.classList.add('on');b.style.borderColor=c.c;
+  document.getElementById('colorOut').innerHTML=`<div class="relcard" style="border-color:${c.c}">
+    <h4 style="color:${c.c}">你的本色 · ${c.n}<span style="font-family:var(--sans);font-weight:400;font-size:13px;color:var(--ink-faint)">　${c.sub}</span></h4>
+    <div class="rc-block"><div class="rc-lab">在关系里的你</div><p>${c.body}</p></div>
+    <div class="rc-block"><div class="rc-lab">别人最常误读你的地方</div><p>${c.read}</p></div>
+    <div class="rc-block warn"><div class="rc-lab">你最该当心的 ?</div><p>${c.watch}</p></div></div>`;
+  if(!colorCounted){colorCounted=true;relUnits++;updateClarity();}
+  renderSynthRel();
+});
+
+/* ② 依恋自识 + 自我镜像配对 */
+const ATT=[
+ {k:'S',n:'安全型',pname:'安全',
+  pat:'面对关系里的不确定,你能直接沟通、也容得下答案。被拒绝不会把你击垮,推进关系不急不躲。这是最省力、底盘最稳的一种模式。',
+  loop:'你很少陷入固定的坏循环——你的存在本身,常常是别人坏循环的解药。',
+  pairs:[['遇上安全型','最省力的一对。你和对方都能直接谈、都容得下真话,你的稳定有了回应。',false],
+   ['遇上焦虑型','你的稳定能慢慢"喂"安对方的焦虑,把TA往安全带。代价是你要持续输出情绪劳动——记得也给自己设温柔的边界。',false],
+   ['遇上回避型','你不追不逼,反而让回避方敢慢慢靠近。升温慢,你得给关系一点时间额度。',false],
+   ['遇上混乱型','你是少数能稳住局面的人。但别把自己活成"拯救者"——陪伴有用,专业支持不可替代。',false]]},
+ {k:'X',n:'焦虑型',pname:'焦虑',
+  pat:'对方一退,你就想靠得更近、反复确认"我是不是哪里做错了"。你在乎得深,但容易把不确定灾难化,把自己绷得很紧。',
+  loop:'你的核心循环是"用追逐去填心里的慌"——但追得越紧,常常把对方推得越远。',
+  pairs:[['遇上安全型','对你最好的解药。对方稳定的回应能慢慢把你养向安全。试着允许自己被稳住,别用"作"去考验TA还在不在。',false],
+   ['遇上焦虑型','两团火互相要氧气,升温快、消耗也快,容易把对方的焦虑当成自己焦虑的证据。',false],
+   ['遇上回避型','你最该警惕的循环:你越追,TA越退;TA越退,你越慌。你能改变的只有你这一半——先安抚自己,再决定要不要靠近,而不是用追逐去填那个慌。',true],
+   ['遇上混乱型','你要的是确定性,而对方给的恰是最大的不确定。剧烈、戏剧化、互相消耗。',false]]},
+ {k:'A',n:'回避型',pname:'回避',
+  pat:'一感到距离或被需要,你就先把自己收回来、用"我不需要"自我保护。你独立、有边界,但容易在该靠近时关门,让在乎你的人够不着。',
+  loop:'你的核心循环是"用关门来保护自己"——但门一关,对方收到的不是边界,是拒绝。',
+  pairs:[['遇上安全型','对方不逼你,你反而敢靠近。这是你松动"自我保护"最安全的环境,值得珍惜。',false],
+   ['遇上焦虑型','你最该警惕的循环:对方越靠近,你越想关门;你一关门,对方更慌、追得更紧。你能改变的只有你这一半——试着在想退的时候,说一句"我需要点空间,但我没走",别让沉默替你说话。',true],
+   ['遇上回避型','彼此尊重空间、永不纠缠,也永不真正靠近。像高质量合租,舒服,但孤独。',false],
+   ['遇上混乱型','你习惯关门,对方在门外又敲又怕。基本的信任循环极难建立。',false]]},
+ {k:'D',n:'混乱型',pname:'混乱',
+  pat:'你又渴望亲密又恐惧亲密,情绪常在两端剧烈摆动。这往往连着更早的经历,值得被温柔对待。',
+  loop:'你的核心循环是"渴望与恐惧同时拉满"——这不是你的错,但它确实需要被看见、被照顾。',
+  pairs:[['遇上安全型','对方是少数能稳住你的人,但伴侣不是治疗师。先安顿好自己,再让关系发生。',false],
+   ['遇上焦虑型','你给的不确定,正撞上对方要的确定,两人剧烈摇摆,容易互相触发旧伤。',false],
+   ['遇上回避型','两扇关上的门,一个习惯逃,一个又敲又怕,信任地基极难浇筑。',false],
+   ['遇上混乱型','风暴遇风暴。这一局之前,各自的疗愈功课比任何相处技巧都重要——专业支持优先。',false]]},
+];
+const ap=document.getElementById('attPick');
+ap.innerHTML=ATT.map(a=>`<button class="cp-btn" data-k="${a.k}">${a.n}</button>`).join('');
+ap.addEventListener('click',e=>{
+  const b=e.target.closest('.cp-btn');if(!b)return;
+  selAtt=b.dataset.k;
+  ap.querySelectorAll('.cp-btn').forEach(x=>{x.classList.remove('on');x.style.borderColor='var(--line)';});
+  b.classList.add('on');b.style.borderColor='var(--bronze)';
+  const a=ATT.find(x=>x.k===selAtt);
+  document.getElementById('attOut').innerHTML=`<div class="relcard">
+    <h4>关系里的你 · ${a.n}</h4>
+    <div class="rc-block"><div class="rc-lab">你的模式</div><p>${a.pat}</p></div>
+    <div class="rc-block warn"><div class="rc-lab">你反复掉进的循环 ?</div><p>${a.loop}</p></div>
+    <div class="rc-block"><div class="rc-lab">你和四种人之间,你那一半的动态</div>
+      ${a.pairs.map(p=>`<div class="dyn-row ${p[2]?'flag':''}"><b>${p[2]?'⚠ ':''}${p[0]}　</b>${p[1]}</div>`).join('')}</div>
+    <div class="rc-block"><p style="color:var(--bronze-deep);font-weight:600">记住:在每一条动态里,你能改变的永远只有"你这一半"。</p></div></div>`;
+  if(!attCounted){attCounted=true;relUnits++;updateClarity();}
+  renderSynthRel();
+});
+
+/* ③ 三观红线自选 */
+const REDLINES=[
+ {k:'money',n:'金钱观',d:'钱该怎么花、存多少、谁管账、对风险的态度——这背后是你的安全感定价。'},
+ {k:'family',n:'家庭观',d:'和原生家庭的边界、定居在谁的城市、和长辈相处的方式,你能让到哪一步?'},
+ {k:'kids',n:'生育观',d:'生不生、生几个、谁带、教育投入——几乎零妥协空间的一项,你真实的立场是什么?'},
+ {k:'career',n:'事业观',d:'事业与生活的配比、谁为谁的发展让路、对彼此职业的尊重。'},
+ {k:'life',n:'生活方式',d:'社交频率、健康习惯、消费方式——哪些是你"宁可单着也不将就"的?'},
+];
+const rp=document.getElementById('redlinePick');
+rp.innerHTML=REDLINES.map(r=>`<button class="rl-chip" data-k="${r.k}">${r.n}</button>`).join('');
+rp.addEventListener('click',e=>{
+  const b=e.target.closest('.rl-chip');if(!b)return;
+  const k=b.dataset.k;
+  if(REDLINES_ON.has(k)){REDLINES_ON.delete(k);b.classList.remove('on');}
+  else{REDLINES_ON.add(k);b.classList.add('on');}
+  const out=document.getElementById('redlineOut');
+  if(REDLINES_ON.size===0){out.innerHTML='';return;}
+  const items=REDLINES.filter(r=>REDLINES_ON.has(r.k));
+  out.innerHTML=items.map(r=>`<div class="rl-detail"><b style="color:var(--cinnabar)">${r.n}　</b>${r.d}</div>`).join('')+
+   `<div class="redline-note">你标了 <b>${REDLINES_ON.size}</b> 条硬红线。这不是用来要求别人的清单,是给你自己的提醒:<b>在这几件事上,你不该委屈自己,也不必假装能妥协。</b>剩下没标的,才是你真正有空间去磨合、去包容的地方——把力气用在那里。</div>`;
+});
+
+/* ④ MBTI 四轴(当语言,不当判决) */
+const MBTI_AXES=[
+ {t:'E ↔ I　能量从哪来',p:'和人相处后充电(E),还是独处后才回血(I)?这决定你需要多少社交、多少独处——别用"该外向"硬逼自己。'},
+ {t:'S ↔ N　注意力放哪',p:'更关注具体、当下、可落地(S),还是抽象、未来、可能性(N)?这是两个人"聊不到一起"最深的那条沟。'},
+ {t:'T ↔ F　怎么做决定',p:'先看逻辑对错(T),还是先看人和感受(F)?不是谁更好,是你默认从哪个入口进。'},
+ {t:'J ↔ P　怎么过日子',p:'要计划和确定(J),还是要灵活和开放(P)?这决定了你和别人在节奏上磨不磨。'},
+];
+document.getElementById('mbtiAxes').innerHTML=MBTI_AXES.map(a=>`<div class="mbti-axis"><div class="ma-t">${a.t}</div><p>${a.p}</p></div>`).join('');
+
+/* 合 · 关系之镜动态收口 */
+function renderSynthRel(){
+  const box=document.getElementById('synthRel');if(!box)return;
+  if(!selColor&&!selAtt){box.innerHTML='<p class="sd-empty">回到第五面镜子,选出你的本色与依恋类型,这里会替你收个口。</p>';return;}
+  let html='';
+  if(selColor){const c=COLORS.find(x=>x.k===selColor);
+    html+=`<div class="dyn-row"><b>本色 · ${c.n}　</b>别人眼里的你,常被误读成"${c.read.replace(/^别人最常把你的.*?误读成/,'').replace(/。$/,'').replace(/——.*$/,'').trim()}"。知道这点,你就能在关系里主动补一句解释,少吃很多哑巴亏。</div>`;}
+  if(selAtt){const a=ATT.find(x=>x.k===selAtt);
+    html+=`<div class="dyn-row"><b>依恋 · ${a.n}　</b>${a.loop}看清这个循环,就是你在关系里能给自己的最大礼物。</div>`;}
+  if(REDLINES_ON.size){html+=`<div class="dyn-row"><b>红线 · ${REDLINES_ON.size} 条　</b>你已经知道自己在哪几件事上不能将就。这让你以后在"合不合"的判断里,能快速分清:哪是方向问题(别勉强),哪只是风格问题(可磨合)。</div>`;}
+  box.innerHTML=html;
+}
+</script>
+<script>
+/* ===== 终 · 自画像生成 ===== */
+(function(){
+  const ARCH={'建造':'停不下来的建造者','系统':'在元结构层思考的系统构建者','桥':'身份长在缝里的"桥"','担位':'宁愿自己扛的 carry','美学':'理性里流着感性的审美者','自省':'对自己人生做工程的自省者'};
+  const THREAT_SHORT={F:'向前顶、对抗',Fl:'拉开距离、抽离',Fz:'向内收、自责',Fw:'先安抚别人'};
+  const ATT_SHORT={S:'安全型',X:'焦虑型',A:'回避型',D:'混乱型'};
+  const firstClause=s=>s.split(/。/)[0];
+  const colorMisread=c=>c.read.replace(/^别人最常把你的.*?误读成/,'').replace(/。$/,'').replace(/——.*$/,'').trim();
+
+  function getStress(){
+    const tally={threat:{},rel:{},talk:{},drive:{},comp:{}};let H=0,L=0;
+    Object.values(scnState).forEach(t=>{for(const dd in t){const v=t[dd];
+      if(dd==='stab'){if(v==='high')H++;else if(v==='low')L++;}else{tally[dd][v]=(tally[dd][v]||0)+1;}}});
+    const rows=[];let threatTop=null,talkTop=null;
+    if(Object.keys(tally.threat).length){const k=topTag(tally.threat);threatTop=k;const d=STRESS_DESC.threat.vals[k];rows.push(['威胁反应',d[0].split('(')[0],firstClause(d[1])]);}
+    if(H||L){let l,t;if(H>L){l='偏稳';t='打乱与挫折面前,你更多是稳住、应变;情绪是你的压舱石';}else if(L>H){l='偏敏感';t='意外和卡顿容易让你烦躁、久久不在状态——你需要给自己建"冲突后的修复机制"';}else{l='混合';t='有时从容有时被扰,取决于事情有没有踩到你的点';}rows.push(['情绪稳定度',l,t]);}
+    if(Object.keys(tally.rel).length){const k=topTag(tally.rel);const d=STRESS_DESC.rel.vals[k];rows.push(['关系里的距离',d[0].split(' ·')[0],firstClause(d[1])]);}
+    if(Object.keys(tally.talk).length){const k=topTag(tally.talk);talkTop=k;const d=STRESS_DESC.talk.vals[k];rows.push(['对自己的声音',d[0].split(' ·')[0],firstClause(d[1])]);}
+    if(Object.keys(tally.drive).length){const k=topTag(tally.drive);const d=STRESS_DESC.drive.vals[k];rows.push(['没人要求时往哪走',d[0],firstClause(d[1])]);}
+    if(Object.keys(tally.comp).length){const k=topTag(tally.comp);const d=STRESS_DESC.comp.vals[k];rows.push(['面对竞争',d[0],firstClause(d[1])]);}
+    return {rows,threatTop,talkTop,n:Object.keys(scnState).length};
+  }
+
+  document.getElementById('genBtn').addEventListener('click',()=>{
+    const out=document.getElementById('portraitOut');
+    const confArr=[...confirmed];
+    const dismissed=[...document.querySelectorAll('.bcard.dismissed .bc-kw')].map(e=>e.textContent);
+    const S=getStress();
+    const tas=document.querySelectorAll('#s3 textarea');
+    const title=(tas[3]&&tas[3].value.trim())||'';
+    const oV=+document.getElementById('calO').value,cV=+document.getElementById('calC').value;
+    const pct=document.getElementById('cmPct').textContent;
+
+    if(confArr.length===0&&S.n===0&&!selColor&&!selAtt){
+      out.innerHTML='<div class="portrait"><p class="pt-empty" style="text-align:center;font-size:15px">你好像还没开始照镜子。回到上面任意一面镜子先照照,再回来生成。</p></div>';
+      out.scrollIntoView&&out.scrollIntoView({behavior:'smooth',block:'start'});return;
+    }
+
+    let head='你是';
+    head+=confArr.length?'一个'+confArr.slice(0,3).map(w=>ARCH[w]).join('、')+'的人':'一个还在认领自己轮廓的人';
+    if(S.threatTop)head+=';压力来时,你的本能是<b>'+THREAT_SHORT[S.threatTop]+'</b>';
+    if(selAtt)head+=';在关系里,你偏<b>'+ATT_SHORT[selAtt]+'</b>';
+    head+='。';
+
+    let h='<div class="portrait">';
+    if(title)h+='<div class="pt-epi">「'+title+'」</div>';
+    h+='<div class="pt-date">自画像 · 镜面清晰度 '+pct+' · '+new Date().toLocaleDateString('zh-CN')+'</div>';
+    h+='<div class="pt-headline">'+head+'</div>';
+
+    h+='<div class="pt-sec"><div class="pt-h">稳定底色 · 你做过的事</div>';
+    if(confArr.length){h+='<p>'+confArr.map(w=>'<b>'+ARCH[w]+'</b>').join(';　')+'。这些是你认下的、最不容易变的底色。';
+      if(dismissed.length)h+='你明确否认的:'+dismissed.join('、')+'——知道自己<b>不是</b>什么,也是认识自己。';h+='</p>';}
+    else h+='<p class="pt-empty">这面镜子你还没表态。回到「行为之镜」点几个符 / 不符。</p>';
+    h+='</div>';
+
+    h+='<div class="pt-sec"><div class="pt-h">压力下的你 · 别人最常感受到的"你"</div>';
+    if(S.n){h+='<p>'+S.rows.map(r=>'<b>'+r[0]+':'+r[1]+'</b> — '+r[2]+'。').join('<br>')+'</p>';
+      if(S.n<8)h+='<p class="pt-empty">(只答了 '+S.n+'/8 题,答满更准。)</p>';}
+    else h+='<p class="pt-empty">这面镜子你还没照。回到「应激之镜」答几题——这是最可靠的一面。</p>';
+    h+='</div>';
+
+    h+='<div class="pt-sec"><div class="pt-h">关系里的你 · 你反复成为谁</div>';
+    if(selColor||selAtt||REDLINES_ON.size){h+='<p>';
+      if(selColor){const c=COLORS.find(x=>x.k===selColor);h+='本色 <b>'+c.n+'</b>:'+c.read;}
+      if(selAtt){const a=ATT.find(x=>x.k===selAtt);h+='<br>依恋 <b>'+a.n+'</b>:'+a.loop;}
+      if(REDLINES_ON.size){const names=REDLINES.filter(r=>REDLINES_ON.has(r.k)).map(r=>r.n);h+='<br>硬红线 <b>'+REDLINES_ON.size+' 条</b>('+names.join('、')+')——这几件事上,你不该委屈,也不必假装能妥协。';}
+      h+='</p>';}
+    else h+='<p class="pt-empty">这面镜子你还没照。回到「关系之镜」选本色与依恋。</p>';
+    h+='</div>';
+
+    const og=Math.abs(oV-85),cg=Math.abs(cV-88);
+    h+='<div class="pt-sec"><div class="pt-h">自评 vs 证据 · 落差里的真相</div><p>';
+    h+=(og>25?'<span class="pt-flag">开放性落差 '+og+' 分</span>:行为证据约 85,你却给了 '+oV+'——是盲区,还是"理想的我"盖住了真实的我?':'开放性:你看自己看得准(证据约 85,你给 '+oV+')。')+'<br>';
+    h+=(cg>25?'<span class="pt-flag">尽责性落差 '+cg+' 分</span>:行为证据约 88,你却给了 '+cV+',这个矛盾值得想想。':'尽责性:你看自己看得准(证据约 88,你给 '+cV+')。')+'<br>';
+    h+='外向 / 宜人 / 神经质三维,行为照不清,以上面应激之镜的结果为准。</p></div>';
+
+    const tips=[];
+    if(confirmed.has('建造')||confirmed.has('系统')||confirmed.has('桥')||confirmed.has('担位'))
+      tips.push('顺着形状你会发光:造系统、carry、在两个世界之间做翻译;别逼自己去做重复的、纯协作的、慢节奏靠忍的事——那会让你既痛苦又平庸。');
+    if(selAtt==='A')tips.push('关系里练一句话:想退的时候,说"我需要点空间,但我没走",别让沉默替你说话。');
+    if(selAtt==='X')tips.push('关系里练一件事:对方一退,先安抚自己、再决定要不要靠近,而不是用追逐去填心里的慌。');
+    if(S.talkTop==='harsh')tips.push('出事时,把"我这个人不行"换成"这件事怎么修";你最该省下的,是攻击自己的力气。');
+    if(selColor)tips.push('知道自己常被误读成 '+colorMisread(COLORS.find(x=>x.k===selColor))+',就主动补一句解释,少吃哑巴亏。');
+    if(REDLINES_ON.size>=3)tips.push('你已经清楚自己的硬红线;以后判断"合不合",先分清是方向问题(别勉强)还是风格问题(可磨合)。');
+    if(!tips.length)tips.push('把上面几面镜子照全,这里会给你更具体、专属你的行动建议。');
+    h+='<div class="pt-sec"><div class="pt-h">怎么用这张画像</div><ul class="pt-list">'+tips.map(t=>'<li>'+t+'</li>').join('')+'</ul></div>';
+
+    h+='<div class="pt-sec"><div class="pt-h">这张画像还缺一块</div><p>别人眼里的你。带着上面这些,去问那两三个最了解你、又肯说实话的人那个问题——<b>只问、只记、不辩</b>。他们补上的,往往正是你最大的盲区。</p></div>';
+    h+='<div class="pt-close">性格不是用来贴标签的,是用来用的。<br>这张画像不是终点,是你设计生活的起点——也是下次照镜子时,你用来对照"我变了没有"的基准线。</div>';
+    h+='<button class="pt-copy" id="ptCopy">复制这张画像</button></div>';
+    out.innerHTML=h;
+    out.scrollIntoView&&out.scrollIntoView({behavior:'smooth',block:'start'});
+
+    const cpb=document.getElementById('ptCopy');
+    cpb.addEventListener('click',()=>{
+      const txt=(out.innerText||out.textContent||'').replace(/复制这张画像\s*$/,'').trim();
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(txt).then(()=>{cpb.textContent='已复制 ✓';setTimeout(()=>cpb.textContent='复制这张画像',1800);}).catch(()=>{cpb.textContent='请手动选中复制';});
+      }else{cpb.textContent='请手动选中复制';}
+    });
+  });
+})();
+</script>
+</body>
+</html>
