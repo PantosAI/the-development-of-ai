@@ -259,7 +259,7 @@
     <button class="calcbtn" id="openix" style="border-color:#8a3a6a;background:#f6eaf2;color:#7a2f6a">⚗️ 相互作用·监测</button>
     <button class="calcbtn" id="opendx" style="border-color:#0a5a52;background:#e6f1ef;color:#0a5048">🩺 按病查药</button>
     <button class="calcbtn" id="opencase" style="border-color:#8a6a1a;background:#f6efde;color:#7a5a14">🧩 病例辨析</button>
-    <button class="calcbtn" id="openos" style="border-color:#3a5a8a;background:#e9eff7;color:#2f5080">🧾 医嘱套</button>
+    <button class="calcbtn" id="openos" style="border-color:#3a5a8a;background:#e9eff7;color:#2f5080">🧾 医嘱套</button><!--ABX:BTN:START--><button class="calcbtn" id="openabx" style="border-color:#2f6f63;background:#e7f1ee;color:#0a5048">🧫 抗菌总览</button><!--ABX:BTN:END-->
     <span class="count" id="count"></span>
   </div>
   <div class="chips">
@@ -1459,5 +1459,447 @@ function renderCart(c){
   });
 }
 </script>
-</body>
+<!--ABX:BLOCK:START-->
+<style id="abx-style">
+  /* —— 抗菌总览：仅作用于 #abxmask，复用主表 CSS 变量，不影响其它弹窗 —— */
+  #abxmask .modal{max-width:1080px}
+  #abxmask .abx-disc{font-size:11.5px;color:var(--ink2);background:var(--amber-bg);
+    border:1px solid #e6cfa0;border-radius:7px;padding:7px 10px;margin-bottom:10px;line-height:1.6}
+  #abxmask .abx-bar{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+  #abxmask .abx-search{flex:1;display:flex;align-items:center;gap:8px;background:#fff;
+    border:1.5px solid var(--ink);border-radius:8px;padding:8px 12px}
+  #abxmask .abx-search input{border:0;outline:0;font-size:16px;width:100%;background:transparent;color:var(--ink)}
+  #abxmask .abx-count{font-size:12.5px;color:var(--ink2);white-space:nowrap}
+  #abxmask .abx-chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+  #abxmask .abx-chip{border:1px solid var(--line);background:#fff;color:var(--ink2);border-radius:20px;
+    padding:4px 11px;font-size:12.5px;cursor:pointer;white-space:nowrap;transition:.12s}
+  #abxmask .abx-chip:hover{border-color:var(--ink2)}
+  #abxmask .abx-chip.on{background:var(--teal);border-color:var(--teal);color:#fff}
+  #abxmask .abx-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle}
+  #abxmask .abx-secttl{font-family:Georgia,"Songti SC",serif;font-size:17px;font-weight:700;
+    margin:8px 0 12px;padding-bottom:6px;border-bottom:1.5px solid var(--ink);display:flex;align-items:center;gap:8px}
+  #abxmask .abx-secttl .abx-em{font-size:12px;font-weight:400;color:var(--ink2);font-family:inherit}
+  #abxmask .abx-zgrid,#abxmask .abx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+  #abxmask .abx-zgrid{margin-bottom:8px}
+  #abxmask .abx-zcard{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--ink);
+    border-radius:10px;box-shadow:var(--shadow);padding:12px 14px}
+  #abxmask .abx-zhead{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  #abxmask .abx-zhead h3{font-size:15px;margin:0;font-weight:700}
+  #abxmask .abx-ztag{font-size:11px;font-weight:700;color:var(--teal-d);background:var(--teal-bg);
+    border-radius:6px;padding:2px 8px;white-space:nowrap}
+  #abxmask .abx-zlist{margin:0;padding-left:18px}
+  #abxmask .abx-zlist li{margin:5px 0;font-size:13px}
+  #abxmask .abx-zlist b{color:var(--teal-d)}
+  #abxmask .abx-ccard{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--abxc,#888);
+    border-radius:10px;box-shadow:var(--shadow);padding:13px 14px 12px}
+  #abxmask .abx-cname{font-weight:700;font-size:16px;line-height:1.3;color:var(--abxc)}
+  #abxmask .abx-cgrp{font-size:11.5px;color:var(--ink2);margin-top:1px}
+  #abxmask .abx-reps{margin-top:8px;font-size:12.5px;color:var(--ink2);background:var(--paper2);border-radius:6px;padding:6px 9px}
+  #abxmask .abx-rows{margin-top:9px;display:flex;flex-direction:column;gap:7px}
+  #abxmask .abx-row{display:flex;gap:8px;font-size:13px;align-items:flex-start}
+  #abxmask .abx-rk{flex:none;width:46px;font-size:11px;font-weight:700;color:#fff;background:var(--abxc,#888);
+    border-radius:5px;padding:2px 0;text-align:center;margin-top:2px}
+  #abxmask .abx-rv{flex:1}
+  #abxmask .abx-rv b{color:var(--warn)}
+  #abxmask .abx-row.abx-warn .abx-rk{background:var(--warn)}
+  #abxmask .abx-row.abx-warn .abx-rv{color:#7a2222}
+  #abxmask .abx-row.abx-note .abx-rk{background:var(--amber)}
+  #abxmask .abx-row.abx-note .abx-rv{color:#7a4a12;font-size:12.5px}
+  #abxmask .abx-haveline{margin-top:9px;padding-top:8px;border-top:1px dashed var(--line);
+    font-size:12px;display:flex;gap:8px;align-items:baseline}
+  #abxmask .abx-havek{flex:none;color:var(--teal-d);font-weight:700}
+  #abxmask .abx-havev{color:var(--ink2)}
+  #abxmask .abx-empty{text-align:center;color:var(--ink2);padding:36px 0;font-size:14px}
+  @media (max-width:480px){ #abxmask .abx-zgrid,#abxmask .abx-grid{grid-template-columns:1fr} }
+</style>
+<div class="mask" id="abxmask">
+ <div class="modal">
+  <div class="mhead"><h2>🧫 抗菌药物总览</h2><button class="mclose" id="abxclose">×</button></div>
+  <div class="mbody">
+    <div class="abx-disc">⚠ 教学/速查辅助。所列为常用参考，<b>具体用法用量以现行说明书及患者肝肾功能、体重、临床实际为准，不替代处方判断</b>；抗菌分级(非限制/限制/特殊)以你所在省现行分级目录为准。配合主表的「按药卡片」「🩺按病查药」一起用。</div>
+    <div class="abx-bar">
+      <div class="abx-search">🔎<input id="abxq" type="search" placeholder="搜索：药名 / 谱 / 适应证 / 不良反应（如 铜绿、QT、戒酒硫、MRSA）" autocomplete="off"></div>
+      <span class="abx-count" id="abxcount"></span>
+    </div>
+    <div class="abx-chips" id="abxchips"><button class="abx-chip on" data-grp="__ALL__">全部</button>
+<button class="abx-chip" data-grp="β-内酰胺类"><span class="abx-dot" style="background:#2f5fa0"></span>β-内酰胺类</button>
+<button class="abx-chip" data-grp="大环内酯·林可·多肽"><span class="abx-dot" style="background:#1f6f5c"></span>大环内酯·林可·多肽</button>
+<button class="abx-chip" data-grp="氨基糖苷类"><span class="abx-dot" style="background:#8a3a5b"></span>氨基糖苷类</button>
+<button class="abx-chip" data-grp="四环素·氯霉素"><span class="abx-dot" style="background:#7a5230"></span>四环素·氯霉素</button>
+<button class="abx-chip" data-grp="人工合成"><span class="abx-dot" style="background:#5b4b8a"></span>人工合成</button>
+<button class="abx-chip" data-grp="抗真菌"><span class="abx-dot" style="background:#a8581f"></span>抗真菌</button>
+<button class="abx-chip" data-grp="抗病毒"><span class="abx-dot" style="background:#3a7d8c"></span>抗病毒</button>
+<button class="abx-chip" data-grp="抗结核·抗麻风"><span class="abx-dot" style="background:#9a2f2f"></span>抗结核·抗麻风</button></div>
+    <div id="abxzsec">
+      <div class="abx-secttl">一、总论 <span class="abx-em">合理应用 · 分级 · 术语 · 耐药 · 特殊人群</span></div>
+      <div class="abx-zgrid"><div class="abx-zcard"><div class="abx-zhead"><span class="abx-ztag">原则</span><h3>用药四问 · 合理应用的底层逻辑</h3></div><ul class="abx-zlist"><li>① <b>有无指征</b>：诊断为细菌、真菌、支原体、衣原体、螺旋体、立克次体等感染才有指征；病毒感染、普通感冒、诊断不成立的发热<b>不用</b>抗菌药。</li><li>② <b>经验 → 目标</b>：用药前先留取合格标本(尤其血等无菌部位)送病原学检查；先按感染部位、基础病、发病场所、既往用药史及<b>当地耐药</b>经验选药，待药敏回报再调整为目标治疗。</li><li>③ <b>按 PK/PD 给药</b>：时间依赖药(β-内酰胺、红霉素、克林霉素、万古霉素)疗效靠 <b>T&gt;MIC</b>，须一日多次/延长输注；浓度依赖药(氟喹诺酮、氨基糖苷)靠 <b>Cmax/MIC、AUC/MIC</b>，可一日一次大剂量。</li><li>④ <b>联合指征</b>：单药能控者<b>不</b>联合。仅以下联合：病原未明的严重感染(含免疫缺陷)、单药不能控的混合/复数菌/多重耐药感染、需长疗程易耐药者(结核、侵袭性真菌)、减毒(两性霉素B+氟胞嘧啶)。</li></ul></div>
+<div class="abx-zcard"><div class="abx-zhead"><span class="abx-ztag">管理</span><h3>分级管理 · 三级</h3></div><ul class="abx-zlist"><li><b>非限制使用级</b>：长期证明安全有效、对耐药影响较小、价格较低，多为基药/医保目录品种。</li><li><b>限制使用级</b>：对耐药影响较大或价格较高。</li><li><b>特殊使用级</b>：明显/严重不良反应、广谱易致耐药、新上市或资料较少、昂贵；<b>不得门诊使用</b>，需经授权专家会诊同意后由相应处方权医师开具。</li><li>⚠ 三级的<b>具体名录由各省卫健委制定</b>、可有省间差异(新药尤甚)。本表所标分级仅作参考，<b>以你所在省现行分级目录为准</b>。</li></ul></div>
+<div class="abx-zcard"><div class="abx-zhead"><span class="abx-ztag">概念</span><h3>核心术语 + 耐药机制</h3></div><ul class="abx-zlist"><li><b>MIC</b> 最低抑菌浓度 / <b>MBC</b> 最低杀菌浓度；<b>PAE</b> 抗生素后效应(氨基糖苷、氟喹诺酮强 → 支持一日一次)。</li><li><b>时间依赖</b> vs <b>浓度依赖</b>：决定给药频次(见用药四问③)。</li><li>耐药五机制：① 产灭活酶(β-内酰胺酶 / ESBL / 碳青霉烯酶、氨基糖苷钝化酶)；② <b>靶位改变</b>(PBP 改变 = MRSA、核糖体或 DNA 旋转酶突变)；③ 主动外排泵↑；④ 膜通透性↓ / 孔道丢失；⑤ 生物膜。</li></ul></div>
+<div class="abx-zcard"><div class="abx-zhead"><span class="abx-ztag">人群</span><h3>特殊人群速记</h3></div><ul class="abx-zlist"><li><b>肾不全</b>：避肾毒(氨基糖苷、万古、两性霉素B)；主经肾排者按 CrCl 减量(青霉素、头孢、碳青霉烯、氟喹诺酮多需调)；主经肝排者多<b>不需</b>调(大环内酯、克林、多西环素、利奈唑胺、头孢曲松、头孢哌酮)。</li><li><b>肝不全</b>：避肝毒(红霉素酯化物、利福平、酮康唑、四环素、氯霉素)；经肝清除者减量慎用。</li><li><b>孕期</b>：相对安全 = β-内酰胺(青霉素/头孢，B类)；禁/避 = 氟喹诺酮、四环素、氨基糖苷(D)、磺胺(晚期)、利巴韦林(X)。</li><li><b>哺乳</b>：用药期间宜暂停哺乳；尤避氨基糖苷、喹诺酮、四环素、氯霉素、磺胺。</li><li><b>老年</b>：多按轻度肾减退减量(主经肾排的 β-内酰胺)；慎用氨基糖苷、万古。</li><li><b>小儿</b>：氨基糖苷/万古慎用(耳肾毒)；四环素&lt;8岁禁(牙着色)；喹诺酮&lt;18岁避免(软骨)；磺胺/呋喃类新生儿及&lt;2月龄禁(核黄疸/溶血)。</li></ul></div></div>
+    </div>
+    <div class="abx-secttl">二、分类速览 <span class="abx-em">代表药 · 谱 · 适应证 · 红线 · 给药</span></div>
+    <div class="abx-grid" id="abxgrid"><article class="abx-ccard" data-grp="β-内酰胺类" style="--abxc:#2f5fa0">
+  <div class="abx-ctop"><div><div class="abx-cname">青霉素类</div>
+    <div class="abx-cgrp">β-内酰胺类</div></div></div>
+  <div class="abx-reps">窄谱：青霉素G/V、普鲁卡因/苄星青霉素；耐酶：苯唑/氯唑/氟氯西林；广谱：氨苄西林、阿莫西林；抗铜绿广谱：哌拉西林、阿洛西林、美洛西林</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">窄谱主攻 G⁺球菌(A组链球菌、肺炎链球菌、敏感葡萄球菌)及脑膜炎奈瑟菌、螺旋体；耐酶针对产酶 MSSA；广谱加部分肠杆菌科 G⁻；抗铜绿广谱再覆盖铜绿假单胞菌</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">链球菌咽炎/猩红热、肺炎链球菌肺炎、心内膜炎、梅毒/钩体/破伤风/气性坏疽/炭疽/白喉/流脑；氨苄西林为<b>肠球菌、李斯特菌</b>首选；哌拉西林等用于铜绿及肠杆菌科重症</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv"><b>过敏</b>是头号红线——用药前必问过敏史、按规定皮试，过敏性休克就地肾上腺素抢救；青霉素钾盐勿快速静推</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">时间依赖 → 一日多次给药(q4~8h)</span></div>
+    
+  </div>
+  <div class="abx-haveline"><span class="abx-havek">主表已收</span><span class="abx-havev">阿莫西林、阿莫西林克拉维酸</span></div>
+</article>
+<article class="abx-ccard" data-grp="β-内酰胺类" style="--abxc:#2f5fa0">
+  <div class="abx-ctop"><div><div class="abx-cname">头孢菌素类</div>
+    <div class="abx-cgrp">β-内酰胺类</div></div></div>
+  <div class="abx-reps">一代：头孢唑林(针)、头孢拉定/氨苄(口服)；二代：头孢呋辛；三代：头孢噻肟、头孢曲松、头孢他啶、头孢哌酮；四代：头孢吡肟</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">一代 G⁺为主、少数 G⁻；二代 G⁺略减、加部分 G⁻；三代强力 G⁻肠杆菌科，<b>头孢他啶/头孢哌酮抗铜绿</b>；四代 G⁻同三代、G⁺略强、用于中性粒缺发热经验治疗。<b>所有头孢对 MRSA、肠球菌均无效</b></span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">一代——MSSA/链球菌轻中度感染、<b>外科围手术期预防(头孢唑林)</b>；二代——呼吸/尿路/皮肤软组织、围术期预防(头孢呋辛)；三代——肠杆菌科 G⁻重症、肾盂肾炎、腹腔(联甲硝唑)、中枢感染；头孢曲松/头孢噻肟亦覆盖肺炎链球菌、淋病</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv">与青霉素<b>交叉过敏</b>——青霉素过敏性休克史者禁用；头孢哌酮可致低凝血酶原血症/出血(补维生素K)、<b>戒酒硫样反应(用药及停药后72h禁酒)</b></span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">时间依赖 → 一日多次；多经肾排，肾不全减量(头孢曲松/头孢哌酮经肝胆，肝功能减退时调整)</span></div>
+    <div class="abx-row abx-note"><span class="abx-rk">实战</span><span class="abx-rv">💡 你表里目前缺<b>三代针(头孢曲松/头孢噻肟)和一代针(头孢唑林)</b>——这是临床工作马，建议补。</span></div>
+  </div>
+  <div class="abx-haveline"><span class="abx-havek">主表已收</span><span class="abx-havev">头孢拉定、头孢呋辛酯、头孢克肟、头孢呋辛(针)、头孢他啶(针)</span></div>
+</article>
+<article class="abx-ccard" data-grp="β-内酰胺类" style="--abxc:#2f5fa0">
+  <div class="abx-ctop"><div><div class="abx-cname">头霉素类</div>
+    <div class="abx-cgrp">β-内酰胺类</div></div></div>
+  <div class="abx-reps">头孢西丁、头孢美唑、头孢米诺</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">谱似二代头孢，但<b>抗厌氧菌(脆弱拟杆菌)强</b>；对多数 ESBLs 稳定，但治产 ESBLs 菌疗效未证实</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">需氧+厌氧混合感染：下呼吸道、腹腔、盆腔；胃肠/妇科手术预防</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv">头孢类交叉过敏；头孢美唑/头孢米诺<b>戒酒硫样反应(禁酒)</b>；头孢西丁不推荐&lt;3月龄婴儿</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">时间依赖，一日多次</span></div>
+    
+  </div>
+  
+</article>
+<article class="abx-ccard" data-grp="β-内酰胺类" style="--abxc:#2f5fa0">
+  <div class="abx-ctop"><div><div class="abx-cname">碳青霉烯类</div>
+    <div class="abx-cgrp">β-内酰胺类</div></div></div>
+  <div class="abx-reps">抗非发酵菌：亚胺培南/西司他丁、美罗培南、帕尼培南/倍他米隆、比阿/多立培南；<b>厄他培南</b>(不抗铜绿/不动杆菌、可 qd)</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">超广谱 G⁺、G⁻(含铜绿、不动杆菌)、厌氧，对多数 β-内酰胺酶高度稳定；<b>对 MRSA、嗜麦芽窄食单胞菌差</b></span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">多重耐药但敏感的 G⁻杆菌严重感染、需氧+厌氧重症混合感染、免疫缺陷者经验治疗；厄他培南亦可用于 CAP</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv"><b>不用于轻症、更不可预防用</b>；中枢神经反应(癫痫)——中枢感染选美罗培南不用亚胺培南；<b>与丙戊酸合用降其血药致癫痫</b>，禁联用；肾不全减量</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">时间依赖，肾不全减量</span></div>
+    <div class="abx-row abx-note"><span class="abx-rk">实战</span><span class="abx-rv">💡 近年不动杆菌/肠杆菌科对碳青霉烯耐药迅速上升，须严格合理使用。</span></div>
+  </div>
+  
+</article>
+<article class="abx-ccard" data-grp="β-内酰胺类" style="--abxc:#2f5fa0">
+  <div class="abx-ctop"><div><div class="abx-cname">β-内酰胺类/酶抑制剂复方</div>
+    <div class="abx-cgrp">β-内酰胺类</div></div></div>
+  <div class="abx-reps">阿莫西林/克拉维酸、氨苄西林/舒巴坦、哌拉西林/他唑巴坦、头孢哌酮/舒巴坦、替卡西林/克拉维酸</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">在母体抗菌谱上覆盖<b>产 β-内酰胺酶</b>的产酶菌(MSSA、流感嗜血、卡他莫拉、肠杆菌科、脆弱拟杆菌)；哌拉/他唑、头孢哌酮/舒巴坦、替卡/克拉再覆盖铜绿；<b>舒巴坦组分抗不动杆菌</b></span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">阿莫/克拉口服——鼻窦炎、中耳炎、下呼吸道、咬伤(产酶菌一线)；注射复方——腹腔、血流、骨关节、铜绿/不动杆菌重症</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv">青霉素皮试阳性禁用；头孢哌酮/舒巴坦——头孢过敏禁、戒酒硫反应；阿莫/克拉胆汁淤积型肝损(克拉维酸所致，可迟发)</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">时间依赖，一日多次</span></div>
+    
+  </div>
+  <div class="abx-haveline"><span class="abx-havek">主表已收</span><span class="abx-havev">阿莫西林克拉维酸</span></div>
+</article>
+<article class="abx-ccard" data-grp="β-内酰胺类" style="--abxc:#2f5fa0">
+  <div class="abx-ctop"><div><div class="abx-cname">单环 β-内酰胺类</div>
+    <div class="abx-cgrp">β-内酰胺类</div></div></div>
+  <div class="abx-reps">氨曲南</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">仅需氧 G⁻(含铜绿)，对 G⁺及厌氧菌<b>无效</b>；与青霉素/头孢<b>交叉过敏少</b>、肾毒性低</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">敏感需氧 G⁻所致尿路/下呼吸道/血流/腹腔感染(腹盆腔联甲硝唑)；<b>可在密切观察下用于青霉素/头孢过敏者</b>、替代氨基糖苷</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv">对氨曲南过敏者禁用</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">时间依赖</span></div>
+    
+  </div>
+  
+</article>
+<article class="abx-ccard" data-grp="β-内酰胺类" style="--abxc:#2f5fa0">
+  <div class="abx-ctop"><div><div class="abx-cname">氧头孢烯类</div>
+    <div class="abx-cgrp">β-内酰胺类</div></div></div>
+  <div class="abx-reps">拉氧头孢、氟氧头孢</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">G⁻、流感嗜血、链球菌、MSSA、厌氧(拟杆菌)良好，<b>抗铜绿弱</b></span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">血流、细菌性脑膜炎、下呼吸道、腹腔/盆腔、尿路感染</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv"><b>拉氧头孢</b>有 N-甲基四氮唑侧链 → 凝血酶原缺乏/血小板功能障碍致出血、戒酒硫反应(需补维生素K、禁酒)；氟氧头孢无此问题</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">时间依赖</span></div>
+    
+  </div>
+  
+</article>
+<article class="abx-ccard" data-grp="大环内酯·林可·多肽" style="--abxc:#1f6f5c">
+  <div class="abx-ctop"><div><div class="abx-cname">大环内酯类</div>
+    <div class="abx-cgrp">大环内酯·林可·多肽</div></div></div>
+  <div class="abx-reps">老：红霉素(含琥乙/依托/乳糖酸)；新：阿奇霉素、克拉霉素、罗红霉素</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">G⁺菌、厌氧、<b>支原体/衣原体/军团菌</b>等胞内病原；新大环内酯对流感嗜血、卡他莫拉增强、口服利用度高、不良反应少</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv"><b>青霉素过敏的替代</b>(链球菌咽炎/扁桃体炎、轻中度肺炎)、军团菌病、支原体/衣原体呼吸及泌尿生殖感染、百日咳；克拉霉素+其他药治幽门螺杆菌</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv">红霉素/克拉霉素<b>禁与特非那定合用(QT)</b>；肝损；红霉素酯化物肝病/孕妇不宜；阿奇霉素 QT 延长慎用</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">阿奇霉素超长组织半衰期 → 短疗程(3~5日)仍维持长效</span></div>
+    
+  </div>
+  <div class="abx-haveline"><span class="abx-havek">主表已收</span><span class="abx-havev">阿奇霉素(片+针)、红霉素(眼膏/软膏，局部)</span></div>
+</article>
+<article class="abx-ccard" data-grp="大环内酯·林可·多肽" style="--abxc:#1f6f5c">
+  <div class="abx-ctop"><div><div class="abx-cname">林可酰胺类</div>
+    <div class="abx-cgrp">大环内酯·林可·多肽</div></div></div>
+  <div class="abx-reps">克林霉素(优)、林可霉素</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">G⁺菌及<b>厌氧菌</b>良好；肺炎链球菌等对其耐药率已高</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">皮肤软组织、吸入性肺炎/肺脓肿/脓胸、腹腔/盆腔厌氧菌(需联抗 G⁻药)、骨关节、牙源性感染</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv"><b>抗生素相关腹泻 / 假膜性肠炎(艰难梭菌)</b>——可疑即停；神经肌肉阻滞作用；静脉制剂缓慢滴注不可静推</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">时间依赖，按 q8~12h</span></div>
+    
+  </div>
+  <div class="abx-haveline"><span class="abx-havek">主表已收</span><span class="abx-havev">克林霉素(针)</span></div>
+</article>
+<article class="abx-ccard" data-grp="大环内酯·林可·多肽" style="--abxc:#1f6f5c">
+  <div class="abx-ctop"><div><div class="abx-cname">糖肽类</div>
+    <div class="abx-cgrp">大环内酯·林可·多肽</div></div></div>
+  <div class="abx-reps">万古霉素、去甲万古霉素、替考拉宁</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv"><b>耐药 G⁺</b>：MRSA/MRCNS、氨苄西林耐药肠球菌、青霉素耐药肺炎链球菌；G⁻无效</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">耐药 G⁺严重感染、青霉素过敏者的严重 G⁺感染；<b>口服</b>万古治重症或甲硝唑无效的艰难梭菌肠炎；替考拉宁<b>不</b>用于中枢感染</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv">肾、耳毒——监测<b>血药谷浓度</b>、查肾功能/听力，疗程≤14天；红人综合征(快速输注)；避免与肾耳毒药合用；妊娠C类</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">时间依赖，PK/PD 参数为 <b>AUC/MIC</b></span></div>
+    
+  </div>
+  
+</article>
+<article class="abx-ccard" data-grp="大环内酯·林可·多肽" style="--abxc:#1f6f5c">
+  <div class="abx-ctop"><div><div class="abx-cname">多黏菌素类</div>
+    <div class="abx-cgrp">大环内酯·林可·多肽</div></div></div>
+  <div class="abx-reps">多黏菌素 B、多黏菌素 E(黏菌素)</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">需氧 G⁻杆菌含铜绿强；<b>CRE、XDR 铜绿、CRAB 等广泛耐药 G⁻的最后手段之一</b></span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">其他药无效的广泛耐药 G⁻感染(必要时联合)；局部用于创面/雾化</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv"><b>肾毒发生率高</b>(不宜首选、肾不全不宜)；神经/神经肌肉阻滞；疗程≤10~14天、定期查肾功能；与氨基糖苷/万古叠加增肾毒</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">—</span></div>
+    
+  </div>
+  
+</article>
+<article class="abx-ccard" data-grp="大环内酯·林可·多肽" style="--abxc:#1f6f5c">
+  <div class="abx-ctop"><div><div class="abx-cname">环脂肽类</div>
+    <div class="abx-cgrp">大环内酯·林可·多肽</div></div></div>
+  <div class="abx-reps">达托霉素</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">G⁺含 MRSA、VRE、PRSP；G⁻无效</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">复杂性皮肤软组织感染；金葡菌(含MRSA)<b>血流感染及右侧心内膜炎</b></span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv"><b>不可治肺炎</b>(被肺表面活性物质灭活)；监测 CPK、警惕肌病/横纹肌溶解(疗程中暂停他汀)；嗜酸粒细胞肺炎</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">—</span></div>
+    
+  </div>
+  
+</article>
+<article class="abx-ccard" data-grp="氨基糖苷类" style="--abxc:#8a3a5b">
+  <div class="abx-ctop"><div><div class="abx-cname">氨基糖苷类</div>
+    <div class="abx-cgrp">氨基糖苷类</div></div></div>
+  <div class="abx-reps">链霉素、卡那(抗结核)；庆大、妥布、奈替米星、阿米卡星、异帕米星(抗 G⁻含铜绿)；新霉素(口服/局部)</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">中重度 G⁻杆菌(含铜绿)、对葡萄球菌亦有效；<b>对肺炎链球菌、A组链球菌差</b>；浓度依赖、强 PAE</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">中重度肠杆菌科/铜绿 G⁻感染(铜绿需联 β-内酰胺)、重症葡萄球菌/肠球菌联合用药之一；链/庆大用于布鲁菌/鼠疫/土拉菌；链/阿米卡/卡那用于结核</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv"><b>三毒</b>：耳毒(多不可逆)、肾毒(多可逆)、神经肌肉阻滞——监测肾功能/听力；孕妇禁(D)、新生儿避免；不与其他耳肾毒药/襻利尿合用；<b>不用于门急诊上下呼吸道及单纯尿路初发</b></span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv"><b>浓度依赖 → 一日一次</b>(增效减毒)、监测血药谷浓度、按 CrCl 减量</span></div>
+    
+  </div>
+  <div class="abx-haveline"><span class="abx-havek">主表已收</span><span class="abx-havev">阿米卡星(针)</span></div>
+</article>
+<article class="abx-ccard" data-grp="四环素·氯霉素" style="--abxc:#7a5230">
+  <div class="abx-ctop"><div><div class="abx-cname">四环素类</div>
+    <div class="abx-cgrp">四环素·氯霉素</div></div></div>
+  <div class="abx-reps">四环素、多西环素、米诺环素</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">广谱含 G⁺/G⁻、不动杆菌、嗜麦芽窄食、布鲁菌；尤强于<b>胞内/非典型病原</b></span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv"><b>立克次体病(首选)</b>、支原体/衣原体感染、布鲁菌病(联氨基糖苷)、霍乱、鼠疫、回归热、莱姆病；痤疮；米诺环素治 MDR 鲍曼(联合)；多西环素为青霉素过敏者鼻窦炎/CAP 的口服替代</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv"><b>8岁以下及孕哺禁用</b>(牙着色、影响骨发育)；食管炎/溃疡(足量水、保持直立)；光敏；与钙镁铝铁/奶制品螯合(间隔≥2~3h)；多西/米诺肾排少、肾不全可用</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">多西环素长半衰期、首剂加倍后 qd~bid</span></div>
+    
+  </div>
+  <div class="abx-haveline"><span class="abx-havek">主表已收</span><span class="abx-havev">多西环素(片)</span></div>
+</article>
+<article class="abx-ccard" data-grp="四环素·氯霉素" style="--abxc:#7a5230">
+  <div class="abx-ctop"><div><div class="abx-cname">甘氨酰环素类</div>
+    <div class="abx-cgrp">四环素·氯霉素</div></div></div>
+  <div class="abx-reps">替加环素</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">极广谱：MRSA、VRE、PRSP、肠杆菌科(含 <b>CRE</b>)、CRAB、厌氧；<b>铜绿假单胞菌、变形杆菌耐药</b></span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">复杂性腹腔感染、复杂性皮肤软组织感染、CAP(18岁以上)</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv">18岁以下不推荐、孕 D 类避免；四环素类过敏慎用；重度肝损减维持量；胰腺炎；轻降地高辛、升华法林血药</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">首剂加倍后维持</span></div>
+    
+  </div>
+  
+</article>
+<article class="abx-ccard" data-grp="四环素·氯霉素" style="--abxc:#7a5230">
+  <div class="abx-ctop"><div><div class="abx-cname">氯霉素</div>
+    <div class="abx-cgrp">四环素·氯霉素</div></div></div>
+  <div class="abx-reps">氯霉素</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">广谱、组织/血脑/血眼穿透好、对伤寒沙门菌及立克次体等<b>胞内菌</b>有效</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">氨苄耐药流感嗜血/脑膜炎奈瑟/肺炎链球菌脑膜炎、伤寒(次选，首选氟喹诺酮)、需氧+厌氧混合腹盆腔感染、Q热</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv"><b>骨髓抑制(可致再障)</b>——定期查血象、避免长疗程、禁与其他骨髓抑制药合用；<b>灰婴综合征</b>(新生儿/早产儿避免)；肝功能减退避免；孕哺避免</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">—</span></div>
+    
+  </div>
+  
+</article>
+<article class="abx-ccard" data-grp="人工合成" style="--abxc:#5b4b8a">
+  <div class="abx-ctop"><div><div class="abx-cname">喹诺酮类</div>
+    <div class="abx-cgrp">人工合成</div></div></div>
+  <div class="abx-reps">诺氟沙星、氧氟沙星、环丙沙星、左氧氟沙星、莫西沙星</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">G⁻肠杆菌科及铜绿(环丙强)；<b>左氧/莫西(呼吸喹诺酮)</b>加抗肺炎链球菌、A组链球菌及支原体/衣原体/军团菌；MSSA</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">尿路生殖系统(诺氟仅限下尿路/肠道)、下呼吸道/CAP(呼吸喹诺酮)、伤寒(成人首选)、肠道感染、腹腔胆道盆腔(联甲硝唑)</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv"><b>18岁以下避免(软骨)、孕哺避免</b>；制酸剂/钙铝镁铁螯合;中枢(癫痫/中枢病史不用)、<b>肌腱炎/断裂、QT延长、加替沙星血糖紊乱、光敏</b>；<b>严格限制作为外科围手术期预防</b>；大肠埃希菌耐药率&gt;50%</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv"><b>浓度依赖</b>，多 qd；肾不全减量</span></div>
+    
+  </div>
+  <div class="abx-haveline"><span class="abx-havek">主表已收</span><span class="abx-havev">左氧氟沙星(片+针)、环丙沙星、诺氟沙星(及左氧滴眼，局部)</span></div>
+</article>
+<article class="abx-ccard" data-grp="人工合成" style="--abxc:#5b4b8a">
+  <div class="abx-ctop"><div><div class="abx-cname">磺胺类</div>
+    <div class="abx-cgrp">人工合成</div></div></div>
+  <div class="abx-reps">复方磺胺甲噁唑(SMZ/TMP)、磺胺嘧啶；局部：磺胺嘧啶银、磺胺醋酰钠；口服不吸收：柳氮磺吡啶</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">G⁺/G⁻广谱但<b>耐药普遍</b>；亦对星形奴卡菌、弓形虫、肺孢菌有效</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">单纯性尿路感染、<b>肺孢菌肺炎(治疗+预防)</b>、星形奴卡菌病、嗜麦芽窄食单胞菌、部分 MRSA、伤寒；磺胺嘧啶银防治烧伤创面感染；柳氮磺吡啶治溃疡性结肠炎</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv">过敏多(可致 SJS/TEN)；G6PD 缺乏溶血；肝肾损害；<b>新生儿及&lt;2月龄禁(核黄疸)</b>；孕哺避免；多饮水防结晶尿；磺胺/呋塞米/噻嗪/磺脲交叉过敏</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">多饮水、碱化尿液减结晶</span></div>
+    
+  </div>
+  
+</article>
+<article class="abx-ccard" data-grp="人工合成" style="--abxc:#5b4b8a">
+  <div class="abx-ctop"><div><div class="abx-cname">硝基咪唑类</div>
+    <div class="abx-cgrp">人工合成</div></div></div>
+  <div class="abx-reps">甲硝唑、替硝唑、奥硝唑</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv"><b>厌氧菌</b>(拟杆菌/梭杆菌/梭菌等)高度活性；滴虫、阿米巴、贾第虫等原虫</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">各类厌氧菌感染(腹腔/盆腔/肺脓肿/脑脓肿，混合感染联抗需氧药)、艰难梭菌假膜性肠炎、幽门螺杆菌、牙周、阴道滴虫/加德纳菌病、阿米巴/贾第虫病；某些手术预防</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv"><b>戒酒硫样反应——用药期及停药数日禁酒</b>(注意藿香正气水等含醇制剂、勿与头孢同用)；孕早期避免；周围神经炎/粒细胞减少</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">甲硝唑 q8~12h；替硝唑长半衰期可 qd</span></div>
+    
+  </div>
+  <div class="abx-haveline"><span class="abx-havek">主表已收</span><span class="abx-havev">甲硝唑(针/栓)、替硝唑(片/针)</span></div>
+</article>
+<article class="abx-ccard" data-grp="人工合成" style="--abxc:#5b4b8a">
+  <div class="abx-ctop"><div><div class="abx-cname">噁唑烷酮类</div>
+    <div class="abx-cgrp">人工合成</div></div></div>
+  <div class="abx-reps">利奈唑胺</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">MRSA/MRCNS、<b>VRE</b>、青霉素耐药肺炎链球菌、链球菌；G⁻杆菌耐药</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">VRE 感染(含血流)、MRSA 医院获得性肺炎、皮肤软组织(含无骨髓炎的糖尿病足)、青霉素不敏感肺炎链球菌 CAP</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv"><b>单胺氧化酶抑制剂作用</b>——忌大量酪胺食物、慎与拟交感/升压/多巴胺类合用、警惕 5-HT 综合征；<b>骨髓抑制</b>(查血小板，&gt;2周加重)；<b>周围/视神经病变</b>(疗程&gt;28天)；乳酸酸中毒</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">疗程不宜&gt;28天</span></div>
+    
+  </div>
+  
+</article>
+<article class="abx-ccard" data-grp="人工合成" style="--abxc:#5b4b8a">
+  <div class="abx-ctop"><div><div class="abx-cname">磷霉素</div>
+    <div class="abx-cgrp">人工合成</div></div></div>
+  <div class="abx-reps">磷霉素氨丁三醇(口服)、磷霉素钠(注射)</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">广谱、葡萄球菌/链球菌/肠球菌/肠杆菌科/铜绿；与 β-内酰胺、氨基糖苷多<b>协同</b></span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">口服剂治急性单纯性膀胱炎、预防尿路感染；注射剂治呼吸/尿路/皮肤软组织感染，重症联合(如 MRSA 联糖肽类)</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv">磷霉素钠含钠高(每克 0.32g 钠)——心衰/高血压/需限钠者注意；肾不全/老年减量；缓慢静滴防静脉炎</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">—</span></div>
+    
+  </div>
+  
+</article>
+<article class="abx-ccard" data-grp="抗真菌" style="--abxc:#a8581f">
+  <div class="abx-ctop"><div><div class="abx-cname">抗真菌药</div>
+    <div class="abx-cgrp">抗真菌</div></div></div>
+  <div class="abx-reps">多烯：两性霉素B及含脂制剂；唑类：氟康唑/伊曲康唑/伏立康唑/泊沙康唑；棘白菌素：卡泊芬净/米卡芬净；丙烯胺：特比萘芬；嘧啶：氟胞嘧啶；浅部：制霉菌素/灰黄霉素</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">两性霉素B 广谱重症；氟康唑念珠菌(克柔除外)/隐球菌；伏立康唑曲霉/念珠菌；棘白菌素念珠菌/曲霉；氟胞嘧啶念珠菌/隐球(单用易耐药、需联两性霉素B)</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">侵袭性念珠菌病、隐球菌脑膜炎(两性霉素B+氟胞嘧啶诱导→氟康唑维持)、侵袭性曲霉病(首选伏立康唑)、中性粒缺发热经验治疗(两性霉素B脂质体/卡泊芬净/伊曲康唑)</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv"><b>两性霉素B</b>肾毒、低钾、输注反应(寒战发热)——避免联其他肾毒药、缓慢避光滴注；<b>唑类肝毒</b>(酮康唑著)、CYP相互作用多、QT，<b>禁与西沙必利/特非那定/三唑仑合用</b>；伊曲康唑禁用于充血性心衰；伏立康唑孕 D 类</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">疗程长(常6~12周以上)，按部位与病原个体化</span></div>
+    
+  </div>
+  
+</article>
+<article class="abx-ccard" data-grp="抗病毒" style="--abxc:#3a7d8c">
+  <div class="abx-ctop"><div><div class="abx-cname">抗病毒药</div>
+    <div class="abx-cgrp">抗病毒</div></div></div>
+  <div class="abx-reps">抗疱疹：阿昔洛韦/伐昔洛韦；抗流感：奥司他韦/扎那米韦；抗 HIV：核苷/非核苷逆转录酶抑制剂、整合酶抑制剂等；抗肝炎：恩替卡韦/替诺福韦(乙肝)、DAA(丙肝)；广谱：利巴韦林</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">病毒为细胞内寄生、抗病毒药多为病毒复制特定环节(逆转录酶/DNA聚合酶/神经氨酸酶/蛋白酶等)抑制剂，<b>谱窄、针对性强</b></span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv">单纯疱疹/带状疱疹/水痘(阿昔洛韦)、流感(奥司他韦，发病48h内)、HIV(联合 cART)、慢乙肝/丙肝(长期或疗程性)</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv">阿昔洛韦肾结晶(充分水化、按 CrCl 减量)；利巴韦林<b>致畸(孕 X 类禁用)</b>、溶血；HIV/肝炎药相互作用多、不可随意停(耐药/反弹)</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">按药种与适应证差异大，遵说明书/专科方案</span></div>
+    
+  </div>
+  <div class="abx-haveline"><span class="abx-havek">主表已收</span><span class="abx-havev">阿昔洛韦(片/乳膏)、阿兹夫定</span></div>
+</article>
+<article class="abx-ccard" data-grp="抗结核·抗麻风" style="--abxc:#9a2f2f">
+  <div class="abx-ctop"><div><div class="abx-cname">抗结核药</div>
+    <div class="abx-cgrp">抗结核·抗麻风</div></div></div>
+  <div class="abx-reps">一线：异烟肼(H)、利福平(R)、吡嗪酰胺(Z)、乙胺丁醇(E)；二线：链霉素/阿米卡星/卡那、氟喹诺酮、丙硫异烟胺、对氨基水杨酸、环丝氨酸</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">针对结核分枝杆菌；<b>必须联合用药</b>防耐药</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv"><b>初治：2HRZE/4HR</b>(强化期4药2月→巩固期 HR 4月，共6月)；复治及耐多药按药敏与既往史调整、疗程更长</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv"><b>十字方针</b>：早期、联合、适量、规则、全程；异烟肼周围神经炎(补维生素B6)/肝毒、精神病/癫痫禁；利福平肝毒、橙色分泌物、强酶诱导(降华法林/避孕药/部分降糖药等)；乙胺丁醇<b>球后视神经炎</b>(查视野视力、辨色力)；吡嗪酰胺肝毒/高尿酸(痛风慎)；切忌单一换药或随意增减</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">异烟肼/利福平宜空腹(餐前1h)；规律全程是成败关键</span></div>
+    
+  </div>
+  
+</article>
+<article class="abx-ccard" data-grp="抗结核·抗麻风" style="--abxc:#9a2f2f">
+  <div class="abx-ctop"><div><div class="abx-cname">抗麻风药</div>
+    <div class="abx-cgrp">抗结核·抗麻风</div></div></div>
+  <div class="abx-reps">利福平、氨苯砜、氯法齐明</div>
+  <div class="abx-rows">
+    <div class="abx-row"><span class="abx-rk">谱</span><span class="abx-rv">针对麻风分枝杆菌，WHO 推荐多药联合化疗(MDT)降复发</span></div>
+    <div class="abx-row"><span class="abx-rk">适应证</span><span class="abx-rv"><b>多菌型</b>：利福平+氨苯砜+氯法齐明，疗程12月(亦有24月)；<b>少菌型</b>：利福平+氨苯砜，疗程6月</span></div>
+    <div class="abx-row abx-warn"><span class="abx-rk">红线</span><span class="abx-rv">氨苯砜——溶血(G6PD缺乏尤甚)、高铁血红蛋白血症、氨苯砜综合征；定期查血常规、肝功能</span></div>
+    <div class="abx-row"><span class="abx-rk">给药</span><span class="abx-rv">长疗程、规律服药</span></div>
+    
+  </div>
+  
+</article></div>
+    <div class="abx-empty" id="abxempty" style="display:none">没有匹配的条目，换个关键词或点「全部」。</div>
+  </div>
+ </div>
+</div>
+<script>
+(function(){
+  var mask=document.getElementById('abxmask'); if(!mask) return;
+  var openb=document.getElementById('openabx');
+  if(openb) openb.onclick=function(){mask.classList.add('on');};
+  document.getElementById('abxclose').onclick=function(){mask.classList.remove('on');};
+  mask.onclick=function(e){ if(e.target===mask) mask.classList.remove('on'); };
+  var q=document.getElementById('abxq'),
+      countEl=document.getElementById('abxcount'),
+      zsec=document.getElementById('abxzsec'),
+      empty=document.getElementById('abxempty'),
+      cards=[].slice.call(mask.querySelectorAll('.abx-ccard')),
+      curGrp='__ALL__';
+  function apply(){
+    var kw=(q.value||'').trim().toLowerCase(), n=0;
+    cards.forEach(function(c){
+      var okG = curGrp==='__ALL__' || c.dataset.grp===curGrp;
+      var okK = !kw || c.textContent.toLowerCase().indexOf(kw)>=0;
+      var show = okG && okK;
+      c.style.display = show ? '' : 'none';
+      if(show) n++;
+    });
+    zsec.style.display = (kw||curGrp!=='__ALL__') ? 'none' : '';
+    empty.style.display = n ? 'none' : 'block';
+    countEl.textContent = n + ' 类';
+  }
+  q.addEventListener('input', apply);
+  document.getElementById('abxchips').addEventListener('click', function(e){
+    var b = e.target.closest('.abx-chip'); if(!b) return;
+    [].slice.call(mask.querySelectorAll('.abx-chip')).forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on'); curGrp = b.dataset.grp; apply();
+  });
+  apply();
+})();
+</script><!--ABX:BLOCK:END--></body>
 </html>
