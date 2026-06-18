@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>乒乓球旋转 · 深度图解</title>
+<style>
+  :root{
+    --ink:#11151c;        /* 球台深色 */
+    --paper:#f6f1e7;      /* 旧纸卡 */
+    --line:#2a3340;
+    --net:#c9c2b3;
+    --orange:#e8541e;     /* 球橙 */
+    --teal:#0f7a6b;       /* 上旋族 */
+    --violet:#6d44aa;
+    --topspin:#e8541e;
+    --backspin:#1f6feb;
+    --side-l:#0f9d76;
+    --side-r:#b8348a;
+    --corkscrew:#c9881f;
+    --gold:#d9a441;
+    --muted:#7c8493;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--ink);color:var(--paper);
+    font-family:"Songti SC","Noto Serif SC",ui-serif,Georgia,serif;
+    -webkit-font-smoothing:antialiased;line-height:1.65;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  .mono{font-family:"DIN Alternate","SF Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+
+  /* HERO */
+  header.hero{
+    position:relative;overflow:hidden;
+    padding:84px 22px 60px;text-align:center;
+    background:
+      radial-gradient(120% 90% at 50% -20%, #1d2630 0%, var(--ink) 60%);
+  }
+  .hero .table-lines{position:absolute;inset:0;opacity:.18;pointer-events:none}
+  .eyebrow{
+    font-family:"DIN Alternate",ui-monospace,monospace;letter-spacing:.5em;
+    font-size:12px;color:var(--gold);text-transform:uppercase;margin:0 0 18px;padding-left:.5em
+  }
+  h1{
+    font-size:clamp(40px,8vw,84px);margin:0;font-weight:800;letter-spacing:.02em;
+    line-height:1.02;
+  }
+  h1 .spin-word{
+    color:var(--orange);position:relative;display:inline-block;
+  }
+  .hero p.lede{
+    max-width:640px;margin:26px auto 0;color:#cfc7b6;font-size:clamp(16px,2.2vw,19px)
+  }
+  .hero .ball-orbit{margin:34px auto 0;width:120px;height:120px}
+
+  /* SECTION SHELL */
+  section{padding:64px 0;border-top:1px solid #222b35}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+  .sec-num{font-family:"DIN Alternate",ui-monospace,monospace;color:var(--gold);font-size:14px;letter-spacing:.2em}
+  h2{font-size:clamp(26px,4vw,38px);margin:0;font-weight:800}
+  .sec-sub{color:var(--muted);margin:6px 0 0;max-width:720px}
+
+  /* INTRO GRID */
+  .intro-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;margin-top:34px;align-items:center}
+  .intro-grid p{color:#d7cfbe}
+  .intro-grid b{color:var(--paper)}
+  .axis-card{
+    background:#141b23;border:1px solid #29333f;border-radius:14px;padding:20px;
+  }
+  .axis-card h4{margin:0 0 4px;font-size:15px;color:var(--gold);font-family:"DIN Alternate",monospace;letter-spacing:.1em}
+  .three-axis{width:100%;height:auto;display:block}
+
+  /* CLASSIFY CHIPS */
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .chip{
+    display:flex;align-items:center;gap:9px;padding:9px 15px;border-radius:30px;
+    background:#161d26;border:1px solid #2b3540;font-size:14px;cursor:pointer;
+    transition:.18s;color:#d7cfbe;text-decoration:none
+  }
+  .chip:hover{transform:translateY(-2px);border-color:var(--c)}
+  .chip .dot{width:11px;height:11px;border-radius:50%;background:var(--c);box-shadow:0 0 10px var(--c)}
+
+  /* SPIN BLOCK */
+  .spin-block{margin-top:60px;scroll-margin-top:20px}
+  .spin-block .tag-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .spin-tag{
+    font-family:"DIN Alternate",monospace;font-size:13px;letter-spacing:.18em;
+    padding:5px 12px;border-radius:6px;color:#0c0f14;font-weight:700;background:var(--c)
+  }
+  .spin-block h3{font-size:clamp(24px,4vw,32px);margin:12px 0 4px;font-weight:800}
+  .spin-block h3 small{color:var(--muted);font-weight:400;font-size:.55em;letter-spacing:.1em;font-family:"DIN Alternate",monospace}
+  .spin-desc{color:#cfc7b6;max-width:760px;margin:6px 0 0}
+
+  .panes{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:26px}
+  .pane{
+    background:#0e141b;border:1px solid #232c37;border-radius:16px;overflow:hidden;
+    display:flex;flex-direction:column
+  }
+  .pane.counter{background:#0c1512;border-color:#1f3a31}
+  .pane-label{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:13px 18px;font-family:"DIN Alternate",monospace;font-size:12.5px;letter-spacing:.18em;
+    border-bottom:1px solid #1c242e;color:var(--muted)
+  }
+  .pane.counter .pane-label{color:#5fb89f}
+  .pane-label .badge{font-size:11px;padding:3px 9px;border-radius:20px;background:#1a222c;color:#cfc7b6}
+  .pane.counter .pane-label .badge{background:#143027;color:#7fd9bd}
+  .stage{position:relative;width:100%;aspect-ratio:16/11;background:
+     linear-gradient(180deg,#0b1117 0%,#0e151d 55%,#0a1016 100%)}
+  .stage svg{position:absolute;inset:0;width:100%;height:100%}
+  .pane-note{padding:14px 18px;font-size:14px;color:#bcb4a3;border-top:1px solid #1c242e}
+  .pane-note b{color:var(--paper)}
+
+  .controls{display:flex;gap:10px;align-items:center;margin-top:18px;flex-wrap:wrap}
+  .btn{
+    font-family:"DIN Alternate",monospace;font-size:13px;letter-spacing:.1em;
+    padding:9px 16px;border-radius:8px;border:1px solid #2b3540;background:#141b23;
+    color:#d7cfbe;cursor:pointer;transition:.15s
+  }
+  .btn:hover{border-color:var(--gold);color:var(--paper)}
+  .btn.active{background:var(--gold);color:#0c0f14;border-color:var(--gold)}
+  .speed{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;font-family:"DIN Alternate",monospace}
+
+  /* LEGEND */
+  .legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px;font-size:13px;color:#bcb4a3}
+  .legend span{display:flex;align-items:center;gap:7px}
+  .legend i{width:22px;height:0;border-top:3px solid;border-radius:2px}
+  .legend i.dash{border-top-style:dashed}
+
+  footer{padding:48px 22px 70px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid #222b35}
+
+  /* LOG 栏 */
+  .log-input{display:flex;gap:10px;margin-top:26px;align-items:flex-start}
+  .log-input textarea{
+    flex:1;background:#0e141b;border:1px solid #2b3540;border-radius:12px;
+    color:var(--paper);font-family:inherit;font-size:15px;line-height:1.6;
+    padding:13px 16px;resize:vertical;min-height:52px;
+  }
+  .log-input textarea:focus{outline:none;border-color:var(--gold)}
+  .log-add{
+    font-family:"DIN Alternate",monospace;font-size:14px;letter-spacing:.08em;
+    padding:13px 20px;border-radius:12px;border:none;background:var(--gold);
+    color:#0c0f14;cursor:pointer;font-weight:700;white-space:nowrap;transition:.15s;align-self:stretch
+  }
+  .log-add:hover{filter:brightness(1.08)}
+  .log-list{list-style:none;padding:0;margin:26px 0 0;display:flex;flex-direction:column;gap:12px}
+  .log-item{
+    background:#11181f;border:1px solid #232c37;border-left:3px solid var(--gold);
+    border-radius:10px;padding:14px 16px;position:relative
+  }
+  .log-item .log-time{
+    font-family:"DIN Alternate",monospace;font-size:12px;color:var(--muted);
+    letter-spacing:.06em;margin-bottom:6px;display:block
+  }
+  .log-item .log-text{color:#e4ddcd;font-size:15.5px;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+  .log-item .log-del{
+    position:absolute;top:12px;right:12px;background:none;border:none;color:#4d5663;
+    cursor:pointer;font-size:18px;line-height:1;padding:2px 6px;border-radius:6px;transition:.15s
+  }
+  .log-item .log-del:hover{color:#e8541e;background:#1a222c}
+  .log-empty{color:var(--muted);font-style:italic;padding:18px 0;text-align:center}
+  .log-count{font-family:"DIN Alternate",monospace;font-size:12px;color:var(--gold);letter-spacing:.15em}
+  footer .mono{color:#9aa2b0}
+
+  @media(max-width:760px){
+    .intro-grid{grid-template-columns:1fr}
+    .panes{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <svg class="table-lines" viewBox="0 0 1000 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect x="60" y="60" width="880" height="280" fill="none" stroke="#fff" stroke-width="2"/>
+    <line x1="500" y1="60" x2="500" y2="340" stroke="#fff" stroke-width="2"/>
+    <line x1="60" y1="200" x2="940" y2="200" stroke="#fff" stroke-width="1"/>
+  </svg>
+  <p class="eyebrow">乒乓球 · 旋转图鉴</p>
+  <h1>看懂<span class="spin-word">旋转</span><br>才算看懂这项运动</h1>
+  <p class="lede">球台上真正的较量发生在看不见的轴线上。这里把五类旋转拆成可视的轴、轨迹与拍面动作——再告诉你每一种该怎么接。</p>
+  <svg class="ball-orbit" viewBox="0 0 120 120" aria-hidden="true">
+    <circle cx="60" cy="60" r="34" fill="var(--orange)"/>
+    <g style="transform-origin:60px 60px;animation:heroSpin 2.4s linear infinite">
+      <ellipse cx="60" cy="60" rx="34" ry="13" fill="none" stroke="#fff8" stroke-width="2"/>
+      <line x1="60" y1="26" x2="60" y2="94" stroke="#fff6" stroke-width="2"/>
+    </g>
+  </svg>
+</header>
+<style>@keyframes heroSpin{to{transform:rotateX(0) rotate(360deg)}}
+.ball-orbit g{animation:heroSpin 2.4s linear infinite}</style>
+
+<div class="wrap">
+
+<!-- INTRO -->
+<section id="intro">
+  <div class="sec-head"><span class="sec-num">00</span><h2>旋转到底是什么</h2></div>
+  <p class="sec-sub">旋转 = 球绕自身某条轴的转动。轴的方向决定旋转的"种类",转速决定旋转的"强度"。接球时,旋转通过摩擦把力传到你的拍面上,让球往某个方向"跳"——这就是为什么不懂旋转的人总是接飞或下网。</p>
+
+  <div class="intro-grid">
+    <div>
+      <p>判断旋转只看三件事:<b>谁在转(轴的方向)</b>、<b>转多快(转速)</b>、<b>往哪甩(出球瞬间拍面的运动方向)</b>。所有花哨的发球,本质都是这三件事的组合。</p>
+      <p>核心规律一句话:<b>球接触你的拍面后,会沿着"它表面正在前进的方向"被带走。</b>上旋球往上跳、下旋球往下钻、侧旋球往侧拐。你的应对,就是用拍面角度去抵消它。</p>
+      <p>下面按<b>旋转轴</b>把它分成五大类。</p>
+    </div>
+    <div class="axis-card">
+      <h4>三轴模型 / 3-AXIS</h4>
+      <svg class="three-axis" viewBox="0 0 280 220" aria-hidden="true">
+        <defs>
+          <marker id="ah" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto">
+            <path d="M0,0 L9,4.5 L0,9 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <circle cx="140" cy="115" r="46" fill="#e8541e"/>
+        <ellipse cx="140" cy="115" rx="46" ry="16" fill="none" stroke="#fff7" stroke-width="1.5"/>
+        <!-- horizontal axis (top/back spin) -->
+        <g color="#e8541e"><line x1="60" y1="115" x2="225" y2="115" stroke="currentColor" stroke-width="2.5" marker-end="url(#ah)"/></g>
+        <text x="232" y="119" fill="#e8541e" font-size="11" font-family="monospace">横轴</text>
+        <text x="232" y="132" fill="#7c8493" font-size="9" font-family="monospace">上/下旋</text>
+        <!-- vertical axis (sidespin) -->
+        <g color="#0f9d76"><line x1="140" y1="195" x2="140" y2="40" stroke="currentColor" stroke-width="2.5" marker-end="url(#ah)"/></g>
+        <text x="148" y="40" fill="#0f9d76" font-size="11" font-family="monospace">竖轴</text>
+        <text x="148" y="53" fill="#7c8493" font-size="9" font-family="monospace">侧旋</text>
+        <!-- flight axis (corkscrew) -->
+        <g color="#c9881f"><line x1="95" y1="160" x2="200" y2="75" stroke="currentColor" stroke-width="2.5" stroke-dasharray="5 4" marker-end="url(#ah)"/></g>
+        <text x="196" y="68" fill="#c9881f" font-size="11" font-family="monospace">飞行轴</text>
+        <text x="120" y="178" fill="#7c8493" font-size="9" font-family="monospace">钻旋</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="chips">
+    <a class="chip" href="#topspin" style="--c:var(--topspin)"><span class="dot"></span>上旋 Topspin</a>
+    <a class="chip" href="#backspin" style="--c:var(--backspin)"><span class="dot"></span>下旋 Backspin</a>
+    <a class="chip" href="#left" style="--c:var(--side-l)"><span class="dot"></span>左侧旋 Left Side</a>
+    <a class="chip" href="#right" style="--c:var(--side-r)"><span class="dot"></span>右侧旋 Right Side</a>
+    <a class="chip" href="#cork" style="--c:var(--corkscrew)"><span class="dot"></span>侧上/侧下(钻旋) Mixed</a>
+  </div>
+</section>
+
+<!-- SPIN SECTIONS -->
+<section id="spins">
+  <div class="sec-head"><span class="sec-num">01</span><h2>五类旋转 · 动态图解</h2></div>
+  <p class="sec-sub"><b>重要:不同旋转用不同视角看才看得懂。</b>上旋/下旋的关键是高低弧线,用<b>侧视图</b>(从球台侧面看);左/右侧旋的关键是往哪拐,用<b>俯视图</b>(从天花板往下看)。每张图左上角都标了是哪种视角。红面木拍是球拍,金箭头是挥拍/摩擦方向。</p>
+
+  <div class="legend">
+    <span><i style="border-color:var(--orange)"></i>来球轨迹</span>
+    <span><i class="dash" style="border-color:#5fb89f"></i>回球轨迹</span>
+    <span><i style="border-color:var(--gold)"></i>挥拍 / 摩擦方向</span>
+    <span>🏓 红面木拍 · 看拍面倾角(前倾盖 / 后仰亮)</span>
+    <span>◯ 球面旋转环(实时转动)</span>
+  </div>
+
+  <div id="blocks"></div>
+
+  <div class="controls">
+    <button class="btn active" id="playBtn">⏸ 暂停</button>
+    <button class="btn" id="restartBtn">↻ 重播</button>
+    <div class="speed">速度
+      <button class="btn" data-spd="0.5">0.5×</button>
+      <button class="btn active" data-spd="1">1×</button>
+      <button class="btn" data-spd="0.25">慢放</button>
+    </div>
+  </div>
+</section>
+
+<!-- LOG 栏 -->
+<section id="log">
+  <div class="sec-head"><span class="sec-num">02</span><h2>练习 Log</h2><span class="log-count" id="logCount"></span></div>
+  <p class="sec-sub">随手记训练心得、手感、教练的话。存在本机浏览器里,刷新不丢。</p>
+  <div class="log-input">
+    <textarea id="logText" placeholder="今天的体会…（Ctrl/⌘+Enter 也能提交）"></textarea>
+    <button class="log-add" id="logAdd">＋ 记一条</button>
+  </div>
+  <ul class="log-list" id="logList"></ul>
+</section>
+
+</div>
+
+<script>
+/* ============== Log 栏 ============== */
+const LOG_KEY='tt_spin_log_v1';
+const logList=document.getElementById('logList');
+const logText=document.getElementById('logText');
+const logCount=document.getElementById('logCount');
+
+function loadLog(){
+  try{return JSON.parse(localStorage.getItem(LOG_KEY))||[]}catch(e){return []}
+}
+function saveLog(arr){
+  try{localStorage.setItem(LOG_KEY,JSON.stringify(arr))}catch(e){}
+}
+function fmtTime(ts){
+  const d=new Date(ts);
+  const p=n=>String(n).padStart(2,'0');
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+function renderLog(){
+  const arr=loadLog();
+  logCount.textContent = arr.length ? `共 ${arr.length} 条` : '';
+  if(!arr.length){
+    logList.innerHTML='<li class="log-empty">还没有记录,写下第一条吧。</li>';
+    return;
+  }
+  logList.innerHTML='';
+  arr.forEach(item=>{
+    const li=document.createElement('li');
+    li.className='log-item';
+    const time=document.createElement('span');
+    time.className='log-time';time.textContent=fmtTime(item.t);
+    const txt=document.createElement('div');
+    txt.className='log-text';txt.textContent=item.text;
+    const del=document.createElement('button');
+    del.className='log-del';del.textContent='×';del.title='删除';
+    del.onclick=()=>{ if(confirm('删除这条记录?')){ saveLog(loadLog().filter(x=>x.id!==item.id)); renderLog(); } };
+    li.appendChild(time);li.appendChild(txt);li.appendChild(del);
+    logList.appendChild(li);
+  });
+}
+function addLog(){
+  const v=logText.value.trim();
+  if(!v)return;
+  const arr=loadLog();
+  arr.unshift({id:Date.now()+'_'+Math.random().toString(36).slice(2,7), t:Date.now(), text:v});
+  saveLog(arr);
+  logText.value='';
+  renderLog();
+}
+document.getElementById('logAdd').onclick=addLog;
+logText.addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey)&&e.key==='Enter')addLog();
+});
+
+/* 首次打开时，若一条都没有，预置你给的这条心得 */
+(function seedLog(){
+  const arr=loadLog();
+  if(arr.length===0 && !localStorage.getItem(LOG_KEY+'_seeded')){
+    const seed="正手攻球练习：要认真做\"慢爆发\"，手肘不要收着、要放开。那什么时候收？——在你\"想攻球\"的那个瞬间收。（这个感觉有点奇怪，但就是它。）";
+    saveLog([{id:'seed_1', t:Date.now(), text:seed}]);
+    localStorage.setItem(LOG_KEY+'_seeded','1');
+  }
+})();
+renderLog();
+</script>
+
+<footer>
+  <p>乒乓球旋转深度图解 · 单文件离线工具</p>
+  <p class="mono">SPIN ATLAS · 横轴 / 竖轴 / 飞行轴 · 5 类旋转 × 应对方案</p>
+</footer>
+
+<script>
+/* ============================================================
+   每类旋转的数据驱动配置
+   spinAxis: 'top'|'back'|'left'|'right'|'cork-up'|'cork-down'
+   ============================================================ */
+const SPINS = [
+  {
+    id:'topspin', c:'#e8541e', tag:'TOPSPIN · 横轴', name:'上旋球 / 弧圈',
+    en:'TOP SPIN', axis:'top',
+    desc:'球向前滚动,顶部向前。落台后会"往前冲、往上跳",过网后弧线下扎、二跳加速。弧圈球是它的极致形态——又冲又转。',
+    view:'side', incoming:{spin:'top', traj:'arc-dive'},
+    note:'<b>识别:</b>球过网后突然下扎、落台后蹿起加速,撞拍会"往上飞"。',
+    counter:{
+      title:'压拍盖打 / 借力快带',
+      racket:'拍面前倾(盖住球),向前下方发力',
+      cspin:'top',
+      cnote:'<b>怎么接:</b>拍面<b>前倾压住</b>,触球瞬间向<b>前下方</b>带。旋转越强,拍面盖得越多。切忌拍面后仰——必飞出界。'
+    }
+  },
+  {
+    id:'backspin', c:'#1f6feb', tag:'BACKSPIN · 横轴', name:'下旋球 / 搓削',
+    en:'BACK SPIN', axis:'back',
+    desc:'球向后倒转,底部向前。飞行轨迹飘、下沉,落台后"往回缩、不往前走、贴台滑行"。发球和削球的主力旋转。',
+    view:'side', incoming:{spin:'back', traj:'arc-float'},
+    note:'<b>识别:</b>球飞得"飘",落台后往前蹿得很慢甚至回缩,撞拍会"往下钻、下网"。',
+    counter:{
+      title:'托拍搓接 / 拉起来',
+      racket:'拍面后仰(亮出拍面),向前上方送/摩擦',
+      cspin:'back',
+      cnote:'<b>怎么接:</b>拍面<b>后仰托住</b>,向<b>前上方</b>用力把球"提起来"。要么轻搓回下旋,要么大力向上摩擦把它拉成上旋。拍面前倾必下网。'
+    }
+  },
+  {
+    id:'left', c:'#0f9d76', tag:'LEFT SIDE · 竖轴', name:'左侧旋',
+    en:'LEFT SIDESPIN', axis:'left',
+    desc:'球绕竖直轴旋转(像陀螺)。<b>这张图是俯视图——从天花板往下看球台</b>,所以你看到的是球往左右拐,不是高低。左侧旋飞行中向左弯,撞到你拍面后会朝你的右侧弹走。',
+    view:'top', incoming:{spin:'left', traj:'top-left'},
+    note:'<b>识别:</b>(俯视)球在空中向左划出弧线、落台后向左侧跳;撞你拍面后球往<b>右</b>窜。',
+    counter:{
+      title:'拍面侧引 / 顺旋转回带',
+      racket:'拍面向左侧偏(迎着来球旋转方向),引拍往左前',
+      cspin:'left',
+      cnote:'<b>怎么接:</b>判断球会往你<b>右侧</b>弹,所以拍面<b>朝左侧偏</b>去抵消,出球点对准球台。也可"顺旋转"——用拍面摩擦它的左侧把侧旋还回去。站位要预先往右让半步。'
+    }
+  },
+  {
+    id:'right', c:'#b8348a', tag:'RIGHT SIDE · 竖轴', name:'右侧旋',
+    en:'RIGHT SIDESPIN', axis:'right',
+    desc:'与左侧旋镜像,同样是<b>俯视图</b>。球向右弯,撞到你拍面后朝你的左侧弹走。发球里常和上/下旋混在一起。',
+    view:'top', incoming:{spin:'right', traj:'top-right'},
+    note:'<b>识别:</b>(俯视)球在空中向右划弧、落台后向右侧跳;撞你拍面后球往<b>左</b>窜。',
+    counter:{
+      title:'拍面侧引 / 顺旋转回带',
+      racket:'拍面向右侧偏,引拍往右前',
+      cspin:'right',
+      cnote:'<b>怎么接:</b>判断球会往你<b>左侧</b>弹,拍面<b>朝右侧偏</b>抵消。站位预先往左让半步。原理与左侧旋完全镜像,关键是"拍面迎着旋转去顶"。'
+    }
+  },
+  {
+    id:'cork', c:'#c9881f', tag:'MIXED · 飞行轴', name:'侧上 / 侧下旋(钻旋)',
+    en:'CORKSCREW', axis:'cork-down',
+    desc:'侧旋与上/下旋的混合,转轴接近飞行方向——像螺丝钻一样旋进。这里用<b>俯视图</b>展示它的左右拐(以侧下旋为例,向左拐),同时标注它还在往下沉。发球最常见、最难判断。',
+    view:'top', incoming:{spin:'cork', traj:'top-cork'},
+    note:'<b>识别:</b>(俯视)球既向左拐、落台后又往回缩(下旋分量)。要同时读"往哪拐"和"上还是下"两件事。',
+    counter:{
+      title:'拆成两个分量分别抵消',
+      racket:'拍面同时:侧向偏 + 后仰(应对侧下),向侧上方送',
+      cspin:'cork',
+      cnote:'<b>怎么接:</b>把它<b>拆开</b>处理——先定上/下(侧下旋就当下旋托住、向上送),再叠加侧向修正(拍面往旋转来向偏)。原则:<b>先解决上下,再修侧向</b>。吃不准时宁可多托、轻回过渡一板。'
+    }
+  }
+];
+
+/* ============================================================
+   SVG 动画生成器 —— 每个 stage 一个独立时钟
+   ============================================================ */
+const STG_W=640, STG_H=440;
+let globalSpeed=1, playing=true;
+const tickers=[];
+
+function svgEl(tag,attrs){
+  const e=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  for(const k in attrs)e.setAttribute(k,attrs[k]);
+  return e;
+}
+
+/* 画一个会自转的球，返回 update(progress, t) */
+function makeBall(svg,color){
+  const g=svgEl('g',{});
+  const ball=svgEl('circle',{r:26,fill:color});
+  const shade=svgEl('circle',{r:26,fill:'url(#sheen)'});
+  // 旋转环组（实时转动，箭头标明方向）
+  const ring=svgEl('g',{});
+  const e1=svgEl('ellipse',{rx:26,ry:9,fill:'none',stroke:'#fff',['stroke-width']:2,opacity:.85});
+  const meridian=svgEl('path',{d:'M0,-26 A26,26 0 0,1 0,26',fill:'none',stroke:'#fff8',['stroke-width']:2});
+  // 方向小箭头（贴在环上）
+  const arr=svgEl('path',{d:'M22,-6 L30,0 L22,6 Z',fill:'#fff'});
+  ring.appendChild(e1);ring.appendChild(meridian);ring.appendChild(arr);
+  g.appendChild(ball);g.appendChild(shade);g.appendChild(ring);
+  svg.appendChild(g);
+  return {g,ring,e1,arr,meridian};
+}
+
+/* defs: 球的高光 */
+function ensureDefs(svg){
+  const defs=svgEl('defs',{});
+  defs.innerHTML=`
+    <radialGradient id="sheen" cx="38%" cy="34%" r="70%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".55"/>
+      <stop offset="42%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <marker id="tip" markerWidth="10" markerHeight="10" refX="6.5" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#d9a441"/>
+    </marker>
+    <marker id="tipg" markerWidth="10" markerHeight="10" refX="6.5" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5fb89f"/>
+    </marker>`;
+  svg.appendChild(defs);
+}
+
+/* 球台与网 —— 按视角绘制
+   view='side' 侧视：地平线 + 竖直的网（看高低弧线）
+   view='top'  俯视：矩形台面 + 中线 + 球网横线（看左右拐） */
+function drawTable(svg,counter,view){
+  const main=counter?'#2f5a4b':'#33414f';
+  const accent=counter?'#1f3a31':'#232c37';
+  if(view==='side'){
+    svg.appendChild(svgEl('line',{x1:40,y1:330,x2:600,y2:330,stroke:main,['stroke-width']:3}));
+    svg.appendChild(svgEl('line',{x1:40,y1:330,x2:40,y2:352,stroke:accent,['stroke-width']:3}));
+    svg.appendChild(svgEl('line',{x1:600,y1:330,x2:600,y2:352,stroke:accent,['stroke-width']:3}));
+    // 网（竖直）
+    const net=svgEl('g',{});
+    net.appendChild(svgEl('line',{x1:320,y1:330,x2:320,y2:288,stroke:'#c9c2b3',['stroke-width']:2}));
+    for(let y=290;y<330;y+=6)net.appendChild(svgEl('line',{x1:312,y1:y,x2:328,y2:y,stroke:'#c9c2b399',['stroke-width']:1}));
+    svg.appendChild(net);
+    // 视角标
+    viewBadge(svg,'侧视 · SIDE VIEW','从球台侧面看 · 高低弧线',counter);
+  } else {
+    // 俯视：画一块梯形/矩形台面（中线把两个半区分开），网是中间横线
+    const tx0=66,tx1=556,ty0=82,ty1=378;
+    svg.appendChild(svgEl('rect',{x:tx0,y:ty0,width:tx1-tx0,height:ty1-ty0,rx:6,
+       fill:counter?'#0d2a22':'#11202b',stroke:main,['stroke-width']:2.5}));
+    // 端线/边线已由 rect 给出；中线（纵向，分左右半台对发球者无意义，画端到端的长轴中线）
+    svg.appendChild(svgEl('line',{x1:tx0,y1:(ty0+ty1)/2,x2:tx1,y2:(ty0+ty1)/2,
+       stroke:main,['stroke-width']:1.2,['stroke-dasharray']:'4 5',opacity:.6})); // 发球中线
+    // 球网：横在中间（球从右半台飞向左半台，网竖在 x 中点）
+    const nx=(tx0+tx1)/2;
+    const net=svgEl('g',{});
+    net.appendChild(svgEl('line',{x1:nx,y1:ty0,x2:nx,y2:ty1,stroke:'#c9c2b3',['stroke-width']:2}));
+    for(let yy=ty0+6;yy<ty1;yy+=10)net.appendChild(svgEl('line',{x1:nx-2,y1:yy,x2:nx+2,y2:yy,stroke:'#c9c2b377',['stroke-width']:3}));
+    svg.appendChild(net);
+    // 左右方位标
+    const lt=svgEl('text',{x:tx0+8,y:ty0-8,fill:'#7c8493',['font-size']:10,['font-family']:'monospace'});lt.textContent='← 左';svg.appendChild(lt);
+    const rt=svgEl('text',{x:tx1-8,y:ty0-8,fill:'#7c8493',['font-size']:10,['font-family']:'monospace',['text-anchor']:'end'});rt.textContent='右 →';svg.appendChild(rt);
+    viewBadge(svg,'俯视 · TOP VIEW','从正上方看球台 · 左右拐弯',counter);
+  }
+}
+
+function viewBadge(svg,t1,t2,counter){
+  const g=svgEl('g',{});
+  g.appendChild(svgEl('rect',{x:18,y:16,width:t1.length*7+18,height:34,rx:7,
+     fill:counter?'#10241d':'#141b23',stroke:counter?'#2f5a4b':'#2b3540',['stroke-width']:1}));
+  const a=svgEl('text',{x:28,y:32,fill:counter?'#7fd9bd':'#d9a441',['font-size']:12,['font-family']:'monospace',['font-weight']:700});
+  a.textContent=t1;g.appendChild(a);
+  const b=svgEl('text',{x:28,y:45,fill:'#7c8493',['font-size']:9,['font-family']:'monospace'});
+  b.textContent=t2;g.appendChild(b);
+  svg.appendChild(g);
+}
+
+/* 轨迹路径 —— 来球从右向左、回球从左向右
+   side 视角：y 表示高度（弧线）
+   top  视角：y 表示左右位置（拐弯），x 仍是前后 */
+const PATHS={
+  // ---- 侧视（高低）----
+  'arc-dive':   'M600,150 Q470,90 360,150 T120,300',     // 上旋：过网后下扎
+  'arc-float':  'M600,205 Q470,150 360,195 T120,250',    // 下旋：飘、下沉慢
+  // ---- 俯视（左右）----  x:600→120 是飞行方向；y 偏移表示拐
+  'top-left':   'M600,150 Q400,150 300,200 T120,300',    // 左侧旋：向下(图中=左)弯
+  'top-right':  'M600,310 Q400,310 300,260 T120,160',    // 右侧旋：向上(图中=右)弯
+  'top-cork':   'M600,160 Q410,160 300,215 T120,300',    // 侧下钻：左拐(虚线另标下沉)
+  // ---- 回球 ----
+  'return-up':  'M150,300 Q330,130 600,210',   // 侧视：盖打压低弧线回去
+  'return-lift':'M150,250 Q320,150 600,225',   // 侧视：托起来高弧线
+  'top-ret-l':  'M150,300 Q360,250 600,210',   // 俯视：把左拐顶回去
+  'top-ret-r':  'M150,160 Q360,210 600,300',
+  'top-ret-c':  'M150,300 Q360,240 600,200'
+};
+
+/* 取路径上某点坐标 —— 用持久化离屏 path，避免每帧创建/销毁 DOM */
+const _pathCache={};
+function _getPathObj(pathD){
+  if(_pathCache[pathD]) return _pathCache[pathD];
+  let host=document.getElementById('_pathHost');
+  if(!host){
+    host=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    host.id='_pathHost';
+    host.setAttribute('width','0');host.setAttribute('height','0');
+    host.style.cssText='position:absolute;width:0;height:0;overflow:hidden;opacity:0;pointer-events:none';
+    document.body.appendChild(host);
+  }
+  const p=svgEl('path',{d:pathD});
+  host.appendChild(p);
+  const obj={p, L:p.getTotalLength()};
+  _pathCache[pathD]=obj;
+  return obj;
+}
+function ptAt(pathD,prog){
+  const {p,L}=_getPathObj(pathD);
+  const pt=p.getPointAtLength(L*prog);
+  const pt2=p.getPointAtLength(Math.min(L,L*prog+1));
+  return {x:pt.x,y:pt.y,ang:Math.atan2(pt2.y-pt.y,pt2.x-pt.x)};
+}
+
+/* 旋转方向 → 环每帧转动量 & 倾斜，用于"标明旋转" */
+function spinStyle(axis){
+  // dir: 环旋转方向(deg/sec)，tiltX:环的椭圆扁度模拟轴向, ringRot:环平面角
+  switch(axis){
+    case 'top':   return {rate: 720, ringRot:0,  label:'↻ 顶部前滚'};
+    case 'back':  return {rate:-720, ringRot:0,  label:'↺ 底部前滚'};
+    case 'left':  return {rate: 720, ringRot:90, label:'← 左拐'};
+    case 'right': return {rate:-720, ringRot:90, label:'→ 右拐'};
+    case 'cork':  return {rate: 720, ringRot:45, label:'⇲ 钻旋'};
+    case 'cork-down':return{rate:720,ringRot:45,label:'⇲ 侧下钻'};
+    default:      return {rate:480, ringRot:0, label:''};
+  }
+}
+
+/* 构建一个完整 stage（来球 或 应对） */
+function buildStage(svg, cfg, isCounter){
+  ensureDefs(svg);
+  const view = cfg.view;                 // 'side' | 'top'
+  drawTable(svg,isCounter,view);
+  svg.setAttribute('viewBox',`0 0 ${STG_W} ${STG_H}`);
+
+  const color = isCounter ? '#3fbf9a' : cfg.c;
+
+  // 轨迹
+  const pathD = isCounter ? PATHS[cfg.counterPath] : PATHS[cfg.incoming.traj];
+  const trace=svgEl('path',{d:pathD,fill:'none',
+     stroke:isCounter?'#5fb89f':cfg.c,['stroke-width']:2.6,
+     opacity:.32, ['stroke-dasharray']: isCounter?'7 6':'none'});
+  svg.appendChild(trace);
+
+  // 钻旋(俯视)额外标注"还在下沉"
+  if(cfg.incoming.spin==='cork' && !isCounter){
+    const dt=svgEl('text',{x:300,y:360,fill:'#c9881f',['font-size']:11,
+       ['font-family']:'monospace',['text-anchor']:'middle'});
+    dt.textContent='＋ 同时下沉（下旋分量）';
+    svg.appendChild(dt);
+  }
+
+  // 球拍：应对=你的拍(左)，来球=对手的拍(右)
+  const padX = isCounter ? 150 : 500;
+  const padY = view==='side' ? 300 : 230;     // 俯视时拍放台面中线附近
+  const rk = racketConfig(cfg, isCounter, view);
+  svg.appendChild(drawRacket(padX, padY, rk, view));
+
+  // 旋转标注
+  const ss=spinStyle(isCounter?cfg.counter.cspin:cfg.incoming.spin);
+  const lbl=svgEl('text',{x:330,y:64,fill:isCounter?'#7fd9bd':cfg.c,
+     ['font-size']:14,['font-family']:'monospace',['text-anchor']:'middle'});
+  lbl.textContent = ss.label;
+  svg.appendChild(lbl);
+
+  // 球（旋转环按视角定向）
+  const ballObj=makeBall(svg,color);
+  const baseRot = view==='top' ? 0 : ss.ringRot;  // 俯视：环是水平圈(扁椭圆), 侧视: 立环
+
+  const dur = isCounter?2.2:2.0;
+  return {
+    update(now){
+      const prog=((now/1000)%dur)/dur;
+      const P=ptAt(pathD,prog);
+      const rot=(now/1000)*ss.rate % 360;
+      if(view==='top'){
+        // 俯视：球绕竖轴转 → 画成水平扁椭圆 + 一个绕中心公转的标记点
+        ballObj.ring.setAttribute('transform',`rotate(${rot})`);
+        ballObj.e1.setAttribute('rx',26); ballObj.e1.setAttribute('ry',9);
+      }else{
+        ballObj.ring.setAttribute('transform',`rotate(${baseRot}) rotate(${rot})`);
+      }
+      ballObj.g.setAttribute('transform',`translate(${P.x},${P.y})`);
+    }
+  };
+}
+
+/* 拍子配置 —— 区分视角
+   side 视角：faceAngle=拍面倾角(负前倾/正后仰)，swing=挥拍角(0右,顺时针正)
+   top  视角：tilt=拍面朝向角(拍在水平面里偏左/偏右)，swing=水平挥拍角 */
+function racketConfig(cfg,isCounter,view){
+  if(!isCounter){
+    // 来球面板 = 对手的拍(右侧, mirror)
+    if(view==='side'){
+      switch(cfg.incoming.spin){
+        case 'top':  return {show:1,mirror:1,view,faceAngle: 30,swing:222,hint:'向上前方兜→上旋'};
+        case 'back': return {show:1,mirror:1,view,faceAngle:-30,swing:150,hint:'向下前方切→下旋'};
+        default:     return {show:1,mirror:1,view,faceAngle:0,swing:180,hint:''};
+      }
+    } else { // top
+      switch(cfg.incoming.spin){
+        case 'left': return {show:1,mirror:1,view,tilt:-30,swing:120,hint:'横扫制造左侧旋'};
+        case 'right':return {show:1,mirror:1,view,tilt: 30,swing:240,hint:'横扫制造右侧旋'};
+        case 'cork': return {show:1,mirror:1,view,tilt:-22,swing:130,hint:'斜扫→侧下钻'};
+        default:     return {show:1,mirror:1,view,tilt:0,swing:180,hint:''};
+      }
+    }
+  }
+  // 应对面板 = 你的拍(左)
+  if(view==='side'){
+    switch(cfg.counter.cspin){
+      case 'top':  return {show:1,view,faceAngle:-32,swing:40, hint:'拍面前倾·向前下压'};
+      case 'back': return {show:1,view,faceAngle: 34,swing:-42,hint:'拍面后仰·向前上托'};
+      default:     return {show:1,view,faceAngle:0,swing:-30,hint:''};
+    }
+  } else { // top
+    switch(cfg.counter.cspin){
+      case 'left': return {show:1,view,tilt: 28,swing:-50,hint:'拍面朝左顶·迎旋转'};
+      case 'right':return {show:1,view,tilt:-28,swing:-50,hint:'拍面朝右顶·迎旋转'};
+      case 'cork': return {show:1,view,tilt: 22,swing:-50,hint:'先托后修侧'};
+      default:     return {show:1,view,tilt:0,swing:-50,hint:''};
+    }
+  }
+}
+
+/* 画球拍 —— side: 侧视(看倾角)；top: 俯视(看朝向) */
+function drawRacket(x,y,rk,view){
+  const g=svgEl('g',{});
+  if(!rk.show) return g;
+
+  if(view==='side'){
+    const a=rk.faceAngle, s=rk.mirror?-1:1;
+    const inner=svgEl('g',{transform:`translate(${x},${y}) rotate(${a})`});
+    const len=86,half=len/2,thick=11;
+    inner.appendChild(svgEl('rect',{x:-thick/2,y:-half,width:thick,height:len,rx:5,fill:'#caa46a',stroke:'#6e4b22',['stroke-width']:1.5}));
+    const redX=s>0?(thick/2-1):(-thick/2-3.5);
+    inner.appendChild(svgEl('rect',{x:redX,y:-half,width:4.5,height:len,rx:2,fill:'#d6342b'}));
+    const blackX=s>0?(-thick/2-3.5):(thick/2-1);
+    inner.appendChild(svgEl('rect',{x:blackX,y:-half,width:4.5,height:len,rx:2,fill:'#1b1f24'}));
+    for(let i=-half+8;i<half-4;i+=9)inner.appendChild(svgEl('circle',{cx:redX+2.3,cy:i,r:.9,fill:'#ff7a6e',opacity:.7}));
+    inner.appendChild(svgEl('rect',{x:-7,y:half-2,width:14,height:30,rx:6,fill:'#7a4a22',stroke:'#5a3416',['stroke-width']:1.5}));
+    g.appendChild(inner);
+  } else {
+    // 俯视：拍面是一个椭圆(从上看的圆拍)，tilt=朝向角；红边表示击球面
+    const t=rk.tilt||0, s=rk.mirror?-1:1;
+    const inner=svgEl('g',{transform:`translate(${x},${y}) rotate(${t})`});
+    // 拍面圆
+    inner.appendChild(svgEl('ellipse',{cx:0,cy:0,rx:22,ry:30,fill:'#caa46a',stroke:'#6e4b22',['stroke-width']:1.5}));
+    // 击球面红边（朝球一侧：对手拍朝左 s<0，你的拍朝右 s>0）
+    inner.appendChild(svgEl('path',{
+      d:`M ${s*22} -30 A 22 30 0 0 ${s>0?1:0} ${s*22} 30`,
+      fill:'none',stroke:'#d6342b',['stroke-width']:5}));
+    for(let i=-22;i<=22;i+=8)inner.appendChild(svgEl('circle',{cx:s*18,cy:i,r:.9,fill:'#ff7a6e',opacity:.6}));
+    // 把柄（朝远离球一侧）
+    inner.appendChild(svgEl('rect',{x:-6,y:28,width:12,height:26,rx:5,fill:'#7a4a22',stroke:'#5a3416',['stroke-width']:1.5}));
+    g.appendChild(inner);
+  }
+
+  // 身份徽章：对方(来球/mirror) 或 己方(应对)
+  const who = rk.mirror ? '对方' : '己方';
+  const whoColor = rk.mirror ? '#e8866b' : '#5fd9b8';
+  const whoBg = rk.mirror ? '#2a1813' : '#10241d';
+  const badgeY = view==='side' ? y - 56 : y - 46;
+  const bw = 42;
+  const bg=svgEl('rect',{x:x-bw/2,y:badgeY-15,width:bw,height:22,rx:6,
+     fill:whoBg,stroke:whoColor,['stroke-width']:1.4});
+  g.appendChild(bg);
+  const wt=svgEl('text',{x:x,y:badgeY+1,fill:whoColor,['font-size']:13,
+     ['font-weight']:700,['text-anchor']:'middle',
+     ['font-family']:'"Songti SC","Noto Serif SC",serif'});
+  wt.textContent=who;
+  g.appendChild(wt);
+
+  // 挥拍/摩擦箭头（金）
+  const sw=rk.swing*Math.PI/180,sLen=54;
+  const ex=x+Math.cos(sw)*sLen,ey=y+Math.sin(sw)*sLen;
+  g.appendChild(svgEl('line',{x1:x,y1:y,x2:ex,y2:ey,stroke:'#d9a441',['stroke-width']:3.5,['marker-end']:'url(#tip)'}));
+  const sl=svgEl('text',{x:ex+(Math.cos(sw)<0?-6:6),y:ey+(Math.sin(sw)<0?-4:14),
+     fill:'#d9a441',['font-size']:11,['font-family']:'monospace',['text-anchor']:Math.cos(sw)<0?'end':'start'});
+  sl.textContent=rk.mirror?'摩擦':'挥拍';g.appendChild(sl);
+
+  // 角度小标签
+  if(rk.hint){
+    const tt=svgEl('text',{x:x,y:y+(view==='side'?64:70),fill:rk.mirror?'#cfc7b6':'#7fd9bd',
+       ['font-size']:11.5,['font-family']:'monospace',['text-anchor']:'middle'});
+    tt.textContent=rk.hint;g.appendChild(tt);
+  }
+  return g;
+}
+
+/* ============================================================
+   渲染所有区块
+   ============================================================ */
+const SIDE2RET_PATH={top:'return-up',back:'return-lift',
+                     left:'top-ret-l',right:'top-ret-r',cork:'top-ret-c'};
+
+const blocksEl=document.getElementById('blocks');
+
+SPINS.forEach((cfg,i)=>{
+  cfg.counterPath = SIDE2RET_PATH[cfg.counter.cspin] || 'return-up';
+  const block=document.createElement('div');
+  block.className='spin-block';
+  block.id=cfg.id;
+  block.style.setProperty('--c',cfg.c);
+  block.innerHTML=`
+    <div class="tag-row">
+      <span class="spin-tag" style="--c:${cfg.c}">${cfg.tag}</span>
+    </div>
+    <h3>${cfg.name} <small>${cfg.en}</small></h3>
+    <p class="spin-desc">${cfg.desc}</p>
+    <div class="panes">
+      <div class="pane">
+        <div class="pane-label">来球 · INCOMING <span class="badge">对手制造</span></div>
+        <div class="stage"><svg data-stage="in" data-idx="${i}"></svg></div>
+        <div class="pane-note">${cfg.note}</div>
+      </div>
+      <div class="pane counter">
+        <div class="pane-label">应对 · YOUR RETURN <span class="badge">${cfg.counter.title}</span></div>
+        <div class="stage"><svg data-stage="out" data-idx="${i}"></svg></div>
+        <div class="pane-note">${cfg.counter.cnote}</div>
+      </div>
+    </div>`;
+  blocksEl.appendChild(block);
+});
+
+// 初始化每个 stage 的动画
+document.querySelectorAll('svg[data-stage]').forEach(svg=>{
+  const cfg=SPINS[+svg.dataset.idx];
+  const isCounter = svg.dataset.stage==='out';
+  const stage=buildStage(svg,cfg,isCounter);
+  tickers.push(stage);
+});
+
+/* ============================================================
+   全局动画时钟
+   ============================================================ */
+let base=performance.now(), acc=0, last=base;
+function loop(now){
+  if(playing){
+    acc += (now-last)*globalSpeed;
+  }
+  last=now;
+  tickers.forEach(t=>t.update(acc));
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+/* 控制 */
+const playBtn=document.getElementById('playBtn');
+playBtn.onclick=()=>{playing=!playing;playBtn.textContent=playing?'⏸ 暂停':'▶ 播放';playBtn.classList.toggle('active',playing);};
+document.getElementById('restartBtn').onclick=()=>{acc=0;};
+document.querySelectorAll('[data-spd]').forEach(b=>{
+  b.onclick=()=>{
+    globalSpeed=parseFloat(b.dataset.spd);
+    document.querySelectorAll('[data-spd]').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    if(!playing){playing=true;playBtn.textContent='⏸ 暂停';playBtn.classList.add('active');}
+  };
+});
+</script>
+</body>
+</html>
