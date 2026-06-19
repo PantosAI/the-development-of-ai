@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自我改善 · 四条</title>
+<style>
+:root{
+  --paper:#ECECE6;
+  --paper-2:#F3F3ED;
+  --ink:#16181B;
+  --slate:#535A61;
+  --slate-2:#7A8087;
+  --rule:#D2D2C9;
+  --rule-2:#E0E0D7;
+  --seam:#A6772C;
+  --seam-deep:#8A6322;
+  --seam-soft:#F4EAD5;
+  --seam-glow:rgba(166,119,44,.10);
+  --maxw:720px;
+  --font-serif:"Songti SC","Source Han Serif SC","Noto Serif SC",STSong,"SimSun",serif;
+  --font-sans:"PingFang SC","Source Han Sans SC","Noto Sans SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-mono:ui-monospace,"SF Mono","JetBrains Mono","Cascadia Code",Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-serif);
+  font-size:18px;
+  line-height:1.95;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+
+/* ── reading-progress seam (signature: a seam of light tracking your descent) ── */
+#seam{
+  position:fixed;left:0;top:0;bottom:0;width:3px;z-index:50;
+  background:var(--rule);
+}
+#seam::after{
+  content:"";position:absolute;left:0;top:0;width:100%;height:var(--p,0%);
+  background:linear-gradient(180deg,var(--seam) 0%,var(--seam-deep) 100%);
+  box-shadow:0 0 14px 1px var(--seam-glow);
+}
+
+/* ── layout ── */
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+.shell{display:grid;grid-template-columns:1fr;gap:0;}
+@media(min-width:1000px){
+  .shell{grid-template-columns:220px minmax(0,var(--maxw)) 1fr;gap:48px;align-items:start;}
+}
+
+/* ── hero ── */
+header.hero{
+  position:relative;padding:120px 0 64px;border-bottom:1px solid var(--rule);
+  margin-bottom:8px;
+}
+.eyebrow{
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--seam-deep);margin-bottom:30px;
+}
+h1.title{
+  font-family:var(--font-sans);font-weight:800;
+  font-size:clamp(46px,9vw,86px);line-height:1.02;letter-spacing:-.01em;
+  position:relative;display:inline-block;
+}
+/* the seam pried open beside the title */
+.title-seam{
+  display:inline-block;width:0;align-self:stretch;
+  border-left:2px solid var(--seam);margin:0 0 0 .12em;
+  position:relative;animation:pry 1.5s cubic-bezier(.16,1,.3,1) .3s both;
+  box-shadow:-1px 0 16px 2px var(--seam-glow);height:1em;vertical-align:-.08em;
+}
+@keyframes pry{from{opacity:0;transform:scaleY(0)}to{opacity:1;transform:scaleY(1)}}
+@media (prefers-reduced-motion:reduce){.title-seam{animation:none}}
+.lede{
+  font-family:var(--font-serif);color:var(--slate);
+  font-size:clamp(17px,2.4vw,21px);line-height:1.9;margin-top:38px;max-width:640px;
+}
+.lede strong{color:var(--ink);font-weight:600}
+.hero-meta{
+  font-family:var(--font-mono);font-size:12px;color:var(--slate-2);
+  letter-spacing:.05em;margin-top:40px;display:flex;gap:18px;flex-wrap:wrap;
+}
+.hero-meta span{display:flex;align-items:center;gap:7px}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--seam);display:inline-block}
+
+/* ── sticky TOC ── */
+nav.toc{display:none}
+@media(min-width:1000px){
+  nav.toc{
+    display:block;position:sticky;top:48px;align-self:start;
+    font-family:var(--font-sans);font-size:13.5px;line-height:1.5;
+    padding-top:8px;
+  }
+  .toc-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;
+    color:var(--slate-2);text-transform:uppercase;margin-bottom:18px;}
+  .toc a{
+    display:block;color:var(--slate);text-decoration:none;padding:7px 0 7px 16px;
+    border-left:1px solid var(--rule);transition:all .2s ease;position:relative;
+  }
+  .toc a .n{font-family:var(--font-mono);font-size:11px;color:var(--slate-2);margin-right:8px;}
+  .toc a:hover{color:var(--ink);border-left-color:var(--seam-deep);}
+  .toc a.active{color:var(--seam-deep);border-left:2px solid var(--seam);font-weight:600;margin-left:-1px;}
+  .toc a.active .n{color:var(--seam);}
+  .toc .grp{margin-top:18px;padding-top:14px;border-top:1px dashed var(--rule);}
+}
+
+/* ── article ── */
+main{padding-bottom:120px;}
+section.entry{padding:64px 0;border-bottom:1px solid var(--rule);scroll-margin-top:32px;}
+section.entry:last-of-type{border-bottom:none}
+.kicker{
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.22em;
+  color:var(--seam-deep);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:baseline;gap:14px;
+}
+.kicker .num{
+  font-size:34px;font-weight:700;letter-spacing:0;color:var(--ink);
+  line-height:.8;font-family:var(--font-sans);
+}
+h2.head{
+  font-family:var(--font-sans);font-weight:700;font-size:clamp(26px,4.6vw,38px);
+  line-height:1.22;letter-spacing:-.01em;margin-bottom:30px;max-width:18em;
+}
+h3.sub{
+  font-family:var(--font-sans);font-weight:600;font-size:18px;color:var(--ink);
+  margin:42px 0 16px;padding-bottom:9px;border-bottom:1px solid var(--rule-2);
+  display:flex;align-items:center;gap:10px;
+}
+h3.sub::before{content:"";width:9px;height:9px;background:var(--seam);transform:rotate(45deg);flex:none;}
+p{margin:18px 0;}
+p:first-of-type{margin-top:0}
+strong{font-weight:600;color:var(--ink);
+  background:linear-gradient(180deg,transparent 62%,var(--seam-soft) 62%);
+  padding:0 1px;}
+em{font-style:normal;color:var(--seam-deep);font-weight:600}
+
+ul{margin:18px 0;padding-left:0;list-style:none;}
+ul li{position:relative;padding-left:26px;margin:13px 0;}
+ul li::before{content:"";position:absolute;left:4px;top:.82em;width:7px;height:1px;background:var(--seam);}
+ul ul{margin:8px 0;}
+ul ul li{margin:8px 0;font-size:.96em;color:var(--slate);}
+ul ul li::before{background:var(--slate-2);width:5px;}
+.tick{color:#3c7a4a;font-weight:700}
+.cross{color:#b04a3a;font-weight:700}
+
+/* ── pull-quote = the seam of light (the heart of the doc) ── */
+blockquote{
+  margin:30px 0;padding:24px 26px 24px 28px;position:relative;
+  background:linear-gradient(90deg,var(--seam-glow),transparent 80%);
+  border-left:3px solid var(--seam);
+  font-size:19px;line-height:1.85;color:var(--ink);
+}
+blockquote::before{
+  content:"";position:absolute;left:-3px;top:0;bottom:0;width:3px;
+  box-shadow:0 0 16px 2px var(--seam-glow);
+}
+blockquote p{margin:10px 0;}
+blockquote p:first-child{margin-top:0}
+blockquote p:last-child{margin-bottom:0}
+blockquote strong{background:linear-gradient(180deg,transparent 60%,rgba(166,119,44,.22) 60%);}
+
+/* ── tables ── */
+.tbl-wrap{margin:28px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{border-collapse:collapse;width:100%;font-family:var(--font-sans);font-size:15px;line-height:1.7;min-width:520px;}
+th,td{text-align:left;padding:13px 15px;border-bottom:1px solid var(--rule);vertical-align:top;}
+thead th{
+  font-weight:700;color:var(--ink);border-bottom:2px solid var(--ink);
+  font-size:14px;background:var(--paper-2);
+}
+tbody th{font-weight:600;color:var(--slate);white-space:nowrap;background:var(--paper-2);font-size:14px;}
+td strong,th strong{background:none;}
+tr:last-child td,tr:last-child th{border-bottom:none}
+
+/* ── flow balance mini-diagram ── */
+.flowbar{margin:30px 0;font-family:var(--font-sans);}
+.flowbar .bar{display:flex;height:64px;border-radius:3px;overflow:hidden;border:1px solid var(--rule);}
+.flowbar .seg{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex:1;color:#fff;font-size:14px;font-weight:600;gap:3px;text-align:center;padding:0 6px;}
+.flowbar .seg small{font-family:var(--font-mono);font-size:10.5px;font-weight:400;opacity:.85;letter-spacing:.04em;}
+.seg.anx{background:#5b6168}
+.seg.flow{background:linear-gradient(135deg,var(--seam),var(--seam-deep));flex:1.3}
+.seg.bore{background:#8d9298}
+.flowbar .axis{display:flex;justify-content:space-between;font-family:var(--font-mono);
+  font-size:11px;color:var(--slate-2);margin-top:9px;letter-spacing:.03em;}
+
+/* ── appendix divider ── */
+.appx-mark{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.3em;color:var(--seam-deep);
+  text-transform:uppercase;text-align:center;margin:0 0 6px;
+}
+.entry.appendix{background:linear-gradient(180deg,var(--seam-glow),transparent 120px);}
+
+/* ── footer ── */
+footer{
+  border-top:1px solid var(--rule);padding:48px 0 90px;text-align:center;
+  font-family:var(--font-mono);font-size:12px;color:var(--slate-2);letter-spacing:.05em;line-height:2;
+}
+footer .big{font-family:var(--font-serif);font-size:17px;color:var(--ink);letter-spacing:0;margin-bottom:20px;line-height:1.8;}
+
+/* misc */
+.note{font-size:.94em;color:var(--slate);}
+hr.soft{border:none;border-top:1px dashed var(--rule);margin:34px 0;}
+
+@media(max-width:999px){
+  header.hero{padding:84px 0 48px;}
+  section.entry{padding:48px 0;}
+  body{font-size:17px;}
+  blockquote{padding:20px 20px 20px 22px;}
+}
+
+@media print{
+  #seam,nav.toc{display:none}
+  body{background:#fff;font-size:12pt}
+  .shell{display:block}
+  section.entry{break-inside:avoid;border-color:#ccc}
+  blockquote{background:#f5f0e6;border-color:#000}
+  .title-seam{animation:none}
+}
+</style>
+</head>
+<body>
+<div id="seam"></div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">人格勘测 · 一条基准线</div>
+    <h1 class="title">自我改善 · 四条<span class="title-seam"></span></h1>
+    <p class="lede">这不是性格标签，是顺着一种形状——carry 型 + 高尽责、系统化 + 元认知、审美暗线 + 产出驱动——该松哪几颗硌着自己的螺丝。<br><strong>不是要变成另一个人，是让这块形状别硌着自己。</strong></p>
+    <div class="hero-meta">
+      <span><span class="dot"></span>四条 + 总原则</span>
+      <span><span class="dot"></span>附录一 · 心流</span>
+      <span><span class="dot"></span>附录二 · 松手</span>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="toc" aria-label="目录">
+      <div class="toc-label">目录</div>
+      <a href="#c1"><span class="n">一</span>亲手做 = 尽责</a>
+      <a href="#c2"><span class="n">二</span>焦虑时停三十秒</a>
+      <a href="#c3"><span class="n">三</span>守住一块纯玩区</a>
+      <a href="#c4"><span class="n">四</span>认知早懂的别再使劲</a>
+      <a href="#prin"><span class="n">·</span>总原则</a>
+      <a href="#last"><span class="n">·</span>最后一句</a>
+      <div class="grp">
+        <a href="#ap1"><span class="n">附</span>心流：成品图</a>
+        <a href="#ap2"><span class="n">附</span>那只张不开的手</a>
+      </div>
+    </nav>
+
+    <main>
+
+      <section class="entry" id="c1">
+        <div class="kicker"><span class="num">一</span>第一条</div>
+        <h2 class="head">给「亲手做 = 尽责」这个等式，撬开一条缝</h2>
+
+        <h3 class="sub">它到底在动什么（性格根源）</h3>
+        <p>carry 型人格最硬的底色是 <strong>carry 型 + 高尽责</strong>，它的底层等式是：</p>
+        <blockquote><p><strong>一件事只要不是我亲手干，我就觉得没尽责、就心虚。</strong></p></blockquote>
+        <p>这个等式让一个人能独力做出一个产品、独自撑起一份事业——它是发动机。但同一块特质，也让人<strong>永远无法真正卸下任何东西</strong>，因为在这套操作系统里，「交出去」＝「失责」。</p>
+        <p>面对这一条，carry 型人常从五个角度反驳：</p>
+        <ul>
+          <li>嫌大——「怎么可能铁定自己干还扔给别人」</li>
+          <li>嫌小——「无所谓的事我可以不做啊」</li>
+          <li>嫌性质——「那不是推辞么」</li>
+          <li>嫌没回报——「我图什么」</li>
+          <li>嫌没人赞同——「征求了几个人意见，多数反对，样本量太小」</li>
+        </ul>
+        <p>五个角度，底下顶着的是同一块东西。<strong>越能从这么多方向找出理由反对，越说明它动到了最核心的那块底色。</strong> 这不是抬杠，是尽责心在自我保护。</p>
+
+        <h3 class="sub">撬开它，图什么（三个真实意义）</h3>
+        <p>这件小事是<strong>学费，不是收益</strong>。图的不在这件事本身，在它连着的三样东西——恰好是 carry 型人过得最紧的地方：</p>
+        <ul>
+          <li><strong>做得大</strong> —— 单人 carry 的上限，就是一双手的物理极限。等式不松，一辈子能做成的事，永远等于「一个人能扛的量」，一分不多。撬开缝，产出才可能突破「自己」这个瓶颈。</li>
+          <li><strong>停得下</strong> —— 「不亲手做就心虚」的另一面，是永远无法把任何事真正放下，下班只是换个地方继续惦记。撬开缝，才第一次可能体验「事不在我手上，而我居然不慌」。</li>
+          <li><strong>靠得近</strong> —— 「我自己扛」在工作里叫能力，在亲密关系里就叫「我不需要你、也不信你接得住」。太能扛，扛到别人没法靠近。亲密关系里所谓的「性格不合」，真要往自己身上找一条，<strong>这往往是最可能的一条</strong>。</li>
+        </ul>
+        <p>一句话连起来：<strong>这个等式让人能扛起一切，代价是——做不大、停不下、靠不近。</strong> 撬开一条缝，就是在这三件最在意的事上，各松一格。</p>
+
+        <h3 class="sub">最关键的一个坑：别用旧引擎执行新动作</h3>
+        <p>别把这条理解成「精力的合理分配 / 资源优化」。</p>
+        <p>那是 carry 型人最舒服的翻译——它等于「投入产出比调到最优」，是最熟的语言。但一旦这样理解，就会开始算「这次授权划不划算」，于是只是<strong>用『凡事算投入产出』的老引擎，换了个更聪明的算法继续跑</strong>，那颗螺丝一点没松。</p>
+        <p>真正要练的，是这句：</p>
+        <blockquote><p><strong>哪怕这件事被做得没我好、哪怕我没省下精力、哪怕不划算——我放手，天也没塌，我也没失责。</strong></p></blockquote>
+        <p>差别在这里：</p>
+        <ul>
+          <li>「精力优化」是：<em>为了更高产出</em>才放手。放手是手段，产出是目的。→ 这还是 carry 型，只是升级版。</li>
+          <li>真正的松动是：放手，然后发现<strong>就算不更优、就算被做得没我好，天也没塌，也没失责。</strong> → 这才动到了那个等式本身。</li>
+        </ul>
+        <p>放手<strong>不需要「值得」才成立</strong>。精力变好，是这条缝的<strong>副产品</strong>，不该是撬它的<strong>理由</strong>。一旦它变成理由，缝就没撬开，只是把锁换了个更高级的型号。</p>
+
+        <h3 class="sub">具体怎么做</h3>
+        <ul>
+          <li><strong>选事</strong>：一件迟早得做、本来默认自己来的<strong>小活</strong>——总得有人整理的周记录、一段边角代码、某类例行回复。
+            <ul>
+              <li><span class="cross">✕</span> 不能选「可做可不做」的（那种一定会被砍掉、练不到东西）。</li>
+              <li><span class="tick">✓</span> 必须是真实存在、真得做的，才没法用「那不做不就行了」溜走。</li>
+            </ul>
+          </li>
+          <li><strong>交的方式</strong>：说清三样——<strong>要什么结果、什么时候要、出问题我兜</strong>；然后<strong>过程闭嘴</strong>：不盯、不中途接管、不「我来改最后一版」。
+            <ul><li>这是<strong>授权</strong>，不是<strong>推辞</strong>。推辞是连责任一起甩；授权是只交执行、责任留在自己手里。后者比自己干还累——这才是练点所在。</li></ul>
+          </li>
+          <li><strong>要害不在那件事，在体感</strong>：「有另一个人在做、而我忍住没插手」——这个难受，就是最不会、最该练的肌肉。<strong>事是沙包，不是任务。</strong></li>
+          <li><strong>复盘只问一句</strong>：「结果够用了吗？」够用，就承认 80 分够用了。要的不是这件事更好，是亲眼见一次「不是我做，也没塌」。</li>
+          <li><strong>频率</strong>：一个月一件，别贪多——贪多它又成 KPI 了。</li>
+          <li><strong>打卡</strong>：<span class="tick">✓</span> 这一条<strong>要打卡</strong>（记：交了什么、有没有忍住接管、塌没塌）。因为它是<strong>行为习惯</strong>，得靠重复才能把门槛一次次磨低，不记会忘。</li>
+        </ul>
+
+        <h3 class="sub">要不要做（没人逼，也不靠投票）</h3>
+        <p>这条<strong>只对一种人成立</strong>：已经被「什么都自己扛」硌疼过、且开始觉得累或孤独的人。</p>
+        <p>判断标准就一个特别具体的问题，自己回答就行：</p>
+        <blockquote><p><strong>做不大、停不下、靠不近——这三样，最近真切被哪一样硌疼过吗？</strong></p></blockquote>
+        <ul>
+          <li>疼过 → 这条缝就有意义，值得动。</li>
+          <li>一样都没疼过 → 那这个等式就是<strong>纯资产、没有代价</strong>，撬它反而是破坏。这种情况下 3:1 也好、4:0 也好，<strong>扔了它一点不亏</strong>。</li>
+        </ul>
+        <blockquote>
+          <p><strong>关于投票</strong>：哪怕多数人反对，样本量小是真的，但更关键的是——<strong>这件事本来就不能靠投票决定</strong>。「该不该松这个等式」只跟自己疼不疼有关，不是民主表决。别人反对，很可能恰恰因为他们不是这种人——没有「什么都自己扛到散热口堵死」的极端程度，对他们这建议本就不适用。所以多数反对说明的不是「建议错了」，而是「这建议高度因人而异」。</p>
+          <p>同时提醒一句：拿「样本量太小」说事，某种程度上又是在用一个<strong>看起来很理性的理由</strong>，给自己一个不动的台阶——用效率/理性的逻辑规避让自己难受的事，正是这台引擎最常做的动作。</p>
+        </blockquote>
+        <blockquote><p><strong>补充</strong>：生死攸关、非亲自不可的事，本就不该交，不在此列。还有——光是看清「把『亲手做』和『尽责』焊死了，代价是累和孤独」，这个<strong>觉察本身</strong>就已经是收获，不一定非要配一个行动。</p></blockquote>
+      </section>
+
+      <section class="entry" id="c2">
+        <div class="kicker"><span class="num">二</span>第二条</div>
+        <h2 class="head">焦虑时，先停三十秒</h2>
+
+        <h3 class="sub">它在动什么（性格根源）</h3>
+        <p>对应 <strong>系统化 + 元认知</strong>。这类人的本能是遇事就往上爬一层、立刻建框架解决——这是最锋利的能力。但它有个情绪上的副作用：<strong>用「解决问题」麻痹「感受问题」</strong>。一感到焦虑、失落、挫败，大脑立刻疯狂运转、自动生成一套解决方案——以为在面对，其实是在用「干活」绕过「心痛」。</p>
+        <p>认知上什么都懂，缺的不是道理，是<strong>应激那 0.5 秒</strong>——感受刚冒头，就被「解决」吞掉了。</p>
+
+        <h3 class="sub">具体怎么做</h3>
+        <ul>
+          <li><strong>记住三个身体信号</strong>（它们比情绪先到）：手指开始敲、呼吸变浅、脑子已经在列方案。</li>
+          <li>一旦察觉任何一个 → <strong>停</strong>。心里给那个情绪<strong>点名</strong>：「我现在很烦 / 很慌 / 很难受。」</li>
+          <li>然后单纯地<strong>待满三十秒</strong>，什么都不做。三十秒后，再决定动不动手。</li>
+          <li><strong>要点</strong>：不是要压住情绪，是要在「感受」和「解决」之间，硬<strong>插进一道缝</strong>。缝插进去，情绪才有机会被看见，而不是被绕过。</li>
+          <li><strong>不用天天练</strong>，只练那几个高浓度的应激时刻就够。</li>
+        </ul>
+
+        <h3 class="sub">打卡？</h3>
+        <p><span class="cross">✕</span> <strong>不打卡，设提醒。</strong> 一打卡「今天停了三十秒 ✓」，这停顿就又变成一个要完成的任务，会带着「我得完成它」的紧张去做——而紧张恰恰是它要化解的东西。</p>
+        <p><span class="tick">✓</span> 改成：手机里设一天一次的提醒，弹出来就一句话——<strong>「现在身体什么感觉？」</strong> 它只负责把人拽回觉察，不考核做没做到。</p>
+      </section>
+
+      <section class="entry" id="c3">
+        <div class="kicker"><span class="num">三</span>第三条</div>
+        <h2 class="head">守住一块纯玩区，只在这块地里不问「有什么用」</h2>
+
+        <h3 class="sub">它在动什么（性格根源）</h3>
+        <p>对应那条<strong>审美暗线 + 产出驱动的张力</strong>。这类人身上分析者和审美者并存，同时又被产出驱动推着把一切 KPI 化——打游戏要算胜率、看书要能致用、听歌都要琢磨「这有没有用」。这条，是保护性格里<strong>最容易被自己碾掉的那一半</strong>。</p>
+
+        <h3 class="sub">具体怎么做</h3>
+        <ul>
+          <li><strong>选一样</strong>：从音乐、诗词、游戏里挑<strong>一样</strong>，定为「无用区」。越是已经在不自觉 KPI 化的（算胜率、追星数），越该拿来当这个。</li>
+          <li><strong>立三条铁规</strong>：① 不设目标（不冲段位、不追完成度）；② 不复盘（玩完不准想「我哪把没打好」）；③ 不问「这有什么用」。</li>
+          <li><strong>验收</strong>：没有验收。哪天发现又在心里给它算「产出」了，把那个念头掐掉，继续纯玩。</li>
+          <li>它是引擎的<strong>散热口</strong>。一块田一直高产、从不休耕，地力会耗尽；划这块「无用区」就是<strong>强制休耕</strong>，目的恰恰是<strong>保住在正事上持续高强度较真的能力</strong>。散热口堵了，引擎才会烧。</li>
+        </ul>
+
+        <h3 class="sub">关键边界：「专业较真」≠「钻牛角尖」</h3>
+        <p>这条<strong>只管那块划出来的娱乐区，绝不外溢到本职</strong>。对专业核心问题、对关键判断，<strong>照样要往死里问「为什么」</strong>——那是命根子，越较真越好。</p>
+        <p>有一句很尖锐的提醒：「较真某种意义上就是钻牛角尖，要区别于坚守底线。」这话是对的，而且精准命中了一个真实风险。但要注意——<strong>那句话里的「较真」，和这里要保留的「较真」，是两个东西</strong>：</p>
+        <div class="tbl-wrap">
+        <table>
+          <thead><tr><th></th><th>专业较真 / 坚守底线（保留，越多越好）</th><th>钻牛角尖（隔离，要掐掉）</th></tr></thead>
+          <tbody>
+            <tr><th>有没有标的</th><td><strong>有边界、有标的</strong>：为什么是这个结论、机制是什么、为什么排除那个</td><td><strong>没标的</strong>：已经够用的方案反复重构、做完的事反复复盘「能不能更好」、听首歌都琢磨「有没有用」</td></tr>
+            <tr><th>会不会停</th><td>指向一个真问题，<strong>问到答案就停</strong></td><td>不指向任何真问题，<strong>只是引擎停不下来</strong></td></tr>
+            <tr><th>对自己</th><td>命根子，专业所在</td><td>真实风险，散热口堵塞的根源</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p>真实问题从来不是「较真太多」，是<strong>较真没有边界</strong>——好的较真和坏的钻牛角尖，用的是<strong>同一台引擎</strong>，不分对象地全速运转。</p>
+        <p>区分它们，<strong>只有一句话的标准</strong>：</p>
+        <blockquote>
+          <p><strong>这个「为什么」问下去，有没有一个会让人停下来的答案？</strong></p>
+          <p>有 → 是专业（核心问题、关键判断，往死里问）。<br>没有、问到天荒地老也停不了 → 那就是钻牛角尖（该掐，赶进无用区隔离）。</p>
+        </blockquote>
+
+        <h3 class="sub">打卡？</h3>
+        <p><span class="cross">✕</span> <strong>不打卡，设提醒。</strong> 打卡「今天纯玩了 ✓」＝在给纯玩算账，那块地方当场就不纯了。</p>
+        <p><span class="tick">✓</span> 改成：偶尔弹一句——<strong>「今天那块地方，纯不纯？」</strong></p>
+      </section>
+
+      <section class="entry" id="c4">
+        <div class="kicker"><span class="num">四</span>第四条</div>
+        <h2 class="head">认知早懂的，别再使劲</h2>
+        <p>「理解世界」「容纳不确定性」这些——<strong>已经够了</strong>。</p>
+        <p>这类人在<strong>认知上</strong>早就懂世界不可控、BUG 是系统的一部分（比谁都清楚）。继续往这上面堆，就是<strong>把本来不缺的地方继续过度建造</strong>，白费力气。</p>
+        <blockquote><p>真正的差距不在「想没想明白」，而在「应激时扛不扛得住」——那个，靠第二条练，不靠在道理上再加码。</p></blockquote>
+        <p>把劲留给上面三条。</p>
+      </section>
+
+      <section class="entry" id="prin">
+        <div class="kicker">总原则</div>
+        <h2 class="head">别把这四条本身，变成第五个系统</h2>
+        <p>这四条放一起，本身就是一套系统——而最该警惕的，恰恰是<strong>用「过度建造」的方式去执行「反过度建造」的建议</strong>：给它们排进度、定频率、月底算完成率。那等于<strong>把手刹又改装成了发动机</strong>。</p>
+        <p>所以分清楚：</p>
+        <ul>
+          <li><strong>能用明确动作完成的（第一条）</strong> → <strong>打卡</strong>，靠重复留痕。</li>
+          <li><strong>只能靠当下一念松开的（第二、三条）</strong> → <strong>不打卡，设提醒</strong>，只拽回觉察、不考核。</li>
+        </ul>
+        <blockquote>
+          <p>一旦开始优化「这个月做到了几条」——那一刻，<strong>松手</strong>。</p>
+          <p>能在该松手时松手，才是这四条真正做到了。</p>
+        </blockquote>
+      </section>
+
+      <section class="entry" id="last">
+        <div class="kicker">最后一句</div>
+        <h2 class="head">性格不是用来贴标签的，是用来用的</h2>
+        <blockquote>
+          <p>性格不是用来贴标签的，是用来用的。</p>
+          <p>这四条不是终点，是顺着一种形状、给自己设计生活的起点——也是回头看时，用来对照「变了没有」的基准线。</p>
+          <p>按顺序来。第一条最难也最值，先动它——<strong>但前提是它真的硌着人了。</strong></p>
+        </blockquote>
+      </section>
+
+      <section class="entry appendix" id="ap1">
+        <p class="appx-mark">Appendix · 一</p>
+        <div class="kicker">附录一</div>
+        <h2 class="head">基准画面：心流——这四条要松回去的那个状态</h2>
+        <blockquote>
+          <p>这不是第五条。第五条会让它变成一个要执行的系统，当场违背总原则。</p>
+          <p>它是一张<strong>成品图</strong>——前面四条松到位之后，人长出来的样子。它不打卡、不排进度、不算完成率。它只待在这儿，当「松没松到位」的对照。</p>
+        </blockquote>
+
+        <h3 class="sub">一句话（核心，记住这个体感就够）</h3>
+        <blockquote><p style="font-size:1.12em"><strong>身体自然反应，心理根本不知道。</strong></p></blockquote>
+        <p>这是从门里头说出来的话，不在那些「怎么进门」的笔记上——那类笔记画的是条件、路径、操作，唯独没画门里头是什么样，因为做笔记时人还没进过那扇门。「现在感受到了」那一下，才第一次把门里的体感填上。</p>
+
+        <h3 class="sub">它怎么来的（一条典型的路径）</h3>
+        <ul>
+          <li><strong>起点</strong>：看见一个笑眯眯打球的人，回球看似随意、既不下网也不出台、柔中带刚。第一反应往往想「扮拙」「再加一条」。</li>
+          <li><strong>第一道坎</strong>：被打动的不是「拙」，是「松」。命名成「扮拙」＝把<strong>状态</strong>偷换成<strong>策略</strong>，瞄准拙只会得到表演。</li>
+          <li><strong>第二道坎</strong>：他的松和 carry 型人的松，内容一样、<strong>位置不一样</strong>——他的松在<strong>手上</strong>（应激那 0.5 秒自动跑出来），这类人的松在<strong>脑子里</strong>（讲得清、写得出的理解）。是「懂得太够、却还没掉下来」。</li>
+          <li><strong>第三道坎</strong>：不是「常驻应激的松」（那是矛盾）。是更准的那句——<strong>身体激活 ≠ 心理应激</strong>。手该爆发爆发（刚），脑子没盖「危机」的章（柔）。他不是控得好，是那地方<strong>压根没装旋钮</strong>，松是默认值，不是选出来的。</li>
+          <li><strong>落点</strong>：这状态就是<strong>心流（flow）</strong>。而这类人<strong>早就会</strong>——在一款竞技游戏里 carry 一波团战、手快到事后回放都跟不上、脑子却静得没有「这波不能崩」那个声音的那种局，就是它。那个打球的人在球桌上的样子，跟在游戏里 carry 团战时的样子，是同一个东西。</li>
+        </ul>
+
+        <h3 class="sub">真正的问题不是「不会松」，是「只许自己在游戏里松」</h3>
+        <p>不缺这个状态——能在竞技游戏里打到顶尖段位，靠的就是能频繁进它。缺的是：游戏被归进「玩」，没贴 KPI，所以松得起来；正事被归进「得做好」，标签一贴，心就绷上了。</p>
+        <blockquote>
+          <p>不是要学一个新状态。是要把<strong>早就会的那个，放出笼子</strong>——让它从「只在游戏里」，慢慢漫到别处。</p>
+          <p>这正是<strong>第三条</strong>守那块「无用区／散热口」要护住的东西：让那个已经活着的松，有地方继续活，别被「这有什么用」碾死。</p>
+        </blockquote>
+
+        <h3 class="sub">如何进入 flow（提炼，备着，别再加格子）</h3>
+        <p><strong>1 · 核心机关：挑战与能力的均衡</strong></p>
+        <div class="flowbar">
+          <div class="bar">
+            <div class="seg anx">焦虑<small>挑战 &gt; 能力</small></div>
+            <div class="seg flow">FLOW<small>挑战 ≈ 能力</small></div>
+            <div class="seg bore">无聊<small>挑战 &lt; 能力</small></div>
+          </div>
+          <div class="axis"><span>太难 → 不安</span><span>难度适中</span><span>太易 → 退屈</span></div>
+        </div>
+        <p class="note">→ 朝「难度适中」的目标走。这是唯一的核心旋钮——但注意，是<strong>调目标的难度</strong>，不是直接去「调松紧」（松紧调不动，难度匹配对了，松是自然结果）。</p>
+
+        <p><strong>2 · 把能力和目标对上号（GAME / TRAINING / RESEARCH）</strong></p>
+        <ul>
+          <li><strong>RESEARCH（了解能力）</strong>：先搞清自己现在几斤几两。</li>
+          <li><strong>TRAINING（控制能力）</strong>：把能力练到可控。</li>
+          <li><strong>GAME（挑战目标）</strong>：去挑一个略高于当前能力的目标。</li>
+          <li>顺序：先知道自己 → 再练 → 再挑战，而不是上来就挑战。</li>
+        </ul>
+
+        <p><strong>3 · 挑战性专注（MR. Beast 那条）</strong></p>
+        <ul>
+          <li>正确的立项方向（一开始别选错事）。</li>
+          <li>纠错 → 回归既定轨道（错了就拉回来，不原地纠结）。</li>
+          <li>复盘 → 同样的错误不犯（复盘只为不重犯，不是为「能不能更好」无限重构——这正是第三条「钻牛角尖」的边界）。</li>
+        </ul>
+
+        <p><strong>4 · 实操路径（最贴身体）</strong></p>
+        <ul>
+          <li><strong>信息熵减</strong>：多余信息一开始就不接受。</li>
+          <li><strong>回归当下</strong>：开启 Flow 的开关。</li>
+          <li><strong>延迟满足</strong>：耐心。</li>
+          <li><strong>目标递进</strong>：一步步加难度（呼应第 1 条的均衡）。</li>
+          <li><strong>释放杂念</strong>：把脑子里那个审视的声音放掉。</li>
+        </ul>
+
+        <p><strong>5 · 业力提醒（反向警示）</strong></p>
+        <ul>
+          <li>充斥信息和娱乐，是用来掩饰无聊和焦虑的「无间地狱」。</li>
+          <li>沉醉分两种：<strong>主动沉醉</strong>（这才叫利己，是 flow）；<strong>被动沉醉</strong>（比如刷手机，是熵增、是逃）。</li>
+          <li>区别这两个，本质和第三条一样：主动沉醉问到底有个让人停下来的标的，被动沉醉只是引擎/多巴胺停不下来。</li>
+        </ul>
+
+        <h3 class="sub">怎么用这张图</h3>
+        <blockquote>
+          <p>别再往这张图上加格子了——它已经齐了，它只是一直在等身体撞上一次、好「啪」地对上号。</p>
+          <p>进入 flow 的那些条件，<strong>知道</strong>就行，不用反复打磨。真正缺的从来不是多懂一层，是<strong>让懂的东西掉进身体那一下</strong>——那靠去玩、去做，不靠在道理上再加码（第四条）。</p>
+          <p>下次身体自己撞上「身体在动、脑子很静」那种局时，认出它：哦，这就是。认出来，比任何解释都顶用。</p>
+          <p>一旦开始复盘「今天进没进 flow、进得够不够好」——那一刻，<strong>松手</strong>。一复盘，心流就又变回词条了。</p>
+        </blockquote>
+      </section>
+
+      <section class="entry appendix" id="ap2">
+        <p class="appx-mark">Appendix · 二</p>
+        <div class="kicker">附录二</div>
+        <h2 class="head">那只张不开的手：从「基准线」一路到「松手」</h2>
+        <blockquote>
+          <p>这一段是顺着第一条那颗螺丝、一路追到底的记录。起点是「基准线是什么意思」，绕过基准线、果断、赌、柯达，最后落回总原则那两个字：<strong>松手</strong>。</p>
+          <p>它不是新建议，是把第一条、第三条、总原则<strong>焊成一块</strong>：从五个不同的门进去，里头是同一间屋子。</p>
+        </blockquote>
+
+        <h3 class="sub">一 · 基准线：一个不带好坏的零点</h3>
+        <p>「基准线」不是「该改好的异常值」，也不是「没达到就算差的目标线」。它是个<strong>坐标原点</strong>——本身不评判，只负责让「变化」能被看见。</p>
+        <ul>
+          <li>「对照变了没有」的用法：过段时间回看，拿那时的自己跟这条刻度比——那个等式松了没有？焦虑时还是 0.5 秒冲去干活，还是偶尔能停了？纯玩区还纯不纯？</li>
+          <li><strong>它给的是信息，不是评分。</strong>「没变」也是合法答案，甚至可能是好答案——「前提是它真的硌着人了」就是这个意思：没硌着，留着它，「没变」恰恰对。</li>
+        </ul>
+        <blockquote><p>一旦把基准线读成「我得比上次进步」，它当场就从镜子变成又一根鞭子。它只是面镜子；变没变、要不要管，是照完之后<strong>单独</strong>的事，镜子不替人判。</p></blockquote>
+
+        <h3 class="sub">二 · 第一条那颗螺丝的精确样子</h3>
+        <p>「比出差距 → 逼自己改」和「比出变化 → 看清往哪走了」，看着像一回事，其实差一节：</p>
+        <ul>
+          <li><strong>「差距 → 改」</strong>是三节：看见差距 → 判定它是问题 → 上手改。差距和改<strong>焊死</strong>：有差距就必须改。终点是动作。</li>
+          <li><strong>「变化 → 看清」</strong>只有两节：看见变化 → 看清往哪走了，<strong>到这儿就停</strong>。看清和改<strong>断开</strong>：看清之后改不改、怎么改，是后置的、独立的判断。终点是认知。</li>
+        </ul>
+        <p>「都看见了哪能不改」这种脱口而出，本身就是那颗螺丝在说话。它不是普世真理，是这台引擎的出厂设置：在这套系统里，「看见差距」和「必须改」之间<strong>没有缝</strong>。</p>
+        <p>反例当场就破：一个游戏顶尖玩家，也并非世界第一——这是个看得清清楚楚的差距，去改了吗？没有，而且这个「不改」毫无毛病。所以「看见差距」和「必须改」<strong>根本不焊死</strong>，每个人身上都有理直气壮不改的例子。只是在某些事上焊死——而焊死的那些，往往正是硌着自己的那些。</p>
+        <blockquote>
+          <p>那颗螺丝的精确定义：</p>
+          <p><strong>「存在一个我看得见、却没去动的差距」——这个状态本身，就让我不舒服。</strong> 跟那差距值不值得改、严不严重、改了好不好，<strong>统统无关</strong>。</p>
+          <p>难受<strong>冲在判断前面</strong>，甚至把判断挤掉了——手已经被那股不舒服推着伸出去了，根本没机会问「这值得改吗」。</p>
+        </blockquote>
+        <p>所以「松这颗螺丝」松的到底是什么：</p>
+        <blockquote>
+          <p>不是变得无所谓、看见差距也不在乎（那是把发动机拆了）。</p>
+          <p>是在「看见」和「不舒服」之间，<strong>重新插回那道被跳过的判断</strong>——把它从「看见 → 难受」，改成「看见 → 停 → 判断 →（也许）难受」。要松的不是「在乎差距」，是「<strong>看见差距就必须难受</strong>」这条自动反射。</p>
+        </blockquote>
+
+        <h3 class="sub">三 · 果断不是快，是带信息地命中</h3>
+        <ul>
+          <li>旧定义（螺丝的）：<strong>果断 = 快</strong>，看见就动，停顿 = 犹豫 = 弱。</li>
+          <li>新定义：<strong>果断 = 带信息、命中率高地做决定</strong>。它是<strong>结果概念，不是速度概念</strong>。</li>
+        </ul>
+        <p>由此：看见就动、命中靠运气 = <strong>冲动</strong>（不是果断）；停一下、调了信息、八成命中 = <strong>果断</strong>（哪怕慢几秒）。</p>
+        <blockquote><p>不是太果断，是把<strong>冲动</strong>当成了<strong>果断</strong>。要真果断，反而得先把那道一直被当成「软弱」的缝插回去。松第一条螺丝，松的不是果决，是「冲动冒充果决」那部分；剩下的真果决，一分不少，还更准了。</p></blockquote>
+
+        <h3 class="sub">四 · 果断 vs 赌：三道闸（换挡逻辑）</h3>
+        <p>果断<strong>不</strong>永远优于赌。它只在「信息值得调、也调得到」时优于赌。判断用哪个，按顺序过三道闸：</p>
+        <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>闸</th><th>问什么</th><th>结论</th></tr></thead>
+          <tbody>
+            <tr><th>第一道</th><td>这事重要吗？（错了代价大不大、可不可逆）</td><td>不重要 / 可逆 → <strong>赌</strong>（拿大炮打蚊子是浪费，直接拍）</td></tr>
+            <tr><th>第二道</th><td>信息调得到吗？</td><td>调得到 → <strong>果断</strong>（花成本买命中率最划算，该调就调。这是主场）</td></tr>
+            <tr><th>第三道</th><td>又重要、又调不到？</td><td>→ <strong>聪明地赌</strong>（榨干已知信息、押期望值最高的一边、留退路、认了它会错）</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <blockquote>
+          <p><strong>重要 + 调得到 → 果断</strong>（别偷懒不调）<br><strong>不重要 → 赌</strong>（认真就是浪费）<br><strong>重要 + 调不到 → 聪明地赌</strong>（押概率、留退路、认错）</p>
+        </blockquote>
+        <p class="note">「果断和赌的占比谁高」是<strong>问错的问题</strong>——因人、因位、因事而变，没有固定比例（解题的学生几乎全是果断局，炮火里的指挥官几乎全是赌局）。重点不在占比，在<strong>认得出自己在哪种局</strong>。</p>
+
+        <h3 class="sub">五 · 病根：引擎不换挡</h3>
+        <p>这台引擎的毛病<strong>不是选错了果断或赌，是它根本不过这三道闸</strong>，对所有事只有一个反应：看见 → 冲。结果两头错位：</p>
+        <ul>
+          <li>重要又调得到的事（该慢慢判断）——它 0.5 秒冲过去，把「果断局」打成了「瞎赌」。</li>
+          <li>不重要的事（该随手赌掉）——它也较真、也要算「能不能更好」，把「赌局」打成了「过度判断」（= 第三条的<strong>钻牛角尖</strong>）。</li>
+        </ul>
+        <blockquote>
+          <p>病根从来不是某个模式不好，是<strong>只有一个模式、不分对象地全速用</strong>。第一条（看见就改）、第三条（较真没边界）、果断 vs 赌——讲的是同一件事：引擎只会全速，不会<strong>换挡</strong>。</p>
+          <p>要练的不是「换一个更好的模式」，是<strong>换挡本身</strong>——认出这是哪种局，再用对的力道。那个笑眯眯打球的人，松的就是这个：不是一直轻、也不是一直重，是<strong>这一拍该轻轻、该重重，分得清</strong>。最早那个「要不要扮拙」，绕一圈答案是：不是学他轻，是学他<strong>会分</strong>。</p>
+        </blockquote>
+
+        <h3 class="sub">六 · 柯达：放大一万倍的同一个病</h3>
+        <p>常被当成「该改没改、判断害死人」的案例，但真相相反：</p>
+        <ul>
+          <li><strong>柯达 1975 年就自己发明了世界第一台数码相机</strong>，是最早看见的那个。所以不是「看不见」。</li>
+          <li>它死，不是「判断错了」，是<strong>判断没机会公正地做出来</strong>——被一股力量挤掉了：胶卷是它的命根子、现金牛、身份认同（柯达 = 胶卷，一百年的自我定义）。</li>
+        </ul>
+        <p>它跟那颗螺丝是<strong>镜像的同一个病</strong>：</p>
+        <div class="tbl-wrap">
+        <table>
+          <thead><tr><th></th><th>看见之后</th><th>被什么挤掉判断</th><th>后果</th></tr></thead>
+          <tbody>
+            <tr><th>柯达</th><td>看见差距</td><td>「保住命根子」</td><td><strong>该动的不敢动</strong> → 死</td></tr>
+            <tr><th>carry 型人</th><td>看见差距</td><td>「看见就难受」</td><td><strong>不该动的也去动</strong> → 累、停不下、靠不近</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p>方向相反，病根一样：<strong>「看见」和「行动」之间那道判断，被某股力量挤掉了。</strong></p>
+        <p>而且「大」让第三道闸更难过，不是更易：肥利润（更舍不得割自己的高利润生意 = 创新者的窘境）、多利益方（每个局部利益都为「保旧」找出一万个理性理由，一起把判断拖死）、强身份（动摇「我是谁」会被全力抵抗）。杀死柯达的不是另一个胶卷巨头，是一堆当年不起眼的小数码公司——光脚的不怕穿鞋的，没有命根子要保。</p>
+        <blockquote>
+          <p><strong>判断能不能独立做出来，跟有多强、多大几乎无关；跟「要保的东西有多重」强相关。</strong></p>
+          <p>那颗螺丝为什么这么难松？不是不懂（认知早够了，第四条）。是它现在<strong>还在赚钱</strong>——它撑起了产品、撑起了事业，是高利润胶卷、是身份（「我是那个什么都能自己扛的人」）。</p>
+          <p>要松它，就像要柯达砍胶卷：<strong>不是看不见，是它现在还在大把赚钱，所以舍不得、也不敢割。</strong> 第一条里那句「别用理性理由给自己一个不动的台阶」，防的正是这个。</p>
+        </blockquote>
+
+        <h3 class="sub">七 · 落点：贪与怕，是同一只攥紧的手</h3>
+        <p>把以上全部捏拢，就是「人心不足蛇吞象 + 保守派不服」——但这两个看似相反，其实焊在同一个根上：</p>
+        <ul>
+          <li><strong>蛇吞象 = 贪</strong>：舍不得「还想要的」，什么都吃下、不肯放。（进攻方向的不肯松手）</li>
+          <li><strong>保守派不服 = 怕</strong>：守着「已经有的」「我是谁」，不敢动。（防守方向的不肯松手）</li>
+        </ul>
+        <blockquote>
+          <p>一个贪、一个怕，方向相反，却是<strong>同一种「攥着不放」</strong>：<strong>手里现在拥有的（包括「还想拥有的」），一样都不能松。</strong> 柯达同时在贪（胶卷利润）和怕（身份），两头都松不开，活活拖死自己。</p>
+        </blockquote>
+        <p>而这只张不开的手，处处都是：</p>
+        <ul>
+          <li>它是第一条那颗螺丝——亲手做的东西，交不出去。</li>
+          <li>它是第三条那台引擎——咬住的「为什么」，停不下来。</li>
+          <li>它是不肯把球轻轻放过去、非要每拍用满力的那种打法。</li>
+          <li>它是柯达——只是放大到了公司尺度。</li>
+        </ul>
+        <p style="text-align:center;font-family:var(--font-sans);font-weight:700;font-size:clamp(20px,4vw,28px);margin:36px 0;color:var(--ink)">全是同一只攥紧的手。</p>
+        <blockquote>
+          <p>所以这一长串绕下来，讲的都是同一件事：<strong>松手</strong>。这正是总原则最后那句——「能在该松手时松手，才是这四条真正做到了。」</p>
+          <p>不是绕远了。是从五个不同的门进去，发现里头是同一间屋子。</p>
+        </blockquote>
+      </section>
+
+    </main>
+    <div></div>
+  </div>
+
+  <footer>
+    <p class="big">性格不是用来贴标签的，是用来用的。<br>能在该松手时松手，才是这四条真正做到了。</p>
+    <p>自我改善 · 四条　/　附录一 · 心流　/　附录二 · 松手</p>
+    <p>一条基准线　·　按顺序来，先动第一条——但前提是它真的硌着人了。</p>
+  </footer>
+</div>
+<script>
+(function(){
+  var seam=document.getElementById('seam');
+  var links=Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var sections=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+  var ticking=false;
+  function onScroll(){
+    var st=window.pageYOffset||document.documentElement.scrollTop;
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    var p=h>0?(st/h*100):0;
+    seam.style.setProperty('--p',p.toFixed(2)+'%');
+    // active TOC
+    var idx=-1, mid=st+window.innerHeight*0.32;
+    for(var i=0;i<sections.length;i++){
+      if(sections[i] && sections[i].offsetTop<=mid) idx=i;
+    }
+    links.forEach(function(a,i){a.classList.toggle('active',i===idx);});
+    ticking=false;
+  }
+  window.addEventListener('scroll',function(){
+    if(!ticking){window.requestAnimationFrame(onScroll);ticking=true;}
+  },{passive:true});
+  onScroll();
+})();
+</script>
+</body>
+</html>
