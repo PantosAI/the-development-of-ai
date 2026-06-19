@@ -251,9 +251,12 @@
   <div class="legend">
     <span><i style="border-color:var(--orange)"></i>来球轨迹</span>
     <span><i class="dash" style="border-color:#5fb89f"></i>回球轨迹</span>
-    <span><i style="border-color:var(--gold)"></i>挥拍 / 摩擦方向</span>
-    <span>🏓 红面木拍 · 看拍面倾角(前倾盖 / 后仰亮)</span>
-    <span>◯ 球面旋转环(实时转动)</span>
+    <span><i style="border-color:#d9a441"></i>摩擦方向(切向·决定转什么)</span>
+    <span><i class="dash" style="border-color:#4fa8ff"></i>发力方向(合力·决定球往哪走多快)</span>
+    <span>🏓 红面木拍 · 看拍面倾角</span>
+  </div>
+  <div style="margin-top:14px;padding:13px 16px;background:#0e141b;border:1px solid #232c37;border-radius:10px;font-size:13.5px;color:#bcb4a3;line-height:1.7">
+    <b style="color:#e4ddcd">摩擦 vs 发力,别混淆:</b>击球的力可拆成两部分——<b style="color:#d9a441">沿拍面"蹭"的切向力(摩擦)</b>制造旋转,<b style="color:#4fa8ff">垂直拍面"顶"的法向力</b>把球往前送。手实际的发力方向是两者的<b>合力(蓝色虚线)</b>,它比纯摩擦方向更"朝前"。想要更转就加大摩擦分量,想要更快更冲就加大法向分量。
   </div>
 
   <div id="blocks"></div>
@@ -469,6 +472,9 @@ function ensureDefs(svg){
     </marker>
     <marker id="tipg" markerWidth="10" markerHeight="10" refX="6.5" refY="5" orient="auto">
       <path d="M0,0 L10,5 L0,10 z" fill="#5fb89f"/>
+    </marker>
+    <marker id="tipf" markerWidth="11" markerHeight="11" refX="7" refY="5.5" orient="auto">
+      <path d="M0,0 L11,5.5 L0,11 z" fill="#4fa8ff"/>
     </marker>`;
   svg.appendChild(defs);
 }
@@ -644,35 +650,35 @@ function buildStage(svg, cfg, isCounter){
    top  视角：tilt=拍面朝向角(拍在水平面里偏左/偏右)，swing=水平挥拍角 */
 function racketConfig(cfg,isCounter,view){
   if(!isCounter){
-    // 来球面板 = 对手的拍(右侧, mirror)
+    // 来球面板 = 对手的拍(右侧, mirror)；球往左发，发力主分量朝左
     if(view==='side'){
       switch(cfg.incoming.spin){
-        case 'top':  return {show:1,mirror:1,view,faceAngle: 30,swing:222,hint:'向上前方兜→上旋'};
-        case 'back': return {show:1,mirror:1,view,faceAngle:-30,swing:150,hint:'向下前方切→下旋'};
-        default:     return {show:1,mirror:1,view,faceAngle:0,swing:180,hint:''};
+        case 'top':  return {show:1,mirror:1,view,faceAngle: 30,swing:222,force:208,hint:'摩擦:向上兜 / 发力:向左前(略下)'};
+        case 'back': return {show:1,mirror:1,view,faceAngle:-30,swing:150,force:158,hint:'摩擦:向下切 / 发力:向左前'};
+        default:     return {show:1,mirror:1,view,faceAngle:0,swing:180,force:180,hint:''};
       }
     } else { // top
       switch(cfg.incoming.spin){
-        case 'left': return {show:1,mirror:1,view,tilt:-30,swing:120,hint:'横扫制造左侧旋'};
-        case 'right':return {show:1,mirror:1,view,tilt: 30,swing:240,hint:'横扫制造右侧旋'};
-        case 'cork': return {show:1,mirror:1,view,tilt:-22,swing:130,hint:'斜扫→侧下钻'};
-        default:     return {show:1,mirror:1,view,tilt:0,swing:180,hint:''};
+        case 'left': return {show:1,mirror:1,view,tilt:-30,swing:120,force:152,hint:'摩擦:横扫 / 发力:向左前送'};
+        case 'right':return {show:1,mirror:1,view,tilt: 30,swing:240,force:208,hint:'摩擦:横扫 / 发力:向左前送'};
+        case 'cork': return {show:1,mirror:1,view,tilt:-22,swing:130,force:158,hint:'摩擦:斜扫 / 发力:向左前送'};
+        default:     return {show:1,mirror:1,view,tilt:0,swing:180,force:180,hint:''};
       }
     }
   }
-  // 应对面板 = 你的拍(左)
+  // 应对面板 = 你的拍(左)；球往右回，发力主分量朝右
   if(view==='side'){
     switch(cfg.counter.cspin){
-      case 'top':  return {show:1,view,faceAngle:-32,swing:40, hint:'拍面前倾·向前下压'};
-      case 'back': return {show:1,view,faceAngle: 34,swing:-42,hint:'拍面后仰·向前上托'};
-      default:     return {show:1,view,faceAngle:0,swing:-30,hint:''};
+      case 'top':  return {show:1,view,faceAngle:-32,swing:40, force:18, hint:'摩擦:向前下压 / 发力:向前为主'};
+      case 'back': return {show:1,view,faceAngle: 34,swing:-42,force:-18,hint:'摩擦:向前上托 / 发力:向前上送'};
+      default:     return {show:1,view,faceAngle:0,swing:-30,force:-10,hint:''};
     }
   } else { // top
     switch(cfg.counter.cspin){
-      case 'left': return {show:1,view,tilt: 28,swing:-50,hint:'拍面朝左顶·迎旋转'};
-      case 'right':return {show:1,view,tilt:-28,swing:-50,hint:'拍面朝右顶·迎旋转'};
-      case 'cork': return {show:1,view,tilt: 22,swing:-50,hint:'先托后修侧'};
-      default:     return {show:1,view,tilt:0,swing:-50,hint:''};
+      case 'left': return {show:1,view,tilt: 28,swing:-50,force:-18,hint:'摩擦:迎旋转顶 / 发力:向前送'};
+      case 'right':return {show:1,view,tilt:-28,swing:-50,force:-18,hint:'摩擦:迎旋转顶 / 发力:向前送'};
+      case 'cork': return {show:1,view,tilt: 22,swing:-50,force:-18,hint:'摩擦:先托后修 / 发力:向前送'};
+      default:     return {show:1,view,tilt:0,swing:-50,force:-15,hint:''};
     }
   }
 }
@@ -725,13 +731,27 @@ function drawRacket(x,y,rk,view){
   wt.textContent=who;
   g.appendChild(wt);
 
-  // 挥拍/摩擦箭头（金）
-  const sw=rk.swing*Math.PI/180,sLen=54;
-  const ex=x+Math.cos(sw)*sLen,ey=y+Math.sin(sw)*sLen;
-  g.appendChild(svgEl('line',{x1:x,y1:y,x2:ex,y2:ey,stroke:'#d9a441',['stroke-width']:3.5,['marker-end']:'url(#tip)'}));
-  const sl=svgEl('text',{x:ex+(Math.cos(sw)<0?-6:6),y:ey+(Math.sin(sw)<0?-4:14),
-     fill:'#d9a441',['font-size']:11,['font-family']:'monospace',['text-anchor']:Math.cos(sw)<0?'end':'start'});
-  sl.textContent=rk.mirror?'摩擦':'挥拍';g.appendChild(sl);
+  // ① 摩擦/切向箭头（金色实线）—— 决定"转什么"
+  const sw=rk.swing*Math.PI/180, sLen=48;
+  const ex=x+Math.cos(sw)*sLen, ey=y+Math.sin(sw)*sLen;
+  g.appendChild(svgEl('line',{x1:x,y1:y,x2:ex,y2:ey,stroke:'#d9a441',
+     ['stroke-width']:3.5,['marker-end']:'url(#tip)'}));
+  const sl=svgEl('text',{x:ex+(Math.cos(sw)<0?-5:5),y:ey+(Math.sin(sw)<0?-5:13),
+     fill:'#d9a441',['font-size']:10.5,['font-family']:'monospace',
+     ['text-anchor']:Math.cos(sw)<0?'end':'start'});
+  sl.textContent='摩擦';g.appendChild(sl);
+
+  // ② 发力/合力箭头（亮蓝虚线）—— 决定"球往哪走、多快"
+  if(rk.force!==undefined){
+    const fw=rk.force*Math.PI/180, fLen=66;
+    const fx=x+Math.cos(fw)*fLen, fy=y+Math.sin(fw)*fLen;
+    g.appendChild(svgEl('line',{x1:x,y1:y,x2:fx,y2:fy,stroke:'#4fa8ff',
+       ['stroke-width']:3,['stroke-dasharray']:'7 5',['marker-end']:'url(#tipf)'}));
+    const fl=svgEl('text',{x:fx+(Math.cos(fw)<0?-5:5),y:fy+(Math.sin(fw)<0?-6:14),
+       fill:'#4fa8ff',['font-size']:10.5,['font-family']:'monospace',['font-weight']:700,
+       ['text-anchor']:Math.cos(fw)<0?'end':'start'});
+    fl.textContent='发力';g.appendChild(fl);
+  }
 
   // 角度小标签
   if(rk.hint){
