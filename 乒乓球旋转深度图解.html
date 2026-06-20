@@ -343,8 +343,12 @@ logText.addEventListener('keydown',e=>{
 (function seedLog(){
   const arr=loadLog();
   if(arr.length===0 && !localStorage.getItem(LOG_KEY+'_seeded')){
-    const seed="正手攻球练习：要认真做\"慢爆发\"，手肘不要收着、要放开。那什么时候收？——在你\"想攻球\"的那个瞬间收。（这个感觉有点奇怪，但就是它。）";
-    saveLog([{id:'seed_1', t:Date.now(), text:seed}]);
+    const seed1="正手攻球练习：要认真做\"慢爆发\"，手肘不要收着、要放开。那什么时候收？——在你\"想攻球\"的那个瞬间收。（这个感觉有点奇怪，但就是它。）";
+    const seed2="正手攻球时，拍面偏下，收胳膊的时候没有弧线；应当将拍面往额前挥拍。刚开始挥拍的时候，要慢，动作要到位，还是认真的慢爆发，注意心流。";
+    saveLog([
+      {id:'seed_2', t:Date.now(), text:seed2},
+      {id:'seed_1', t:Date.now()-1000, text:seed1}
+    ]);
     localStorage.setItem(LOG_KEY+'_seeded','1');
   }
 })();
