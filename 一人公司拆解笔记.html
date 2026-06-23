@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一人公司 · 拆解笔记 — OpenClaw</title>
+<style>
+  :root{
+    --ink:#0c1018;
+    --panel:#141a24;
+    --panel-2:#1b2230;
+    --line:#283242;
+    --line-soft:#1e2733;
+    --text:#e7eaf0;
+    --muted:#8c97a9;
+    --faint:#5d6678;
+    --teal:#5fb3b3;       /* 讲座原意 */
+    --teal-dim:#356b6b;
+    --gold:#d9a441;       /* 对照你 */
+    --gold-dim:#7a5e21;
+    --alert:#e0654f;      /* 最锋利的判断 */
+    --full:#5fb38a;       /* 满配 */
+    --empty:#e0654f;      /* 空缺 */
+    --mono:"SF Mono","JetBrains Mono","Roboto Mono",ui-monospace,Menlo,Consolas,monospace;
+    --cjk:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--cjk);
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+    letter-spacing:.01em;
+    padding:0 20px;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(900px 500px at 85% -5%, rgba(95,179,179,.07), transparent 60%),
+      radial-gradient(700px 600px at 0% 100%, rgba(217,164,65,.05), transparent 55%);
+  }
+  .wrap{max-width:880px;margin:0 auto;position:relative;z-index:1;padding:64px 0 120px}
+
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--faint);display:block}
+  .mono{font-family:var(--mono)}
+
+  .hero{padding:18px 0 30px;animation:rise .8s ease both}
+  .hero .eyebrow{color:var(--teal);margin-bottom:26px}
+  .hero h1{font-size:clamp(34px,6.4vw,58px);font-weight:800;line-height:1.12;letter-spacing:-.01em;margin-bottom:22px}
+  .hero h1 em{font-style:normal;color:var(--gold)}
+  .hero .lede{font-size:17px;color:var(--muted);max-width:62ch}
+  .hero .lede b{color:var(--text);font-weight:600}
+
+  .dx-primary{
+    margin-top:40px;border:1px solid var(--gold-dim);border-radius:14px;
+    background:linear-gradient(180deg, rgba(217,164,65,.06), rgba(217,164,65,.015));
+    padding:30px 30px 26px;animation:rise .8s .1s ease both;
+  }
+  .dx-primary .tag{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .dx-primary .tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+  .dxrow{display:grid;grid-template-columns:84px 1fr;gap:16px;padding:11px 0;border-top:1px solid var(--line-soft)}
+  .dxrow:first-of-type{border-top:none}
+  .dxrow .k{font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.1em;padding-top:3px}
+  .dxrow .v{font-size:15.5px}
+  .dxrow .v b{color:var(--gold);font-weight:700}
+  .dxrow .v .strike{color:var(--muted)}
+  .verdict{font-size:17px;font-weight:600;line-height:1.6}
+  .verdict .hit{color:var(--alert)}
+
+  .section-label{display:flex;align-items:baseline;gap:14px;margin:74px 0 22px}
+  .section-label .n{font-family:var(--mono);font-size:12px;color:var(--teal);letter-spacing:.2em}
+  .section-label h2{font-size:22px;font-weight:800;letter-spacing:.01em}
+  .section-label .sub{font-size:13px;color:var(--faint);margin-left:auto;font-family:var(--mono)}
+
+  .vitals{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  .vital{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:20px 18px;position:relative;overflow:hidden;animation:rise .7s ease both}
+  .vital:nth-child(1){animation-delay:.04s}
+  .vital:nth-child(2){animation-delay:.10s}
+  .vital:nth-child(3){animation-delay:.16s}
+  .vital .label{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.14em;margin-bottom:10px}
+  .vital .name{font-size:17px;font-weight:700;margin-bottom:12px}
+  .vital .desc{font-size:13px;color:var(--muted);line-height:1.65}
+  .vital .status{margin-top:16px;display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;padding:5px 11px;border-radius:999px}
+  .vital .status::before{content:"";width:8px;height:8px;border-radius:50%}
+  .vital.full .status{color:var(--full);background:rgba(95,179,138,.1)}
+  .vital.full .status::before{background:var(--full);box-shadow:0 0 8px var(--full)}
+  .vital.empty{border-color:var(--gold-dim)}
+  .vital.empty .status{color:var(--empty);background:rgba(224,101,79,.1)}
+  .vital.empty .status::before{background:var(--empty);box-shadow:0 0 9px var(--empty);animation:pulse 2s ease-in-out infinite}
+  .vital.empty::after{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(var(--gold),var(--alert))}
+
+  .orders{border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
+  .order{display:grid;grid-template-columns:26px 1fr;gap:16px;align-items:start;padding:22px 24px;border-top:1px solid var(--line-soft);cursor:pointer;transition:background .2s}
+  .order:first-child{border-top:none}
+  .order:hover{background:var(--panel-2)}
+  .order .box{width:20px;height:20px;border:1.5px solid var(--teal-dim);border-radius:5px;margin-top:4px;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0}
+  .order .box svg{width:12px;height:12px;opacity:0;transform:scale(.5);transition:.2s}
+  .order.done .box{background:var(--teal);border-color:var(--teal)}
+  .order.done .box svg{opacity:1;transform:scale(1)}
+  .order .body h3{font-size:16px;font-weight:700;margin-bottom:6px;transition:.2s}
+  .order.done .body h3{color:var(--faint);text-decoration:line-through}
+  .order .body p{font-size:14px;color:var(--muted);line-height:1.7}
+  .order .body .num{font-family:var(--mono);color:var(--gold);font-size:13px;margin-right:8px}
+  .warn{margin-top:16px;border:1px dashed var(--alert);border-radius:12px;padding:18px 22px;background:rgba(224,101,79,.05);font-size:14.5px;color:var(--text);line-height:1.7}
+  .warn b{color:var(--alert)}
+  .warn .lab{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--alert);display:block;margin-bottom:8px;text-transform:uppercase}
+
+  .divider{display:flex;align-items:center;gap:18px;margin:84px 0 8px}
+  .divider .line{height:1px;background:var(--line);flex:1}
+  .divider span{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--faint);text-transform:uppercase}
+
+  .room{padding:40px 0;border-top:1px solid var(--line-soft)}
+  .room:first-of-type{border-top:none}
+  .room-head{display:flex;align-items:baseline;gap:16px;margin-bottom:22px}
+  .room-num{font-family:var(--mono);font-size:13px;color:var(--teal);letter-spacing:.1em;border:1px solid var(--teal-dim);border-radius:6px;padding:3px 9px;flex-shrink:0}
+  .room-title{font-size:21px;font-weight:800;line-height:1.3}
+  .room-title .q{display:block;font-size:13px;font-weight:500;color:var(--faint);font-family:var(--mono);margin-top:5px;letter-spacing:.04em}
+
+  .block{border-radius:12px;padding:20px 22px;margin-top:14px}
+  .block .blab{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:9px}
+  .block .blab::before{content:"";width:6px;height:6px;border-radius:50%}
+  .finding{background:rgba(95,179,179,.045);border-left:2px solid var(--teal-dim)}
+  .finding .blab{color:var(--teal)}
+  .finding .blab::before{background:var(--teal)}
+  .dx{background:rgba(217,164,65,.05);border-left:2px solid var(--gold)}
+  .dx .blab{color:var(--gold)}
+  .dx .blab::before{background:var(--gold)}
+  .block p{font-size:15px;line-height:1.82;color:#d4dae4}
+  .block p+p{margin-top:12px}
+  .finding p{color:var(--muted)}
+  .block b{color:var(--text);font-weight:700}
+  .dx b{color:var(--gold)}
+  .sharp{display:block;margin-top:14px;padding-left:16px;border-left:2px solid var(--alert);font-size:15.5px;font-weight:600;color:#f0d8d0;line-height:1.65}
+  .sharp .hit{color:var(--alert)}
+
+  .flywheel{margin:22px auto;display:block;max-width:420px;width:100%}
+  @media (prefers-reduced-motion:no-preference){.fw-rotor{transform-origin:210px 200px;animation:spin 28s linear infinite}}
+
+  .closing{margin-top:80px;border:1px solid var(--gold-dim);border-radius:16px;background:linear-gradient(180deg,rgba(217,164,65,.07),rgba(217,164,65,.02));padding:44px 36px;text-align:center}
+  .closing .eyebrow{color:var(--gold);margin-bottom:20px}
+  .closing h2{font-size:clamp(24px,4.5vw,34px);font-weight:800;line-height:1.3;margin-bottom:16px}
+  .closing h2 em{font-style:normal;color:var(--gold)}
+  .closing p{font-size:15px;color:var(--muted);max-width:54ch;margin:0 auto}
+
+  .colophon{margin-top:60px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.12em;line-height:2}
+  .colophon .sig{color:var(--gold-dim)}
+
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
+  @media (max-width:620px){
+    .wrap{padding:40px 0 80px}
+    .vitals{grid-template-columns:1fr}
+    .dxrow{grid-template-columns:1fr;gap:4px}
+    .dxrow .k{padding-top:0}
+    .section-label .sub{display:none}
+    .room-head{flex-wrap:wrap;gap:10px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <span class="eyebrow">One Person Company · 听后拆解</span>
+    <h1>这场讲座，<br>对 <em>OpenClaw</em> 只指向一件事。</h1>
+    <p class="lede">编程讲者讲 AI 怎么做产品，另一位讲者讲流量怎么起来。两条线、十几段、两个多小时——<b>对你，全部收束成同一个判断。</b></p>
+
+    <div class="dx-primary">
+      <div class="tag">一句话结论 · Core Read</div>
+      <div class="dxrow">
+        <div class="k">现状</div>
+        <div class="v">"产品做出来了，没人用，赚不到钱。"——典型 <b>D 阶段瓶颈</b>（已上线、有作品、卡在变现）。</div>
+      </div>
+      <div class="dxrow">
+        <div class="k">关键状态</div>
+        <div class="v">真实的你 <b>满配</b> ／ AI 化的你 <b>满配</b> ／ 大众眼中的你 <span class="strike">空缺</span>。</div>
+      </div>
+      <div class="dxrow">
+        <div class="k">结论</div>
+        <div class="v"><span class="verdict">问题不在生产端，在<span class="hit">分发端</span>。你不缺能力、不缺作品、不缺专业深度——<span class="hit">你卡在"把它发出去"。</span></span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- STATUS -->
+  <div class="section-label">
+    <span class="n">STATUS</span>
+    <h2>三张名片 · 状态盘点</h2>
+    <span class="sub">two full / one empty</span>
+  </div>
+  <div class="vitals">
+    <div class="vital full">
+      <div class="label">CARD 01</div>
+      <div class="name">真实的你</div>
+      <div class="desc">深厚的专业背景 + 多年一线经验 + 别人进不来的真实处境。AI 和程序员都拿不到的地基——比编程讲者的"15 年程序员"更不可替代。</div>
+      <div class="status">满配 · 稀缺地基</div>
+    </div>
+    <div class="vital full">
+      <div class="label">CARD 02</div>
+      <div class="name">AI 化的你</div>
+      <div class="desc">Cursor + Claude 已把专业能力放大成 CaseLog / PassRound / LitRound，外加一整库 HTML 工具。放大器早就转起来了。</div>
+      <div class="status">满配 · 产能过剩</div>
+    </div>
+    <div class="vital empty">
+      <div class="label">CARD 03</div>
+      <div class="name">大众眼中的你</div>
+      <div class="desc">公众号、GitHub、规划中的 YouTube 都在，但远没转化成影响力与触达。IP = 你产品唯一能够到目标用户的那根管道。</div>
+      <div class="status">空缺 · 全场唯一缺口</div>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="section-label">
+    <span class="n">ACTIONS</span>
+    <h2>三个行动 · 给自己的</h2>
+    <span class="sub">tap to check</span>
+  </div>
+  <div class="orders" id="orders">
+    <div class="order">
+      <div class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#0c1018" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="body">
+        <h3><span class="num">01</span>点火飞轮：停止再做新作品</h3>
+        <p>你不缺第十个 HTML。把<b>已有</b>作品开源 / 发布出去，并把"为什么做、怎么做、踩了什么坑"讲出来。作品就是最好的内容素材——你只是从来没把它们"发出去"。</p>
+      </div>
+    </div>
+    <div class="order">
+      <div class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#0c1018" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="body">
+        <h3><span class="num">02</span>立第三张名片：讲"你的专业 × AI"，不要讲 API</h3>
+        <p>用费曼法讲你独一份的东西——一个真正的内行怎么用 AI 解决本行里的真问题。讲 API / GitHub 是在跟几百万程序员抢红海；"专业 × AI"这条赛道，能讲明白的可能就剩你个位数同类。母题就是你那句自我定位。</p>
+      </div>
+    </div>
+    <div class="order">
+      <div class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#0c1018" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="body">
+        <h3><span class="num">03</span>卖鱼竿：把"专业 × AI"的方法本身做成商品</h3>
+        <p>除了卖"鱼"（产品），还能卖"鱼竿"——教同行用 AI 做本行的工具。你踩过的坑（ICP 备案 / 白名单 / 平台审核 / 合规 / 数据处理）是程序员讲不了、同行不知道的<b>独家鱼竿</b>。你的第一批付费用户，也许不是用 CaseLog 的人，而是想成为"会做 AI 的内行"的同行。</p>
+      </div>
+    </div>
+  </div>
+  <div class="warn">
+    <span class="lab">⚠ 最大障碍 · 知识的诅咒</span>
+    你心里冒出"<b>这有什么好讲的、这么简单大家不都会吗</b>"的那一刻——别把它毙掉。<b>那个念头就是选题信号。</b>越是你觉得"作为内行这还用讲吗"的东西，越可能是刚入门的人、同行新人、甚至技术圈过不去的坎。这是你第三张名片立不起来最隐蔽的原因。
+  </div>
+
+  <!-- ROOMS -->
+  <div class="divider"><div class="line"></div><span>讲座全程 · 十个切片</span><div class="line"></div></div>
+
+  <!-- 01 -->
+  <section class="room">
+    <div class="room-head"><span class="room-num">01</span><div class="room-title">一人公司的本质<span class="q">自主权，不是"没同事"</span></div></div>
+    <div class="block finding"><div class="blab">讲座原意</div>
+      <p>核心不是字面的"一个人"，是<b>自主权与决策权</b>——你能不能为自己的生存和发展负责。可以有合作、外包、AI，但拍板与盈亏都是你。合作只跟两类人：能力互补的，或认知更高的；同质或更低的，是互相消耗。AI 是"无人际包袱的客观拍档"——但它会迎合，"客观"≠"认知更高"。</p>
+    </div>
+    <div class="block dx"><div class="blab">对照你</div>
+      <p>你早是这模式的实践者，决策权全在你手里。但"找认知更高的人合作"这条，对你要<b>反过来用</b>：你的"专业 × 技术"跨界长在一个人身上，别人要靠合作才能获得的跨度，你<b>内置</b>了。</p>
+      <span class="sharp">所以问题不是"去找一个领域外的高人"，而是：你这身份，对别人才是那个高认知合作者。<span class="hit">别再向外找，先认清自己的位置。</span></span>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="room">
+    <div class="room-head"><span class="room-num">02</span><div class="room-title">失败复盘 · 三条教训<span class="q">付过学费的话最值钱</span></div></div>
+    <div class="block finding"><div class="blab">讲座原意</div>
+      <p>编程讲者两次创业失败，复盘出三条：① 别跟趋势对抗（方向错了，越努力亏越快）；② 别让运营成本过高（重资产吃掉自主权和容错）；③ 跟跨行业、认知更高的人学。</p>
+    </div>
+    <div class="block dx"><div class="blab">对照你</div>
+      <p>前两条你都站在对的一侧：AI × 你的专业是顺风口，不逆势；单文件 HTML + 免费云 + solo，几乎零烧钱结构。第三条注意他<b>偷换了落点</b>——从"合作让项目成功"悄悄滑到"合作让我成长"，这两个目标并不一样。</p>
+      <span class="sharp">你的跨界已经内置，这条对你的用法是反的：你不需要找跨行业高人来获得跨度，你需要把<span class="hit">已经内置的跨度兑现出去</span>。</span>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="room">
+    <div class="room-head"><span class="room-num">03</span><div class="room-title">角色之辨 · 产品 &gt; 开发<span class="q">AI 替代执行，替代不了判断</span></div></div>
+    <div class="block finding"><div class="blab">讲座原意</div>
+      <p>开发解"怎么做"——收敛、有对错、对技术负责；产品解"做什么 / 为什么"——发散、靠市场裁决、对结果负责。AI 时代，执行（how）越来越被 AI 接管，但"打哪个点"（what/why）的判断力，AI 替代不了。<b>判断力 = AI 时代人的护城河。</b></p>
+    </div>
+    <div class="block dx"><div class="blab">对照你</div>
+      <p>你早跨过这条线——CaseLog 不是开发任务，是一次产品判断（你判断了真问题、选了用户、扛了备案与白名单）。但你的焦虑点偏在"代码够不够硬、怕 AI 写得比我好"——那是<b>跟 AI 和工程师出一样的牌</b>。</p>
+      <span class="sharp">你真正替代不了的资产不在代码，在多年专业里练出的判断力。<span class="hit">把追工具的劲，调到"该做什么产品"上。</span></span>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="room">
+    <div class="room-head"><span class="room-num">04</span><div class="room-title">核心案例 · 西瓜创客 vs MIT<span class="q">那个让产品起飞的"一个点"</span></div></div>
+    <div class="block finding"><div class="blab">讲座原意</div>
+      <p>对手是 MIT 的 Scratch 社区，1 亿用户。挖创作者、做更好的引擎、加功能、给激励——四件"正确努力"跑了两年，数据平平。起飞只靠一个点：MIT 因要保护低龄用户，<b>必须排斥</b>激烈 / 血腥的作品；而 12–20 岁大龄用户的这类需求在那儿发不出来。西瓜创客<b>主动禁掉低龄用户</b>，只接这个被巨头拒绝的现成需求——指数起飞。</p>
+    </div>
+    <div class="block dx"><div class="blab">对照你 · 三条可迁移</div>
+      <p>① 巨头的优势就是它的枷锁，机会藏在它"因为太大而不敢做"的地方；② 差异化的本质是<b>主动放弃</b>；③ 需求早就存在，只是没人接。</p>
+      <span class="sharp">给你的题：谁是你领域里的 MIT（那几个体量最大的平台）？它因太大做不了的细分是什么？你能不能像他禁低龄一样，<span class="hit">只精准服务一个被巨头忽略的细分群体——而你本人就是其中一员。</span></span>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="room">
+    <div class="room-head"><span class="room-num">05</span><div class="room-title">变现的真相 · 狼在哪<span class="q">不是产品不行，是够不到人</span></div></div>
+    <div class="block finding"><div class="blab">讲座原意</div>
+      <p>他的狼 = 学校（To B 定制）+ 广告（靠千万 PV）。但更狠的真相在 Teambay 的教训：他算 TAM 算得很美（1000 万企业 × 0.1% 就够），可翻遍通讯录，连几个老板都不认识——第一批种子用户在哪？找不着。<b>不是产品不行，是够不到用户。</b></p>
+    </div>
+    <div class="block dx"><div class="blab">对照你</div>
+      <p>广告对你是死路（你做不出千万 PV）。但你的"羊"（你的目标用户）本身就值钱——所以你该<b>向羊收钱</b>（订阅），结论和他相反，因为市场结构根本不同。更扎的是种子用户那一刀：你心里大概也算过"庞大基数 × 千分之一"。</p>
+      <span class="sharp">诚实回答：你能直接够到、叫得出名字的目标用户，有几个？<span class="hit">好消息是——你的通讯录里就有大量目标用户，这一点你比当年的他强太多。</span></span>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="room">
+    <div class="room-head"><span class="room-num">06</span><div class="room-title">总公式 · AI + IP，作品 + 流<span class="q">整场的收口总纲</span></div></div>
+    <div class="block finding"><div class="blab">讲座原意</div>
+      <p>AI = 生产力杠杆，IP = 信任 / 分发杠杆；作品 = 价值载体，流 = 放大器。IP 给信任、AI 给产能 → 产出作品 → 借流扩散 → 反哺 IP，自我强化的飞轮。技术视角（强技术、补 IP）与非技术视角（强 IP、补技术）正好镜像互补。</p>
+    </div>
+    <div class="block dx"><div class="blab">对照你</div>
+      <p>逐项填：AI <b>满格</b>、IP <b>稀缺</b>、作品 <b>过剩</b>——唯独"流"是空的。你做了一大堆，却大多躺在 GitHub / IMA / 本地，没进入"流"。</p>
+      <span class="sharp">你的瓶颈不在生产端（你都够），在分发端。走杂交路线：用技术视角的判断力定"做什么"，用非技术视角那套<span class="hit">解决你最缺的"流"。</span></span>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="room">
+    <div class="room-head"><span class="room-num">07</span><div class="room-title">三张名片 · IP = 触达通道<span class="q">不是当网红，是必答题</span></div></div>
+    <div class="block finding"><div class="blab">讲座原意</div>
+      <p>真实的你（地基）→ AI 化的你（放大器）→ 大众眼中的你（IP，<b>你最终触达用户的方式</b>）。AI 抄不走的：审美、判断、专业背景、表达方式、与用户的真实信任。"个人 IP，是这个时代成本最低、最无法被复制的必走路线。"</p>
+    </div>
+    <div class="block dx"><div class="blab">对照你</div>
+      <p>你 ①② 满配、③ 空缺（同一结论的又一次确认）。关键校正：IP 对你不是"当网红 / 有面子"，是产品<b>唯一能够到目标用户的管道</b>——没这根管道，前两张满配也只能躺 GitHub 吃灰。而你的专业权威自带信任，这是程序员 IP 给不了的底色。</p>
+      <span class="sharp">所以这不是"要不要做 IP"的选择题，是<span class="hit">"产品想有人用就必须有触达通道"的必答题。</span>而你立第三张名片的成本，因为前两张太硬，比谁都低。</span>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="room">
+    <div class="room-head"><span class="room-num">08</span><div class="room-title">从零到产品 · 别急着写代码<span class="q">80% 理需求，20% 写代码</span></div></div>
+    <div class="block finding"><div class="blab">讲座原意</div>
+      <p>1 万美金血泪：第一次会议拿到表面需求就扔给 AI 写代码 → 改 bug 改成屎山，熬夜、延期、尾款不敢收。第二个项目：80% 时间理需求。To B 工作流——录音 → 逐字稿 → 喂 AI 找疑点 → 出报告 → 回甲方确认 → 反复 → 高质量需求文档 → 才写代码。技术上：先做壳 + mock + 晚接后端（每多一层概念，复杂度和 token 都翻倍）。部署是座冰山：demo ≠ 产品，水下还有域名 / HTTPS / 数据库 / 监控 / CDN。AI 能写代码，不能替你判断"你不知道自己不知道"的事。</p>
+    </div>
+    <div class="block dx"><div class="blab">对照你</div>
+      <p>你是这套的天然受益者：单文件 HTML 就是"晚引入复杂度"的极致；CaseLog 踩的后端坑就是冰山水下，<b>你已经穿过这座冰山</b>，是少数真做出上线产品的人。更深的同构——他栽的"理需求"，是你的母语：你本行里追问真相，不就是"别信表面说法、层层逼近真因"？</p>
+      <span class="sharp">你那套层层逼近真问题的专业思维，本就是一套需求澄清方法论。<span class="hit">程序员要花一个失败项目才学会的，你的职业训练早给了你。</span></span>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="room">
+    <div class="room-head"><span class="room-num">09</span><div class="room-title">做内容 · 三方法论<span class="q">费曼 · 飞轮 · 专业背景</span></div></div>
+    <div class="block finding"><div class="blab">讲座原意</div>
+      <p>① <b>费曼</b>：讲到普通人都懂才是真懂，讲解过程即内容——一个动作三重收益（加深理解 + 产出作品 + 带来流量）。他追热点追到数据一塌糊涂，回归"15 年技术 + 讲清楚"才起飞。② <b>作品 × 内容飞轮</b>：一个 skill 同步工具，丑版视频 70 赞 → 迭代界面 5000 → 3 万 → 精选 16 个 skill 近 15 万 → 最后有公司主动赞助。③ <b>专业背景是护城河，但小心知识的诅咒</b>：你觉得"没必要讲"的，正是别人过不去的坎。</p>
+    </div>
+    <div class="block dx"><div class="blab">对照你</div>
+      <p>"追热点追到数据一塌糊涂"几乎是你的画像（评估九个工具、追 Coze、学 Claude Code……）。在 AI 工具赛道你永远是追赶者——那是别人的主场。筛选漏斗套你身上：你领域几百万从业者 → 懂 AI 开发的筛掉 99.9% → 愿露脸再筛 → 能讲明白"专业 + AI"的，可能就剩你个位数同类。飞轮零件你全有（他起点是 skill 工具，你本就是 skill 重度玩家 + 自研者）。</p>
+      <span class="sharp">差的只是"开源 + 讲出来"的<span class="hit">点火动作</span>。而知识的诅咒，是你第三张名片立不起来最隐蔽的原因——别再自我审查掉你以为简单的内容。</span>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="room">
+    <div class="room-head"><span class="room-num">10</span><div class="room-title">飞轮与复利 · 一人公司真正的样子<span class="q">最准的一记刺</span></div></div>
+    <div class="block finding"><div class="blab">讲座原意</div>
+      <p>做产品 + 做内容互相喂养 → 飞轮 → 复利。通过 AI 放大自己，通过 IP 展示自己、建立信任，把作品和流量绑定。学员证明这条路不挑人：零基础紫甲小程序真付费、占卜小程序把踩坑做成爆款引流、中年老白日更、金藏和风开着食堂还做插件打黑客松。"AI 时代淘汰的不是程序员，也不是某个岗位，而是不愿拥抱变化、拥抱 AI 的人。"课程是加速器，不是保险（卖鱼竿）。</p>
+    </div>
+
+    <svg class="flywheel" viewBox="0 0 420 400" xmlns="http://www.w3.org/2000/svg" aria-label="作品×内容飞轮">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#5fb3b3"/>
+        </marker>
+      </defs>
+      <g class="fw-rotor">
+        <circle cx="210" cy="200" r="150" fill="none" stroke="#283242" stroke-width="1"/>
+        <path d="M 210 50 A 150 150 0 0 1 339 275" fill="none" stroke="#356b6b" stroke-width="2" marker-end="url(#arrow)"/>
+        <path d="M 339 275 A 150 150 0 0 1 81 275" fill="none" stroke="#356b6b" stroke-width="2" marker-end="url(#arrow)"/>
+        <path d="M 81 275 A 150 150 0 0 1 210 50" fill="none" stroke="#356b6b" stroke-width="2" marker-end="url(#arrow)"/>
+      </g>
+      <g font-family="SF Mono, monospace" font-size="13" fill="#e7eaf0" text-anchor="middle">
+        <text x="210" y="42">作品 / 开源</text>
+        <text x="350" y="285">反馈 → 迭代</text>
+        <text x="70" y="285">拍出来 → 流量</text>
+      </g>
+      <circle cx="210" cy="200" r="58" fill="#141a24" stroke="#d9a441" stroke-width="1.5"/>
+      <text x="210" y="194" text-anchor="middle" font-family="PingFang SC,sans-serif" font-size="15" font-weight="700" fill="#d9a441">复利</text>
+      <text x="210" y="214" text-anchor="middle" font-family="SF Mono,monospace" font-size="10" fill="#8c97a9">compounding</text>
+    </svg>
+
+    <div class="block dx"><div class="blab">对照你</div>
+      <p>占卜小程序把"支付 / 审核踩坑"做成爆款——你 CaseLog 的坑（ICP / 白名单 / 平台审核 / 合规）含金量更高，你只是没写、没拍。两个中年学员被夸的核心是"<b>持续输出 + 对外分享</b>"，不是"做得多"——这恰是你和他们最大的差距：你的"做"远超他们，"发"却不如他们。</p>
+      <span class="sharp">最准的一记刺：你已做到最难的"做出来"，却卡在最简单的"发出去"。<span class="hit">一个开食堂的中年人把作品发出去打黑客松，你一个做出上线产品的内行，作品在硬盘里吃灰。</span>差的不是本事，是"持续输出"这一下。</span>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <span class="eyebrow">一句话收尾</span>
+    <h2>你的飞轮零件齐了，<br>就差你<em>伸手转第一圈。</em></h2>
+    <p>AI 满格、专业背景比谁都硬、作品超额——讲座里任何人的起跑线都没你靠前。整场两小时，对你只浓缩成一个动作：把作品开源出去，把过程讲出来，让它转起来。讲座听完了，该把它变成你的东西了。</p>
+  </div>
+
+  <div class="colophon">
+    一人公司（AI + IP）· 听后拆解<br>
+    左侧取自讲座现场 · 右侧为对照自己的个人复盘<br>
+    <span class="sig">OpenClaw · 专业 × 技术</span>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('#orders .order').forEach(function(o){
+    o.addEventListener('click', function(){ o.classList.toggle('done'); });
+  });
+</script>
+</body>
+</html>

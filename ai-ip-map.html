@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI × IP 定位图 · 你站在哪</title>
+<style>
+:root{
+  --paper:#F6F8F7;
+  --card:#FFFFFF;
+  --ink:#1A1E1C;
+  --ink-soft:#54605A;
+  --ink-faint:#8A968F;
+  --pine:#11704F;
+  --pine-deep:#0B4D37;
+  --pine-wash:#E6F1EB;
+  --pine-line:#CADED4;
+  --term-bg:#0E1A15;
+  --term-bg2:#14241D;
+  --term-ink:#CFE6D9;
+  --term-green:#62C497;
+  --term-dim:#6E8C7E;
+  --red:#B43124;
+  --red-wash:#FBEAE7;
+  --amber:#B5780F;
+  --amber-wash:#FAF0DC;
+  --slate:#5C8771;
+  --slate-wash:#EAF1ED;
+  --line:rgba(26,30,28,.10);
+  --line-soft:rgba(26,30,28,.06);
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,"Courier New",monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);line-height:1.75;font-size:16px;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:880px;margin:0 auto;padding:0 22px;}
+
+/* ---------- nav ---------- */
+nav{
+  position:sticky;top:0;z-index:50;background:rgba(246,248,247,.88);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+}
+nav .wrap{display:flex;gap:6px;align-items:center;height:52px;overflow-x:auto;scrollbar-width:none;}
+nav .wrap::-webkit-scrollbar{display:none;}
+.brand{font-family:var(--mono);font-size:12.5px;color:var(--pine);font-weight:600;white-space:nowrap;margin-right:8px;letter-spacing:.02em;}
+nav a{
+  font-size:13px;color:var(--ink-soft);text-decoration:none;white-space:nowrap;
+  padding:5px 10px;border-radius:7px;transition:background .15s,color .15s;
+}
+nav a:hover{background:var(--pine-wash);color:var(--pine-deep);}
+
+/* ---------- hero ---------- */
+header{padding:60px 0 28px;}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--pine);margin-bottom:18px;}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.12;margin:0 0 14px;letter-spacing:-.01em;font-weight:680;}
+.lede{font-size:18px;color:var(--ink-soft);margin:0 0 28px;max-width:48ch;}
+.thesis{
+  background:var(--term-bg);color:var(--term-ink);border-radius:14px;
+  padding:24px 26px;margin:8px 0 6px;
+}
+.thesis .tag{font-family:var(--mono);font-size:11.5px;color:var(--term-green);letter-spacing:.06em;margin-bottom:10px;}
+.thesis p{margin:0;font-size:18px;line-height:1.62;}
+.thesis b{color:#fff;font-weight:600;}
+
+/* ---------- sections ---------- */
+section{padding:46px 0;border-top:1px solid var(--line);}
+.sec-eyebrow{font-family:var(--mono);font-size:12.5px;color:var(--pine);letter-spacing:.03em;margin-bottom:10px;}
+h2{font-size:clamp(22px,4.4vw,29px);margin:0 0 10px;line-height:1.2;letter-spacing:-.01em;font-weight:660;}
+.sec-intro{color:var(--ink-soft);font-size:16.5px;margin:0 0 26px;max-width:56ch;}
+p{margin:0 0 16px;}
+
+/* ---------- asset list (casefile) ---------- */
+.assets{border:1px solid var(--pine-line);border-radius:14px;background:var(--card);overflow:hidden;}
+.assets .head{
+  background:var(--pine-wash);padding:11px 20px;font-family:var(--mono);
+  font-size:12px;color:var(--pine-deep);letter-spacing:.04em;border-bottom:1px solid var(--pine-line);
+}
+.arow{display:grid;grid-template-columns:158px 1fr;gap:16px;padding:16px 20px;border-bottom:1px solid var(--line-soft);align-items:baseline;}
+.arow:last-child{border-bottom:0;}
+.arow .k{font-family:var(--mono);font-size:13px;color:var(--pine-deep);font-weight:600;line-height:1.4;}
+.arow .k small{display:block;color:var(--ink-faint);font-weight:400;font-size:11.5px;margin-top:2px;letter-spacing:0;}
+.arow .v{font-size:15px;color:var(--ink-soft);}
+.arow .v b{color:var(--ink);font-weight:600;}
+
+/* ---------- map (signature) ---------- */
+.line-band{
+  background:var(--term-bg);color:var(--term-ink);border-radius:13px;
+  padding:16px 20px;text-align:center;margin-bottom:6px;position:relative;
+}
+.line-band .lt{font-family:var(--mono);font-size:12px;color:var(--term-green);letter-spacing:.05em;margin-bottom:5px;}
+.line-band .lh{font-size:18px;font-weight:640;color:#fff;}
+.line-band .ls{font-size:13.5px;color:var(--term-dim);margin-top:5px;}
+.fork{display:flex;justify-content:center;color:var(--pine-line);font-size:20px;line-height:1;margin:2px 0 6px;}
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.lane{border:1px solid var(--line);border-radius:13px;background:var(--card);padding:18px 19px;}
+.lane.tech{border-color:var(--pine-line);}
+.lane .lname{display:flex;align-items:center;gap:8px;font-weight:640;font-size:16px;margin-bottom:3px;}
+.lane .lname .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.lane.tech .dot{background:var(--pine);}
+.lane.ip .dot{background:var(--amber);}
+.lane .file{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);margin-bottom:14px;}
+.lane .role{font-size:14.5px;color:var(--ink-soft);margin-bottom:16px;}
+/* position bar */
+.posbar{margin:0 0 6px;}
+.posbar .ends{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-faint);margin-bottom:6px;font-family:var(--mono);}
+.track{position:relative;height:8px;border-radius:5px;background:var(--pine-wash);border:1px solid var(--pine-line);}
+.lane.ip .track{background:var(--amber-wash);border-color:#ecd9ad;}
+.track .fill{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--pine);}
+.lane.ip .track .fill{background:var(--amber);}
+.track .you{position:absolute;top:50%;width:15px;height:15px;border-radius:50%;background:var(--card);transform:translate(-50%,-50%);box-shadow:0 1px 4px rgba(0,0,0,.18);}
+.lane.tech .you{border:3px solid var(--pine);}
+.lane.ip .you{border:3px solid var(--amber);}
+.youlabel{font-family:var(--mono);font-size:11px;color:var(--pine);margin:8px 0 16px;letter-spacing:.02em;}
+.lane.ip .youlabel{color:#7a5208;}
+.next{background:var(--pine-wash);border:1px solid var(--pine-line);border-radius:10px;padding:12px 14px;}
+.lane.ip .next{background:var(--amber-wash);border-color:#ecd9ad;}
+.next .nl{font-family:var(--mono);font-size:11px;letter-spacing:.04em;margin-bottom:4px;color:var(--pine);}
+.lane.ip .next .nl{color:#7a5208;}
+.next .nt{font-size:14.5px;color:var(--ink);}
+.next .nt code{font-family:var(--mono);font-size:12.5px;background:var(--term-bg);color:var(--term-green);padding:2px 7px;border-radius:6px;}
+
+/* course inset */
+.inset{margin-top:14px;border:1px dashed var(--pine-line);border-radius:12px;background:var(--card);padding:15px 18px;}
+.inset .il{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);letter-spacing:.03em;margin-bottom:10px;}
+.inset ul{margin:0;padding-left:18px;font-size:14px;line-height:1.7;color:var(--ink-soft);}
+.inset li{margin-bottom:4px;}
+.inset li b{color:var(--ink);font-weight:600;}
+.tag-done{color:var(--pine-deep);font-weight:600;}
+.tag-gap{color:#7a241b;font-weight:600;}
+.tag-look{color:#7a5208;font-weight:600;}
+.inset.add{border-style:solid;border-color:var(--pine-line);background:var(--pine-wash);}
+.inset.add .il{color:var(--pine-deep);}
+.inset.add ul{color:var(--ink);}
+.inset.add li{margin-bottom:8px;}
+.gapline{font-size:13px;color:var(--ink-soft);line-height:1.6;margin:14px 0 0;padding-top:13px;border-top:1px solid var(--pine-line);}
+.gapline b{color:var(--ink);font-weight:600;}
+
+/* ---------- single move ---------- */
+.move{background:var(--term-bg);color:var(--term-ink);border-radius:16px;padding:30px 28px;}
+.move .ml{font-family:var(--mono);font-size:12px;color:var(--term-green);letter-spacing:.04em;margin-bottom:12px;}
+.move h2{color:#fff;margin-bottom:14px;}
+.move .step{font-size:17px;line-height:1.6;margin:0 0 14px;}
+.move .step code{font-family:var(--mono);font-size:14px;background:var(--term-bg2);color:var(--term-green);padding:3px 9px;border-radius:6px;}
+.move .why{font-size:14.5px;color:var(--term-dim);margin:0;border-top:1px solid #213029;padding-top:14px;}
+.move .why b{color:var(--term-ink);font-weight:600;}
+
+/* ---------- toolbox ---------- */
+.tb-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:22px;}
+.lg{display:flex;align-items:center;gap:7px;font-size:13.5px;color:var(--ink-soft);}
+.pill{font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;padding:3px 9px;border-radius:20px;font-weight:600;white-space:nowrap;}
+.pill.have{background:var(--slate-wash);color:#37553f;}
+.pill.look{background:var(--amber-wash);color:#7a5208;}
+.pill.skip{background:var(--line-soft);color:var(--ink-faint);}
+
+.tools{display:flex;flex-direction:column;gap:10px;}
+.tool{
+  display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 17px;
+}
+.tool .bar{display:none;}
+.tool .cat{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.03em;margin-bottom:6px;}
+.tool .links{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;}
+.tool .links a, .tool .links span.lk{
+  font-size:13.5px;background:var(--pine-wash);color:var(--pine-deep);border:1px solid var(--pine-line);
+  padding:4px 11px;border-radius:8px;text-decoration:none;transition:background .15s;font-weight:600;
+}
+.tool .links a:hover{background:#d7e9df;}
+.tool .links a small,.tool .links span.lk small{font-weight:400;color:var(--ink-faint);margin-left:5px;font-size:12px;}
+.tool .take{font-size:14px;color:var(--ink-soft);line-height:1.6;}
+.tool .take b{color:var(--ink);font-weight:600;}
+.tool .verdict{align-self:start;}
+
+/* ---------- footer ---------- */
+footer{padding:40px 0 60px;text-align:center;color:var(--ink-faint);font-family:var(--mono);font-size:12px;}
+
+@media(max-width:640px){
+  .lanes{grid-template-columns:1fr;}
+  .arow{grid-template-columns:1fr;gap:6px;}
+  .arow .k{font-size:13.5px;}
+  .tool{grid-template-columns:1fr;}
+  .tool .verdict{justify-self:start;}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+a:focus-visible,.tool .links a:focus-visible{outline:2px solid var(--pine);outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <span class="brand">$ ai-ip-map</span>
+    <a href="#assets">三件套</a>
+    <a href="#map">你在哪</a>
+    <a href="#move">下一步</a>
+    <a href="#toolbox">工具箱</a>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">// 定位导航 · 从一次对话沉淀 · v1.0</div>
+    <h1>AI × IP · 你站在哪</h1>
+    <p class="lede">你不缺第四份教程。这张图只回答两件事：你此刻站在每条赛道的哪一格，下一步该动哪一个。</p>
+    <div class="thesis">
+      <div class="tag">// 核心判断</div>
+      <p>课程把人送到「<b>会做产品</b>」这条线——而你早已在线上方。真正的两条路从这条线往后才开始：一条往里练 <b>工程判断力</b>（技术端），一条往外把产品变成 <b>有人付费</b>（IP 端）。它们是两个不同的赛道，但起点是同一条线。</p>
+    </div>
+  </div>
+</header>
+
+<section id="assets">
+  <div class="wrap">
+    <div class="sec-eyebrow">// 01 资产清单</div>
+    <h2>你手上已经有三样东西</h2>
+    <p class="sec-intro">问题从来不是"还缺哪份教程"，而是这三样各自管什么、彼此什么关系。</p>
+    <div class="assets">
+      <div class="head">THREE ASSETS · 各管一段</div>
+      <div class="arow">
+        <div class="k">课程<small>AI 一人公司 100 天陪跑营</small></div>
+        <div class="v"><b>入门坡道 + 招募漏斗。</b>编程课 = AI 端，IP 课 = 流量端，核心是 Vibe Coding → Vibe Marketing。前端卖课，后端是 MCN（签约分成）。对你：内容当素材，签约那条路看清再说。</div>
+      </div>
+      <div class="arow">
+        <div class="k">like-a-programmer<small>.html · 我做的</small></div>
+        <div class="v"><b>你的技术端地图。</b>从产品线往后跑的判断力路线——读代码、监督 AI、为结果负责。这是你最看重的那个目标。</div>
+      </div>
+      <div class="arow">
+        <div class="k">vibe_marketing 84 天<small>.html · 我做的</small></div>
+        <div class="v"><b>你的 IP 端执行表。</b>把产品变成有人知道、有人付费。已为"临床医生 × 一人公司"定制，比通用 IP 课更窄更准。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="map">
+  <div class="wrap">
+    <div class="sec-eyebrow">// 02 定位图</div>
+    <h2>同一条线，分出两条路</h2>
+    <p class="sec-intro">先认线，再看你站在每条路的哪一格。圆圈是"你在这"。</p>
+
+    <div class="line-band">
+      <div class="lt">// 产品上线线 · THE THRESHOLD</div>
+      <div class="lh">会做产品</div>
+      <div class="ls">课程编程课送你到这里 · 你已在线上（CaseLog 已上线 + ICP 备案）</div>
+    </div>
+    <div class="fork">⋁</div>
+
+    <div class="lanes">
+      <!-- 技术端 -->
+      <div class="lane tech">
+        <div class="lname"><span class="dot"></span>技术端</div>
+        <div class="file">like-a-programmer.html</div>
+        <div class="role">练判断力——让你能真正监督、验收 AI，而不只是会指挥它跑。</div>
+        <div class="posbar">
+          <div class="ends"><span>会用工具</span><span>工程判断力</span></div>
+          <div class="track"><div class="fill" style="width:26%"></div><div class="you" style="left:26%"></div></div>
+        </div>
+        <div class="youlabel">你在这：刚过"会用工具"</div>
+        <div class="next">
+          <div class="nl">NEXT</div>
+          <div class="nt">读代码。clone 一个结构干净的项目，<code>关掉 AI</code> 逐文件读懂它。</div>
+        </div>
+      </div>
+
+      <!-- IP端 -->
+      <div class="lane ip">
+        <div class="lname"><span class="dot"></span>IP 端</div>
+        <div class="file">vibe_marketing_84天.html</div>
+        <div class="role">把产品做成有人知道、有人付费——你目前最大的缺口在这条线。</div>
+        <div class="posbar">
+          <div class="ends"><span>Lv1 孤立使用</span><span>Lv4 自主</span></div>
+          <div class="track"><div class="fill" style="width:14%"></div><div class="you" style="left:14%"></div></div>
+        </div>
+        <div class="youlabel">你在这：Lv1 · 公开 IP ≈ 0</div>
+        <div class="next">
+          <div class="nl">NEXT</div>
+          <div class="nt">W1 竞品研究，或直接拿 CaseLog 开 <code>Build in Public</code>。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inset">
+      <div class="il">// 完整大纲各阶段对你的意义</div>
+      <ul>
+        <li>技术篇 / 实战篇（前后端、Debug、部署、插件、网页应用）<span class="tag-done">已越过</span>——你都上线过实物</li>
+        <li>APP 实战（Expo + RN）<span class="tag-gap">缺口</span>——真要做接到 PassRound / LitRound 上</li>
+        <li>Claude Code 专题 <b>中期再说</b>——Cursor 现在覆盖你 ~80%，不急</li>
+        <li>IP 课（启动课 / 流量杠杆：选题、脚本、剪辑、私域）<b>当素材</b>——好钩子抄进 skill，别替代你那份 84 天</li>
+      </ul>
+    </div>
+
+    <div class="inset add">
+      <div class="il">// 完整大纲里，这三处值得补</div>
+      <ul>
+        <li><b>商业化篇</b> <span class="tag-gap">真缺口</span>——接入支付 / 用户系统 / 找到愿付费的前 100 人。CaseLog 现在白名单免费，真要变现，支付、订单、风控这块你没碰过，比 IP 课更实在。</li>
+        <li><b>MCP</b> <span class="tag-look">值得看</span>——让 AI 连各种工具的"乐高接口"。like-a-programmer 没深讲，对你后续做工具、接自动化有用。</li>
+        <li><b>Hermes 专题（养马）</b> <span class="tag-look">值得看</span>——和你 OpenClaw（养虾）是同一条自托管 agent 赛道。你之前纠结养马还是养虾，课里正好讲了其中一个。</li>
+      </ul>
+      <p class="gapline"><b>关于签约 / MCN：</b>"0 费用 3 年陪跑"= 用未来分成换现在不收费。跟课学方法可以；签约成"公司 IP"要交出方向权，和你做自己的一人公司是相反的——看清再说。</p>
+    </div>
+  </div>
+</section>
+
+<section id="move">
+  <div class="wrap">
+    <div class="move">
+      <div class="ml">// 03 本周唯一动作</div>
+      <h2>把"生成代码"换成"读懂代码"</h2>
+      <p class="step">用 <code>uni-app stars:&gt;200</code> 在 GitHub 找一个比你做过的更简单、但结构干净的项目，clone 下来，<b style="color:#fff">关掉 AI</b>，让自己逐文件读懂它怎么组织目录、拆组件、调云函数。</p>
+      <p class="why"><b>为什么是这个：</b>这一个动作，比那门课的前六章加起来更靠近 like-a-programmer。你卡的不是"会不会做产品"，是"会不会读懂别人的产品"——而读懂，就是监督 AI 这个动作本身。</p>
+    </div>
+  </div>
+</section>
+
+<section id="toolbox">
+  <div class="wrap">
+    <div class="sec-eyebrow">// 04 常用工具箱 · 按你的目标筛过</div>
+    <h2>课程列了一桌，你只挑该挑的</h2>
+    <p class="sec-intro">课程把所有工具一股脑列给你；对你这种已有成熟栈的人，照搬没意义。下面按你的实际情况标了三档。</p>
+
+    <div class="tb-legend">
+      <span class="lg"><span class="pill have">你已有</span>有等价或更好的，不必换</span>
+      <span class="lg"><span class="pill look">值得看</span>对你下一步真有用</span>
+      <span class="lg"><span class="pill skip">可跳过</span>边际很低</span>
+    </div>
+
+    <div class="tools">
+
+      <div class="tool">
+        <div>
+          <div class="cat">Skills 市场</div>
+          <div class="links">
+            <a href="https://skills.sh" target="_blank" rel="noopener">skills.sh<small>社区 Skills 索引</small></a>
+            <a href="https://skillsmp.com" target="_blank" rel="noopener">skillsmp.com<small>Skills 市场平台</small></a>
+          </div>
+          <div class="take">去翻别人怎么写 skill——正好练 like-a-programmer 的"读结构"。你自己已经在产 skill，这里是<b>看别人的拆法</b>，不是找现成的抄。</div>
+        </div>
+        <div class="verdict"><span class="pill look">值得看</span></div>
+      </div>
+
+      <div class="tool">
+        <div>
+          <div class="cat">大模型 API 中转</div>
+          <div class="links">
+            <a href="https://ofox.ai" target="_blank" rel="noopener">ofox.ai<small>多模型 API 网关</small></a>
+          </div>
+          <div class="take">84 天计划 W6–9 自动化要批量调 Claude / Grok API 时用得上。注意：你现在 WildCard 走的是 <b>Pro 订阅</b>，和"程序里调 API"是两回事——真上自动化流水线才需要它。</div>
+        </div>
+        <div class="verdict"><span class="pill look">值得看</span></div>
+      </div>
+
+      <div class="tool">
+        <div>
+          <div class="cat">终端工具</div>
+          <div class="links">
+            <a href="https://ghostty.org" target="_blank" rel="noopener">Ghostty<small>现代终端模拟器</small></a>
+            <a href="https://iterm2.com" target="_blank" rel="noopener">iTerm2<small>macOS 经典增强</small></a>
+          </div>
+          <div class="take">like-a-programmer 把"CLI 基础"列为<b>重要</b>。等你练命令行 / 上 Claude Code 时，配一个顺手的终端值得，二选一即可，别纠结。</div>
+        </div>
+        <div class="verdict"><span class="pill look">值得看</span></div>
+      </div>
+
+      <div class="tool">
+        <div>
+          <div class="cat">浏览器推荐</div>
+          <div class="links">
+            <a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Chrome<small>装扩展 / 调试网页</small></a>
+          </div>
+          <div class="take">大概率你早在用。调试网页、装扩展够用，<b>不用为它做任何事</b>。</div>
+        </div>
+        <div class="verdict"><span class="pill have">你已有</span></div>
+      </div>
+
+      <div class="tool">
+        <div>
+          <div class="cat">语音输入工具</div>
+          <div class="links">
+            <a href="https://shandianshuo.cn" target="_blank" rel="noopener">闪电说<small>shandianshuo.cn</small></a>
+            <span class="lk">豆包语音输入<small>字节出品</small></span>
+          </div>
+          <div class="take">纯效率偏好。和你"快迭代"的节奏搭，写 prompt / 草稿能提速——但不影响目标，<b>有空再试</b>。</div>
+        </div>
+        <div class="verdict"><span class="pill skip">可跳过</span></div>
+      </div>
+
+      <div class="tool">
+        <div>
+          <div class="cat">AI 设计工具</div>
+          <div class="links">
+            <span class="lk">open-design<small>Claude Design 开源替代</small></span>
+          </div>
+          <div class="take">你的 HTML 设计早就过关，而且你本来就能用 Claude Design 本体。<b>对你边际很低。</b></div>
+        </div>
+        <div class="verdict"><span class="pill skip">可跳过</span></div>
+      </div>
+
+      <div class="tool">
+        <div>
+          <div class="cat">官方站点</div>
+          <div class="links">
+            <a href="https://book.ipwriter.com" target="_blank" rel="noopener">book.ipwriter.com<small>课程学习资源站</small></a>
+          </div>
+          <div class="take">课程自家的视频 / 播客 / 案例库。你的瓶颈不在"输入不够"，而在执行——<b>别在这里多停</b>。</div>
+        </div>
+        <div class="verdict"><span class="pill skip">可跳过</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">$ end of map &nbsp;·&nbsp; 为 PantosAI / OpenClaw 定制 &nbsp;·&nbsp; 从一次对话沉淀</div>
+</footer>
+
+<script>
+// nav active state on scroll
+var secs = document.querySelectorAll('section[id]');
+var links = document.querySelectorAll('nav a');
+if('IntersectionObserver' in window){
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        var id = en.target.id;
+        links.forEach(function(l){
+          var on = l.getAttribute('href')==='#'+id;
+          l.style.background = on ? 'var(--pine-wash)' : '';
+          l.style.color = on ? 'var(--pine-deep)' : '';
+        });
+      }
+    });
+  },{rootMargin:'-45% 0px -50% 0px'});
+  secs.forEach(function(s){obs.observe(s);});
+}
+</script>
+</body>
+</html>
