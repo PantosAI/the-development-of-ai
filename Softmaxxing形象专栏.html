@@ -429,6 +429,35 @@ section{padding-top:64px}
 .ppl-box .pr{display:grid;grid-template-columns:90px 1fr;gap:6px 14px;font-size:.9rem;align-items:baseline}
 .ppl-box .pr b{font-family:'Noto Serif SC';font-weight:700;color:var(--accent)}
 @media(max-width:560px){.split-table{font-size:.8rem}.split-table th,.split-table td{padding:8px 6px}.ppl-box .pr{grid-template-columns:64px 1fr}}
+/* 跑法图鉴 · 解锁阶段单元格 */
+.run-table td.when{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.02em;color:var(--gold);line-height:1.45}
+.run-table .qtag{font-family:'Space Mono',monospace;font-size:.54rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-left:6px;white-space:nowrap}
+/* 解锁阶梯 */
+.ladder{margin-top:22px;position:relative;padding-left:14px}
+.ladder .rung{position:relative;display:grid;grid-template-columns:78px 1fr;gap:18px;padding:16px 0 16px 18px;border-left:2px solid var(--line)}
+.ladder .rung:last-child{border-left-color:transparent}
+.ladder .rung::before{content:"";position:absolute;left:-7px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--muted)}
+.ladder .rung.here{border-left-color:var(--accent)}
+.ladder .rung.here::before{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px rgba(154,36,23,.14)}
+.ladder .lv{font-family:'Bodoni Moda',serif;font-style:italic;font-size:1.05rem;color:var(--muted);line-height:1.15}
+.ladder .rung.here .lv{color:var(--accent)}
+.ladder .lv small{display:block;font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
+.ladder .lc .nm{font-family:'Noto Serif SC';font-weight:700;font-size:1rem;color:var(--ink)}
+.ladder .lc .nm .youhere{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.06em;text-transform:uppercase;color:var(--paper);background:var(--accent);padding:2px 7px;margin-left:8px;vertical-align:middle}
+.ladder .lc .do{font-size:.86rem;color:var(--ink);margin-top:4px;line-height:1.6}
+.ladder .lc .key{font-size:.78rem;color:var(--muted);margin-top:7px;padding-top:7px;border-top:1px dashed var(--line);line-height:1.55}
+.ladder .lc .key b{font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);font-weight:400;margin-right:7px}
+@media(max-width:560px){.ladder .rung{grid-template-columns:1fr;gap:7px}.ladder{padding-left:10px}}
+/* 解锁阶梯 · 关卡门（升级条件） */
+.ladder .gate{position:relative;margin:0 0 0 0;padding:13px 18px 13px 30px;border-left:2px solid var(--line);background:rgba(154,36,23,.045)}
+.ladder .gate::before{content:"";position:absolute;left:-8px;top:50%;transform:translateY(-50%);width:14px;height:14px;background:var(--paper);border:2px solid var(--accent);border-radius:3px}
+.ladder .gate .gh{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
+.ladder .gate .gh .arrow{font-family:'Bodoni Moda',serif;font-style:italic;font-size:.95rem;margin:0 4px}
+.ladder .gate .gh .all{color:var(--muted);margin-left:8px;letter-spacing:.03em}
+.ladder .gate ul{list-style:none;margin:0}
+.ladder .gate li{position:relative;padding:4px 0 4px 24px;font-size:.84rem;color:var(--ink);line-height:1.55}
+.ladder .gate li::before{content:"☐";position:absolute;left:0;top:3px;color:var(--accent);font-size:.9rem}
+.ladder .gate li b{color:var(--accent)}
 /* 落到每一天：每日固定项 + 一周日程 */
 .daily-fix{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:20px}
 .daily-fix .df{background:var(--paper);padding:14px 16px}
@@ -1142,6 +1171,103 @@ section{padding-top:64px}
           <div class="role"><b>角色：</b>低强度恢复用。状态差的日子，比硬练强。</div></div>
       </div>
     </div>
+
+    <!-- 跑法图鉴（进阶路线图，承接「跑步机·走坡别跑」） -->
+    <h3 style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:1.4rem;margin-top:36px" class="reveal">跑法图鉴 · 现在先收藏，膝盖解锁了再开跑</h3>
+    <p class="reveal" style="font-size:.92rem;color:var(--muted);margin-top:6px">那个「快跑—慢跑—快跑」循环，正式名字叫<b style="color:var(--ink)">间歇跑（Interval）</b>。但本栏从头到尾就一句话——<b style="color:var(--accent)">90kg+ 大基数别跑</b>，冲击伤膝。所以这张表当<b style="color:var(--ink)">进阶路线图</b>看：每种跑法都标了「何时解锁」，等体重下来、椭圆和坡走都嫌轻了，再照着开跑。</p>
+    <table class="split-table run-table reveal">
+      <thead><tr><th>跑法</th><th>怎么跑</th><th>何时解锁</th><th>减脂角色 &amp; 注意</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="sname">走跑结合<small>Run-Walk · Galloway</small></td>
+          <td>跑 1–2 分 + 走 1–2 分，循环；总 30–40 分</td>
+          <td class="when">脱离大基数后<br>第一种该试的「跑」</td>
+          <td>低冲击入门，先把<b>跑的耐受</b>建起来；用走的段落压心率、护关节</td>
+        </tr>
+        <tr>
+          <td class="sname">匀速慢跑<small>LSD · Long Slow Distance</small></td>
+          <td>恒定低速，能对话的强度，30–60 分</td>
+          <td class="when">走跑结合能<br>稳定完成之后</td>
+          <td>消耗稳、好坚持，打有氧底子；配速别冲，别掉进「跑太快撑不久」</td>
+        </tr>
+        <tr class="pick-row">
+          <td class="sname">间歇跑<span class="qtag">← 你问的那种</span><small>Interval · HIIT</small></td>
+          <td>快跑 1 分 + 慢跑/快走 1–2 分，×8–12 组</td>
+          <td class="when">有连续慢跑<br>20 分+ 底子后</td>
+          <td>单位时间消耗高 + <b>后燃 EPOC</b>；强度大，心率与跑姿别失控，新手勿冒进</td>
+        </tr>
+        <tr>
+          <td class="sname">法特莱克<small>Fartlek · 速度游戏</small></td>
+          <td>凭感觉 / 地形随意变速（冲到那棵树，再慢下来）</td>
+          <td class="when">能跑之后<br>任意阶段调剂</td>
+          <td>趣味强、适合户外；但强度难量化，<b>易「感觉很累、实际一般」</b></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="ppl-box reveal" style="border-color:var(--accent)">
+      <div class="pt" style="color:var(--accent)">解锁红线 · 在这之前，跑步弊大于利</div>
+      <div class="pr"><b>判据</b><span>不看具体公斤数，看功能：① 椭圆 + 坡度快走都觉得「太轻松」；② 单腿落地、上下楼膝盖不痛。两条都满足，再从「走跑结合」起步。</span></div>
+      <div class="pr" style="margin-top:8px"><b>原因</b><span>大基数直接跑，每一步约 3–5 倍体重砸在膝踝；减下来的那点热量，换不回半月板和软骨。先用零冲击有氧把体重削进安全区。</span></div>
+    </div>
+
+    <!-- 解锁阶梯：现在做什么 → 怎么一级级升上去 -->
+    <h3 style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:1.4rem;margin-top:36px" class="reveal">解锁阶梯 · 你在第 0 级</h3>
+    <p class="reveal" style="font-size:.92rem;color:var(--muted);margin-top:6px">把跑法表竖起来变成台阶——<b style="color:var(--ink)">满足上一级的「毕业条件」才升下一级</b>。判据始终是<b style="color:var(--accent)">功能</b>（零冲击有氧嫌轻 + 膝盖落地不痛），不是公斤数。没到就别跳级。</p>
+    <div class="ladder reveal">
+      <div class="rung here">
+        <div class="lv">第 0 级<small>Now</small></div>
+        <div class="lc">
+          <div class="nm">椭圆 + 坡走<span class="youhere">你在这里</span></div>
+          <div class="do">零冲击有氧主力。椭圆机中阻力 20–30 分；或跑步机坡度 6–10%、速度 5–6、<b>只走不跑</b>。两个换着来防无聊。</div>
+        </div>
+      </div>
+      <div class="gate">
+        <div class="gh">关卡 0 <span class="arrow">→</span> 1<span class="all">· 全部满足才升级</span></div>
+        <ul>
+          <li>体重明显下来、脱离大基数区间</li>
+          <li>椭圆 + 坡走都觉得<b>「太轻松」</b></li>
+          <li>单腿落地、上下楼<b>膝盖不痛</b></li>
+        </ul>
+      </div>
+      <div class="rung">
+        <div class="lv">第 1 级<small>Run-Walk</small></div>
+        <div class="lc">
+          <div class="nm">走跑结合</div>
+          <div class="do">你第一种该碰的「跑」。跑 1–2 分 + 走 1–2 分，循环，总 30 分；用走的段落压心率。</div>
+        </div>
+      </div>
+      <div class="gate">
+        <div class="gh">关卡 1 <span class="arrow">→</span> 2<span class="all">· 全部满足才升级</span></div>
+        <ul>
+          <li>能<b>稳定完成 30 分</b>走跑结合</li>
+          <li>跑的段落<b>不喘到失控</b>（还能说短句）</li>
+          <li>跑后及次日膝盖<b>无不适</b></li>
+        </ul>
+      </div>
+      <div class="rung">
+        <div class="lv">第 2 级<small>LSD</small></div>
+        <div class="lc">
+          <div class="nm">匀速慢跑</div>
+          <div class="do">能对话的慢速，先 20 分，再往 30–60 分加。打有氧底子。</div>
+        </div>
+      </div>
+      <div class="gate">
+        <div class="gh">关卡 2 <span class="arrow">→</span> 3<span class="all">· 全部满足才升级</span></div>
+        <ul>
+          <li>能<b>连续慢跑 20 分以上</b>不停</li>
+          <li>全程<b>配速稳得住</b>、不忽快忽慢</li>
+          <li>关节、跟腱无累积性疼痛</li>
+        </ul>
+      </div>
+      <div class="rung">
+        <div class="lv">第 3 级<small>Interval</small></div>
+        <div class="lc">
+          <div class="nm">间歇跑 + 法特莱克</div>
+          <div class="do">终点站，才上强度刺激。间歇＝快跑 1 分 + 慢跑/快走 1–2 分 ×8–12 组；法特莱克＝户外随意变速调剂。享受后燃 EPOC——但心率与跑姿别失控。</div>
+        </div>
+      </div>
+    </div>
+
 
     <!-- D 核心其他 -->
     <div class="cat-band reveal"><span class="cn">D · 核心与其他</span><span class="en">Core &amp; Misc</span><span class="ct">点缀 · 别本末倒置</span></div>
