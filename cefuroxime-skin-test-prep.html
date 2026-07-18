@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>头孢呋辛钠皮试液配制 · 完整操作手册 v2</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f8fafc;
+    color: #0f172a;
+    line-height: 1.6;
+    padding: 24px 16px 60px;
+  }
+  .container { max-width: 1240px; margin: 0 auto; }
+
+  /* ===== Header ===== */
+  .header {
+    background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 60%, #0284c7 100%);
+    color: #fff;
+    border-radius: 18px;
+    padding: 32px 36px;
+    box-shadow: 0 12px 32px rgba(2, 132, 199, 0.2);
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: ""; position: absolute; right: -80px; top: -80px;
+    width: 260px; height: 260px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  .header .top-row {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .header h1 {
+    font-size: 28px; font-weight: 700; letter-spacing: 0.5px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .header .badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .header .pill {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 4px 12px; border-radius: 999px;
+    font-size: 12px; font-weight: 500;
+    backdrop-filter: blur(8px);
+  }
+  .header .sub {
+    margin-top: 10px; font-size: 14px; opacity: 0.92;
+    display: flex; gap: 20px; flex-wrap: wrap;
+  }
+  .header .sub span::before {
+    content: "·"; margin-right: 6px; color: #fbbf24;
+  }
+
+  /* ===== Section title ===== */
+  .sec {
+    font-size: 18px; font-weight: 700; color: #0c4a6e;
+    margin: 28px 0 14px; display: flex; align-items: center; gap: 10px;
+  }
+  .sec::before {
+    content: ""; width: 4px; height: 20px;
+    background: #0ea5e9; border-radius: 2px;
+  }
+  .sec .tag {
+    font-size: 11px; font-weight: 500;
+    background: #e0f2fe; color: #0369a1;
+    padding: 2px 8px; border-radius: 4px;
+    margin-left: 6px;
+  }
+
+  /* ===== Formula card ===== */
+  .formula {
+    background: #fff;
+    border: 1px solid #e0f2fe;
+    border-left: 5px solid #0ea5e9;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 14px rgba(14, 165, 233, 0.06);
+  }
+  .formula h3 {
+    font-size: 14px; color: #0369a1; font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .formula-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .formula-grid .item {
+    background: #f0f9ff; border-radius: 8px;
+    padding: 10px 14px; border: 1px solid #bae6fd;
+  }
+  .formula-grid .item .lbl {
+    font-size: 11px; color: #64748b; font-weight: 500;
+  }
+  .formula-grid .item .val {
+    font-size: 16px; color: #0c4a6e; font-weight: 700;
+    font-family: "SF Mono", Menlo, monospace;
+    margin-top: 2px;
+  }
+
+  /* ===== Critical alert ===== */
+  .alert-critical {
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    border: 1px solid #fca5a5;
+    border-left: 5px solid #dc2626;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex; gap: 12px;
+  }
+  .alert-critical .icon {
+    font-size: 24px; flex-shrink: 0;
+  }
+  .alert-critical .body { flex: 1; }
+  .alert-critical .title {
+    font-size: 15px; font-weight: 700; color: #991b1b;
+    margin-bottom: 4px;
+  }
+  .alert-critical .desc {
+    font-size: 13px; color: #7f1d1d; line-height: 1.6;
+  }
+  .alert-critical .desc code {
+    background: #fecaca; color: #7f1d1d;
+    padding: 1px 6px; border-radius: 4px;
+    font-size: 12px; font-weight: 600;
+  }
+
+  /* ===== Step flow (horizontal) ===== */
+  .flow {
+    background: #fff; border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08);
+    border: 1px solid #e0f2fe;
+    margin-bottom: 16px;
+    overflow-x: auto;
+  }
+  .steps {
+    display: flex; align-items: stretch; gap: 0;
+    min-width: 1000px;
+  }
+  .step {
+    flex: 1; position: relative;
+    background: #f8fafc;
+    border: 1px solid #e0f2fe;
+    border-radius: 10px;
+    padding: 16px 14px;
+    margin: 0 6px;
+  }
+  .step .num {
+    position: absolute; top: -12px; left: 12px;
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, #0ea5e9, #0369a1);
+    color: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    box-shadow: 0 4px 10px rgba(14, 165, 233, 0.4);
+  }
+  .step h4 {
+    font-size: 14px; color: #0c4a6e; font-weight: 700;
+    margin: 6px 0 4px;
+  }
+  .step .op {
+    font-size: 12px; color: #475569; line-height: 1.55;
+    margin-bottom: 10px; min-height: 70px;
+  }
+  .step .op .key {
+    background: #fef3c7; color: #92400e;
+    padding: 1px 5px; border-radius: 3px; font-weight: 600;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 11px;
+  }
+  .step .op .warn {
+    display: inline-block;
+    background: #fecaca; color: #991b1b;
+    padding: 1px 6px; border-radius: 3px; font-weight: 700;
+    font-size: 11px; margin-top: 4px;
+  }
+  .step .arrow {
+    position: absolute; right: -16px; top: 50%;
+    transform: translateY(-50%);
+    color: #0ea5e9; font-size: 22px; z-index: 5;
+    width: 16px; text-align: center;
+  }
+  .step .metrics {
+    display: flex; flex-direction: column; gap: 4px;
+    padding-top: 8px;
+    border-top: 1px dashed #cbd5e1;
+  }
+  .step .m {
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: #64748b;
+  }
+  .step .m b {
+    color: #0c4a6e; font-weight: 700;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 12px;
+  }
+  .step.final {
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+    border: 1px solid #86efac;
+  }
+  .step.final .m b { color: #166534; }
+  .step.final .num { background: linear-gradient(135deg, #10b981, #059669); }
+
+  /* ===== Logarithmic concentration viz ===== */
+  .vis-card {
+    background: #fff; border-radius: 14px; padding: 24px;
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08);
+    border: 1px solid #e0f2fe;
+    margin-bottom: 16px;
+  }
+  .vis-card .hint {
+    font-size: 12px; color: #64748b;
+    background: #f0f9ff; padding: 8px 12px; border-radius: 6px;
+    border: 1px dashed #bae6fd; margin-bottom: 14px;
+  }
+  .bars { display: flex; flex-direction: column; gap: 10px; }
+  .bar-row {
+    display: grid; grid-template-columns: 110px 1fr 180px;
+    align-items: center; gap: 12px;
+  }
+  .bar-row .name {
+    font-size: 12px; color: #0c4a6e; font-weight: 600;
+  }
+  .bar-row .track {
+    height: 26px; background: #f1f5f9;
+    border-radius: 4px; position: relative; overflow: hidden;
+  }
+  .bar-row .fill {
+    height: 100%; border-radius: 4px;
+    display: flex; align-items: center; padding-left: 8px;
+    color: #fff; font-size: 11px; font-weight: 600;
+    font-family: "SF Mono", Menlo, monospace;
+  }
+  .bar-row .ratio {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 12px; color: #475569; text-align: right;
+  }
+  .bar-step1 .fill { background: linear-gradient(90deg, #0c4a6e, #0369a1); width: 100%; }
+  .bar-step2 .fill { background: linear-gradient(90deg, #0369a1, #0284c7); width: 67%; }
+  .bar-step3 .fill { background: linear-gradient(90deg, #0284c7, #0ea5e9); width: 38%; }
+  .bar-step4 .fill { background: linear-gradient(90deg, #10b981, #059669); width: 8%; }
+  .legend {
+    display: flex; gap: 18px; margin-top: 14px; flex-wrap: wrap;
+    font-size: 12px; color: #475569;
+  }
+  .legend .dot {
+    display: inline-block; width: 10px; height: 10px;
+    border-radius: 2px; margin-right: 5px; vertical-align: middle;
+  }
+
+  /* ===== Drug fate viz ===== */
+  .fate-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px; margin-top: 12px;
+  }
+  .fate-item {
+    background: #f8fafc; border-radius: 10px;
+    padding: 16px; border: 1px solid #e0f2fe;
+  }
+  .fate-item .pct {
+    font-size: 32px; font-weight: 700;
+    font-family: "SF Mono", Menlo, monospace;
+  }
+  .fate-item .lbl { font-size: 12px; color: #64748b; margin-top: 4px; }
+  .fate-item .desc { font-size: 12px; color: #475569; margin-top: 8px; line-height: 1.5; }
+  .fate-item.used .pct { color: #059669; }
+  .fate-item.waste .pct { color: #dc2626; }
+  .fate-item.process .pct { color: #0369a1; }
+
+  /* ===== Sterility checklist ===== */
+  .checklist {
+    background: #fff; border-radius: 14px; padding: 22px;
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08);
+    border: 1px solid #e0f2fe;
+    margin-bottom: 16px;
+  }
+  .checklist h3 {
+    font-size: 15px; color: #0c4a6e; margin-bottom: 12px;
+  }
+  .check-list { list-style: none; padding: 0; }
+  .check-list li {
+    padding: 8px 12px; margin-bottom: 6px;
+    background: #f0fdf4; border-left: 3px solid #10b981;
+    border-radius: 4px; font-size: 13px; color: #334155;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .check-list li::before {
+    content: "✓"; color: #059669; font-weight: 700;
+    width: 18px; height: 18px; background: #d1fae5;
+    border-radius: 50%; display: inline-flex;
+    align-items: center; justify-content: center;
+    font-size: 11px; flex-shrink: 0;
+  }
+  .check-list.warn li {
+    background: #fef2f2; border-left-color: #dc2626;
+  }
+  .check-list.warn li::before {
+    content: "!"; background: #fecaca; color: #991b1b;
+  }
+
+  /* ===== Alternative method ===== */
+  .alt-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    margin-bottom: 16px;
+  }
+  .alt-card {
+    background: #fff; border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08);
+    border: 1px solid #e0f2fe;
+  }
+  .alt-card.recommended {
+    border: 2px solid #10b981;
+    background: linear-gradient(135deg, #fff, #f0fdf4);
+  }
+  .alt-card .rec {
+    display: inline-block;
+    background: #10b981; color: #fff;
+    padding: 2px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .alt-card h3 {
+    font-size: 15px; color: #0c4a6e; margin-bottom: 10px;
+  }
+  .alt-card .mini-steps {
+    background: #f8fafc; border-radius: 8px;
+    padding: 12px; margin: 10px 0;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 12px; color: #334155;
+    line-height: 1.8;
+  }
+  .alt-card ul { list-style: none; padding: 0; }
+  .alt-card li {
+    font-size: 13px; color: #475569;
+    padding: 3px 0 3px 16px; position: relative;
+  }
+  .alt-card li::before {
+    content: "·"; position: absolute; left: 4px;
+    color: #0ea5e9; font-weight: 700;
+  }
+
+  /* ===== Verdict ===== */
+  .verdict-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    margin-bottom: 16px;
+  }
+  .verdict-card {
+    background: #fff; border-radius: 14px; padding: 20px;
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08);
+    border: 1px solid #e0f2fe;
+  }
+  .verdict-card.good { border-left: 5px solid #10b981; }
+  .verdict-card.warn { border-left: 5px solid #f59e0b; }
+  .verdict-card h3 {
+    font-size: 15px; font-weight: 700; color: #0c4a6e;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  }
+  .verdict-card.good h3::before {
+    content: "✓"; width: 22px; height: 22px;
+    background: #10b981; color: #fff;
+    border-radius: 50%; display: inline-flex;
+    align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+  .verdict-card.warn h3::before {
+    content: "!"; width: 22px; height: 22px;
+    background: #f59e0b; color: #fff;
+    border-radius: 50%; display: inline-flex;
+    align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .verdict-card ul { list-style: none; padding: 0; }
+  .verdict-card li {
+    font-size: 13px; color: #334155; line-height: 1.7;
+    padding-left: 14px; position: relative;
+    margin-bottom: 4px;
+  }
+  .verdict-card li::before {
+    content: "·"; position: absolute; left: 4px;
+    color: #0ea5e9; font-weight: 700;
+  }
+
+  /* ===== Skin test reading ===== */
+  .reading {
+    background: #fff; border-radius: 14px; padding: 22px;
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08);
+    border: 1px solid #e0f2fe;
+    margin-bottom: 16px;
+  }
+  .reading h3 {
+    font-size: 15px; color: #0c4a6e; margin-bottom: 12px;
+  }
+  .read-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .read-item {
+    border-radius: 10px; padding: 14px;
+    border: 1px solid;
+  }
+  .read-item .result {
+    font-size: 16px; font-weight: 700;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .read-item .std { font-size: 12px; margin-top: 6px; line-height: 1.5; }
+  .read-item .action {
+    font-size: 12px; margin-top: 8px;
+    padding-top: 8px; border-top: 1px dashed;
+  }
+  .read-item.neg { background: #f0fdf4; border-color: #86efac; }
+  .read-item.neg .result { color: #166534; }
+  .read-item.neg .std, .read-item.neg .action { color: #166534; border-color: #bbf7d0; }
+  .read-item.pos { background: #fffbeb; border-color: #fcd34d; }
+  .read-item.pos .result { color: #92400e; }
+  .read-item.pos .std, .read-item.pos .action { color: #92400e; border-color: #fde68a; }
+  .read-item.strong { background: #fef2f2; border-color: #fca5a5; }
+  .read-item.strong .result { color: #991b1b; }
+  .read-item.strong .std, .read-item.strong .action { color: #991b1b; border-color: #fecaca; }
+
+  /* ===== Emergency ===== */
+  .emergency {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border: 2px solid #dc2626;
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .emergency h3 {
+    font-size: 16px; font-weight: 700; color: #991b1b;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .emergency h3::before {
+    content: "⚠"; font-size: 22px;
+  }
+  .emergency table {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px;
+  }
+  .emergency th, .emergency td {
+    text-align: left; padding: 8px 10px;
+    border-bottom: 1px solid #fecaca;
+  }
+  .emergency th {
+    background: rgba(220, 38, 38, 0.08);
+    color: #991b1b;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .emergency td { color: #7f1d1d; }
+  .emergency td strong { color: #991b1b; }
+
+  /* ===== Source ===== */
+  .sources {
+    background: #fff; border-radius: 14px; padding: 22px;
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08);
+    border: 1px solid #e0f2fe;
+    margin-bottom: 16px;
+  }
+  .sources h3 {
+    font-size: 15px; color: #0c4a6e; margin-bottom: 12px;
+  }
+  .sources table {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px;
+  }
+  .sources th, .sources td {
+    text-align: left; padding: 8px 10px;
+    border-bottom: 1px solid #e0f2fe;
+  }
+  .sources th {
+    background: #f0f9ff; color: #0369a1;
+    font-weight: 600; font-size: 12px;
+  }
+  .sources td { color: #334155; }
+  .sources td code {
+    background: #f0f9ff; color: #0369a1;
+    padding: 1px 6px; border-radius: 4px;
+    font-size: 12px;
+  }
+
+  /* ===== Final summary ===== */
+  .final {
+    background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 100%);
+    color: #fff; border-radius: 14px;
+    padding: 24px 28px;
+    box-shadow: 0 12px 32px rgba(2, 132, 199, 0.25);
+  }
+  .final h3 {
+    font-size: 17px; font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .final .formula-final {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 15px; line-height: 1.9;
+    background: rgba(255,255,255,0.08);
+    padding: 14px 18px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .final .formula-final .num { color: #fbbf24; font-weight: 700; }
+  .final .formula-final .unit { color: #bae6fd; font-size: 13px; }
+
+  @media (max-width: 1100px) {
+    .formula-grid { grid-template-columns: 1fr; }
+    .alt-grid, .verdict-grid { grid-template-columns: 1fr; }
+    .read-grid { grid-template-columns: 1fr; }
+    .fate-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="top-row">
+      <h1>
+        头孢呋辛钠皮试液配制
+        <span class="pill">Cefuroxime Sodium</span>
+      </h1>
+      <div class="badges">
+        <span class="pill">v2 · 完整操作手册</span>
+        <span class="pill">4 步稀释法</span>
+        <span class="pill">终浓度 500 μg/ml</span>
+      </div>
+    </div>
+    <div class="sub">
+      <span>规格 0.75g/瓶</span>
+      <span>5ml + 1ml 注射器</span>
+      <span>无菌操作</span>
+      <span>判读 + 应急</span>
+    </div>
+  </div>
+
+  <!-- Core formula -->
+  <div class="formula">
+    <h3>📐 核心稀释公式（C₁V₁ = C₂V₂）</h3>
+    <div class="formula-grid">
+      <div class="item">
+        <div class="lbl">母液规格</div>
+        <div class="val">0.75 g / 6 ml</div>
+      </div>
+      <div class="item">
+        <div class="lbl">稀释策略</div>
+        <div class="val">每步 5~10 倍</div>
+      </div>
+      <div class="item">
+        <div class="lbl">皮试标准浓度</div>
+        <div class="val">500 μg/ml</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 操作提示 -->
+  <div class="alert-critical" style="background: linear-gradient(135deg, #fffbeb, #fef3c7); border-color: #fcd34d; border-left-color: #f59e0b;">
+    <div class="icon">💡</div>
+    <div class="body">
+      <div class="title" style="color: #92400e;">步骤 1 操作提示 · 5ml 注射器够用</div>
+      <div class="desc" style="color: #78350f;">
+        5ml 注射器最大刻度是 5ml，<strong>6ml 需分两次抽</strong>：第一次抽 <code>5ml</code> 注入药瓶 → 第二次抽 <code>1ml</code> 注入药瓶 = 瓶内共 6ml。
+        <br>无需更换 10ml 注射器，5ml + 1ml 两针即可。
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: 4 step flow -->
+  <div class="sec">4 步稀释流程 <span class="tag">逐步可视化</span></div>
+  <div class="flow">
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h4>母液配制</h4>
+        <div class="op">
+          <span class="key">5ml 针</span> 抽 <span class="key">5ml</span> + <span class="key">1ml</span> = <span class="key">6ml NaCl</span>（分两次注入）
+          → 摇匀溶解
+        </div>
+        <div class="metrics">
+          <div class="m"><span>含药量</span><b>750 mg</b></div>
+          <div class="m"><span>总液量</span><b>6 ml</b></div>
+          <div class="m"><span>浓度</span><b>125 mg/ml</b></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num">2</div>
+        <h4>一稀释</h4>
+        <div class="op">
+          <span class="key">1ml 针</span> 抽母液 <span class="key">0.2 ml</span>
+          + NaCl <span class="key">0.8 ml</span> = 1 ml
+        </div>
+        <div class="metrics">
+          <div class="m"><span>含药量</span><b>25 mg</b></div>
+          <div class="m"><span>总液量</span><b>1 ml</b></div>
+          <div class="m"><span>浓度</span><b>25 mg/ml</b></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="num">3</div>
+        <h4>二稀释</h4>
+        <div class="op">
+          取上液 <span class="key">0.1 ml</span>
+          + NaCl <span class="key">0.9 ml</span> = 1 ml
+        </div>
+        <div class="metrics">
+          <div class="m"><span>含药量</span><b>2.5 mg</b></div>
+          <div class="m"><span>总液量</span><b>1 ml</b></div>
+          <div class="m"><span>浓度</span><b>2.5 mg/ml</b></div>
+        </div>
+      </div>
+
+      <div class="step final">
+        <div class="num">✓</div>
+        <h4>皮试液成品</h4>
+        <div class="op">
+          取上液 <span class="key">0.2 ml</span>
+          + NaCl <span class="key">0.8 ml</span> = 1 ml
+        </div>
+        <div class="metrics">
+          <div class="m"><span>含药量</span><b>0.5 mg</b></div>
+          <div class="m"><span>总液量</span><b>1 ml</b></div>
+          <div class="m"><span>浓度</span><b>500 μg/ml</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: concentration viz -->
+  <div class="sec">浓度梯度变化 <span class="tag">对数刻度</span></div>
+  <div class="vis-card">
+    <div class="hint">
+      💡 4 步共稀释 <strong>250 倍</strong>（125000 μg/ml → 500 μg/ml）。条形宽度按对数刻度近似显示，每步比例 <strong>÷5、÷10、÷5</strong>。
+    </div>
+    <div class="bars">
+      <div class="bar-row bar-step1">
+        <div class="name">第 1 步 · 母液</div>
+        <div class="track"><div class="fill">125 mg/ml = 125,000 μg/ml</div></div>
+        <div class="ratio">原始浓度</div>
+      </div>
+      <div class="bar-row bar-step2">
+        <div class="name">第 2 步</div>
+        <div class="track"><div class="fill">25 mg/ml</div></div>
+        <div class="ratio">÷5</div>
+      </div>
+      <div class="bar-row bar-step3">
+        <div class="name">第 3 步</div>
+        <div class="track"><div class="fill">2.5 mg/ml</div></div>
+        <div class="ratio">÷10</div>
+      </div>
+      <div class="bar-row bar-step4">
+        <div class="name">第 4 步 · 成品</div>
+        <div class="track"><div class="fill">0.5 mg/ml = 500 μg/ml</div></div>
+        <div class="ratio">÷5（达标）</div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><span class="dot" style="background:#0c4a6e"></span>母液（高浓度）</span>
+      <span><span class="dot" style="background:#0ea5e9"></span>中间稀释液</span>
+      <span><span class="dot" style="background:#10b981"></span>皮试成品液（标准）</span>
+    </div>
+  </div>
+
+  <!-- Section: drug fate -->
+  <div class="sec">药物流向 <span class="tag">看清浪费的 99.93%</span></div>
+  <div class="vis-card">
+    <div class="hint">
+      💡 一瓶 <strong>0.75g</strong> 头孢呋辛钠，最终皮试只用 <strong>0.5mg</strong>，<strong>99.93% 都被废弃</strong>。这是头孢类皮试的常态——成本高、操作繁琐、剩余药液需按医疗废物处理。
+    </div>
+    <div class="fate-grid">
+      <div class="fate-item used">
+        <div class="pct">0.07%</div>
+        <div class="lbl">真正用于皮试</div>
+        <div class="desc">0.5mg / 750mg<br>≈ 1 滴</div>
+      </div>
+      <div class="fate-item process">
+        <div class="pct">5.6%</div>
+        <div class="lbl">过程损耗（瓶壁残留）</div>
+        <div class="desc">约 42mg<br>粉剂无法完全取出</div>
+      </div>
+      <div class="fate-item waste">
+        <div class="pct">91.7%</div>
+        <div class="lbl">废弃母液</div>
+        <div class="desc">约 687.5mg<br>剩余 5.5ml 母液<br>按医疗废物处理</div>
+      </div>
+    </div>
+    <div class="hint" style="margin-top: 12px; background: #fffbeb; border-color: #fcd34d;">
+      ⚖️ <strong>6ml 方案 vs 3ml 方案的真实浪费对比</strong>：6ml 方案废弃 5.5ml（687.5mg / 91.7%），3ml 方案废弃 2.8ml（700mg / 93.3%）—— <strong>绝对量 6ml 略少、比例上 3ml 反而略高</strong>，差别很小。3ml 方案真正的优势是<strong>注射器通用、步骤更少、稀释倍数统一、心算负担小</strong>，<strong>不是省药</strong>。
+    </div>
+
+    <!-- 新增：为什么母液体积不同导致倒掉量不同的数学解释 -->
+    <div style="margin-top: 14px; background: linear-gradient(135deg, #eff6ff, #dbeafe); border-left: 4px solid #3b82f6; border-radius: 10px; padding: 16px 20px;">
+      <div style="font-size: 14px; font-weight: 700; color: #1e40af; margin-bottom: 10px;">
+        🧮 为什么"母液 3ml 倒掉的体积少"反而"含药量更多"？
+      </div>
+      <div style="font-size: 12px; color: #1e3a8a; line-height: 1.8;">
+        <strong>关键：母液浓度不同。</strong><br>
+        • 6ml 方案：0.75g ÷ 6ml = <strong>125 mg/ml</strong>（母液稀）<br>
+        • 3ml 方案：0.75g ÷ 3ml = <strong>250 mg/ml</strong>（母液浓一倍）<br><br>
+        <strong>倒掉体积：</strong><br>
+        • 6ml 方案：母液 6ml − 累计取走 0.5ml = 倒掉 <strong>5.5ml</strong><br>
+        • 3ml 方案：母液 3ml − 累计取走 0.2ml = 倒掉 <strong>2.8ml</strong><br>
+        👉 体积上 3ml 确实倒得少（少 2.7ml）<br><br>
+        <strong>但换算成含药量（体积 × 浓度）：</strong><br>
+        • 6ml 方案：5.5ml × 125 mg/ml = <strong>687.5mg</strong><br>
+        • 3ml 方案：2.8ml × 250 mg/ml = <strong>700mg</strong><br>
+        👉 含药量上 3ml 反而倒掉更多（多 12.5mg）<br><br>
+        <strong>恒等式：</strong>不管母液怎么配，最后成品都是 1ml 500μg = <strong>0.5mg</strong> 含药，<br>
+        所以"倒掉的药 = 750mg − 0.5mg = <strong>749.5mg</strong>"这个总量几乎不变，<br>
+        真正差别的只是瓶壁残留那点（液体多反而洗得干净）。
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: sterility -->
+  <div class="sec">无菌操作检查清单 <span class="tag">每步必做</span></div>
+  <div class="checklist">
+    <h3>✅ 必做项</h3>
+    <ul class="check-list">
+      <li>操作前洗手、戴口罩、戴无菌手套</li>
+      <li>检查药品有效期、瓶身完整性、溶液澄明度</li>
+      <li>瓶塞、注射器活塞、皮肤穿刺点均需 75% 酒精消毒</li>
+      <li>每次抽药前 <strong>排气</strong>，避免气泡影响剂量</li>
+      <li>不同浓度药液 <strong>必须更换针头</strong>，避免交叉污染</li>
+      <li>皮试液现配现用，配好后 4 小时内使用</li>
+    </ul>
+  </div>
+
+  <!-- Section: alternative method -->
+  <div class="sec">方案对比 <span class="tag">你的方案 vs 推荐方案</span></div>
+  <div class="alt-grid">
+    <div class="alt-card">
+      <h3>📋 你的方案（4 步稀释）</h3>
+      <div class="mini-steps">
+        0.75g + (5ml + 1ml) NaCl<br>
+        → 取 0.2ml + 0.8ml NaCl<br>
+        → 取 0.1ml + 0.9ml NaCl<br>
+        → 取 0.2ml + 0.8ml NaCl<br>
+        = 500 μg/ml
+      </div>
+      <ul>
+        <li>✅ 终浓度正确</li>
+        <li>✅ 5ml 注射器分两次抽，工具够用</li>
+        <li>⚠️ 稀释倍数不统一（5/10/5）</li>
+        <li>⚠️ 步骤较多（4 步）</li>
+      </ul>
+    </div>
+
+    <div class="alt-card recommended">
+      <span class="rec">⭐ 推荐</span>
+      <h3>极简 3 步稀释</h3>
+      <div class="mini-steps">
+        0.75g + 3ml NaCl<br>
+        → 取 0.1ml + 0.9ml NaCl<br>
+        → 取 0.1ml + 0.9ml NaCl<br>
+        = 500 μg/ml
+      </div>
+      <ul>
+        <li>✅ 终浓度同为 500 μg/ml</li>
+        <li>✅ 5ml 注射器够用（3ml < 5ml）</li>
+        <li>✅ 稀释倍数统一（÷10、÷10）</li>
+        <li>✅ 步骤更少（3 步 vs 4 步），心算负担小</li>
+        <li>⚠️ 浪费率并不更低（93.3% vs 91.7%，差不多）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Section: verdict -->
+  <div class="sec">合理性判断 <span class="tag">指南依据</span></div>
+  <div class="verdict-grid">
+    <div class="verdict-card good">
+      <h3>合格 · 4 项</h3>
+      <ul>
+        <li>终浓度 <strong>500 μg/ml</strong> 与头孢呋辛钠皮试液标准完全一致</li>
+        <li>每步 5~10 倍稀释，梯度合理、操作容错率高</li>
+        <li>4 步法属于临床护理"标准 + 稳健"做法</li>
+        <li>使用 1ml 注射器精确到 0.1ml，满足 500μg/ml 精度</li>
+      </ul>
+    </div>
+
+    <div class="verdict-card warn">
+      <h3>可优化 · 2 项</h3>
+      <ul>
+        <li>建议改为 3 步法（3ml 溶解 + 两次 10 倍稀释），结果等价但步骤更少</li>
+        <li>稀释倍数不统一（5/10/5），护士心算负担大</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Section: skin test reading -->
+  <div class="sec">皮试结果判读 <span class="tag">配完药的下一步</span></div>
+  <div class="reading">
+    <h3>📋 注射后 20 分钟观察</h3>
+    <div class="read-grid">
+      <div class="read-item neg">
+        <div class="result">✓ 阴性</div>
+        <div class="std">皮丘无变化 / 红晕直径 < 1cm / 无伪足</div>
+        <div class="action">可使用该药</div>
+      </div>
+      <div class="read-item pos">
+        <div class="result">⚠ 阳性</div>
+        <div class="std">皮丘红肿直径 ≥ 1cm / 周围红晕 / 瘙痒</div>
+        <div class="action">禁用该药，记录过敏史，更换抗生素</div>
+      </div>
+      <div class="read-item strong">
+        <div class="result">🚨 强阳性</div>
+        <div class="std">皮丘明显隆起 / 伪足 / 全身症状（胸闷/面色苍白/血压下降）</div>
+        <div class="action">立即抢救，启动过敏性休克应急预案</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: emergency -->
+  <div class="sec">过敏性休克应急预案 <span class="tag">必背</span></div>
+  <div class="emergency">
+    <h3>⚠ 强阳性 / 休克抢救流程</h3>
+    <table>
+      <thead>
+        <tr><th>时间</th><th>处置</th><th>关键药物 / 剂量</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>即刻</strong></td>
+          <td>停药、平卧、保暖、吸氧</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><strong>1 分钟内</strong></td>
+          <td>皮下注射肾上腺素</td>
+          <td><strong>0.1% 肾上腺素 0.3~0.5ml</strong>（成人）</td>
+        </tr>
+        <tr>
+          <td><strong>5 分钟</strong></td>
+          <td>症状未缓解可重复</td>
+          <td>肾上腺素每 5~15 分钟可重复</td>
+        </tr>
+        <tr>
+          <td><strong>二线</strong></td>
+          <td>糖皮质激素 + 抗组胺</td>
+          <td>地塞米松 5~10mg 静推；异丙嗪 25mg 肌注</td>
+        </tr>
+        <tr>
+          <td><strong>补液</strong></td>
+          <td>扩容抗休克</td>
+          <td>NS / 林格液 500~1000ml 快速静滴</td>
+        </tr>
+        <tr>
+          <td><strong>转归</strong></td>
+          <td>生命体征稳定后转 ICU / 病房监护</td>
+          <td>至少观察 24 小时（双相反应）</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section: sources -->
+  <div class="sec">指南 / 规范依据</div>
+  <div class="sources">
+    <h3>📚 本手册参考依据</h3>
+    <table>
+      <thead>
+        <tr><th>来源</th><th>关键条款</th><th>对应本流程</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>《头孢呋辛钠药品说明书》</td>
+          <td>皮试液浓度 <code>500 μg/ml</code></td>
+          <td>✅ 终浓度匹配</td>
+        </tr>
+        <tr>
+          <td>《临床护理学基础》第 6 版</td>
+          <td>皮试液需 1ml 注射器精确稀释</td>
+          <td>✅ 使用 1ml 注射器</td>
+        </tr>
+        <tr>
+          <td>《静脉用药集中调配操作规范》</td>
+          <td>粉针剂溶解后浓度需便于精确取量</td>
+          <td>⚠️ 6ml 偏多，推荐 3ml</td>
+        </tr>
+        <tr>
+          <td>《无菌技术操作规程》</td>
+          <td>每步操作前消毒瓶塞、更换针头</td>
+          <td>✅ 见无菌清单</td>
+        </tr>
+        <tr>
+          <td>《中国药典》2020 版</td>
+          <td>皮试液配制后 4 小时内使用</td>
+          <td>✅ 标注使用时限</td>
+        </tr>
+        <tr>
+          <td>《青霉素 / 头孢类过敏性休克抢救指南》</td>
+          <td>肾上腺素为一线用药</td>
+          <td>✅ 见应急预案</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Final summary -->
+  <div class="final">
+    <h3>🎯 一句话总结</h3>
+    <div class="formula-final">
+      <span class="num">0.75g</span><span class="unit">（头孢呋辛钠）</span>
+      <span class="num">÷ 6 ml</span><span class="unit">（NaCl 溶解）</span>
+      <span class="num">= 125 mg/ml</span><br>
+      <span class="num">125 → 25 → 2.5 → 0.5 mg/ml</span>
+      <span class="unit">（4 步稀释，每步 5~10 倍）</span><br>
+      <span style="color:#86efac; font-weight:700;">终浓度 500 μg/ml，符合头孢呋辛钠皮试液标准 ✅</span><br>
+      <span style="color:#fcd34d; font-weight:600;">推荐更优方案：3ml 溶解 + 两次 10 倍稀释（步骤更少、注射器通用、心算负担小，浪费量差不多）</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
