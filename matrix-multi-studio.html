@@ -1,0 +1,2097 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MatrixMulti Studio - 矩阵乘法与异步重叠工作台</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar for beautiful styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.3);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.4);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.7);
+        }
+        
+        /* Grid Input Styles */
+        .matrix-cell {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Neon glow classes */
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.35);
+            border-color: rgb(6, 182, 212) !important;
+        }
+        .glow-emerald {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.35);
+            border-color: rgb(16, 185, 129) !important;
+        }
+        .glow-amber {
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.45);
+            border-color: rgb(245, 158, 11) !important;
+        }
+        .glow-rose {
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.45);
+            border-color: rgb(244, 63, 94) !important;
+        }
+
+        /* Animation Keyframes */
+        @keyframes flow-right {
+            0% { transform: translateX(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(400%); opacity: 0; }
+        }
+        .animate-flow {
+            animation: flow-right 2.5s infinite linear;
+        }
+        
+        @keyframes gear-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: gear-spin 8s infinite linear;
+        }
+        .animate-spin-fast {
+            animation: gear-spin 2s infinite linear;
+        }
+        
+        /* Cache visualizer classes */
+        .cache-line-transition {
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen transition-colors duration-300">
+
+    <div class="flex flex-col min-h-screen">
+        <!-- Header -->
+        <header class="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-40 px-6 py-4">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-indigo-600/20 text-indigo-400 rounded-xl border border-indigo-500/30 shadow-lg shadow-indigo-500/10">
+                        <i class="fa-solid fa-microchip text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-indigo-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+                            MatrixMulti Studio
+                        </h1>
+                        <p class="text-xs text-slate-400 font-medium">高性能矩阵乘法、异步重叠与规范化 Cache 架构工作台</p>
+                    </div>
+                </div>
+
+                <!-- Global Action Controls & Navigation tabs -->
+                <div class="flex items-center gap-3">
+                    <div class="bg-slate-950 p-1 rounded-xl border border-slate-800 flex">
+                        <button onclick="switchTab('calc')" id="tab-btn-calc" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition bg-indigo-600 text-white shadow">
+                            <i class="fa-solid fa-calculator mr-1"></i> 矩阵演练
+                        </button>
+                        <button onclick="switchTab('overlap')" id="tab-btn-overlap" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition text-slate-400 hover:text-white">
+                            <i class="fa-solid fa-server mr-1"></i> 计算/通讯重叠
+                        </button>
+                        <button onclick="switchTab('cache')" id="tab-btn-cache" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition text-slate-400 hover:text-white">
+                            <i class="fa-solid fa-memory mr-1"></i> Cache 与分块映射
+                        </button>
+                    </div>
+                    <button onclick="toggleTheme()" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition" title="切换暗黑/明亮主题">
+                        <i class="fa-solid fa-circle-half-stroke"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6">
+            
+            <!-- Tab 1: Standard Matrix Calc and Step-by-Step Player -->
+            <section id="tab-calc" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left Control Panel -->
+                <div class="lg:col-span-4 flex flex-col gap-5">
+                    <!-- Dimension Configurator Card -->
+                    <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl">
+                        <h2 class="text-md font-semibold text-slate-200 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-indigo-400"></i> 1. 配置矩阵维度
+                        </h2>
+                        
+                        <div class="space-y-4">
+                            <!-- Matrix A Row M -->
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-slate-400">矩阵 A 行数 (M)</span>
+                                    <span class="text-cyan-400 font-mono font-bold" id="label-rowsA">3</span>
+                                </div>
+                                <input type="range" id="input-rowsA" min="1" max="8" value="3" oninput="updateDimensions()" 
+                                    class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                            </div>
+
+                            <!-- Shared Dimension N -->
+                            <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-slate-300 font-medium font-mono">公共对齐维度 (N)</span>
+                                    <span class="text-emerald-400 font-mono font-bold" id="label-colsA">3</span>
+                                </div>
+                                <p class="text-[10px] text-slate-500 mb-1.5">决定分布式并行计算中的分块传输次数</p>
+                                <input type="range" id="input-colsA" min="1" max="8" value="3" oninput="updateDimensions()" 
+                                    class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                            </div>
+
+                            <!-- Matrix B Column P -->
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span class="text-slate-400">矩阵 B 列数 (P)</span>
+                                    <span class="text-amber-400 font-mono font-bold" id="label-colsB">3</span>
+                                </div>
+                                <input type="range" id="input-colsB" min="1" max="8" value="3" oninput="updateDimensions()" 
+                                    class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500">
+                            </div>
+                        </div>
+
+                        <!-- Display Dimension Spec -->
+                        <div class="mt-4 p-2.5 bg-indigo-950/20 border border-indigo-900/50 rounded-xl text-center">
+                            <span class="text-xs font-mono text-slate-400">
+                                尺寸公式: A <span class="text-cyan-400 font-bold" id="dim-A">3×3</span> × B <span class="text-emerald-400 font-bold" id="dim-B">3×3</span> = C <span class="text-amber-400 font-bold" id="dim-C">3×3</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Preset Options Card -->
+                    <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl">
+                        <h2 class="text-md font-semibold text-slate-200 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-magic text-indigo-400"></i> 2. 填充与预设
+                        </h2>
+                        
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <button onclick="fillPreset('A', 'random')" class="px-3 py-2 bg-slate-800 hover:bg-slate-750 border border-slate-700/80 rounded-xl text-slate-300 font-medium transition flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-shuffle text-cyan-400"></i> A 随机数
+                            </button>
+                            <button onclick="fillPreset('B', 'random')" class="px-3 py-2 bg-slate-800 hover:bg-slate-750 border border-slate-700/80 rounded-xl text-slate-300 font-medium transition flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-shuffle text-emerald-400"></i> B 随机数
+                            </button>
+                            <button onclick="fillPreset('A', 'identity')" class="px-3 py-2 bg-slate-800 hover:bg-slate-750 border border-slate-700/80 rounded-xl text-slate-300 font-medium transition flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-grip-lines text-cyan-400"></i> A 单位矩阵
+                            </button>
+                            <button onclick="fillPreset('B', 'identity')" class="px-3 py-2 bg-slate-800 hover:bg-slate-750 border border-slate-700/80 rounded-xl text-slate-300 font-medium transition flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-grip-lines text-emerald-400"></i> B 单位矩阵
+                            </button>
+                            <button onclick="fillPreset('both', 'clear')" class="px-3 py-2 bg-rose-950/20 hover:bg-rose-900/20 border border-rose-900/40 rounded-xl text-rose-300 font-medium transition flex items-center justify-center gap-1.5 col-span-2">
+                                <i class="fa-solid fa-trash-can"></i> 清空全部数据
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Auto-Play Controller -->
+                    <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl">
+                        <div class="flex items-center justify-between mb-3">
+                            <h2 class="text-md font-semibold text-slate-200 flex items-center gap-2">
+                                <i class="fa-solid fa-play-cycle text-indigo-400"></i> 3. 计算步骤演练
+                            </h2>
+                            <span id="player-status" class="text-xs px-2 py-0.5 bg-slate-800 rounded text-slate-400 border border-slate-700 font-mono">
+                                已停止
+                            </span>
+                        </div>
+
+                        <div class="flex flex-col gap-3">
+                            <!-- Playback speed -->
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span class="text-slate-400">播速延迟 (秒)</span>
+                                    <span class="text-indigo-400 font-mono" id="label-speed">1.5s</span>
+                                </div>
+                                <input type="range" id="input-speed" min="0.5" max="4" step="0.5" value="1.5" oninput="updateSpeed()"
+                                    class="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                            </div>
+
+                            <!-- Playback Buttons -->
+                            <div class="grid grid-cols-4 gap-1">
+                                <button onclick="prevStep()" class="p-2.5 bg-slate-800 hover:bg-slate-750 rounded-xl border border-slate-700 text-slate-300 hover:text-indigo-400 transition text-sm flex items-center justify-center" title="上一步">
+                                    <i class="fa-solid fa-backward-step"></i>
+                                </button>
+                                <button id="btn-play" onclick="togglePlay()" class="p-2.5 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-white transition text-sm flex items-center justify-center col-span-2 shadow-lg shadow-indigo-600/20 font-medium" title="开始/暂停自动播放">
+                                    <i class="fa-solid fa-play mr-1.5"></i> 自动播放
+                                </button>
+                                <button onclick="nextStep()" class="p-2.5 bg-slate-800 hover:bg-slate-750 rounded-xl border border-slate-700 text-slate-300 hover:text-indigo-400 transition text-sm flex items-center justify-center" title="下一步">
+                                    <i class="fa-solid fa-forward-step"></i>
+                                </button>
+                            </div>
+
+                            <div class="flex items-center justify-between text-xs">
+                                <button onclick="resetPlayback()" class="text-slate-400 hover:text-rose-400 transition">
+                                    <i class="fa-solid fa-rotate"></i> 重置流程
+                                </button>
+                                <span class="text-slate-500 font-mono" id="playback-step-info">步数: --/--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Matrix Panel -->
+                <div class="lg:col-span-8 flex flex-col gap-5">
+                    <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-xl relative overflow-x-auto">
+                        <!-- Format settings -->
+                        <div class="absolute top-4 right-4 z-10 flex items-center gap-2 bg-slate-950/80 p-1.5 rounded-lg border border-slate-800">
+                            <span class="text-xs text-slate-400 px-2">显示格式:</span>
+                            <button onclick="setDisplayFormat('decimal')" id="btn-fmt-decimal" class="text-xs px-2 py-1 bg-indigo-600 text-white rounded font-medium transition">
+                                小数
+                            </button>
+                            <button onclick="setDisplayFormat('fraction')" id="btn-fmt-fraction" class="text-xs px-2 py-1 text-slate-400 hover:text-slate-200 rounded font-medium transition">
+                                分数
+                            </button>
+                        </div>
+
+                        <!-- Main Mathematical Formula Display -->
+                        <div class="flex flex-col md:flex-row items-center justify-center gap-6 pt-8 pb-4 min-w-[650px]">
+                            
+                            <!-- Matrix A block -->
+                            <div class="flex flex-col items-center">
+                                <span class="text-xs font-semibold text-cyan-400 mb-2 tracking-wide uppercase">矩阵 Matrix A (M×N)</span>
+                                <div class="relative p-2.5 bg-slate-950/50 rounded-2xl border border-slate-800/80">
+                                    <div class="absolute inset-y-0 left-0 w-2.5 border-t border-b border-l border-cyan-500/50 rounded-l-md my-1"></div>
+                                    <div class="absolute inset-y-0 right-0 w-2.5 border-t border-b border-r border-cyan-500/50 rounded-r-md my-1"></div>
+                                    
+                                    <div id="grid-container-A" class="grid gap-1.5 px-3 py-1"></div>
+                                </div>
+                            </div>
+
+                            <!-- Multiplication Operator -->
+                            <div class="flex flex-col items-center justify-center">
+                                <span class="h-6"></span>
+                                <div class="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 font-bold shadow-md">
+                                    <i class="fa-solid fa-times text-lg"></i>
+                                </div>
+                            </div>
+
+                            <!-- Matrix B block -->
+                            <div class="flex flex-col items-center">
+                                <span class="text-xs font-semibold text-emerald-400 mb-2 tracking-wide uppercase">矩阵 Matrix B (N×P)</span>
+                                <div class="relative p-2.5 bg-slate-950/50 rounded-2xl border border-slate-800/80">
+                                    <div class="absolute inset-y-0 left-0 w-2.5 border-t border-b border-l border-emerald-500/50 rounded-l-md my-1"></div>
+                                    <div class="absolute inset-y-0 right-0 w-2.5 border-t border-b border-r border-emerald-500/50 rounded-r-md my-1"></div>
+
+                                    <div id="grid-container-B" class="grid gap-1.5 px-3 py-1"></div>
+                                </div>
+                            </div>
+
+                            <!-- Equal Operator -->
+                            <div class="flex flex-col items-center justify-center">
+                                <span class="h-6"></span>
+                                <div class="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 font-bold shadow-md">
+                                    <i class="fa-solid fa-equals text-md"></i>
+                                </div>
+                            </div>
+
+                            <!-- Matrix C Result block -->
+                            <div class="flex flex-col items-center">
+                                <span class="text-xs font-semibold text-amber-400 mb-2 tracking-wide uppercase">结果 Matrix C (M×P)</span>
+                                <div class="relative p-2.5 bg-slate-950/50 rounded-2xl border border-slate-800/80">
+                                    <div class="absolute inset-y-0 left-0 w-2.5 border-t border-b border-l border-amber-500/50 rounded-l-md my-1"></div>
+                                    <div class="absolute inset-y-0 right-0 w-2.5 border-t border-b border-r border-amber-500/50 rounded-r-md my-1"></div>
+
+                                    <div id="grid-container-C" class="grid gap-1.5 px-3 py-1"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom helper hint -->
+                        <p class="text-xs text-center text-slate-500 mt-2">
+                            <i class="fa-solid fa-circle-info mr-1"></i> 提示：您可以直接在方格中修改矩阵 A、B。在矩阵 C 上<b>悬浮鼠标/轻触</b>可查看特定单元格对应点积计算细节。
+                        </p>
+                    </div>
+
+                    <!-- STEP DETAIL PANELS -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <!-- Live calculations formula detail card -->
+                        <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
+                                    <h3 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+                                        <i class="fa-solid fa-square-root-variable text-indigo-400"></i> 单元积加公式解析
+                                    </h3>
+                                    <span class="px-2 py-0.5 text-xs bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded font-mono font-semibold" id="label-cur-cell">
+                                        C[1,1]
+                                    </span>
+                                </div>
+
+                                <p class="text-xs text-slate-400 mb-4">
+                                    矩阵 C 第 <span class="text-cyan-400 font-bold" id="desc-row-idx">1</span> 行、第 <span class="text-amber-400 font-bold" id="desc-col-idx">1</span> 列，对应 A 的整行与 B 的整列作<b>向量点积</b>。
+                                </p>
+
+                                <div class="space-y-3 bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 mb-4 font-mono text-sm">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs text-slate-500 w-12 font-sans">A 行向量:</span>
+                                        <div class="flex items-center gap-1.5" id="formula-row-elements"></div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs text-slate-500 w-12 font-sans">B 列向量:</span>
+                                        <div class="flex items-center gap-1.5" id="formula-col-elements"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-3.5 bg-indigo-950/10 border border-indigo-900/40 rounded-xl">
+                                <span class="text-xs text-slate-500 block mb-1">数学算式：</span>
+                                <div class="text-sm font-mono text-indigo-300 overflow-x-auto whitespace-nowrap" id="formula-math-text"></div>
+                            </div>
+                        </div>
+
+                        <!-- History logs panel -->
+                        <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-2 border-b border-slate-800 pb-2">
+                                    <h3 class="text-sm font-semibold text-slate-200 flex items-center gap-2">
+                                        <i class="fa-solid fa-clock-rotate-left text-indigo-400"></i> 计算存档
+                                    </h3>
+                                    <button onclick="clearHistory()" class="text-xs text-rose-400 hover:text-rose-300 transition">
+                                        清空
+                                    </button>
+                                </div>
+                                <div class="max-h-[175px] overflow-y-auto space-y-2 pr-1" id="history-list"></div>
+                            </div>
+
+                            <div class="pt-3 border-t border-slate-800 flex justify-between items-center mt-3">
+                                <span class="text-xs text-slate-500">将当前矩阵保存在本地备忘：</span>
+                                <button onclick="saveCurrentToHistory()" class="px-3 py-1.5 bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/40 text-indigo-300 hover:text-white rounded-lg text-xs font-semibold transition flex items-center gap-1">
+                                    <i class="fa-solid fa-bookmark"></i> 保存记录
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 2: Overlap of Computation & Communication Simulator -->
+            <section id="tab-overlap" class="hidden flex flex-col gap-6">
+                <!-- Top Explanatory Banner -->
+                <div class="bg-gradient-to-r from-slate-900 via-indigo-950/20 to-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-cyan-600/20 text-cyan-400 rounded-xl border border-cyan-500/30 shadow-lg">
+                            <i class="fa-solid fa-shuffle text-2xl animate-pulse"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-100">计算 (Computation) 与 通信 (Communication) 重叠原理解析</h2>
+                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                                在异构加速器（如 GPU/TPU）或集群运算中，数据需要从网络/内存拉取到计算单元（通信耗时 $T_{comm}$），计算单元执行乘法累加（计算耗时 $T_{comp}$）。
+                                如果串行执行，通道将产生大量空闲延迟。而利用<b>双缓冲（Double Buffering）流水线</b>，我们可以在计算当前块数据 $k$ 的同时，异步在后台拉取下一个数据块 $k+1$ 的数据。从而<b>最大化隐蔽通信开销，提升总体硬件吞吐量！</b>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Main Block -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    
+                    <!-- Sim Control Panel (Left Col: 4) -->
+                    <div class="lg:col-span-4 flex flex-col gap-5">
+                        <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl">
+                            <h3 class="text-sm font-semibold text-slate-200 mb-4 flex items-center gap-1.5">
+                                <i class="fa-solid fa-gear text-indigo-400 animate-spin-slow"></i> 流水线参数设置
+                            </h3>
+                            
+                            <div class="space-y-4">
+                                <!-- Block Split Count K -->
+                                <div>
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="text-slate-400">矩阵切分块数 ($K$)</span>
+                                        <span class="text-indigo-400 font-mono font-bold" id="label-simK">4 块</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-500 mb-1.5">将运算切分成 $K$ 次块数据拉取与乘法累加</p>
+                                    <input type="range" id="input-simK" min="2" max="10" value="4" oninput="updateSimParams()" 
+                                        class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                                </div>
+
+                                <!-- Comm Cost per Block Tcomm -->
+                                <div class="p-3 bg-cyan-950/20 border border-cyan-900/40 rounded-xl">
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="text-slate-300 font-medium">单块通讯耗时 ($T_{comm}$)</span>
+                                        <span class="text-cyan-400 font-mono font-bold" id="label-simTcomm">1.0 秒</span>
+                                    </div>
+                                    <p class="text-[10px] text-cyan-500/80 mb-1.5">从外部物理总线传输单块矩阵数据的时间</p>
+                                    <input type="range" id="input-simTcomm" min="0.2" max="2.0" step="0.1" value="1.0" oninput="updateSimParams()" 
+                                        class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500">
+                                </div>
+
+                                <!-- Comp Cost per Block Tcomp -->
+                                <div class="p-3 bg-emerald-950/20 border border-emerald-900/40 rounded-xl">
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="text-slate-300 font-medium font-sans">单块计算耗时 ($T_{comp}$)</span>
+                                        <span class="text-emerald-400 font-mono font-bold" id="label-simTcomp">0.8 秒</span>
+                                    </div>
+                                    <p class="text-[10px] text-emerald-500/80 mb-1.5">硬件计算核心进行局部块乘法的矩阵运算耗时</p>
+                                    <input type="range" id="input-simTcomp" min="0.2" max="2.0" step="0.1" value="0.8" oninput="updateSimParams()" 
+                                        class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                                </div>
+                            </div>
+
+                            <!-- Auto Balance Optimizer -->
+                            <div class="mt-5 pt-4 border-t border-slate-800 flex flex-col gap-2">
+                                <button onclick="autoOptimizePipeline()" class="w-full py-2 bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-medium rounded-xl text-xs transition shadow-lg shadow-indigo-600/10 flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> 一键硬件带宽/算力调优
+                                </button>
+                                <p class="text-[10px] text-slate-500 text-center">系统会自动配比 $T_{comm} \approx T_{comp}$ 实现极限重叠，逼近 0 空闲理论瓶颈。</p>
+                            </div>
+                        </div>
+
+                        <!-- Real-time metrics card -->
+                        <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl">
+                            <h3 class="text-sm font-semibold text-slate-200 mb-3 flex items-center gap-1.5">
+                                <i class="fa-solid fa-chart-line text-cyan-400"></i> 并行重叠成效监控
+                            </h3>
+                            
+                            <div class="space-y-3.5">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="p-3 bg-slate-950/60 border border-slate-800 rounded-xl text-center">
+                                        <span class="text-[10px] text-slate-500 block">传统串行用时</span>
+                                        <span class="text-base font-bold font-mono text-slate-300" id="metric-seq-time">-- s</span>
+                                    </div>
+                                    <div class="p-3 bg-indigo-950/40 border border-indigo-900/40 rounded-xl text-center">
+                                        <span class="text-[10px] text-indigo-400 block">流式重叠用时</span>
+                                        <span class="text-base font-bold font-mono text-indigo-300" id="metric-pipe-time">-- s</span>
+                                    </div>
+                                </div>
+
+                                <div class="p-3 bg-gradient-to-br from-cyan-950/20 to-indigo-950/20 border border-indigo-500/20 rounded-xl flex items-center justify-between">
+                                    <div>
+                                        <span class="text-[11px] text-slate-400">总计算时间缩减 (Speedup)</span>
+                                        <span class="text-[10px] text-slate-500 block">隐藏通信延迟所带来的收益</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-lg font-black font-mono text-cyan-400" id="metric-saving-ratio">--%</span>
+                                        <span class="text-[10px] text-cyan-500/80 block" id="metric-speedup-x">--x 加速</span>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <div>
+                                        <div class="flex justify-between text-[11px] mb-1">
+                                            <span class="text-slate-400">通信信道满载率</span>
+                                            <span class="text-cyan-400 font-mono font-bold" id="metric-comm-util">--%</span>
+                                        </div>
+                                        <div class="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden">
+                                            <div id="bar-comm-util" class="h-full bg-cyan-500 transition-all duration-300" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[11px] mb-1">
+                                            <span class="text-slate-400">计算核心 (ALU/GPU) 利用率</span>
+                                            <span class="text-emerald-400 font-mono font-bold" id="metric-comp-util">--%</span>
+                                        </div>
+                                        <div class="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden">
+                                            <div id="bar-comp-util" class="h-full bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sim Visualizers (Right Col: 8) -->
+                    <div class="lg:col-span-8 flex flex-col gap-6">
+                        
+                        <!-- Physical Hardware Node Data Flow Simulator -->
+                        <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl relative overflow-hidden">
+                            <h3 class="text-sm font-semibold text-slate-200 mb-4 flex items-center gap-1.5">
+                                <i class="fa-solid fa-cubes-stacked text-emerald-400"></i> 物理总线数据流向实时仿真
+                            </h3>
+
+                            <!-- Simulation schematic diagram -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative py-6 px-2 bg-slate-950/60 rounded-xl border border-slate-800">
+                                
+                                <!-- Source Node -->
+                                <div class="flex flex-col items-center justify-center p-3 bg-slate-900 border border-slate-800 rounded-xl relative">
+                                    <div class="p-2 bg-cyan-600/20 text-cyan-400 rounded-lg mb-2">
+                                        <i class="fa-solid fa-database text-xl"></i>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-300">内存/主控端 (Host)</span>
+                                    <span class="text-[9px] text-slate-500 mt-0.5">待传输矩阵块 $A_k, B_k$</span>
+                                    <!-- Flow arrow track -->
+                                    <div class="absolute -right-4 top-1/2 -translate-y-1/2 hidden md:block z-10">
+                                        <i class="fa-solid fa-circle-arrow-right text-indigo-500 text-lg"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Buffer/Channel Node -->
+                                <div class="flex flex-col items-center justify-center p-3 bg-slate-900 border border-slate-800 rounded-xl relative">
+                                    <div class="p-2 bg-indigo-600/20 text-indigo-400 rounded-lg mb-2 relative">
+                                        <i class="fa-solid fa-shuttle-space text-xl"></i>
+                                        <!-- Active flowing packet -->
+                                        <span id="flow-packet" class="absolute -top-1 -left-1 w-2.5 h-2.5 bg-cyan-400 rounded-full shadow-lg shadow-cyan-500 hidden animate-flow"></span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-300">PCIe / 通信总线</span>
+                                    <div class="flex gap-2.5 mt-1">
+                                        <span id="status-comm" class="text-[9px] px-1.5 py-0.5 rounded font-mono bg-slate-950 text-slate-500">
+                                            闲置 IDLE
+                                        </span>
+                                    </div>
+                                    <!-- Flow arrow track -->
+                                    <div class="absolute -right-4 top-1/2 -translate-y-1/2 hidden md:block z-10">
+                                        <i class="fa-solid fa-circle-arrow-right text-indigo-500 text-lg"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Computing Core Node -->
+                                <div class="flex flex-col items-center justify-center p-3 bg-slate-900 border border-slate-800 rounded-xl">
+                                    <div class="p-2 bg-emerald-600/20 text-emerald-400 rounded-lg mb-1 relative">
+                                        <i id="gear-icon" class="fa-solid fa-gear text-xl"></i>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-300">核心计算单元 (ALU)</span>
+                                    <div class="flex gap-1.5 mt-1">
+                                        <span id="status-comp" class="text-[9px] px-1.5 py-0.5 rounded font-mono bg-slate-950 text-slate-500">
+                                            闲置 IDLE
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 flex items-center justify-between">
+                                <div class="flex items-center gap-1 text-[10px] text-slate-500">
+                                    <i class="fa-solid fa-lightbulb text-amber-400"></i> 双缓冲模型：在向计算单元传输第 $k+1$ 块时，计算单元正在全力消化第 $k$ 块。
+                                </div>
+                                <button onclick="startOverlapSimulation()" id="btn-run-sim" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl text-xs transition shadow-lg flex items-center gap-1.5">
+                                    <i class="fa-solid fa-play"></i> 开始动态仿真演练
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Gantt Comparison Chart -->
+                        <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-xl">
+                            <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-800">
+                                <h3 class="text-sm font-semibold text-slate-200 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-timeline text-indigo-400"></i> 时序甘特图 (Gantt Chart)：串行与流式异步重叠对比
+                                </h3>
+                                <div class="flex gap-3 text-[10px]">
+                                    <span class="flex items-center gap-1 text-slate-400">
+                                        <span class="w-2.5 h-2.5 bg-cyan-500 rounded-sm inline-block"></span> 通信 (Comm)
+                                    </span>
+                                    <span class="flex items-center gap-1 text-slate-400">
+                                        <span class="w-2.5 h-2.5 bg-emerald-500 rounded-sm inline-block"></span> 计算 (Comp)
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Sequential Mode timeline container -->
+                            <div class="space-y-6">
+                                <div>
+                                    <span class="text-xs font-semibold text-slate-400 flex items-center gap-1 mb-1">
+                                        <i class="fa-solid fa-arrow-right text-slate-500"></i> 方案 A：传统无重叠串行方案 (Sequential)
+                                    </span>
+                                    <div class="relative bg-slate-950 rounded-xl p-2.5 border border-slate-900 overflow-x-auto">
+                                        <div id="timeline-seq" class="flex items-center h-14 min-w-[500px] relative">
+                                            <!-- Dynamically generated timeline blocks -->
+                                        </div>
+                                    </div>
+                                    <p class="text-[10px] text-slate-500 mt-1">每个周期：必须等待当前的通信（拉取数据）完成，计算核心才开始跑，效率极低。</p>
+                                </div>
+
+                                <!-- Overlapped Mode timeline container -->
+                                <div>
+                                    <span class="text-xs font-semibold text-cyan-400 flex items-center gap-1 mb-1">
+                                        <i class="fa-solid fa-circle-nodes text-cyan-400"></i> 方案 B：双缓冲异步流水线方案 (Overlapped Pipelining)
+                                    </span>
+                                    <div class="relative bg-slate-950 rounded-xl p-2.5 border border-slate-900 overflow-x-auto">
+                                        <div id="timeline-pipe" class="flex flex-col justify-center h-20 min-w-[500px] gap-2 relative">
+                                            <!-- Dynamically generated timeline rows for overlap -->
+                                        </div>
+                                    </div>
+                                    <p class="text-[10px] text-cyan-500/80 mt-1">
+                                        <i class="fa-solid fa-bolt"></i> <b>通信掩盖</b>：除了启动的 Block 1 通信，其余块的数据拉取均与计算并发。红圈标识出了并行执行阶段。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 3: Normalized Cache Structure & Matrix Tiling (Blocking) Simulator -->
+            <section id="tab-cache" class="hidden flex flex-col gap-6">
+                <!-- Explanatory top bar for Cache mapping -->
+                <div class="bg-gradient-to-r from-slate-900 via-emerald-950/20 to-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-emerald-600/20 text-emerald-400 rounded-xl border border-emerald-500/30 shadow-lg">
+                            <i class="fa-solid fa-database text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-100">高速缓存规范化体系 (Normalized Cache Architecture) 与分块寻址</h2>
+                            <p class="text-xs text-slate-400 mt-1 leading-relaxed animate-pulse">
+                                内存墙（Memory Wall）是限制矩阵相乘效率的元凶。当进行 $C = A \times B$ 计算时，由于计算机读取内存数据是按<b>高速缓存行 (Cache Line)</b> 载入的，若循环寻址顺序不匹配（例如 B 矩阵按列跨步访问），会导致大量 <b>L1 Cache Miss</b>。
+                                采用<b>矩阵分块 (Tiling)</b>，可让一个分块完全装进规范化的 Cache 结构内，使数据在被写回主存前得到最大程度的复用！
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    
+                    <!-- Left Column: Cache Architectures configs (4 cols) -->
+                    <div class="lg:col-span-4 flex flex-col gap-5">
+                        <!-- Cache Spec config -->
+                        <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl">
+                            <h3 class="text-sm font-semibold text-slate-200 mb-4 flex items-center gap-1.5">
+                                <i class="fa-solid fa-sliders text-emerald-400"></i> L1 缓存结构配置 (SRAM)
+                            </h3>
+
+                            <div class="space-y-4">
+                                <!-- Cache Capacity Size -->
+                                <div>
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="text-slate-400">缓存总线行数 (Line Slots)</span>
+                                        <span class="text-emerald-400 font-mono font-bold" id="label-cache-slots">8 行</span>
+                                    </div>
+                                    <input type="range" id="input-cache-slots" min="4" max="12" step="2" value="8" oninput="resetAndReconfigCache()"
+                                        class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                                </div>
+
+                                <!-- Cache Line Size (Doubles per line) -->
+                                <div class="p-3 bg-slate-950/60 border border-slate-800 rounded-xl">
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="text-slate-300 font-medium">Cache Line 大小 (Elements)</span>
+                                        <span class="text-cyan-400 font-mono font-bold" id="label-line-elements">4 浮点数/行</span>
+                                    </div>
+                                    <p class="text-[9px] text-slate-500 mb-2">每次发生 Miss，将相邻的 N 个元素一同载入以提供空间局部性</p>
+                                    <select id="input-line-elements" onchange="resetAndReconfigCache()" class="w-full bg-slate-900 border border-slate-750 text-xs py-1.5 px-2 rounded-lg text-slate-300 font-mono">
+                                        <option value="2">2 个浮点数 (16 字节)</option>
+                                        <option value="4" selected>4 个浮点数 (32 字节)</option>
+                                        <option value="8">8 个浮点数 (64 字节)</option>
+                                    </select>
+                                </div>
+
+                                <!-- Cache Associativity -->
+                                <div>
+                                    <span class="text-xs text-slate-400 block mb-1">映射关联度 (Set Associativity)</span>
+                                    <select id="input-associativity" onchange="resetAndReconfigCache()" class="w-full bg-slate-900 border border-slate-750 text-xs py-1.5 px-2 rounded-lg text-slate-300 font-mono">
+                                        <option value="1" selected>直接映射 (Direct Mapped - 冲突高)</option>
+                                        <option value="2">2路组相联 (2-Way Set Associative)</option>
+                                        <option value="4">4路组相联 (4-Way Set Associative)</option>
+                                    </select>
+                                </div>
+
+                                <!-- Tiling Block Size -->
+                                <div class="p-3 bg-emerald-950/20 border border-emerald-900/40 rounded-xl">
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="text-slate-200 font-semibold">矩阵分块尺寸 Block Size (B)</span>
+                                        <span class="text-emerald-400 font-mono font-bold" id="label-tileSize">2 × 2</span>
+                                    </div>
+                                    <input type="range" id="input-tileSize" min="1" max="4" value="2" oninput="resetAndReconfigCache()"
+                                        class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                                    <p class="text-[9px] text-slate-400 mt-2">当 $B=1$ 时退化为朴素算法 (Naive)，$B > 1$ 采用分块复用优化。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Real-time Cache performance running charts -->
+                        <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl">
+                            <h3 class="text-sm font-semibold text-slate-200 mb-3 flex items-center gap-1.5">
+                                <i class="fa-solid fa-chart-pie text-cyan-400"></i> 实时硬件缓存命中率
+                            </h3>
+
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-3 gap-2 text-center">
+                                    <div class="p-2 bg-slate-950/60 rounded-xl border border-slate-850">
+                                        <span class="text-[9px] text-slate-500 block">访存总次数</span>
+                                        <span class="text-md font-bold font-mono text-slate-200" id="cache-total">0</span>
+                                    </div>
+                                    <div class="p-2 bg-emerald-950/20 rounded-xl border border-emerald-900/30">
+                                        <span class="text-[9px] text-emerald-500 block">Cache 命中</span>
+                                        <span class="text-md font-bold font-mono text-emerald-400" id="cache-hits">0</span>
+                                    </div>
+                                    <div class="p-2 bg-rose-950/20 rounded-xl border border-rose-900/30">
+                                        <span class="text-[9px] text-rose-500 block">Cache 失效</span>
+                                        <span class="text-md font-bold font-mono text-rose-400" id="cache-misses">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-850">
+                                    <div class="flex items-center justify-between mb-1.5">
+                                        <span class="text-xs text-slate-400">真实 Cache 命中率 (Hit Rate)：</span>
+                                        <span class="text-sm font-extrabold font-mono text-cyan-400" id="cache-hit-rate">0.0%</span>
+                                    </div>
+                                    <div class="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden">
+                                        <div id="bar-cache-hit" class="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 transition-all duration-300" style="width: 0%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="p-3 bg-slate-950/40 rounded-xl border border-slate-850 flex items-center justify-between text-xs">
+                                    <div>
+                                        <span class="text-slate-400 block font-medium">读取时间加速倍数</span>
+                                        <p class="text-[9px] text-slate-500 mt-0.5">(基于 1x DRAM 与 15x L1 速度估算)</p>
+                                    </div>
+                                    <span class="text-base font-black font-mono text-emerald-400" id="cache-speedup">-- x</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Interactive tracing panel (8 cols) -->
+                    <div class="lg:col-span-8 flex flex-col gap-5">
+                        
+                        <!-- Real-time memory simulation trace -->
+                        <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl relative overflow-hidden">
+                            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-2 mb-4 border-b border-slate-800 pb-3">
+                                <div>
+                                    <h3 class="text-sm font-semibold text-slate-200 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-list-check text-cyan-400"></i> L1 Cache 硬件槽位图 & 淘汰替换仿真 (LRU)
+                                    </h3>
+                                    <p class="text-[10px] text-slate-500 mt-0.5">直接映射/多组关联度下，缓存行物理映射实时状态</p>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <button onclick="startCacheSimulationStep()" id="btn-cache-step" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-lg text-xs transition flex items-center gap-1">
+                                        <i class="fa-solid fa-forward-step"></i> 单步访存演示
+                                    </button>
+                                    <button onclick="runEntireCacheSimulation()" id="btn-cache-run" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg text-xs transition flex items-center gap-1">
+                                        <i class="fa-solid fa-play"></i> 自动跑完全程
+                                    </button>
+                                    <button onclick="resetCacheStateOnly()" class="px-2 py-1.5 bg-slate-800 hover:bg-slate-750 text-slate-400 hover:text-white rounded-lg text-xs transition">
+                                        <i class="fa-solid fa-rotate-left"></i> 重置 Cache
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Hardware Slots table visualizer -->
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs font-mono border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-800 text-slate-400">
+                                            <th class="py-2 px-3">组/行号 (Set/Line)</th>
+                                            <th class="py-2 px-3">有效位 (V)</th>
+                                            <th class="py-2 px-3">主存标志 Tag</th>
+                                            <th class="py-2 px-3">缓存段内数据 Data (Elements)</th>
+                                            <th class="py-2 px-3">生命周期 (LRU)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cache-hardware-slots">
+                                        <!-- Dynamically generated hardware lines -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Matrix Memory Address Trace View -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <!-- Left: Memory Layout mapping -->
+                            <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl flex flex-col justify-between">
+                                <div>
+                                    <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-wide mb-3 flex items-center gap-1">
+                                        <i class="fa-solid fa-address-book"></i> 矩阵物理寻址划分 (连续内存空间)
+                                    </h4>
+                                    
+                                    <div class="space-y-2 text-xs">
+                                        <div class="flex justify-between items-center p-2 bg-slate-950/60 rounded-lg border border-slate-850">
+                                            <span class="text-cyan-400 font-bold font-mono">Matrix A</span>
+                                            <span class="text-slate-500 font-mono">起始物理地址: 0x1000</span>
+                                            <span class="text-slate-400 font-mono" id="addr-info-A">--</span>
+                                        </div>
+                                        <div class="flex justify-between items-center p-2 bg-slate-950/60 rounded-lg border border-slate-850">
+                                            <span class="text-emerald-400 font-bold font-mono">Matrix B</span>
+                                            <span class="text-slate-500 font-mono">起始物理地址: 0x2000</span>
+                                            <span class="text-slate-400 font-mono" id="addr-info-B">--</span>
+                                        </div>
+                                        <div class="flex justify-between items-center p-2 bg-slate-950/60 rounded-lg border border-slate-850">
+                                            <span class="text-amber-400 font-bold font-mono">Matrix C</span>
+                                            <span class="text-slate-500 font-mono">起始物理地址: 0x3000</span>
+                                            <span class="text-slate-400 font-mono" id="addr-info-C">--</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <p class="text-[10px] text-slate-500 mt-3 leading-relaxed">
+                                        本系统模拟真实的<b>行优先(Row-Major Layout)</b>紧凑存储。元素按连续偏移映射。跨步大距离访问（如 Matrix B 列取数）将对高速缓存极不友好。
+                                    </p>
+                                </div>
+
+                                <div class="mt-4 p-3 bg-indigo-950/20 border border-indigo-900/30 rounded-xl" id="cache-step-desc">
+                                    <span class="text-xs text-slate-400 font-semibold block mb-1">📢 当前访存操作及地址译码：</span>
+                                    <div class="text-[11px] font-mono text-indigo-300 leading-relaxed" id="cache-decode-output">
+                                        等待开始...
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Trace log list -->
+                            <div class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 shadow-xl flex flex-col justify-between">
+                                <div>
+                                    <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wide mb-3 flex items-center justify-between">
+                                        <span><i class="fa-solid fa-list-ol"></i> 访存历史追踪日志 (Bus Trace Log)</span>
+                                        <span class="text-[10px] text-slate-500">仅显示最近 5 条</span>
+                                    </h4>
+                                    
+                                    <div class="space-y-1.5 max-h-[160px] overflow-y-auto" id="cache-trace-logs">
+                                        <div class="text-xs text-slate-500 text-center py-8">无访存历史。点击上方单步演示按钮。</div>
+                                    </div>
+                                </div>
+
+                                <div class="pt-2 border-t border-slate-800 mt-2 flex justify-between items-center">
+                                    <span class="text-[10px] text-slate-500">缓存失效分类包含：</span>
+                                    <div class="flex gap-2 text-[9px] font-mono">
+                                        <span class="text-blue-400">■ 强制冷启动 Miss</span>
+                                        <span class="text-rose-400">■ 冲突/容量 Eviction</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-auto border-t border-slate-800 bg-slate-950 px-6 py-4 text-center text-xs text-slate-500">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
+                <span>MatrixMulti Studio © 2026 • 专注于异构多维线性代数与 Cache 规范化交互可视化</span>
+                <span class="flex items-center gap-1 text-slate-400">
+                    采用 <i class="fa-solid fa-code text-cyan-400"></i> 与 <i class="fa-solid fa-bolt text-indigo-400"></i> 倾力打造
+                </span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Main States for Calc Tab
+        let rowsA = 3;
+        let colsA = 3; 
+        let colsB = 3;
+
+        let matrixA = [
+            [1, 2, 0],
+            [-1, 3, 1],
+            [2, 0, 4]
+        ];
+
+        let matrixB = [
+            [2, 1, 0],
+            [1, 0, 3],
+            [-1, 2, 1]
+        ];
+
+        let matrixC = []; 
+
+        let activeRow = 0; 
+        let activeCol = 0; 
+        let displayFormat = 'decimal'; 
+
+        // Animation States (Step Player)
+        let isPlaying = false;
+        let playInterval = null;
+        let playStepIndex = 0; 
+        let delayMs = 1500;
+
+        // Overlap Simulation parameters
+        let simK = 4;
+        let simTcomm = 1.0; // in seconds
+        let simTcomp = 0.8; // in seconds
+        let isSimulating = false;
+        let simTimer = null;
+        let simCurrentTime = 0.0;
+        let totalSimDuration = 0.0;
+
+        // =====================================================================
+        // CACHE ARCHITECTURE SIMULATION STATES (NORM SYSTEM)
+        // =====================================================================
+        let cacheSlots = 8;
+        let cacheLineElements = 4; // Numbers per line
+        let cacheAssociativity = 1; // 1 = Direct mapped, 2 = 2-Way, etc.
+        let tileSize = 2; // Blocking size B
+
+        // Trace states
+        let cacheTraceCurrentIndex = 0;
+        let cacheAccessList = []; // Sequenced list of read/write requests
+        let l1CacheSystem = []; // Array of sets containing cache line models
+        let cacheHits = 0;
+        let cacheMisses = 0;
+        let cacheTotalAccesses = 0;
+        let autoCacheTimer = null;
+
+        // Physical Address Layout Configuration
+        const BASE_ADDR_A = 0x1000;
+        const BASE_ADDR_B = 0x2000;
+        const BASE_ADDR_C = 0x3000;
+        const ELEM_SIZE = 4; // 4 Bytes for single-precision floating point simulation
+
+        window.onload = function() {
+            loadHistoryFromStorage();
+            
+            // Sync values from selectors
+            document.getElementById('input-rowsA').value = rowsA;
+            document.getElementById('input-colsA').value = colsA;
+            document.getElementById('input-colsB').value = colsB;
+            
+            updateDimensions();
+            updateSimParams();
+            resetAndReconfigCache();
+        };
+
+        // Switch views
+        function switchTab(tabName) {
+            const tabCalc = document.getElementById('tab-calc');
+            const tabOverlap = document.getElementById('tab-overlap');
+            const tabCache = document.getElementById('tab-cache');
+            
+            const btnCalc = document.getElementById('tab-btn-calc');
+            const btnOverlap = document.getElementById('tab-btn-overlap');
+            const btnCache = document.getElementById('tab-btn-cache');
+
+            tabCalc.classList.add('hidden');
+            tabOverlap.classList.add('hidden');
+            tabCache.classList.add('hidden');
+            
+            btnCalc.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition text-slate-400 hover:text-white";
+            btnOverlap.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition text-slate-400 hover:text-white";
+            btnCache.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition text-slate-400 hover:text-white";
+
+            if (tabName === 'calc') {
+                tabCalc.classList.remove('hidden');
+                btnCalc.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition bg-indigo-600 text-white shadow";
+            } else if (tabName === 'overlap') {
+                tabOverlap.classList.remove('hidden');
+                btnOverlap.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition bg-indigo-600 text-white shadow";
+                calculateOverlapSchedules();
+            } else if (tabName === 'cache') {
+                tabCache.classList.remove('hidden');
+                btnCache.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition bg-indigo-600 text-white shadow";
+                resetAndReconfigCache();
+            }
+        }
+
+        function updateDimensions() {
+            rowsA = parseInt(document.getElementById('input-rowsA').value);
+            colsA = parseInt(document.getElementById('input-colsA').value);
+            colsB = parseInt(document.getElementById('input-colsB').value);
+
+            // Set labels
+            document.getElementById('label-rowsA').innerText = rowsA;
+            document.getElementById('label-colsA').innerText = colsA;
+            document.getElementById('label-colsB').innerText = colsB;
+
+            // Update formula specs
+            document.getElementById('dim-A').innerText = `${rowsA}×${colsA}`;
+            document.getElementById('dim-B').innerText = `${colsA}×${colsB}`;
+            document.getElementById('dim-C').innerText = `${rowsA}×${colsB}`;
+
+            adjustMatrixSize();
+            renderGrids();
+            calculateAndRenderC();
+            
+            if (activeRow >= rowsA) activeRow = 0;
+            if (activeCol >= colsB) activeCol = 0;
+            
+            highlightInteractive(activeRow, activeCol);
+            updatePlaybackStepCounter();
+            
+            // If cache tab is initialized, sync it too
+            if (document.getElementById('tab-cache').classList.contains('hidden') === false) {
+                resetAndReconfigCache();
+            }
+        }
+
+        function adjustMatrixSize() {
+            // Adjust A
+            let newA = [];
+            for (let r = 0; r < rowsA; r++) {
+                let row = [];
+                for (let c = 0; c < colsA; c++) {
+                    if (matrixA[r] && matrixA[r][c] !== undefined) {
+                        row.push(matrixA[r][c]);
+                    } else {
+                        row.push(Math.floor(Math.random() * 9) - 4); 
+                    }
+                }
+                newA.push(row);
+            }
+            matrixA = newA;
+
+            // Adjust B
+            let newB = [];
+            for (let r = 0; r < colsA; r++) {
+                let row = [];
+                for (let c = 0; c < colsB; c++) {
+                    if (matrixB[r] && matrixB[r][c] !== undefined) {
+                        row.push(matrixB[r][c]);
+                    } else {
+                        row.push(Math.floor(Math.random() * 9) - 4);
+                    }
+                }
+                newB.push(row);
+            }
+            matrixB = newB;
+        }
+
+        // Decimal to beautiful Fractions
+        function decimalToFraction(val) {
+            if (Number.isInteger(val)) return val.toString();
+            if (Math.abs(val) < 0.0001) return "0";
+            
+            const tolerance = 1.0e-6;
+            let h1 = 1, h2 = 0, k1 = 0, k2 = 1;
+            let b = Math.abs(val);
+            let limitCount = 0;
+
+            do {
+                let a = Math.floor(b);
+                let aux = h1; h1 = a * h1 + h2; h2 = aux;
+                aux = k1; k1 = a * k1 + k2; k2 = aux;
+                b = 1 / (b - a);
+                limitCount++;
+            } while (Math.abs(Math.abs(val) - h1 / k1) > Math.abs(val) * tolerance && limitCount < 8);
+
+            if (k1 > 120 || k1 === 0) return val.toFixed(2); 
+            
+            let sign = val < 0 ? "-" : "";
+            return `${sign}${h1}/${k1}`;
+        }
+
+        function formatVal(val) {
+            if (displayFormat === 'fraction') {
+                return decimalToFraction(val);
+            }
+            return Number.isInteger(val) ? val.toString() : val.toFixed(2);
+        }
+
+        function renderGrids() {
+            // Render Grid A
+            const containerA = document.getElementById('grid-container-A');
+            containerA.style.gridTemplateColumns = `repeat(${colsA}, minmax(44px, 1fr))`;
+            containerA.innerHTML = '';
+            
+            for (let r = 0; r < rowsA; r++) {
+                for (let c = 0; c < colsA; c++) {
+                    let input = document.createElement('input');
+                    input.type = 'number';
+                    input.step = 'any';
+                    input.value = matrixA[r][c];
+                    input.className = `matrix-cell w-14 h-11 bg-slate-900 border border-slate-800 rounded-xl text-center text-sm font-mono font-bold focus:outline-none focus:ring-2 focus:ring-cyan-500 text-cyan-200 hover:border-slate-700`;
+                    input.id = `cell-A-${r}-${c}`;
+                    input.oninput = (e) => {
+                        let parsedVal = parseFloat(e.target.value);
+                        matrixA[r][c] = isNaN(parsedVal) ? 0 : parsedVal;
+                        calculateAndRenderC();
+                        highlightInteractive(activeRow, activeCol);
+                    };
+                    containerA.appendChild(input);
+                }
+            }
+
+            // Render Grid B
+            const containerB = document.getElementById('grid-container-B');
+            containerB.style.gridTemplateColumns = `repeat(${colsB}, minmax(44px, 1fr))`;
+            containerB.innerHTML = '';
+
+            for (let r = 0; r < colsA; r++) {
+                for (let c = 0; c < colsB; c++) {
+                    let input = document.createElement('input');
+                    input.type = 'number';
+                    input.step = 'any';
+                    input.value = matrixB[r][c];
+                    input.className = `matrix-cell w-14 h-11 bg-slate-900 border border-slate-800 rounded-xl text-center text-sm font-mono font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500 text-emerald-200 hover:border-slate-700`;
+                    input.id = `cell-B-${r}-${c}`;
+                    input.oninput = (e) => {
+                        let parsedVal = parseFloat(e.target.value);
+                        matrixB[r][c] = isNaN(parsedVal) ? 0 : parsedVal;
+                        calculateAndRenderC();
+                        highlightInteractive(activeRow, activeCol);
+                    };
+                    containerB.appendChild(input);
+                }
+            }
+        }
+
+        function calculateAndRenderC() {
+            matrixC = Array(rowsA).fill(0).map(() => Array(colsB).fill(0));
+
+            for (let r = 0; r < rowsA; r++) {
+                for (let c = 0; c < colsB; c++) {
+                    let sum = 0;
+                    for (let k = 0; k < colsA; k++) {
+                        sum += matrixA[r][k] * matrixB[k][c];
+                    }
+                    matrixC[r][c] = parseFloat(sum.toFixed(8));
+                }
+            }
+
+            // Render Result Grid C
+            const containerC = document.getElementById('grid-container-C');
+            containerC.style.gridTemplateColumns = `repeat(${colsB}, minmax(44px, 1fr))`;
+            containerC.innerHTML = '';
+
+            for (let r = 0; r < rowsA; r++) {
+                for (let c = 0; c < colsB; c++) {
+                    let cellValue = matrixC[r][c];
+                    let div = document.createElement('div');
+                    div.id = `cell-C-${r}-${c}`;
+                    div.className = `matrix-cell w-14 h-11 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-center text-sm font-mono font-extrabold text-amber-400 cursor-pointer hover:bg-slate-900/60 transition-all duration-200 select-none`;
+                    div.innerText = formatVal(cellValue);
+                    
+                    div.onmouseenter = () => {
+                        highlightInteractive(r, c);
+                    };
+                    div.onclick = () => {
+                        highlightInteractive(r, c);
+                        playStepIndex = r * colsB + c;
+                        updatePlaybackStepCounter();
+                    };
+                    
+                    containerC.appendChild(div);
+                }
+            }
+        }
+
+        function highlightInteractive(rowIdx, colIdx) {
+            activeRow = rowIdx;
+            activeCol = colIdx;
+
+            document.querySelectorAll('.matrix-cell').forEach(el => {
+                el.classList.remove('glow-cyan', 'glow-emerald', 'glow-amber', 'bg-cyan-950/20', 'bg-emerald-950/20', 'bg-amber-950/40');
+            });
+
+            // Highlight Row in A
+            for (let c = 0; c < colsA; c++) {
+                let cellA = document.getElementById(`cell-A-${rowIdx}-${c}`);
+                if (cellA) cellA.classList.add('glow-cyan', 'bg-cyan-950/20');
+            }
+
+            // Highlight Column in B
+            for (let r = 0; r < colsA; r++) {
+                let cellB = document.getElementById(`cell-B-${r}-${colIdx}`);
+                if (cellB) cellB.classList.add('glow-emerald', 'bg-emerald-950/20');
+            }
+
+            // Highlight target Cell in C
+            let cellC = document.getElementById(`cell-C-${rowIdx}-${colIdx}`);
+            if (cellC) cellC.classList.add('glow-amber', 'bg-amber-950/40');
+
+            // Update details
+            const labelCurCell = document.getElementById('label-cur-cell');
+            if (labelCurCell) labelCurCell.innerText = `C[${rowIdx + 1}, ${colIdx + 1}]`;
+            
+            const descRowIdx = document.getElementById('desc-row-idx');
+            if (descRowIdx) descRowIdx.innerText = rowIdx + 1;
+            
+            const descColIdx = document.getElementById('desc-col-idx');
+            if (descColIdx) descColIdx.innerText = colIdx + 1;
+
+            const formulaRow = document.getElementById('formula-row-elements');
+            const formulaCol = document.getElementById('formula-col-elements');
+            const formulaMath = document.getElementById('formula-math-text');
+
+            if (!formulaRow || !formulaCol || !formulaMath) return;
+
+            formulaRow.innerHTML = '';
+            formulaCol.innerHTML = '';
+
+            for (let c = 0; c < colsA; c++) {
+                let span = document.createElement('span');
+                span.className = 'px-1.5 py-0.5 bg-cyan-950 text-cyan-400 border border-cyan-800/60 rounded text-xs';
+                span.innerText = formatVal(matrixA[rowIdx][c]);
+                formulaRow.appendChild(span);
+                if (c < colsA - 1) formulaRow.appendChild(document.createTextNode(', '));
+            }
+
+            for (let r = 0; r < colsA; r++) {
+                let span = document.createElement('span');
+                span.className = 'px-1.5 py-0.5 bg-emerald-950 text-emerald-400 border border-emerald-800/60 rounded text-xs inline-block';
+                span.innerText = formatVal(matrixB[r][colIdx]);
+                formulaCol.appendChild(span);
+                if (r < colsA - 1) formulaCol.appendChild(document.createTextNode(', '));
+            }
+
+            let equationTerms = [];
+            for (let k = 0; k < colsA; k++) {
+                let termA = formatVal(matrixA[rowIdx][k]);
+                let termB = formatVal(matrixB[k][colIdx]);
+                equationTerms.push(`(<span class="text-cyan-400">${termA}</span> × <span class="text-emerald-400">${termB}</span>)`);
+            }
+
+            let equationString = `c<sub>${rowIdx + 1},${colIdx + 1}</sub> = ` + equationTerms.join(' + ') + ` = <span class="text-amber-400 font-bold">${formatVal(matrixC[rowIdx][colIdx])}</span>`;
+            formulaMath.innerHTML = equationString;
+        }
+
+        // Format Toggles
+        function setDisplayFormat(fmt) {
+            displayFormat = fmt;
+            document.getElementById('btn-fmt-decimal').className = fmt === 'decimal' ? 
+                'text-xs px-2 py-1 bg-indigo-600 text-white rounded font-medium transition' : 
+                'text-xs px-2 py-1 text-slate-400 hover:text-slate-200 rounded font-medium transition';
+
+            document.getElementById('btn-fmt-fraction').className = fmt === 'fraction' ? 
+                'text-xs px-2 py-1 bg-indigo-600 text-white rounded font-medium transition' : 
+                'text-xs px-2 py-1 text-slate-400 hover:text-slate-200 rounded font-medium transition';
+
+            calculateAndRenderC();
+            highlightInteractive(activeRow, activeCol);
+        }
+
+        function updateSpeed() {
+            let speedInput = parseFloat(document.getElementById('input-speed').value);
+            document.getElementById('label-speed').innerText = `${speedInput.toFixed(1)}s`;
+            delayMs = speedInput * 1000;
+            
+            if (isPlaying) {
+                clearInterval(playInterval);
+                startPlaybackLoop();
+            }
+        }
+
+        function updatePlaybackStepCounter() {
+            let totalSteps = rowsA * colsB;
+            const pbInfo = document.getElementById('playback-step-info');
+            if (pbInfo) pbInfo.innerText = `步数: ${playStepIndex + 1}/${totalSteps}`;
+        }
+
+        function togglePlay() {
+            const btn = document.getElementById('btn-play');
+            if (isPlaying) {
+                isPlaying = false;
+                clearInterval(playInterval);
+                btn.innerHTML = '<i class="fa-solid fa-play mr-1.5"></i> 自动播放';
+                btn.className = "p-2.5 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-white transition text-sm flex items-center justify-center col-span-2 shadow-lg shadow-indigo-600/20 font-medium";
+                document.getElementById('player-status').innerText = '已暂停';
+            } else {
+                isPlaying = true;
+                btn.innerHTML = '<i class="fa-solid fa-pause mr-1.5"></i> 暂停播放';
+                btn.className = "p-2.5 bg-amber-600 hover:bg-amber-500 rounded-xl text-white transition text-sm flex items-center justify-center col-span-2 shadow-lg shadow-amber-600/20 font-medium";
+                document.getElementById('player-status').innerText = '演练中';
+                startPlaybackLoop();
+            }
+        }
+
+        function startPlaybackLoop() {
+            playInterval = setInterval(() => {
+                let totalSteps = rowsA * colsB;
+                playStepIndex++;
+                if (playStepIndex >= totalSteps) {
+                    playStepIndex = 0; 
+                }
+                executeStep(playStepIndex);
+            }, delayMs);
+        }
+
+        function executeStep(stepIdx) {
+            let totalColsC = colsB;
+            let r = Math.floor(stepIdx / totalColsC);
+            let c = stepIdx % totalColsC;
+
+            highlightInteractive(r, c);
+            updatePlaybackStepCounter();
+            
+            const targetCell = document.getElementById(`cell-C-${r}-${c}`);
+            if (targetCell) {
+                targetCell.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+            }
+        }
+
+        function prevStep() {
+            if (isPlaying) togglePlay();
+            let totalSteps = rowsA * colsB;
+            playStepIndex--;
+            if (playStepIndex < 0) playStepIndex = totalSteps - 1;
+            executeStep(playStepIndex);
+        }
+
+        function nextStep() {
+            if (isPlaying) togglePlay();
+            let totalSteps = rowsA * colsB;
+            playStepIndex++;
+            if (playStepIndex >= totalSteps) playStepIndex = 0;
+            executeStep(playStepIndex);
+        }
+
+        function resetPlayback() {
+            if (isPlaying) togglePlay();
+            playStepIndex = 0;
+            executeStep(playStepIndex);
+        }
+
+        // PRESETS
+        function fillPreset(target, type) {
+            if (target === 'A' || target === 'both') {
+                for (let r = 0; r < rowsA; r++) {
+                    for (let c = 0; c < colsA; c++) {
+                        if (type === 'random') {
+                            matrixA[r][c] = Math.floor(Math.random() * 19) - 9; 
+                        } else if (type === 'identity') {
+                            matrixA[r][c] = (r === c) ? 1 : 0;
+                        } else if (type === 'clear') {
+                            matrixA[r][c] = 0;
+                        }
+                    }
+                }
+            }
+
+            if (target === 'B' || target === 'both') {
+                for (let r = 0; r < colsA; r++) {
+                    for (let c = 0; c < colsB; c++) {
+                        if (type === 'random') {
+                            matrixB[r][c] = Math.floor(Math.random() * 19) - 9;
+                        } else if (type === 'identity') {
+                            matrixB[r][c] = (r === c) ? 1 : 0;
+                        } else if (type === 'clear') {
+                            matrixB[r][c] = 0;
+                        }
+                    }
+                }
+            }
+
+            renderGrids();
+            calculateAndRenderC();
+            highlightInteractive(activeRow, activeCol);
+        }
+
+        // LOCAL STORAGE HISTORY
+        function saveCurrentToHistory() {
+            let record = {
+                id: Date.now(),
+                timestamp: new Date().toLocaleTimeString(),
+                rowsA: rowsA,
+                colsA: colsA,
+                colsB: colsB,
+                matrixA: JSON.parse(JSON.stringify(matrixA)),
+                matrixB: JSON.parse(JSON.stringify(matrixB))
+            };
+
+            let history = getHistory();
+            history.unshift(record);
+            if (history.length > 8) history.pop();
+
+            localStorage.setItem('matrix_history', JSON.stringify(history));
+            renderHistory();
+        }
+
+        function getHistory() {
+            let raw = localStorage.getItem('matrix_history');
+            return raw ? JSON.parse(raw) : [];
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('history-list');
+            if (!container) return;
+            let history = getHistory();
+
+            if (history.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-6">暂无历史，保存当前的参数可快速载入</p>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            history.forEach(item => {
+                let div = document.createElement('div');
+                div.className = "p-2 bg-slate-950/60 rounded-xl border border-slate-800 flex items-center justify-between text-xs transition hover:border-indigo-500/50 cursor-pointer";
+                div.onclick = () => loadHistoryItem(item);
+                
+                div.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="p-1 bg-slate-800 text-indigo-400 rounded-md">
+                            <i class="fa-solid fa-box text-[10px]"></i>
+                        </span>
+                        <div>
+                            <span class="text-slate-300 font-bold font-mono">${item.rowsA}×${item.colsA} × ${item.colsA}×${item.colsB}</span>
+                            <p class="text-[9px] text-slate-500">${item.timestamp}</p>
+                        </div>
+                    </div>
+                    <button class="text-indigo-400 hover:text-indigo-300 text-[10px] font-semibold flex items-center gap-1">
+                        载入 <i class="fa-solid fa-angle-right"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function loadHistoryItem(item) {
+            rowsA = item.rowsA;
+            colsA = item.colsA;
+            colsB = item.colsB;
+
+            matrixA = JSON.parse(JSON.stringify(item.matrixA));
+            matrixB = JSON.parse(JSON.stringify(item.matrixB));
+
+            document.getElementById('input-rowsA').value = rowsA;
+            document.getElementById('input-colsA').value = colsA;
+            document.getElementById('input-colsB').value = colsB;
+
+            updateDimensions();
+        }
+
+        function clearHistory() {
+            localStorage.removeItem('matrix_history');
+            renderHistory();
+        }
+
+        function loadHistoryFromStorage() {
+            renderHistory();
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                document.body.className = "bg-slate-50 text-slate-900 font-sans min-h-screen transition-colors duration-300";
+            } else {
+                html.classList.add('dark');
+                document.body.className = "bg-slate-950 text-slate-100 font-sans min-h-screen transition-colors duration-300";
+            }
+        }
+
+        // =====================================================================
+        // OVERLAP SIMULATION CORE ENGINE (TAB 2)
+        // =====================================================================
+
+        function updateSimParams() {
+            simK = parseInt(document.getElementById('input-simK').value);
+            simTcomm = parseFloat(document.getElementById('input-simTcomm').value);
+            simTcomp = parseFloat(document.getElementById('input-simTcomp').value);
+
+            document.getElementById('label-simK').innerText = `${simK} 块`;
+            document.getElementById('label-simTcomm').innerText = `${simTcomm.toFixed(1)} 秒`;
+            document.getElementById('label-simTcomp').innerText = `${simTcomp.toFixed(1)} 秒`;
+
+            calculateOverlapSchedules();
+        }
+
+        function autoOptimizePipeline() {
+            document.getElementById('input-simTcomm').value = "1.0";
+            document.getElementById('input-simTcomp').value = "1.0";
+            document.getElementById('input-simK').value = "6";
+
+            updateSimParams();
+        }
+
+        function calculateOverlapSchedules() {
+            let seqDuration = simK * (simTcomm + simTcomp);
+
+            let commEvents = [];
+            let compEvents = [];
+
+            // Block 0
+            commEvents.push({ block: 0, start: 0, end: simTcomm });
+            compEvents.push({ block: 0, start: simTcomm, end: simTcomm + simTcomp });
+
+            for (let k = 1; k < simK; k++) {
+                let commStart = commEvents[k-1].end;
+                let commEnd = commStart + simTcomm;
+                commEvents.push({ block: k, start: commStart, end: commEnd });
+
+                let compStart = Math.max(compEvents[k-1].end, commEnd);
+                let compEnd = compStart + simTcomp;
+                compEvents.push({ block: k, start: compStart, end: compEnd });
+            }
+
+            let pipeDuration = compEvents[simK-1].end;
+
+            document.getElementById('metric-seq-time').innerText = `${seqDuration.toFixed(1)}s`;
+            document.getElementById('metric-pipe-time').innerText = `${pipeDuration.toFixed(1)}s`;
+
+            let savedTime = seqDuration - pipeDuration;
+            let savingRatio = (savedTime / seqDuration) * 100;
+            let speedupX = seqDuration / pipeDuration;
+
+            document.getElementById('metric-saving-ratio').innerText = `${savingRatio.toFixed(1)}%`;
+            document.getElementById('metric-speedup-x').innerText = `${speedupX.toFixed(2)}x`;
+
+            let commBusy = simK * simTcomm;
+            let commUtil = (commBusy / pipeDuration) * 100;
+            document.getElementById('metric-comm-util').innerText = `${Math.min(commUtil, 100).toFixed(0)}%`;
+            document.getElementById('bar-comm-util').style.width = `${Math.min(commUtil, 100)}%`;
+
+            let compBusy = simK * simTcomp;
+            let compUtil = (compBusy / pipeDuration) * 100;
+            document.getElementById('metric-comp-util').innerText = `${Math.min(compUtil, 100).toFixed(0)}%`;
+            document.getElementById('bar-comp-util').style.width = `${Math.min(compUtil, 100)}%`;
+
+            totalSimDuration = Math.max(seqDuration, pipeDuration);
+
+            renderGanttChart(commEvents, compEvents, seqDuration, pipeDuration);
+        }
+
+        function renderGanttChart(commEvents, compEvents, seqDuration, pipeDuration) {
+            const timelineSeq = document.getElementById('timeline-seq');
+            if (!timelineSeq) return;
+            timelineSeq.innerHTML = '';
+
+            for (let k = 0; k < simK; k++) {
+                let commW = (simTcomm / totalSimDuration) * 100;
+                let divComm = document.createElement('div');
+                divComm.className = 'h-8 bg-cyan-600 border border-cyan-400 rounded-lg flex items-center justify-center text-[10px] font-semibold text-white shadow-md relative group';
+                divComm.style.width = `${commW}%`;
+                divComm.innerHTML = `<span>传输 ${k+1}</span>
+                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 bg-slate-900 border border-slate-700 p-1.5 rounded text-[9px] opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">
+                        Comm Block ${k+1}<br/>耗时: ${simTcomm.toFixed(1)}s
+                    </div>`;
+                timelineSeq.appendChild(divComm);
+
+                let compW = (simTcomp / totalSimDuration) * 100;
+                let divComp = document.createElement('div');
+                divComp.className = 'h-8 bg-emerald-600 border border-emerald-400 rounded-lg flex items-center justify-center text-[10px] font-semibold text-white shadow-md relative group';
+                divComp.style.width = `${compW}%`;
+                divComp.innerHTML = `<span>计算 ${k+1}</span>
+                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 bg-slate-900 border border-slate-700 p-1.5 rounded text-[9px] opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">
+                        Compute Block ${k+1}<br/>耗时: ${simTcomp.toFixed(1)}s
+                    </div>`;
+                timelineSeq.appendChild(divComp);
+            }
+
+            const timelinePipe = document.getElementById('timeline-pipe');
+            if (!timelinePipe) return;
+            timelinePipe.innerHTML = '';
+
+            let rowComm = document.createElement('div');
+            rowComm.className = "flex items-center h-8 relative w-full";
+            
+            for (let k = 0; k < simK; k++) {
+                let e = commEvents[k];
+                let w = (simTcomm / totalSimDuration) * 100;
+                let l = (e.start / totalSimDuration) * 100;
+
+                let div = document.createElement('div');
+                div.className = 'absolute h-7 bg-cyan-600 border border-cyan-400 rounded-lg flex items-center justify-center text-[10px] font-semibold text-white shadow-md group cursor-help transition-all duration-300';
+                div.style.width = `${w}%`;
+                div.style.left = `${l}%`;
+                div.innerHTML = `<span>传输 ${k+1}</span>
+                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 bg-slate-900 border border-slate-700 p-1.5 rounded text-[9px] opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">
+                        异步通道传输 Block ${k+1}<br/>传输宽: ${e.start.toFixed(1)}s ~ ${e.end.toFixed(1)}s
+                    </div>`;
+                rowComm.appendChild(div);
+            }
+            timelinePipe.appendChild(rowComm);
+
+            let rowComp = document.createElement('div');
+            rowComp.className = "flex items-center h-8 relative w-full";
+
+            for (let k = 0; k < simK; k++) {
+                let e = compEvents[k];
+                let w = (simTcomp / totalSimDuration) * 100;
+                let l = (e.start / totalSimDuration) * 100;
+
+                let div = document.createElement('div');
+                div.className = 'absolute h-7 bg-emerald-600 border border-emerald-400 rounded-lg flex items-center justify-center text-[10px] font-semibold text-white shadow-md group cursor-help transition-all duration-300';
+                div.style.width = `${w}%`;
+                div.style.left = `${l}%`;
+                
+                let isOverlap = false;
+                if (k > 0) {
+                    let prevComm = commEvents[k];
+                    if (e.start < prevComm.end) {
+                        isOverlap = true;
+                    }
+                }
+
+                if (isOverlap) {
+                    div.className += " ring-2 ring-amber-400 ring-offset-1 ring-offset-slate-950";
+                }
+
+                div.innerHTML = `<span>计算 ${k+1} ${isOverlap ? '⚡' : ''}</span>
+                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 bg-slate-900 border border-slate-700 p-1.5 rounded text-[9px] opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">
+                        核心计算 Block ${k+1}<br/>计算宽: ${e.start.toFixed(1)}s ~ ${e.end.toFixed(1)}s
+                        ${isOverlap ? '<br/><span class="text-amber-400 font-bold">已完美重叠 (Overlap Active)!</span>' : ''}
+                    </div>`;
+                rowComp.appendChild(div);
+            }
+            timelinePipe.appendChild(rowComp);
+        }
+
+        function startOverlapSimulation() {
+            if (isSimulating) {
+                isSimulating = false;
+                clearInterval(simTimer);
+                document.getElementById('btn-run-sim').innerHTML = `<i class="fa-solid fa-play"></i> 开始动态仿真演练`;
+                document.getElementById('status-comm').className = "text-[9px] px-1.5 py-0.5 rounded font-mono bg-slate-950 text-slate-500";
+                document.getElementById('status-comm').innerText = "闲置 IDLE";
+                document.getElementById('status-comp').className = "text-[9px] px-1.5 py-0.5 rounded font-mono bg-slate-950 text-slate-500";
+                document.getElementById('status-comp').innerText = "闲置 IDLE";
+                document.getElementById('flow-packet').classList.add('hidden');
+                document.getElementById('gear-icon').className = "fa-solid fa-gear text-xl";
+                return;
+            }
+
+            isSimulating = true;
+            document.getElementById('btn-run-sim').innerHTML = `<i class="fa-solid fa-square-stop text-rose-500"></i> 停止仿真`;
+            
+            simCurrentTime = 0.0;
+            let commEvents = [];
+            let compEvents = [];
+
+            commEvents.push({ block: 0, start: 0, end: simTcomm });
+            compEvents.push({ block: 0, start: simTcomm, end: simTcomm + simTcomp });
+
+            for (let k = 1; k < simK; k++) {
+                let commStart = commEvents[k-1].end;
+                let commEnd = commStart + simTcomm;
+                commEvents.push({ block: k, start: commStart, end: commEnd });
+
+                let compStart = Math.max(compEvents[k-1].end, commEnd);
+                let compEnd = compStart + simTcomp;
+                compEvents.push({ block: k, start: compStart, end: compEnd });
+            }
+
+            let maxDuration = compEvents[simK-1].end;
+
+            simTimer = setInterval(() => {
+                simCurrentTime += 0.1;
+
+                if (simCurrentTime > maxDuration) {
+                    simCurrentTime = 0;
+                }
+
+                let activeCommBlock = -1;
+                for (let k = 0; k < simK; k++) {
+                    if (simCurrentTime >= commEvents[k].start && simCurrentTime < commEvents[k].end) {
+                        activeCommBlock = k;
+                        break;
+                    }
+                }
+
+                let activeCompBlock = -1;
+                for (let k = 0; k < simK; k++) {
+                    if (simCurrentTime >= compEvents[k].start && simCurrentTime < compEvents[k].end) {
+                        activeCompBlock = k;
+                        break;
+                    }
+                }
+
+                const commLabel = document.getElementById('status-comm');
+                const flowPacket = document.getElementById('flow-packet');
+                if (activeCommBlock !== -1) {
+                    commLabel.className = "text-[9px] px-1.5 py-0.5 rounded font-mono bg-cyan-950 text-cyan-400 border border-cyan-800 animate-pulse";
+                    commLabel.innerText = `传输中: 块 ${activeCommBlock + 1}`;
+                    flowPacket.classList.remove('hidden');
+                } else {
+                    commLabel.className = "text-[9px] px-1.5 py-0.5 rounded font-mono bg-slate-950 text-slate-500";
+                    commLabel.innerText = "空闲气泡 BUBBLE";
+                    flowPacket.classList.add('hidden');
+                }
+
+                const compLabel = document.getElementById('status-comp');
+                const gearIcon = document.getElementById('gear-icon');
+                if (activeCompBlock !== -1) {
+                    compLabel.className = "text-[9px] px-1.5 py-0.5 rounded font-mono bg-emerald-950 text-emerald-400 border border-emerald-800";
+                    compLabel.innerText = `算积中: 块 ${activeCompBlock + 1}`;
+                    gearIcon.className = "fa-solid fa-gear text-xl text-emerald-400 animate-spin-fast";
+                } else {
+                    compLabel.className = "text-[9px] px-1.5 py-0.5 rounded font-mono bg-slate-950 text-slate-500";
+                    compLabel.innerText = "等待数据 WAIT";
+                    gearIcon.className = "fa-solid fa-gear text-xl text-slate-600";
+                }
+
+            }, 100);
+        }
+
+        // =====================================================================
+        // =====================================================================
+
+        function resetAndReconfigCache() {
+            // Read hardware parameters
+            cacheSlots = parseInt(document.getElementById('input-cache-slots').value);
+            cacheLineElements = parseInt(document.getElementById('input-line-elements').value);
+            cacheAssociativity = parseInt(document.getElementById('input-associativity').value);
+            tileSize = parseInt(document.getElementById('input-tileSize').value);
+
+            // Sync HTML UI text labels
+            document.getElementById('label-cache-slots').innerText = `${cacheSlots} 行`;
+            document.getElementById('label-line-elements').innerText = `${cacheLineElements} 个数/行`;
+            document.getElementById('label-tileSize').innerText = `${tileSize} × ${tileSize}`;
+
+            // Reset trackers
+            resetCacheStateOnly();
+
+            // Populate total continuous physical sizes
+            const sizeA = rowsA * colsA * ELEM_SIZE;
+            const sizeB = colsA * colsB * ELEM_SIZE;
+            const sizeC = rowsA * colsB * ELEM_SIZE;
+
+            document.getElementById('addr-info-A').innerText = `[大小: ${sizeA} 字节] (0x1000 - 0x${(BASE_ADDR_A + sizeA).toString(16)})`;
+            document.getElementById('addr-info-B').innerText = `[大小: ${sizeB} 字节] (0x2000 - 0x${(BASE_ADDR_B + sizeB).toString(16)})`;
+            document.getElementById('addr-info-C').innerText = `[大小: ${sizeC} 字节] (0x3000 - 0x${(BASE_ADDR_C + sizeC).toString(16)})`;
+
+            // Compute exact sequence of physical memory accesses (Trace Generation)
+            generateMemoryAccessTrace();
+        }
+
+        function resetCacheStateOnly() {
+            if (autoCacheTimer) {
+                clearInterval(autoCacheTimer);
+                autoCacheTimer = null;
+            }
+            document.getElementById('btn-cache-run').innerHTML = `<i class="fa-solid fa-play"></i> 自动跑完全程`;
+
+            cacheHits = 0;
+            cacheMisses = 0;
+            cacheTotalAccesses = 0;
+            cacheTraceCurrentIndex = 0;
+
+            // Construct physical L1 Cache Hardware system
+            // Sets count = total line slots / Associativity
+            const numSets = cacheSlots / cacheAssociativity;
+            l1CacheSystem = [];
+            for (let i = 0; i < numSets; i++) {
+                let set = [];
+                for (let way = 0; way < cacheAssociativity; way++) {
+                    set.push({
+                        valid: false,
+                        tag: null,
+                        data: [],
+                        baseAddress: null,
+                        lruAge: 0 // Age counter for LRU replacement
+                    });
+                }
+                l1CacheSystem.push(set);
+            }
+
+            // Flush trace logs in UI
+            document.getElementById('cache-trace-logs').innerHTML = `<div class="text-xs text-slate-500 text-center py-8">无访存历史。点击上方单步演示按钮。</div>`;
+            document.getElementById('cache-decode-output').innerText = "高速缓存已初始化复位，等待读取指令...";
+
+            updateCacheScoreboard();
+            renderCacheHardwareTable();
+        }
+
+        function generateMemoryAccessTrace() {
+            cacheAccessList = [];
+
+            // Case A: Naive Matrix Multiplication (Loop nesting i, j, k)
+            if (tileSize === 1) {
+                for (let i = 0; i < rowsA; i++) {
+                    for (let j = 0; j < colsB; j++) {
+                        // For element C[i, j], we initialize sum and write back to C memory later
+                        for (let k = 0; k < colsA; k++) {
+                            // Read A[i, k]
+                            let addrA = BASE_ADDR_A + (i * colsA + k) * ELEM_SIZE;
+                            cacheAccessList.push({ type: 'read', matrix: 'A', row: i, col: k, addr: addrA, desc: `读取 A[${i+1}, ${k+1}]` });
+
+                            // Read B[k, j]
+                            let addrB = BASE_ADDR_B + (k * colsB + j) * ELEM_SIZE;
+                            cacheAccessList.push({ type: 'read', matrix: 'B', row: k, col: j, addr: addrB, desc: `读取 B[${k+1}, ${j+1}]` });
+                        }
+                        // Write C[i, j]
+                        let addrC = BASE_ADDR_C + (i * colsB + j) * ELEM_SIZE;
+                        cacheAccessList.push({ type: 'write', matrix: 'C', row: i, col: j, addr: addrC, desc: `写入 C[${i+1}, ${j+1}]` });
+                    }
+                }
+            } 
+            // Case B: Blocked / Tiled Cache Optimized GEMM 
+            else {
+                // Loop nesting: Block row (ii), Block col (jj), Block common (kk)
+                // then internal element loops (i, j, k) inside blocks
+                let B = tileSize;
+                for (let ii = 0; ii < rowsA; ii += B) {
+                    for (let jj = 0; jj < colsB; jj += B) {
+                        for (let kk = 0; kk < colsA; kk += B) {
+                            
+                            // Perform mini-GEMM on tile blocks
+                            for (let i = ii; i < Math.min(ii + B, rowsA); i++) {
+                                for (let j = jj; j < Math.min(jj + B, colsB); j++) {
+                                    for (let k = kk; k < Math.min(kk + B, colsA); k++) {
+                                        // Read A[i, k]
+                                        let addrA = BASE_ADDR_A + (i * colsA + k) * ELEM_SIZE;
+                                        cacheAccessList.push({ type: 'read', matrix: 'A', row: i, col: k, addr: addrA, desc: `分块寻址 A[${i+1}, ${k+1}]` });
+
+                                        // Read B[k, j]
+                                        let addrB = BASE_ADDR_B + (k * colsB + j) * ELEM_SIZE;
+                                        cacheAccessList.push({ type: 'read', matrix: 'B', row: k, col: j, addr: addrB, desc: `分块寻址 B[${k+1}, ${j+1}]` });
+                                    }
+                                    // Periodic write back to C[i, j] inside current tile block calculation
+                                    let addrC = BASE_ADDR_C + (i * colsB + j) * ELEM_SIZE;
+                                    cacheAccessList.push({ type: 'write', matrix: 'C', row: i, col: j, addr: addrC, desc: `写回更新 C[${i+1}, ${j+1}]` });
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+        function startCacheSimulationStep() {
+            if (cacheTraceCurrentIndex >= cacheAccessList.length) {
+                document.getElementById('cache-decode-output').innerHTML = "🏁 <b>矩阵计算流已全部完成！</b> 高速缓存模拟已终结。";
+                if (autoCacheTimer) {
+                    clearInterval(autoCacheTimer);
+                    autoCacheTimer = null;
+                }
+                return;
+            }
+
+            const request = cacheAccessList[cacheTraceCurrentIndex];
+            const byteAddress = request.addr;
+            
+            // Calculate High Performance Normalized Cache mapping
+            // Divide by cache line size (elements * bytes_per_element) to get physical block index
+            const bytesPerLine = cacheLineElements * ELEM_SIZE;
+            const blockNumber = Math.floor(byteAddress / bytesPerLine);
+            
+            // SetIndex mapping depending on associativity
+            const numSets = cacheSlots / cacheAssociativity;
+            const setIndex = blockNumber % numSets;
+            
+            // Cache Line Identifier Tag
+            const tag = Math.floor(blockNumber / numSets);
+            
+            // Cache hit lookup search
+            let set = l1CacheSystem[setIndex];
+            let hit = false;
+            let targetWay = -1;
+
+            // Increment aging of all lines in current set to run LRU replacement
+            set.forEach(way => {
+                if (way.valid) way.lruAge++;
+            });
+
+            // Inspect if target Tag is already validated in Cache slots
+            for (let w = 0; w < set.length; w++) {
+                if (set[w].valid && set[w].tag === tag) {
+                    hit = true;
+                    targetWay = w;
+                    set[w].lruAge = 0; // Reset LRU count on touch access
+                    break;
+                }
+            }
+
+            let logType = "";
+            let evictedStr = "";
+
+            if (hit) {
+                // CACHE HIT ⚡ (Fast access)
+                cacheHits++;
+                logType = "HIT";
+            } else {
+                // CACHE MISS ❌ (Fetch block of continuous memory into L1)
+                cacheMisses++;
+                logType = "MISS";
+
+                // Resolve which slot way to replace (LRU)
+                let emptyWay = set.findIndex(way => !way.valid);
+                if (emptyWay !== -1) {
+                    targetWay = emptyWay;
+                    logType = "COLD_MISS"; // Cold startup compulsory miss
+                } else {
+                    // Evict the line with maximum age (LRU Algorithm)
+                    let oldestWay = 0;
+                    let maxAge = -1;
+                    for (let w = 0; w < set.length; w++) {
+                        if (set[w].lruAge > maxAge) {
+                            maxAge = set[w].lruAge;
+                            oldestWay = w;
+                        }
+                    }
+                    targetWay = oldestWay;
+                    evictedStr = ` (物理冲突! 驱逐已失效块 Tag: ${set[targetWay].tag})`;
+                    logType = "EVICT_MISS";
+                }
+
+                // Simulate Bus DMA: loading standard cache-line boundary elements
+                let baseLineAddr = blockNumber * bytesPerLine;
+                let dataElements = [];
+                for (let offset = 0; offset < cacheLineElements; offset++) {
+                    let physicalOffsetAddress = baseLineAddr + offset * ELEM_SIZE;
+                    dataElements.push(`0x${physicalOffsetAddress.toString(16)}`);
+                }
+
+                // Push block to L1 Cache system
+                set[targetWay] = {
+                    valid: true,
+                    tag: tag,
+                    data: dataElements,
+                    baseAddress: `0x${baseLineAddr.toString(16)}`,
+                    lruAge: 0
+                };
+            }
+
+            cacheTotalAccesses++;
+
+            // Render outputs & logger
+            updateCacheScoreboard();
+            renderCacheHardwareTable();
+            highlightCacheHardwareRow(setIndex, targetWay, hit);
+
+            // Print precise decode info
+            document.getElementById('cache-decode-output').innerHTML = `
+                地址映射: <span class="text-cyan-400 font-bold">0x${byteAddress.toString(16)}</span> (${request.desc})<br/>
+                寻址划分: <span class="text-indigo-400">Set: ${setIndex}</span>, 
+                <span class="text-emerald-400">Tag: ${tag}</span>, 
+                段内偏移: <span class="text-amber-400">Offset: ${byteAddress % bytesPerLine} 字节</span><br/>
+                结果: ${hit ? '⚡ <span class="text-emerald-400 font-extrabold">命中 (Cache Hit)</span>' : '❌ <span class="text-rose-400 font-extrabold">失效 (Cache Miss)</span>'}${evictedStr}
+            `;
+
+            // Append historical log
+            appendCacheTraceLog(request, byteAddress, setIndex, tag, hit, logType);
+
+            // Step trace pointer forward
+            cacheTraceCurrentIndex++;
+        }
+
+        function runEntireCacheSimulation() {
+            const btn = document.getElementById('btn-cache-run');
+            if (autoCacheTimer) {
+                clearInterval(autoCacheTimer);
+                autoCacheTimer = null;
+                btn.innerHTML = `<i class="fa-solid fa-play"></i> 自动跑完全程`;
+            } else {
+                btn.innerHTML = `<i class="fa-solid fa-pause"></i> 暂停运行`;
+                autoCacheTimer = setInterval(() => {
+                    if (cacheTraceCurrentIndex >= cacheAccessList.length) {
+                        clearInterval(autoCacheTimer);
+                        autoCacheTimer = null;
+                        btn.innerHTML = `<i class="fa-solid fa-play"></i> 自动跑完全程`;
+                        document.getElementById('cache-decode-output').innerHTML = "🏁 <b>矩阵计算流已全部完成！</b> 高速缓存模拟已终结。";
+                    } else {
+                        startCacheSimulationStep();
+                    }
+                }, 150);
+            }
+        }
+
+        function updateCacheScoreboard() {
+            document.getElementById('cache-total').innerText = cacheTotalAccesses;
+            document.getElementById('cache-hits').innerText = cacheHits;
+            document.getElementById('cache-misses').innerText = cacheMisses;
+
+            let rate = cacheTotalAccesses > 0 ? (cacheHits / cacheTotalAccesses) * 100 : 0.0;
+            document.getElementById('cache-hit-rate').innerText = `${rate.toFixed(1)}%`;
+            document.getElementById('bar-cache-hit').style.width = `${rate}%`;
+
+            // Estimating real performance speedup based on 15x L1 cache vs DRAM latency model
+            // CPU Access time cost = HitRate * L1_latency + (1 - HitRate) * DRAM_latency
+            // Let's assume L1 = 1 cycle, DRAM = 15 cycles.
+            let normL1 = 1;
+            let normDRAM = 15;
+            let avgAccessTime = (rate / 100) * normL1 + (1 - (rate / 100)) * normDRAM;
+            let speedup = normDRAM / avgAccessTime;
+            
+            document.getElementById('cache-speedup').innerText = cacheTotalAccesses > 0 ? `${speedup.toFixed(2)} x` : "-- x";
+        }
+
+        // Renders physical Cache table in visual format
+        function renderCacheHardwareTable() {
+            const tbody = document.getElementById('cache-hardware-slots');
+            tbody.innerHTML = '';
+
+            let absoluteLineIndex = 0;
+            l1CacheSystem.forEach((set, setIdx) => {
+                set.forEach((way, wayIdx) => {
+                    let tr = document.createElement('tr');
+                    tr.id = `cache-row-${setIdx}-${wayIdx}`;
+                    tr.className = "border-b border-slate-900/50 hover:bg-slate-900/30 cache-line-transition text-xs";
+
+                    // Display mapped elements or dummy empty slots
+                    let dataStr = way.valid ? way.data.join(', ') : '---';
+                    let validBadge = way.valid ? 
+                        '<span class="px-1.5 py-0.5 bg-emerald-950 text-emerald-400 border border-emerald-800 rounded font-bold">1</span>' :
+                        '<span class="px-1.5 py-0.5 bg-slate-950 text-slate-600 border border-slate-800 rounded">0</span>';
+
+                    let label = cacheAssociativity === 1 ? `行 Slot ${setIdx}` : `组 ${setIdx} (第 ${wayIdx+1} 路)`;
+
+                    tr.innerHTML = `
+                        <td class="py-2.5 px-3 font-semibold text-slate-300">${label}</td>
+                        <td class="py-2.5 px-3">${validBadge}</td>
+                        <td class="py-2.5 px-3 text-cyan-400 font-bold">${way.valid ? 'Tag: ' + way.tag : '---'}</td>
+                        <td class="py-2.5 px-3 font-mono text-[10px] text-slate-400">
+                            ${way.valid ? `<span class="text-emerald-400 mr-2">[Base: ${way.baseAddress}]</span>` : ''} ${dataStr}
+                        </td>
+                        <td class="py-2.5 px-3 text-amber-500 font-semibold">${way.valid ? way.lruAge : '---'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                    absoluteLineIndex++;
+                });
+            });
+        }
+
+        function highlightCacheHardwareRow(setIdx, wayIdx, hit) {
+            // Remove previous flashes
+            document.querySelectorAll('[id^="cache-row-"]').forEach(el => {
+                el.classList.remove('bg-emerald-900/30', 'bg-rose-950/40', 'border-emerald-500', 'border-rose-500');
+            });
+
+            const targetRow = document.getElementById(`cache-row-${setIdx}-${wayIdx}`);
+            if (targetRow) {
+                if (hit) {
+                    targetRow.classList.add('bg-emerald-900/30', 'border-emerald-500');
+                } else {
+                    targetRow.classList.add('bg-rose-950/40', 'border-rose-500');
+                }
+            }
+        }
+
+        function appendCacheTraceLog(request, address, setIdx, tag, hit, logType) {
+            const container = document.getElementById('cache-trace-logs');
+            
+            // Clean initial placeholder on first entry
+            if (cacheTotalAccesses === 1) {
+                container.innerHTML = '';
+            }
+
+            let div = document.createElement('div');
+            div.className = "flex items-center justify-between p-1.5 rounded-lg text-[11px] font-mono border transition-all duration-300";
+
+            let hitBadge = "";
+            if (logType === "HIT") {
+                div.className += " bg-emerald-950/20 border-emerald-900/30 text-emerald-400";
+                hitBadge = '<span class="text-emerald-400 font-bold">⚡ HIT</span>';
+            } else if (logType === "COLD_MISS") {
+                div.className += " bg-blue-950/10 border-blue-900/20 text-blue-300";
+                hitBadge = '<span class="text-blue-400">■ COLD_MISS</span>';
+            } else {
+                div.className += " bg-rose-950/10 border-rose-900/20 text-rose-300";
+                hitBadge = '<span class="text-rose-400">■ EVICT_MISS</span>';
+            }
+
+            div.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <span class="font-bold uppercase text-[9px] px-1 bg-slate-800 rounded text-slate-400">${request.type}</span>
+                    <span>矩阵 ${request.matrix}[${request.row+1},${request.col+1}] @ 0x${address.toString(16)}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-slate-500 text-[10px]">Set ${setIdx}</span>
+                    ${hitBadge}
+                </div>
+            `;
+
+            container.insertBefore(div, container.firstChild);
+
+            // Trim logger length
+            if (container.children.length > 5) {
+                container.removeChild(container.lastChild);
+            }
+        }
+    </script>
+</body>
+</html>
