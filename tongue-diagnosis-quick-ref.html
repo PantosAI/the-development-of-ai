@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>临床医生舌诊速查手册 · 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f7f3e8;
+  --paper-2: #efe7d3;
+  --card: #fbf6e9;
+  --ink: #2b2420;
+  --ink-soft: #5d5347;
+  --ink-faint: #8c8174;
+  --line: #d9c9aa;
+  --line-soft: #ebe0c4;
+  --red: #8f2d28;        /* 朱砂红 — 中医、警示 */
+  --red-soft: #b8554c;
+  --gold: #b08642;        /* 暗金 — 强调 */
+  --gold-soft: #d4a861;
+  --blue: #2b3a55;        /* 靛蓝 — 现代医学 */
+  --green: #4a6e54;       /* 苍绿 — 正常/通过 */
+  --purple: #6b4a6e;      /* 紫 — 妇科 */
+  --shadow: 0 1px 2px rgba(70,45,20,.06), 0 8px 28px rgba(90,55,25,.08);
+  --shadow-soft: 0 1px 2px rgba(70,45,20,.04), 0 2px 8px rgba(90,55,25,.05);
+  --serif: 'Noto Serif SC', 'Times New Roman', serif;
+  --sans: 'Noto Sans SC', sans-serif;
+  --mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--paper);
+  background-image:
+    radial-gradient(ellipse at 0% 0%, rgba(176,134,66,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 100%, rgba(143,45,40,0.03) 0%, transparent 50%);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ===== 顶部品牌区 ===== */
+header {
+  background: linear-gradient(180deg, #faf3df 0%, #f7eed5 100%);
+  border-bottom: 1px solid var(--line);
+  padding: 32px 24px 24px;
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: blur(10px);
+  background-color: rgba(247, 243, 232, 0.95);
+}
+.brand-wrap {
+  max-width: 1080px; margin: 0 auto;
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+}
+.seal {
+  width: 56px; height: 56px;
+  background: var(--red);
+  color: var(--paper);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-weight: 900; font-size: 32px;
+  box-shadow: 0 2px 8px rgba(143,45,40,.3);
+  position: relative;
+}
+.seal::after {
+  content: ""; position: absolute; inset: 4px;
+  border: 1px solid rgba(255,255,255,.3); border-radius: 4px;
+}
+.brand h1 {
+  font-family: var(--serif); font-weight: 700;
+  font-size: 26px; line-height: 1.2; color: var(--ink);
+  letter-spacing: 0.01em;
+}
+.brand .by {
+  font-size: 13px; color: var(--ink-soft);
+  margin-top: 2px; font-weight: 400;
+  letter-spacing: 0.02em;
+}
+.brand .badge {
+  display: inline-block; font-size: 11px;
+  background: var(--gold); color: white;
+  padding: 2px 8px; border-radius: 3px;
+  margin-left: 8px; font-weight: 500;
+  vertical-align: middle;
+}
+.search-box {
+  margin-left: auto; display: flex; align-items: center;
+  background: white; border: 1px solid var(--line);
+  border-radius: 6px; padding: 6px 10px; min-width: 220px;
+  transition: border-color 0.2s;
+}
+.search-box:focus-within { border-color: var(--red); }
+.search-box input {
+  border: none; outline: none; background: transparent;
+  font-family: var(--sans); font-size: 13px; color: var(--ink);
+  width: 100%; padding: 2px 0;
+}
+.search-box input::placeholder { color: var(--ink-faint); }
+.search-box svg { flex-shrink: 0; color: var(--ink-soft); }
+
+/* ===== 章节导航 ===== */
+nav.toc {
+  max-width: 1080px; margin: 0 auto;
+  display: flex; gap: 6px; flex-wrap: wrap;
+  padding: 12px 24px 0; font-size: 12.5px;
+}
+nav.toc a {
+  color: var(--ink-soft); text-decoration: none;
+  padding: 4px 10px; border-radius: 4px;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+}
+nav.toc a:hover {
+  color: var(--red); background: white;
+  border-color: var(--line);
+}
+
+/* ===== 主容器 ===== */
+main {
+  max-width: 1080px; margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+section { margin-bottom: 56px; scroll-margin-top: 130px; }
+
+/* ===== 标题层级 ===== */
+h2.section-title {
+  font-family: var(--serif); font-weight: 700;
+  font-size: 24px; line-height: 1.3;
+  color: var(--ink);
+  margin-bottom: 6px;
+  display: flex; align-items: baseline; gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--red);
+}
+h2.section-title .num {
+  font-family: var(--mono); font-weight: 700;
+  font-size: 16px; color: var(--red);
+  background: var(--paper-2);
+  padding: 2px 8px; border-radius: 3px;
+}
+.section-sub {
+  color: var(--ink-soft); font-size: 13.5px;
+  margin-bottom: 24px; margin-top: 8px;
+}
+h3.card-title {
+  font-family: var(--serif); font-weight: 600;
+  font-size: 17px; line-height: 1.4;
+  color: var(--ink); margin-bottom: 6px;
+}
+h4.sub-title {
+  font-family: var(--serif); font-weight: 600;
+  font-size: 15px; color: var(--ink);
+  margin: 14px 0 6px;
+  display: flex; align-items: center; gap: 6px;
+}
+h4.sub-title::before {
+  content: ""; display: inline-block;
+  width: 3px; height: 14px;
+  background: var(--red); border-radius: 1px;
+}
+p { margin-bottom: 8px; }
+strong { color: var(--ink); font-weight: 600; }
+em { color: var(--ink-soft); font-style: normal; }
+
+/* ===== 通用卡片 ===== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px 20px;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+.card-red { border-left: 4px solid var(--red); }
+.card-gold { border-left: 4px solid var(--gold); }
+.card-blue { border-left: 4px solid var(--blue); }
+.card-green { border-left: 4px solid var(--green); }
+.card-purple { border-left: 4px solid var(--purple); }
+
+/* ===== 3 步法 ===== */
+.steps {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-bottom: 24px;
+}
+.step {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px 20px;
+  position: relative;
+  box-shadow: var(--shadow-soft);
+}
+.step-num {
+  position: absolute; top: -10px; left: 16px;
+  background: var(--red); color: white;
+  font-family: var(--serif); font-weight: 700;
+  font-size: 14px; padding: 3px 10px; border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(143,45,40,.3);
+}
+.step h3 { font-family: var(--serif); font-size: 16px; margin: 6px 0 8px; }
+.step ul { list-style: none; padding: 0; }
+.step li {
+  font-size: 13px; color: var(--ink-soft);
+  padding: 3px 0 3px 16px; position: relative;
+}
+.step li::before {
+  content: "·"; position: absolute; left: 4px;
+  color: var(--red); font-weight: 700;
+}
+
+/* ===== 分区图（核心可视化） ===== */
+.zone-svg-wrap {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+  align-items: start;
+  box-shadow: var(--shadow-soft);
+}
+.zone-svg {
+  width: 100%; height: auto;
+  max-width: 480px;
+}
+.zone-legend {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.legend-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 10px; border-radius: 4px;
+  font-size: 13px;
+  background: white; border: 1px solid var(--line-soft);
+  transition: all 0.15s;
+  cursor: default;
+}
+.legend-row:hover { border-color: var(--red); background: #fffaf0; }
+.legend-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-label { font-weight: 600; color: var(--ink); min-width: 56px; }
+.legend-desc { color: var(--ink-soft); font-size: 12.5px; }
+.zone-note {
+  margin-top: 12px; font-size: 12.5px; color: var(--ink-soft);
+  padding: 10px 14px; background: #fff8e8;
+  border-left: 3px solid var(--gold);
+  border-radius: 4px;
+}
+
+/* ===== 7 种舌象卡片网格 ===== */
+.tongue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.tongue-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 18px;
+  position: relative;
+  box-shadow: var(--shadow-soft);
+  transition: all 0.2s;
+}
+.tongue-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+.tongue-icon {
+  width: 100%; height: 80px;
+  margin-bottom: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.tongue-card h4 {
+  font-family: var(--serif); font-size: 15px;
+  color: var(--red); margin-bottom: 4px;
+}
+.tongue-card .meaning {
+  font-size: 12.5px; color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.tongue-card .modern {
+  font-size: 12px; color: var(--blue);
+  padding: 6px 8px; background: rgba(43,58,85,0.05);
+  border-radius: 4px; margin-top: 8px;
+  line-height: 1.5;
+}
+.tongue-card .modern strong { color: var(--blue); }
+.tongue-card .tag {
+  position: absolute; top: 10px; right: 10px;
+  font-size: 10px; padding: 2px 6px; border-radius: 3px;
+  font-weight: 600; letter-spacing: 0.05em;
+}
+.tag-cold { background: rgba(43,58,85,.12); color: var(--blue); }
+.tag-hot { background: rgba(143,45,40,.12); color: var(--red); }
+.tag-damp { background: rgba(176,134,66,.15); color: var(--gold); }
+.tag-qi { background: rgba(74,110,84,.15); color: var(--green); }
+.tag-fire { background: rgba(143,45,40,.15); color: var(--red); }
+
+/* ===== 8 分区详解 ===== */
+.zone-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+.zone-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px 20px;
+  box-shadow: var(--shadow-soft);
+}
+.zone-card .header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px; padding-bottom: 8px;
+  border-bottom: 1px dashed var(--line);
+}
+.zone-card .name {
+  font-family: var(--serif); font-weight: 600;
+  font-size: 16px; color: var(--ink);
+  display: flex; align-items: center; gap: 8px;
+}
+.zone-card .name .loc {
+  font-size: 11px; color: var(--ink-soft);
+  font-family: var(--sans); font-weight: 400;
+}
+.zone-card .layer {
+  font-size: 10.5px; padding: 2px 8px; border-radius: 3px;
+  font-weight: 600; letter-spacing: 0.05em;
+}
+.layer-upper { background: rgba(143,45,40,.12); color: var(--red); }
+.layer-mid { background: rgba(176,134,66,.15); color: var(--gold); }
+.layer-lower { background: rgba(43,58,85,.12); color: var(--blue); }
+.zone-card table {
+  width: 100%; font-size: 12.5px;
+  border-collapse: collapse; margin-top: 4px;
+}
+.zone-card th, .zone-card td {
+  text-align: left; padding: 4px 0; vertical-align: top;
+}
+.zone-card th {
+  color: var(--ink-soft); font-weight: 500;
+  width: 80px; font-size: 11.5px;
+}
+.zone-card td { color: var(--ink); }
+
+/* ===== 女性公式表 ===== */
+.formula-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--purple);
+  border-radius: 8px;
+  padding: 20px 22px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-soft);
+}
+.formula-card h3 {
+  font-family: var(--serif); font-size: 16px;
+  color: var(--purple); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.formula-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+}
+.formula-item {
+  background: white; padding: 10px 14px;
+  border-radius: 5px; border: 1px solid var(--line-soft);
+  font-size: 13px;
+}
+.formula-item .sign {
+  font-weight: 600; color: var(--red);
+  margin-bottom: 3px; font-size: 12.5px;
+}
+.formula-item .interp {
+  color: var(--ink-soft); font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ===== 红旗征网格 ===== */
+.redflag-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+.redflag {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--red);
+  border-radius: 8px;
+  padding: 16px 18px;
+  box-shadow: var(--shadow-soft);
+  position: relative;
+}
+.redflag .urgency {
+  position: absolute; top: 12px; right: 12px;
+  font-size: 10px; font-weight: 700;
+  padding: 2px 6px; border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+.urgency-high { background: var(--red); color: white; }
+.urgency-mid { background: var(--gold); color: white; }
+.urgency-low { background: var(--green); color: white; }
+.redflag h4 {
+  font-family: var(--serif); font-size: 15px;
+  color: var(--red); margin-bottom: 4px;
+}
+.redflag .feature {
+  font-size: 12.5px; color: var(--ink-soft);
+  font-style: normal; margin-bottom: 8px;
+}
+.redflag .differential {
+  font-size: 12.5px; color: var(--blue);
+  background: rgba(43,58,85,.05);
+  padding: 6px 10px; border-radius: 4px;
+  line-height: 1.6;
+}
+.redflag .differential strong { color: var(--blue); }
+
+/* ===== 临床陷阱 ===== */
+.pitfall-list {
+  display: grid; gap: 10px;
+}
+.pitfall {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  border-radius: 6px;
+  padding: 12px 16px;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 12px;
+  font-size: 13.5px;
+  align-items: start;
+}
+.pitfall .label {
+  font-family: var(--serif); font-weight: 600;
+  color: var(--gold); font-size: 14px;
+}
+.pitfall .detail { color: var(--ink-soft); }
+.pitfall .detail strong { color: var(--ink); }
+
+/* ===== AI 视角 ===== */
+.ai-section {
+  background: linear-gradient(135deg, #1f2937 0%, #2b3a55 100%);
+  color: #e9e3d6;
+  border-radius: 10px;
+  padding: 28px 32px;
+  margin: 16px 0;
+  box-shadow: var(--shadow);
+}
+.ai-section .ai-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700;
+  color: var(--gold-soft); letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.ai-section h3 {
+  font-family: var(--serif); font-size: 20px;
+  color: #f7eed5; margin-bottom: 12px; font-weight: 600;
+}
+.ai-section p { color: #cbc4b0; font-size: 13.5px; line-height: 1.7; margin-bottom: 10px; }
+.ai-section strong { color: #f7eed5; }
+.ai-section .highlight {
+  background: rgba(176,134,66,.15);
+  border-left: 3px solid var(--gold);
+  padding: 10px 14px; border-radius: 0 4px 4px 0;
+  margin: 12px 0;
+  color: #e9e3d6;
+}
+.ai-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px; margin-top: 14px;
+}
+.ai-grid .item {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(176,134,66,.2);
+  border-radius: 6px; padding: 12px 14px;
+}
+.ai-grid .item h5 {
+  font-family: var(--serif); font-size: 13px;
+  color: var(--gold-soft); margin-bottom: 4px;
+}
+.ai-grid .item p { font-size: 12px; color: #cbc4b0; margin: 0; line-height: 1.5; }
+
+/* ===== 工具栏 ===== */
+.quick-toc {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 32px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.quick-toc .label {
+  font-family: var(--serif); font-weight: 600;
+  color: var(--ink);
+}
+.quick-toc a {
+  color: var(--blue); text-decoration: none;
+  padding: 2px 8px; border-radius: 3px;
+}
+.quick-toc a:hover { background: rgba(43,58,85,.08); }
+
+/* ===== Footer ===== */
+footer {
+  text-align: center; padding: 32px 24px;
+  color: var(--ink-faint); font-size: 12px;
+  border-top: 1px solid var(--line);
+  background: var(--paper-2);
+}
+footer .quote {
+  font-family: var(--serif); font-size: 13.5px;
+  color: var(--ink-soft); font-style: italic;
+  margin-bottom: 6px;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+  .steps { grid-template-columns: 1fr; }
+  .zone-svg-wrap { grid-template-columns: 1fr; }
+  nav.toc { font-size: 11.5px; padding: 10px 16px 0; }
+  main { padding: 20px 16px 60px; }
+  header { padding: 20px 16px 16px; }
+  .brand h1 { font-size: 20px; }
+  .search-box { min-width: 100%; margin-left: 0; order: 3; }
+  .zone-grid, .redflag-grid, .formula-grid { grid-template-columns: 1fr; }
+  .pitfall { grid-template-columns: 1fr; gap: 4px; }
+  .ai-section { padding: 20px 18px; }
+  h2.section-title { font-size: 20px; }
+  .tongue-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== 打印 ===== */
+@media print {
+  body { background: white; }
+  header, nav.toc, .search-box, .quick-toc { display: none; }
+  .card, .zone-card, .tongue-card, .redflag, .formula-card {
+    box-shadow: none; break-inside: avoid;
+  }
+  .ai-section {
+    background: white !important; color: var(--ink) !important;
+    border: 1px solid var(--line);
+  }
+  .ai-section p, .ai-section .highlight, .ai-grid .item p {
+    color: var(--ink-soft) !important;
+  }
+  .ai-section h3, .ai-grid .item h5 { color: var(--gold) !important; }
+}
+
+/* ===== 搜索高亮 ===== */
+mark {
+  background: rgba(176,134,66,.3);
+  color: var(--ink); padding: 0 2px; border-radius: 2px;
+}
+.hidden-by-search { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand-wrap">
+    <div class="seal">舌</div>
+    <div class="brand">
+      <h1>临床医生舌诊速查手册 <span class="badge">2026 版</span></h1>
+      <div class="by">现代医学视角 × 中医辨证 × AI 临床洞察 · 单文件离线版</div>
+    </div>
+    <div class="search-box">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="searchInput" placeholder="搜舌象、脏腑、症状..." />
+    </div>
+  </div>
+  <nav class="toc">
+    <a href="#quick">3 步法</a>
+    <a href="#zones">分区图</a>
+    <a href="#seven">7 征象</a>
+    <a href="#eight">8 分区</a>
+    <a href="#female">女性公式</a>
+    <a href="#redflag">红旗征</a>
+    <a href="#pitfalls">临床陷阱</a>
+    <a href="#ai">AI 视角</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ===== 介绍 + 3 步法 ===== -->
+  <section id="quick">
+    <h2 class="section-title"><span class="num">00</span>30 秒上手 · 3 步法</h2>
+    <p class="section-sub">临床医生（不限科室）看舌的统一 SOP。任何场景下先按这 3 步走，再深入具体征象。</p>
+
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <h3>看舌质（5 项）</h3>
+        <ul>
+          <li>颜色：淡白 / 淡红 / 红 / 绛 / 青紫</li>
+          <li>形状：胖 / 瘦 / 老 / 嫩</li>
+          <li>齿痕、点刺、裂纹</li>
+          <li>舌下静脉（曲张 → 瘀血）</li>
+          <li>整体神气（有神 / 少神 / 无神）</li>
+        </ul>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <h3>看舌苔（5 项）</h3>
+        <ul>
+          <li>颜色：白 / 黄 / 灰 / 黑</li>
+          <li>厚薄：见底 / 不见底</li>
+          <li>润燥：水滑 / 干燥</li>
+          <li>腐腻：腐渣 / 油腻黏腻</li>
+          <li>剥落：有 / 无 / 花剥</li>
+        </ul>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <h3>看分区（8 区）</h3>
+        <ul>
+          <li>上焦：心 / 肺</li>
+          <li>中焦：脾 / 胃 / 肝 / 胆</li>
+          <li>下焦：肾 / 膀胱 / 肠</li>
+          <li>特殊：心脑 / 颈椎 / 肩 / 乳腺</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card card-gold">
+      <h4 class="sub-title">临床铁律</h4>
+      <p><strong>舌质比舌苔重要</strong>——舌质是本（脏腑气血），舌苔是标（邪正消长）。</p>
+      <p><strong>苔突然退去 / 花剥</strong> → 胃气大伤，警惕。</p>
+      <p><strong>看动态不看快照</strong>——单次意义有限，3-7 天变化曲线更有价值。</p>
+    </div>
+  </section>
+
+  <!-- ===== 核心可视化：分区图 ===== -->
+  <section id="zones">
+    <h2 class="section-title"><span class="num">01</span>舌面分区图（核心可视化）</h2>
+    <p class="section-sub">手绘复刻版，融合经典脏腑分区 + 现代医学定位。点击图例查看对应区域。</p>
+
+    <div class="zone-svg-wrap">
+      <svg class="zone-svg" viewBox="0 0 400 460" xmlns="http://www.w3.org/2000/svg">
+        <!-- 舌形外轮廓（带缺口示意） -->
+        <defs>
+          <radialGradient id="tongueBg" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#f5d5c8" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#e8b8a8" stop-opacity="0.4"/>
+          </radialGradient>
+        </defs>
+
+        <!-- 主体舌形（简化椭圆 + 缺角，模拟舌面分区） -->
+        <ellipse cx="200" cy="230" rx="150" ry="190" fill="url(#tongueBg)" stroke="#8f2d28" stroke-width="2"/>
+        <!-- 舌尖缺角（中央凹陷，常见） -->
+        <path d="M 180 70 Q 200 50 220 70 Q 215 80 200 75 Q 185 80 180 70 Z" fill="#f7f3e8" stroke="#8f2d28" stroke-width="1.5"/>
+
+        <!-- 1线 (上1/3分界) -->
+        <line x1="60" y1="115" x2="340" y2="115" stroke="#8c8174" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="345" y="118" font-size="10" fill="#5d5347" font-family="JetBrains Mono">1线</text>
+        <text x="345" y="132" font-size="10" fill="#8f2d28" font-family="Noto Serif SC">1/3 上焦</text>
+
+        <!-- 2线 (中下分界) -->
+        <line x1="50" y1="280" x2="350" y2="280" stroke="#8c8174" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="355" y="283" font-size="10" fill="#5d5347" font-family="JetBrains Mono">2线</text>
+        <text x="355" y="297" font-size="10" fill="#b08642" font-family="Noto Serif SC">1/3 中焦</text>
+
+        <!-- 3线 (舌根分界) -->
+        <line x1="100" y1="380" x2="300" y2="380" stroke="#8c8174" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="305" y="383" font-size="10" fill="#5d5347" font-family="JetBrains Mono">3线</text>
+        <text x="305" y="397" font-size="10" fill="#2b3a55" font-family="Noto Serif SC">1/3 下焦</text>
+
+        <!-- ===== 脏腑位置标注 ===== -->
+        <!-- 舌尖区 ⊗ (心肺) -->
+        <circle cx="200" cy="95" r="8" fill="none" stroke="#8f2d28" stroke-width="1.5"/>
+        <line x1="200" y1="87" x2="200" y2="103" stroke="#8f2d28" stroke-width="1.5"/>
+        <line x1="192" y1="95" x2="208" y2="95" stroke="#8f2d28" stroke-width="1.5"/>
+        <text x="200" y="50" text-anchor="middle" font-size="13" fill="#8f2d28" font-weight="600" font-family="Noto Serif SC">舌尖区</text>
+
+        <!-- 心 -->
+        <circle cx="200" cy="130" r="14" fill="#8f2d28" fill-opacity="0.2" stroke="#8f2d28" stroke-width="1.5"/>
+        <text x="200" y="135" text-anchor="middle" font-size="14" fill="#8f2d28" font-weight="700" font-family="Noto Serif SC">心</text>
+
+        <!-- 肺 -->
+        <circle cx="200" cy="175" r="14" fill="#8f2d28" fill-opacity="0.2" stroke="#8f2d28" stroke-width="1.5"/>
+        <text x="200" y="180" text-anchor="middle" font-size="14" fill="#8f2d28" font-weight="700" font-family="Noto Serif SC">肺</text>
+
+        <!-- 颈椎 ⊗ -->
+        <circle cx="200" cy="210" r="8" fill="none" stroke="#b08642" stroke-width="1.5"/>
+        <line x1="200" y1="202" x2="200" y2="218" stroke="#b08642" stroke-width="1.5"/>
+        <line x1="192" y1="210" x2="208" y2="210" stroke="#b08642" stroke-width="1.5"/>
+        <text x="232" y="213" font-size="11" fill="#b08642" font-weight="600" font-family="Noto Serif SC">颈椎</text>
+
+        <!-- 脾胃区 -->
+        <circle cx="170" cy="235" r="13" fill="#b08642" fill-opacity="0.2" stroke="#b08642" stroke-width="1.5"/>
+        <text x="170" y="240" text-anchor="middle" font-size="12" fill="#b08642" font-weight="700" font-family="Noto Serif SC">脾</text>
+        <circle cx="230" cy="235" r="13" fill="#b08642" fill-opacity="0.2" stroke="#b08642" stroke-width="1.5"/>
+        <text x="230" y="240" text-anchor="middle" font-size="12" fill="#b08642" font-weight="700" font-family="Noto Serif SC">胃</text>
+
+        <!-- 肝胆区 (舌两边) -->
+        <ellipse cx="95" cy="235" rx="18" ry="14" fill="#b08642" fill-opacity="0.2" stroke="#b08642" stroke-width="1.5"/>
+        <text x="95" y="240" text-anchor="middle" font-size="13" fill="#b08642" font-weight="700" font-family="Noto Serif SC">胆</text>
+        <ellipse cx="305" cy="235" rx="18" ry="14" fill="#b08642" fill-opacity="0.2" stroke="#b08642" stroke-width="1.5"/>
+        <text x="305" y="240" text-anchor="middle" font-size="13" fill="#b08642" font-weight="700" font-family="Noto Serif SC">肝</text>
+
+        <!-- 乳腺 -->
+        <circle cx="135" cy="285" r="12" fill="#6b4a6e" fill-opacity="0.2" stroke="#6b4a6e" stroke-width="1.5"/>
+        <text x="135" y="289" text-anchor="middle" font-size="11" fill="#6b4a6e" font-weight="700" font-family="Noto Serif SC">乳</text>
+        <circle cx="265" cy="285" r="12" fill="#6b4a6e" fill-opacity="0.2" stroke="#6b4a6e" stroke-width="1.5"/>
+        <text x="265" y="289" text-anchor="middle" font-size="11" fill="#6b4a6e" font-weight="700" font-family="Noto Serif SC">腺</text>
+
+        <!-- 肩 -->
+        <ellipse cx="110" cy="345" rx="16" ry="11" fill="#b08642" fill-opacity="0.15" stroke="#b08642" stroke-width="1.5"/>
+        <text x="110" y="349" text-anchor="middle" font-size="12" fill="#b08642" font-weight="700" font-family="Noto Serif SC">肩</text>
+        <ellipse cx="290" cy="345" rx="16" ry="11" fill="#b08642" fill-opacity="0.15" stroke="#b08642" stroke-width="1.5"/>
+        <text x="290" y="349" text-anchor="middle" font-size="12" fill="#b08642" font-weight="700" font-family="Noto Serif SC">肩</text>
+
+        <!-- 扁桃 -->
+        <ellipse cx="155" cy="380" rx="14" ry="9" fill="#b08642" fill-opacity="0.15" stroke="#b08642" stroke-width="1.5"/>
+        <text x="155" y="384" text-anchor="middle" font-size="10" fill="#b08642" font-weight="700" font-family="Noto Serif SC">扁桃</text>
+        <ellipse cx="245" cy="380" rx="14" ry="9" fill="#b08642" fill-opacity="0.15" stroke="#b08642" stroke-width="1.5"/>
+        <text x="245" y="384" text-anchor="middle" font-size="10" fill="#b08642" font-weight="700" font-family="Noto Serif SC">扁桃</text>
+
+        <!-- 肾 -->
+        <circle cx="180" cy="405" r="13" fill="#2b3a55" fill-opacity="0.2" stroke="#2b3a55" stroke-width="1.5"/>
+        <text x="180" y="409" text-anchor="middle" font-size="12" fill="#2b3a55" font-weight="700" font-family="Noto Serif SC">肾</text>
+        <circle cx="220" cy="405" r="13" fill="#2b3a55" fill-opacity="0.2" stroke="#2b3a55" stroke-width="1.5"/>
+        <text x="220" y="409" text-anchor="middle" font-size="12" fill="#2b3a55" font-weight="700" font-family="Noto Serif SC">肾</text>
+
+        <!-- 膀胱 ⊗ -->
+        <circle cx="155" cy="115" r="8" fill="none" stroke="#2b3a55" stroke-width="1.5"/>
+        <line x1="155" y1="107" x2="155" y2="123" stroke="#2b3a55" stroke-width="1.5"/>
+        <line x1="147" y1="115" x2="163" y2="115" stroke="#2b3a55" stroke-width="1.5"/>
+        <text x="115" y="80" font-size="11" fill="#2b3a55" font-weight="600" font-family="Noto Serif SC">膀胱区</text>
+
+        <!-- 肾区 ⊗ -->
+        <circle cx="245" cy="115" r="8" fill="none" stroke="#2b3a55" stroke-width="1.5"/>
+        <line x1="245" y1="107" x2="245" y2="123" stroke="#2b3a55" stroke-width="1.5"/>
+        <line x1="237" y1="115" x2="253" y2="115" stroke="#2b3a55" stroke-width="1.5"/>
+        <text x="280" y="80" font-size="11" fill="#2b3a55" font-weight="600" font-family="Noto Serif SC">肾区</text>
+
+        <!-- 肠 -->
+        <ellipse cx="200" cy="350" rx="12" ry="10" fill="#2b3a55" fill-opacity="0.15" stroke="#2b3a55" stroke-width="1.5"/>
+        <text x="200" y="354" text-anchor="middle" font-size="11" fill="#2b3a55" font-weight="700" font-family="Noto Serif SC">肠</text>
+
+        <!-- 腹腔沟（横标） -->
+        <text x="115" y="195" font-size="10" fill="#5d5347" font-family="Noto Serif SC">腹腔沟</text>
+
+        <!-- 1线/2线/3线 横向标号（中部右侧） -->
+        <text x="358" y="200" font-size="10" fill="#8c8174" font-family="JetBrains Mono">1/3</text>
+        <text x="358" y="335" font-size="10" fill="#8c8174" font-family="JetBrains Mono">1/3</text>
+        <text x="358" y="430" font-size="10" fill="#8c8174" font-family="JetBrains Mono">1/3</text>
+      </svg>
+
+      <div class="zone-legend">
+        <div class="legend-row">
+          <div class="legend-dot" style="background:#8f2d28"></div>
+          <div class="legend-label">上焦</div>
+          <div class="legend-desc">舌尖 + 舌前 1/3 — 心 / 肺 / 心脑 / 颈椎</div>
+        </div>
+        <div class="legend-row">
+          <div class="legend-dot" style="background:#b08642"></div>
+          <div class="legend-label">中焦</div>
+          <div class="legend-desc">舌中部 — 脾 / 胃 / 肝 / 胆 / 乳腺 / 肩</div>
+        </div>
+        <div class="legend-row">
+          <div class="legend-dot" style="background:#2b3a55"></div>
+          <div class="legend-label">下焦</div>
+          <div class="legend-desc">舌根 + 舌后 1/3 — 肾 / 膀胱 / 肠</div>
+        </div>
+        <div class="legend-row">
+          <div class="legend-dot" style="background:#6b4a6e"></div>
+          <div class="legend-label">妇科</div>
+          <div class="legend-desc">乳腺区 — 女性专属，详见 <a href="#female" style="color:#6b4a6e">女性公式</a></div>
+        </div>
+        <div class="legend-row">
+          <div class="legend-dot" style="background:none;border:1.5px solid #8f2d28"></div>
+          <div class="legend-label">⊗</div>
+          <div class="legend-desc">凹陷或异常区域（结合 7 征象判断）</div>
+        </div>
+        <div class="zone-note">
+          <strong>位置记忆口诀</strong>：舌尖看心肺，舌中脾胃肝胆，舌根肾膀胱肠，舌边肝胆对应乳腺。<br>
+          <em>注：分区定位是临床经验总结，不是解剖学事实——用于辅助判断方向，最终需结合症状和现代检查。</em>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7 种不正常舌象 ===== -->
+  <section id="seven">
+    <h2 class="section-title"><span class="num">02</span>7 种不正常舌象速查</h2>
+    <p class="section-sub">来自你的笔记核心内容：凹 / 凸 / 缺损 / 白苔 / 黄苔 / 黄腻苔 / 红点。每种配现代医学对应可能。</p>
+
+    <div class="tongue-grid">
+      <div class="tongue-card">
+        <span class="tag tag-qi">气虚</span>
+        <div class="tongue-icon">
+          <svg width="80" height="50" viewBox="0 0 80 50">
+            <ellipse cx="40" cy="25" rx="30" ry="18" fill="#f5d5c8" stroke="#8f2d28" stroke-width="1.5"/>
+            <path d="M 30 32 Q 40 38 50 32" fill="#5d5347" opacity="0.6"/>
+            <path d="M 30 35 Q 40 41 50 35" fill="none" stroke="#5d5347" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <h4>① 凹舌</h4>
+        <div class="meaning"><strong>代表：</strong>气血不足</div>
+        <div class="modern">
+          <strong>现代医学可能：</strong>贫血、慢性疲劳、低蛋白血症、营养不良、消化吸收差
+        </div>
+      </div>
+
+      <div class="tongue-card">
+        <span class="tag tag-fire">气滞</span>
+        <div class="tongue-icon">
+          <svg width="80" height="50" viewBox="0 0 80 50">
+            <ellipse cx="40" cy="25" rx="32" ry="20" fill="#f5d5c8" stroke="#8f2d28" stroke-width="1.5"/>
+            <ellipse cx="40" cy="22" rx="14" ry="8" fill="#e8b8a8" opacity="0.6"/>
+            <circle cx="40" cy="20" r="3" fill="#8f2d28" opacity="0.5"/>
+          </svg>
+        </div>
+        <h4>② 凸舌</h4>
+        <div class="meaning"><strong>代表：</strong>胀气（气滞）</div>
+        <div class="modern">
+          <strong>现代医学可能：</strong>胃肠胀气、功能性消化不良、肠梗阻早期、便秘、菌群失调
+        </div>
+      </div>
+
+      <div class="tongue-card">
+        <span class="tag tag-cold">虚损</span>
+        <div class="tongue-icon">
+          <svg width="80" height="50" viewBox="0 0 80 50">
+            <ellipse cx="40" cy="25" rx="30" ry="18" fill="#f5d5c8" stroke="#8f2d28" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <path d="M 25 25 L 30 20 L 35 28 L 40 22 L 45 30 L 50 24 L 55 28" fill="none" stroke="#5d5347" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h4>③ 缺损舌</h4>
+        <div class="meaning"><strong>代表：</strong>脏腑功能下降</div>
+        <div class="modern">
+          <strong>现代医学可能：</strong>对应区域脏器功能减退（如心脑区缺损 = 心肌缺血 / 脑供血不足）、慢性病后期
+        </div>
+      </div>
+
+      <div class="tongue-card">
+        <span class="tag tag-cold">寒</span>
+        <div class="tongue-icon">
+          <svg width="80" height="50" viewBox="0 0 80 50">
+            <ellipse cx="40" cy="25" rx="30" ry="18" fill="#f5d5c8" stroke="#8f2d28" stroke-width="1.5"/>
+            <ellipse cx="40" cy="25" rx="28" ry="16" fill="white" opacity="0.7"/>
+          </svg>
+        </div>
+        <h4>④ 白苔</h4>
+        <div class="meaning"><strong>代表：</strong>寒</div>
+        <div class="modern">
+          <strong>现代医学可能：</strong>表寒证（外感风寒）、阳虚内寒、低代谢状态、甲状腺功能减退、慢性感染
+        </div>
+      </div>
+
+      <div class="tongue-card">
+        <span class="tag tag-hot">热</span>
+        <div class="tongue-icon">
+          <svg width="80" height="50" viewBox="0 0 80 50">
+            <ellipse cx="40" cy="25" rx="30" ry="18" fill="#f5d5c8" stroke="#8f2d28" stroke-width="1.5"/>
+            <ellipse cx="40" cy="25" rx="28" ry="16" fill="#e8c860" opacity="0.6"/>
+          </svg>
+        </div>
+        <h4>⑤ 黄苔</h4>
+        <div class="meaning"><strong>代表：</strong>热</div>
+        <div class="modern">
+          <strong>现代医学可能：</strong>细菌性炎症（呼吸道/消化道/泌尿道）、发热、感染性疾病、口腔卫生差
+        </div>
+      </div>
+
+      <div class="tongue-card">
+        <span class="tag tag-damp">湿热</span>
+        <div class="tongue-icon">
+          <svg width="80" height="50" viewBox="0 0 80 50">
+            <ellipse cx="40" cy="25" rx="30" ry="18" fill="#f5d5c8" stroke="#8f2d28" stroke-width="1.5"/>
+            <ellipse cx="40" cy="25" rx="27" ry="15" fill="#c89030" opacity="0.5"/>
+            <circle cx="32" cy="22" r="1.5" fill="#8f2d28" opacity="0.7"/>
+            <circle cx="48" cy="28" r="1.5" fill="#8f2d28" opacity="0.7"/>
+            <circle cx="40" cy="30" r="1.5" fill="#8f2d28" opacity="0.7"/>
+          </svg>
+        </div>
+        <h4>⑥ 黄腻苔</h4>
+        <div class="meaning"><strong>代表：</strong>湿热</div>
+        <div class="modern">
+          <strong>现代医学可能：</strong>胆道感染、肝炎、胰腺炎、消化道湿热证、长期饮酒、高脂血症
+        </div>
+      </div>
+
+      <div class="tongue-card">
+        <span class="tag tag-fire">炎症</span>
+        <div class="tongue-icon">
+          <svg width="80" height="50" viewBox="0 0 80 50">
+            <ellipse cx="40" cy="25" rx="30" ry="18" fill="#f5d5c8" stroke="#8f2d28" stroke-width="1.5"/>
+            <circle cx="30" cy="22" r="2" fill="#8f2d28"/>
+            <circle cx="50" cy="20" r="2" fill="#8f2d28"/>
+            <circle cx="40" cy="28" r="2" fill="#8f2d28"/>
+            <circle cx="35" cy="30" r="1.5" fill="#8f2d28"/>
+            <circle cx="45" cy="25" r="1.5" fill="#8f2d28"/>
+          </svg>
+        </div>
+        <h4>⑦ 红点</h4>
+        <div class="meaning"><strong>代表：</strong>炎症堵（局部充血 / 瘀热）</div>
+        <div class="modern">
+          <strong>现代医学可能：</strong>对应区域急性炎症、黏膜充血、微循环障碍、过敏反应
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8 分区详解 ===== -->
+  <section id="eight">
+    <h2 class="section-title"><span class="num">03</span>8 大分区详解</h2>
+    <p class="section-sub">每个分区：位置 / 中医含义 / 现代医学对应 / 红旗信号 / 处理建议</p>
+
+    <div class="zone-grid">
+
+      <div class="zone-card">
+        <div class="header">
+          <div class="name">① 心区 <span class="loc">舌尖正中</span></div>
+          <span class="layer layer-upper">上焦</span>
+        </div>
+        <table>
+          <tr><th>中医</th><td>主血脉、神志</td></tr>
+          <tr><th>西医</th><td>心血管 + 自主神经</td></tr>
+          <tr><th>凹陷</th><td>心气虚 → 心慌、心悸、气短</td></tr>
+          <tr><th>发红</th><td>心火旺 → 失眠、烦躁、口疮</td></tr>
+          <tr><th>红点</th><td>心肌炎早期 / 交感亢进</td></tr>
+        </table>
+      </div>
+
+      <div class="zone-card">
+        <div class="header">
+          <div class="name">② 肺区 <span class="loc">舌尖 1/3</span></div>
+          <span class="layer layer-upper">上焦</span>
+        </div>
+        <table>
+          <tr><th>中医</th><td>主气、司呼吸、宣发肃降</td></tr>
+          <tr><th>西医</th><td>呼吸系统 + 皮肤屏障</td></tr>
+          <tr><th>凹陷</th><td>肺气虚 → 易感冒、气短、汗多</td></tr>
+          <tr><th>白腻</th><td>痰湿壅肺 → 慢支、哮喘</td></tr>
+          <tr><th>黄苔</th><td>肺热 → 急性上感、肺炎</td></tr>
+        </table>
+      </div>
+
+      <div class="zone-card">
+        <div class="header">
+          <div class="name">③ 脾区 <span class="loc">舌中偏左</span></div>
+          <span class="layer layer-mid">中焦</span>
+        </div>
+        <table>
+          <tr><th>中医</th><td>主运化、统血、升清</td></tr>
+          <tr><th>西医</th><td>消化吸收 + 免疫 + 造血</td></tr>
+          <tr><th>凹陷</th><td>脾虚 → 食少、便溏、乏力</td></tr>
+          <tr><th>齿痕</th><td>脾虚湿盛 → 慢炎、低蛋白</td></tr>
+          <tr><th>裂纹</th><td>脾胃阴虚 → 慢性胃炎</td></tr>
+        </table>
+      </div>
+
+      <div class="zone-card">
+        <div class="header">
+          <div class="name">④ 胃区 <span class="loc">舌中偏右</span></div>
+          <span class="layer layer-mid">中焦</span>
+        </div>
+        <table>
+          <tr><th>中医</th><td>主受纳、腐熟水谷</td></tr>
+          <tr><th>西医</th><td>胃 + 食管 + 部分肝</td></tr>
+          <tr><th>黄腻</th><td>胃热 / 食积 → 口臭、嗳气</td></tr>
+          <tr><th>剥苔</th><td>胃阴虚 → 萎缩性胃炎（警惕）</td></tr>
+          <tr><th>干燥</th><td>津液不足 / 脱水</td></tr>
+        </table>
+      </div>
+
+      <div class="zone-card">
+        <div class="header">
+          <div class="name">⑤ 肝区 <span class="loc">舌右侧（胆对侧）</span></div>
+          <span class="layer layer-mid">中焦</span>
+        </div>
+        <table>
+          <tr><th>中医</th><td>主疏泄、藏血</td></tr>
+          <tr><th>西医</th><td>肝脏 + 情志调节</td></tr>
+          <tr><th>紫暗</th><td>肝郁血瘀 → 脂肪肝、肝硬化</td></tr>
+          <tr><th>红点</th><td>肝火旺 → 高血压、甲亢</td></tr>
+          <tr><th>凹陷</th><td>肝血虚 → 眩晕、月经量少</td></tr>
+        </table>
+      </div>
+
+      <div class="zone-card">
+        <div class="header">
+          <div class="name">⑥ 胆区 <span class="loc">舌左侧（肝对侧）</span></div>
+          <span class="layer layer-mid">中焦</span>
+        </div>
+        <table>
+          <tr><th>中医</th><td>藏与排泄胆汁</td></tr>
+          <tr><th>西医</th><td>胆囊 + 胆道系统</td></tr>
+          <tr><th>黄腻</th><td>肝胆湿热 → 胆囊炎、胆石症</td></tr>
+          <tr><th>凸起</th><td>胆气郁结 → 胁胀、口苦</td></tr>
+          <tr><th>红点</th><td>急性胆道感染</td></tr>
+        </table>
+      </div>
+
+      <div class="zone-card">
+        <div class="header">
+          <div class="name">⑦ 肾区 <span class="loc">舌根两侧 ⊗</span></div>
+          <span class="layer layer-lower">下焦</span>
+        </div>
+        <table>
+          <tr><th>中医</th><td>藏精、主水、主骨生髓</td></tr>
+          <tr><th>西医</th><td>肾 + 内分泌 + 生殖</td></tr>
+          <tr><th>凹陷</th><td>肾虚 → 腰膝酸软、听力下降</td></tr>
+          <tr><th>发红</th><td>阴虚火旺 → 盗汗、失眠</td></tr>
+          <tr><th>无苔</th><td>肾阴大亏 → 重症（警惕）</td></tr>
+        </table>
+      </div>
+
+      <div class="zone-card">
+        <div class="header">
+          <div class="name">⑧ 膀胱/肠区 <span class="loc">舌根正中 + 膀胱 ⊗</span></div>
+          <span class="layer layer-lower">下焦</span>
+        </div>
+        <table>
+          <tr><th>中医</th><td>膀胱主气化、肠主传导</td></tr>
+          <tr><th>西医</th><td>泌尿 + 下消化道</td></tr>
+          <tr><th>白腻</th><td>寒湿下注 → 尿频、便溏</td></tr>
+          <tr><th>黄腻</th><td>湿热下注 → 尿路感染、痔疮</td></tr>
+          <tr><th>凹陷</th><td>气化不利 → 慢性盆腔炎</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 女性公式 ===== -->
+  <section id="female">
+    <h2 class="section-title"><span class="num">04</span>女性专属公式 · 舌 + 经</h2>
+    <p class="section-sub">直接来自你的笔记：心脑 / 颈椎 / 肩周 / 乳腺 四大妇科相关区域。女性患者（尤其经期前后）必看。</p>
+
+    <div class="formula-card">
+      <h3>① 心脑区（舌根后部）</h3>
+      <div class="formula-grid">
+        <div class="formula-item">
+          <div class="sign">凹陷</div>
+          <div class="interp">心气不足 → 心慌、心悸</div>
+        </div>
+        <div class="formula-item">
+          <div class="sign">发红</div>
+          <div class="interp">心火大 → 烦躁、心烦、心急、失眠多梦</div>
+        </div>
+        <div class="formula-item">
+          <div class="sign">发白</div>
+          <div class="interp">心血虚 → 心慌、胸闷</div>
+        </div>
+        <div class="formula-item">
+          <div class="sign">红点</div>
+          <div class="interp">炎症 → 头痛、头胀、心慌不舒服</div>
+        </div>
+        <div class="formula-item">
+          <div class="sign">缺损</div>
+          <div class="interp">心肌缺血 / 脑供血不足 → 心慌、心率不齐、头晕</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="formula-card">
+      <h3>② 颈椎区（舌中前部）</h3>
+      <div class="formula-grid">
+        <div class="formula-item">
+          <div class="sign">凸出（孩子）</div>
+          <div class="interp">扁桃体肿大 / 腺样体肥大</div>
+        </div>
+        <div class="formula-item">
+          <div class="sign">凸出（成人）</div>
+          <div class="interp">颈椎变形、骨质增生</div>
+        </div>
+        <div class="formula-item">
+          <div class="sign">凹陷</div>
+          <div class="interp">颈椎气血不足 → 肩颈僵硬、易落枕</div>
+        </div>
+        <div class="formula-item">
+          <div class="sign">红点</div>
+          <div class="interp">颈椎炎症、不舒服</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="formula-card">
+      <h3>③ 肩周区（舌两侧偏下）</h3>
+      <div class="formula-grid">
+        <div class="formula-item">
+          <div class="sign">凹陷</div>
+          <div class="interp">肩周气血不足、活动受限</div>
+        </div>
+        <div class="formula-item">
+          <div class="sign">红点</div>
+          <div class="interp">肩周区炎症 → 胀、难受、活动痛</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="formula-card">
+      <h3>④ 乳腺区（舌中两侧）</h3>
+      <div class="formula-grid">
+        <div class="formula-item">
+          <div class="sign">凹陷</div>
+          <div class="interp">乳腺气血不足 → 胸下垂、松弛</div>
+        </div>
+        <div class="formula-item">
+          <div class="sign">红点</div>
+          <div class="interp">乳腺增生 / 结节（建议 B 超复查）</div>
+        </div>
+        <div class="formula-item">
+          <div class="sign">凸出</div>
+          <div class="interp">乳腺肿块可能（必查）</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-purple">
+      <h4 class="sub-title">女性临床实操建议</h4>
+      <p><strong>经期前后对比</strong>——经前舌象偏红偏腻（气血涌动），经后偏淡偏薄（气血流失）。对比可判断气血储备。</p>
+      <p><strong>孕前必看</strong>——舌根无苔、舌淡胖 = 肾气不足，建议调理再孕。</p>
+      <p><strong>更年期</strong>——舌红少苔 + 盗汗 = 阴虚火旺；舌淡胖有齿痕 = 阳虚水泛。</p>
+    </div>
+  </section>
+
+  <!-- ===== 红旗征 ===== -->
+  <section id="redflag">
+    <h2 class="section-title"><span class="num">05</span>现代医学红旗征</h2>
+    <p class="section-sub">现代医学必须警惕的舌象 —— 西医教材覆盖不足，本节是临床医生最该补的部分。</p>
+
+    <div class="redflag-grid">
+      <div class="redflag">
+        <span class="urgency urgency-high">高</span>
+        <h4>🍓 草莓舌</h4>
+        <div class="feature">舌乳头红肿突出、舌面鲜红如草莓表面</div>
+        <div class="differential">
+          <strong>必查：</strong>猩红热 / 川崎病 / 中毒性休克综合征 / 链球菌感染<br>
+          <strong>动作：</strong>立即血常规 + CRP + 血培养 + 咽拭子
+        </div>
+      </div>
+
+      <div class="redflag">
+        <span class="urgency urgency-high">高</span>
+        <h4>🪞 镜面舌 / 牛肉舌</h4>
+        <div class="feature">舌乳头萎缩，舌面光滑发红如镜面</div>
+        <div class="differential">
+          <strong>必查：</strong>缺铁性贫血 / 维生素 B12 缺乏 / 叶酸缺乏 / 恶性贫血<br>
+          <strong>动作：</strong>血常规 + 铁蛋白 + B12 + 叶酸 + 网织红
+        </div>
+      </div>
+
+      <div class="redflag">
+        <span class="urgency urgency-mid">中</span>
+        <h4>🗺️ 地图舌</h4>
+        <div class="feature">游走性环状红斑，边界清晰、形状日变</div>
+        <div class="differential">
+          <strong>可能：</strong>多为良性（游走性舌炎），少数伴银屑病 / 莱特尔综合征 / 1 型糖尿病<br>
+          <strong>动作：</strong>详询皮肤、关节症状，必要时皮肤科会诊
+        </div>
+      </div>
+
+      <div class="redflag">
+        <span class="urgency urgency-high">高</span>
+        <h4>⬜ 白斑 / 毛舌</h4>
+        <div class="feature">不能擦去的白斑，或黑毛样舌苔</div>
+        <div class="differential">
+          <strong>必查：</strong>口腔白斑（癌前病变）/ 口腔念珠菌病 / 毛舌（真菌/抗生素后）<br>
+          <strong>动作：</strong>口腔科活检（白斑不能擦去 = 高危）
+        </div>
+      </div>
+
+      <div class="redflag">
+        <span class="urgency urgency-high">高</span>
+        <h4>🔵 舌下静脉曲张</h4>
+        <div class="feature">舌下静脉直径 > 2.7mm 或伴迂曲怒张</div>
+        <div class="differential">
+          <strong>必查：</strong>右心衰 / 门脉高压 / 慢性肺病 / 瘀血体质<br>
+          <strong>动作：</strong>心脏彩超 + 肝胆 B 超 + BNP
+        </div>
+      </div>
+
+      <div class="redflag">
+        <span class="urgency urgency-mid">中</span>
+        <h4>👅 巨舌 / 齿痕舌</h4>
+        <div class="feature">舌体肥大、边缘有牙齿压痕</div>
+        <div class="differential">
+          <strong>可能：</strong>甲减 / 淀粉样变 / 肢端肥大症 / 睡眠呼吸暂停 / 水肿<br>
+          <strong>动作：</strong>甲功 + 睡眠监测 + 心肾功能
+        </div>
+      </div>
+
+      <div class="redflag">
+        <span class="urgency urgency-mid">中</span>
+        <h4>🔴 黑苔</h4>
+        <div class="feature">舌苔变黑（排除染色后）</div>
+        <div class="differential">
+          <strong>可能：</strong>长期抗生素 / 霉菌感染 / 尿毒症 / 重症感染 / 化疗后<br>
+          <strong>动作：</strong>排查霉菌感染 + 肾功能 + 用药史
+        </div>
+      </div>
+
+      <div class="redflag">
+        <span class="urgency urgency-mid">中</span>
+        <h4>⚪ 裂纹舌</h4>
+        <div class="feature">舌面深浅不一裂纹（排除先天沟纹舌）</div>
+        <div class="differential">
+          <strong>可能：</strong>维生素 B 族缺乏 / 慢性萎缩性胃炎 / 干燥综合征 / 梅毒性舌炎<br>
+          <strong>动作：</strong>维生素检测 + 自身抗体 + 胃镜
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 临床陷阱 ===== -->
+  <section id="pitfalls">
+    <h2 class="section-title"><span class="num">06</span>临床陷阱 · 6 个常见误判</h2>
+    <p class="section-sub">这些"假象"会让你的判断跑偏。看完这张表，门诊里少犯 80% 的舌诊错误。</p>
+
+    <div class="pitfall-list">
+      <div class="pitfall">
+        <div class="label">染苔</div>
+        <div class="detail">
+          <strong>食物 / 药物 / 饮料</strong> 会改变舌苔颜色。<br>
+          牛奶 → 白苔；咖啡 / 茶 / 酱油 → 黄褐苔；橘子 / 维生素 B2 → 黄苔；蓝莓 / 铁剂 → 黑苔。<br>
+          <strong>对策：</strong>问诊必问"半小时内吃过什么、喝过什么"。
+        </div>
+      </div>
+
+      <div class="pitfall">
+        <div class="label">刮苔</div>
+        <div class="detail">
+          <strong>饭后 / 刷牙后</strong> 苔会变薄甚至暂时消失。<br>
+          <strong>对策：</strong>统一<strong>晨起空腹、刷牙前、未进食</strong> 看舌（门诊难实现，至少要"未进食 1 小时"）。
+        </div>
+      </div>
+
+      <div class="pitfall">
+        <div class="label">伸舌太久</div>
+        <div class="detail">
+          <strong>伸舌超过 10 秒</strong> 舌会充血，颜色从淡红 → 红，影响判断。<br>
+          <strong>对策：</strong>"伸、读、收"3 秒内完成，必要时让患者休息后再看一次。
+        </div>
+      </div>
+
+      <div class="pitfall">
+        <div class="label">光线</div>
+        <div class="detail">
+          <strong>白炽灯 / 黄光</strong> 看舌会偏黄；<strong>冷白光 / 自然光</strong> 最准。<br>
+          <strong>对策：</strong>门诊用 LED 自然光，避开窗帘遮挡；夜间查房用手电筒侧光。
+        </div>
+      </div>
+
+      <div class="pitfall">
+        <div class="label">动态 vs 静态</div>
+        <div class="detail">
+          <strong>单次舌象</strong> 意义有限。晨起 vs 饭后 vs 睡前差异巨大。<br>
+          <strong>对策：</strong>住院病人每天看一次，连续 3-7 天看趋势；门诊病人问"最近一周舌苔变化"。
+        </div>
+      </div>
+
+      <div class="pitfall">
+        <div class="label">位置记忆</div>
+        <div class="detail">
+          <strong>"舌尖看心肺"是临床经验，不是解剖事实。</strong> 舌面分区不能等同于 CT 解剖定位。<br>
+          <strong>对策：</strong>分区用于"方向性判断"，最终需结合症状、体征、检验检查确诊。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AI 视角 ===== -->
+  <section id="ai">
+    <h2 class="section-title"><span class="num">07</span>AI 视角补充 · Mavis</h2>
+    <p class="section-sub">三个 AI 视角的洞察，不在教科书里，但可能是未来 5-10 年最值得关注的舌诊方向。</p>
+
+    <div class="ai-section">
+      <div class="ai-label">⚡ AI INSIGHT</div>
+      <h3>1. 舌苔的"物质本质"决定了它为什么能反映全身</h3>
+      <p>舌苔 = <strong>丝状乳头角化上皮 + 食物残渣 + 细菌 + 脱落细胞 + 渗出液</strong>。</p>
+      <p>厚薄 = 角化速度 vs 脱落速度的比值。颜色 = 局部微生物群 + pH + 局部血氧。</p>
+      <div class="highlight">
+        <strong>洞察：</strong>舌苔本质是<strong>消化道微生态 + 局部循环 + 免疫</strong>的外显。"一张嘴看全身"不是玄学，是解剖学事实。
+      </div>
+
+      <h3>2. 现代研究正在"接住"舌诊</h3>
+      <p>近 10 年舌诊研究在 PubMed 上的发文量增长 3 倍，重点方向：</p>
+      <div class="ai-grid">
+        <div class="item">
+          <h5>舌苔微生物组</h5>
+          <p>HP 感染者、糖尿病患者、IBS 患者的舌苔菌群结构有显著差异（已被多组学验证）</p>
+        </div>
+        <div class="item">
+          <h5>AI 图像识别</h5>
+          <p>舌象 + 深度学习在胃癌、糖尿病筛查上已有 prototype，灵敏度 80-90%</p>
+        </div>
+        <div class="item">
+          <h5>舌下微循环</h5>
+          <p>舌下静脉直径 + 迂曲度 = 全身微循环的可视化窗口（比甲襞微循环更易观察）</p>
+        </div>
+        <div class="item">
+          <h5>动态时间序列</h5>
+          <p>同一患者 7-30 天的舌象变化曲线 = 真实"动态生物标志物"，比单次影像更稳定</p>
+        </div>
+      </div>
+
+      <h3>3. 一个反常识的临床判断</h3>
+      <p>教科书说"苔黄=热"、"白=寒"，但<strong>真正临床上看舌，重点是"动态变化"而不是"单次快照"</strong>。</p>
+      <p>同一个患者：晨起 vs 饭后 vs 睡前，舌象差异巨大。真正有经验的医生看舌，是看 <strong>3-7 天的舌象变化曲线</strong>，不是看一次。</p>
+      <div class="highlight">
+        <strong>洞察：</strong>AI 舌诊的下一个突破点一定是<strong>"时间序列建模"</strong>，而不是"单图分类"。这是临床医生最值得深挖的科研方向。
+      </div>
+    </div>
+
+    <div class="card card-blue">
+      <h4 class="sub-title">临床医生可落地的副业方向</h4>
+      <p><strong>方向 1：AI 舌诊辅助诊断工具</strong>——基于开源数据集（GitHub: OralCancerDataset, TCIA）训练专科舌诊模型，配合你的临床专业做产品。</p>
+      <p><strong>方向 2：舌诊健康科普内容</strong>——小红书 / 视频号上的"舌诊+西医解读"差异化内容，目前是蓝海。</p>
+      <p><strong>方向 3：体质辨识 SaaS 工具</strong>——给中医馆 / 体检中心做舌诊 + 体质辨识的轻量级工具，订阅制收费。</p>
+    </div>
+  </section>
+
+  <!-- ===== 工具栏 ===== -->
+  <div class="quick-toc">
+    <span class="label">快速跳转：</span>
+    <a href="#quick">3 步法</a>
+    <a href="#zones">分区图</a>
+    <a href="#seven">7 征象</a>
+    <a href="#eight">8 分区</a>
+    <a href="#female">女性公式</a>
+    <a href="#redflag">红旗征</a>
+    <a href="#pitfalls">临床陷阱</a>
+    <a href="#ai">AI 视角</a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="quote">「望舌如望人，观其外知其内」</div>
+  <div>《临床医生舌诊速查手册》· 2026 版 · 离线可查 · 适用于多科室临床场景</div>
+  <div style="margin-top:6px; font-size:11px;">分区定位为临床经验总结，最终诊断需结合症状、体征、辅助检查</div>
+</footer>
+
+<script>
+// 搜索功能
+const searchInput = document.getElementById('searchInput');
+const sections = document.querySelectorAll('section, .card, .tongue-card, .zone-card, .formula-card, .redflag, .pitfall, .ai-section');
+
+searchInput.addEventListener('input', (e) => {
+  const q = e.target.value.trim().toLowerCase();
+  if (!q) {
+    document.querySelectorAll('.hidden-by-search').forEach(el => el.classList.remove('hidden-by-search'));
+    document.querySelectorAll('mark').forEach(el => {
+      el.outerHTML = el.innerHTML;
+    });
+    return;
+  }
+  // 标记和隐藏
+  sections.forEach(el => {
+    const text = el.textContent.toLowerCase();
+    if (text.includes(q)) {
+      el.classList.remove('hidden-by-search');
+    } else {
+      el.classList.add('hidden-by-search');
+    }
+  });
+  // 简单高亮
+  document.querySelectorAll('section:not(.hidden-by-search), .card:not(.hidden-by-search), .tongue-card:not(.hidden-by-search)').forEach(el => {
+    const html = el.innerHTML;
+    const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    if (re.test(html)) {
+      el.innerHTML = html.replace(re, '<mark>$1</mark>');
+    }
+  });
+});
+
+// 平滑滚动
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // 清空搜索
+      searchInput.value = '';
+      document.querySelectorAll('.hidden-by-search').forEach(el => el.classList.remove('hidden-by-search'));
+      document.querySelectorAll('mark').forEach(el => { el.outerHTML = el.innerHTML; });
+    }
+  });
+});
+</script>
+
+</body>
+</html>

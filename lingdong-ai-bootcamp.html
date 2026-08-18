@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>灵动-AI编程实战课 完整课表 | LingDong AI Bootcamp</title>
+<meta name="description" content="最新版 AI 编程实战课完整课表：10 大模块 / 45 个主题 / 10 场 IP 直播，覆盖 Skill 起步、技术认知、项目实战、产品商业化、小程序、App 与 IP 直播。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f6efe1;
+  --paper-2:#efe5cf;
+  --paper-3:#e9dec1;
+  --card:#fbf5e8;
+  --ink:#2a221a;
+  --ink-soft:#5d4f3e;
+  --ink-faint:#8a7a64;
+  --line:#d9c9a8;
+  --line-soft:#e7d9b8;
+  --red:#8f2d28;
+  --red-soft:#b8554c;
+  --red-bg:#f4e0dc;
+  --gold:#b08642;
+  --gold-soft:#d4a85a;
+  --green:#3a5a3a;
+  --green-bg:#dde6d8;
+  --blue:#2c4a6b;
+  --blue-bg:#dde4ee;
+  --serif:'Fraunces','Noto Serif SC',serif;
+  --cn-serif:'Noto Serif SC','Fraunces',serif;
+  --sans:'Noto Sans SC',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --shadow-sm:0 1px 2px rgba(70,45,20,.06);
+  --shadow:0 1px 3px rgba(70,45,20,.06), 0 8px 28px rgba(90,55,25,.08);
+  --shadow-lg:0 4px 12px rgba(70,45,20,.08), 0 24px 60px rgba(90,55,25,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+body{
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(176,134,66,.04), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(143,45,40,.04), transparent 50%);
+  min-height:100vh;
+}
+
+/* ========== Hero ========== */
+.hero{
+  padding:64px 32px 56px;
+  border-bottom:1px solid var(--line);
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;top:-200px;right:-200px;width:500px;height:500px;
+  background:radial-gradient(circle,rgba(176,134,66,.08),transparent 60%);
+  pointer-events:none;
+}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);font-weight:600;margin-bottom:20px;
+}
+.hero-eyebrow::before{content:"";width:24px;height:1px;background:var(--gold)}
+.hero h1{
+  font-family:var(--cn-serif);font-weight:700;font-size:clamp(36px,5vw,64px);
+  line-height:1.1;letter-spacing:-.02em;margin-bottom:16px;color:var(--ink);
+}
+.hero h1 em{font-style:italic;color:var(--red);font-family:var(--serif);font-weight:600}
+.hero-sub{
+  font-family:var(--cn-serif);font-size:20px;color:var(--ink-soft);font-weight:500;
+  max-width:720px;margin-bottom:24px;line-height:1.5;
+}
+.hero-desc{
+  font-size:15px;color:var(--ink-soft);max-width:680px;margin-bottom:36px;line-height:1.75;
+}
+.hero-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+  max-width:760px;
+}
+.stat{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:14px;padding:20px 22px;box-shadow:var(--shadow-sm);
+  position:relative;overflow:hidden;
+}
+.stat::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
+.stat-num{
+  font-family:var(--serif);font-size:38px;font-weight:700;color:var(--red);
+  line-height:1;display:block;margin-bottom:6px;
+}
+.stat-label{font-size:13px;color:var(--ink-soft);font-weight:500}
+
+/* ========== Principles ========== */
+.principles{
+  max-width:1200px;margin:0 auto;padding:56px 32px 24px;
+}
+.section-eyebrow{
+  display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:12px;
+}
+.section-title{
+  font-family:var(--cn-serif);font-size:32px;font-weight:700;color:var(--ink);
+  letter-spacing:-.01em;margin-bottom:12px;line-height:1.2;
+}
+.section-desc{color:var(--ink-soft);font-size:15px;max-width:680px;margin-bottom:32px}
+.principle-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:20px;
+}
+.principle{
+  display:flex;gap:18px;background:var(--card);border:1px solid var(--line);
+  border-radius:14px;padding:24px;box-shadow:var(--shadow-sm);
+  transition:transform .2s,box-shadow .2s;
+}
+.principle:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.principle-num{
+  flex-shrink:0;width:42px;height:42px;border-radius:50%;
+  background:var(--ink);color:var(--paper);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:18px;font-weight:700;
+}
+.principle-content strong{
+  display:block;font-family:var(--cn-serif);font-size:17px;color:var(--ink);
+  margin-bottom:6px;font-weight:600;
+}
+.principle-content p{color:var(--ink-soft);font-size:14px;line-height:1.6}
+
+/* ========== Main layout ========== */
+.main-wrap{
+  max-width:1200px;margin:0 auto;padding:40px 32px 80px;
+  display:grid;grid-template-columns:260px 1fr;gap:48px;
+  align-items:flex-start;
+}
+
+/* ========== Sticky Nav ========== */
+.toc{
+  position:sticky;top:24px;
+  background:var(--card);border:1px solid var(--line);
+  border-radius:16px;padding:8px;box-shadow:var(--shadow-sm);
+  max-height:calc(100vh - 48px);overflow-y:auto;
+}
+.toc::-webkit-scrollbar{width:6px}
+.toc::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
+.toc-head{
+  padding:14px 16px 10px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-faint);font-weight:600;
+}
+.toc-search{
+  margin:0 8px 8px;position:relative;
+}
+.toc-search input{
+  width:100%;padding:9px 12px 9px 32px;border:1px solid var(--line);
+  border-radius:8px;background:var(--paper);font-family:inherit;font-size:13px;
+  color:var(--ink);outline:none;transition:border-color .15s;
+}
+.toc-search input:focus{border-color:var(--gold)}
+.toc-search::before{
+  content:"⌕";position:absolute;left:10px;top:50%;transform:translateY(-50%);
+  color:var(--ink-faint);font-size:14px;pointer-events:none;
+}
+.toc-list{list-style:none;padding:0;margin:0}
+.toc-list li{}
+.toc-list a{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 16px;color:var(--ink-soft);text-decoration:none;
+  font-size:13px;font-weight:500;border-radius:8px;
+  transition:background .15s,color .15s;
+  border-left:2px solid transparent;
+}
+.toc-list a:hover{background:var(--paper);color:var(--ink)}
+.toc-list a.active{background:var(--red-bg);color:var(--red);border-left-color:var(--red);font-weight:600}
+.toc-num{
+  font-family:var(--mono);font-size:11px;color:var(--ink-faint);
+  font-weight:600;flex-shrink:0;width:18px;
+}
+.toc-list a.active .toc-num{color:var(--red)}
+
+/* ========== Content Sections ========== */
+.content{min-width:0}
+.module{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:18px;margin-bottom:32px;overflow:hidden;
+  box-shadow:var(--shadow-sm);scroll-margin-top:24px;
+}
+.module-head{
+  padding:24px 28px;border-bottom:1px solid var(--line-soft);
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  background:linear-gradient(180deg,var(--card) 0%,var(--paper) 100%);
+}
+.module-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  color:var(--red);font-weight:700;background:var(--red-bg);
+  padding:5px 11px;border-radius:6px;
+}
+.module-head h2{
+  font-family:var(--cn-serif);font-size:24px;font-weight:700;color:var(--ink);
+  flex:1;min-width:200px;letter-spacing:-.01em;
+}
+.module-count{
+  font-size:13px;color:var(--ink-faint);font-weight:500;
+  font-family:var(--mono);
+}
+.module-summary{
+  padding:18px 28px;background:var(--paper);
+  color:var(--ink-soft);font-size:14px;line-height:1.7;
+  border-bottom:1px solid var(--line-soft);
+  font-family:var(--cn-serif);font-weight:500;
+}
+.module-summary.empty{display:none}
+
+/* ========== Topics (lessons) ========== */
+.topics{padding:8px 0}
+.topic{
+  display:flex;gap:18px;padding:18px 28px;
+  border-top:1px solid var(--line-soft);
+  transition:background .15s;
+}
+.topic:first-child{border-top:none}
+.topic:hover{background:var(--paper)}
+.topic-num{
+  flex-shrink:0;width:32px;height:32px;border-radius:50%;
+  background:var(--ink);color:var(--paper);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:13px;font-weight:700;margin-top:2px;
+}
+.topic-content{flex:1;min-width:0}
+.topic-content strong{
+  display:block;font-family:var(--cn-serif);font-size:16px;font-weight:600;
+  color:var(--ink);margin-bottom:8px;line-height:1.45;
+}
+.topic-points{
+  list-style:none;padding:0;margin:0;
+}
+.topic-points li{
+  position:relative;padding-left:20px;margin-bottom:5px;
+  color:var(--ink-soft);font-size:14px;line-height:1.65;
+}
+.topic-points li::before{
+  content:"";position:absolute;left:0;top:11px;
+  width:8px;height:1px;background:var(--gold);
+}
+
+/* ========== Special module types ========== */
+.module.live .module-head{background:linear-gradient(180deg,var(--red-bg) 0%,var(--card) 80%)}
+.module.live .module-badge{background:var(--red);color:var(--paper)}
+.module.live .topic-num{background:var(--red)}
+
+.module.special .module-head{background:linear-gradient(180deg,var(--green-bg) 0%,var(--card) 80%)}
+.module.special .module-badge{background:var(--green);color:var(--card)}
+
+/* ========== Meta grid (案例/技术栈/目标) ========== */
+.meta-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;padding:18px 28px 24px;
+  background:var(--paper);border-top:1px solid var(--line-soft);
+}
+.meta-card{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:10px;padding:14px 16px;
+}
+.meta-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px;
+}
+.meta-card p{font-size:13px;color:var(--ink-soft);line-height:1.6}
+
+/* ========== Audience cards ========== */
+.audience-section{
+  max-width:1200px;margin:0 auto;padding:40px 32px;
+}
+.audience-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;
+}
+.audience-card{
+  background:var(--card);border:1px solid var(--line);
+  border-left:4px solid var(--gold);
+  border-radius:12px;padding:22px;
+  transition:transform .2s,box-shadow .2s;
+}
+.audience-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.audience-num{
+  font-family:var(--serif);font-size:14px;font-weight:600;color:var(--gold);
+  margin-bottom:8px;letter-spacing:.08em;
+}
+.audience-card strong{
+  display:block;font-family:var(--cn-serif);font-size:16px;color:var(--ink);
+  margin-bottom:8px;font-weight:600;
+}
+.audience-card p{color:var(--ink-soft);font-size:13.5px;line-height:1.6}
+
+/* ========== Footer ========== */
+.foot{
+  max-width:1200px;margin:0 auto;padding:40px 32px 60px;
+  text-align:center;border-top:1px solid var(--line);
+}
+.foot p{color:var(--ink-faint);font-size:13px;line-height:1.7}
+.foot .src{
+  display:inline-block;margin-top:12px;padding:8px 16px;
+  background:var(--card);border:1px solid var(--line);border-radius:8px;
+  font-family:var(--mono);font-size:12px;color:var(--ink-soft);
+}
+
+/* ========== Responsive ========== */
+@media (max-width:960px){
+  .main-wrap{grid-template-columns:1fr;gap:24px}
+  .toc{position:static;max-height:none}
+  .principle-grid{grid-template-columns:1fr}
+  .hero-stats{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:560px){
+  .hero{padding:40px 20px 32px}
+  .principles,.main-wrap,.audience-section,.foot{padding-left:20px;padding-right:20px}
+  .module-head{padding:18px 20px;flex-direction:column;align-items:flex-start;gap:10px}
+  .topic{padding:16px 20px}
+  .module-summary,.meta-grid{padding-left:20px;padding-right:20px}
+  .stat-num{font-size:32px}
+}
+
+/* ========== Print ========== */
+@media print{
+  .toc,.hero-stats{display:none}
+  .main-wrap{grid-template-columns:1fr}
+  .module{break-inside:avoid;box-shadow:none;border:1px solid #ccc}
+  body{background:#fff}
+}
+</style>
+</head>
+<body>
+
+<!-- ========== Hero ========== -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">LingDong · AI Bootcamp · Full Curriculum</div>
+    <h1>灵动 · <em>AI 编程实战课</em><br>完整课表</h1>
+    <p class="hero-sub">从 Skill 起步，到产品、商业化与个人 IP 的完整升级路径</p>
+    <p class="hero-desc">这不是一套只教工具按钮怎么点的课，而是一套让零基础学员循序渐进进入 AI 编程、做出作品、找到产品方向、再延伸到变现和个人表达的完整路径。</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">10</span>
+        <span class="stat-label">大模块</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">45</span>
+        <span class="stat-label">学习主题</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">10</span>
+        <span class="stat-label">场 IP 直播</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">3 月</span>
+        <span class="stat-label">完整周期</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Principles ========== -->
+<section class="principles">
+  <span class="section-eyebrow">Course Principles</span>
+  <h2 class="section-title">四条核心原则</h2>
+  <p class="section-desc">这套课不是按"工具 + 知识点"罗列，而是按真实成长路径设计的学习顺序。</p>
+  <div class="principle-grid">
+    <div class="principle">
+      <div class="principle-num">1</div>
+      <div class="principle-content">
+        <strong>先做出成果，再补技术认知</strong>
+        <p>从第一个网页、第一条 Skill、第一份可交付成果开始建立信心。</p>
+      </div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">2</div>
+      <div class="principle-content">
+        <strong>先解决真实问题，再谈复杂架构</strong>
+        <p>围绕个人工作流、办公场景、内容场景和产品场景逐步升级。</p>
+      </div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">3</div>
+      <div class="principle-content">
+        <strong>从 Skill 到产品，再到商业化</strong>
+        <p>不是停留在工具使用，而是走向能分享、能交付、能成交的成果。</p>
+      </div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">4</div>
+      <div class="principle-content">
+        <strong>录播搭骨架，直播做升级</strong>
+        <p>用录播建立系统认知，再通过 IP 直播把内容杠杆和表达能力补上。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Main: TOC + Content ========== -->
+<div class="main-wrap">
+  <!-- TOC -->
+  <aside class="toc">
+    <div class="toc-head">课程目录</div>
+    <div class="toc-search">
+      <input type="text" id="searchInput" placeholder="搜索主题 / 知识点…">
+    </div>
+    <ul class="toc-list" id="tocList">
+      <li><a href="#prep"><span class="toc-num">★</span>前置课（10节）</a></li>
+      <li><a href="#prep-c1"><span class="toc-num">P1</span>01 环境准备</a></li>
+      <li><a href="#prep-c2"><span class="toc-num">P2</span>02 做出作品</a></li>
+      <li><a href="#prep-c3"><span class="toc-num">P3</span>03 认知升级</a></li>
+      <li><a href="#m1"><span class="toc-num">01</span>预备篇</a></li>
+      <li><a href="#m2"><span class="toc-num">02</span>入门篇</a></li>
+      <li><a href="#m3"><span class="toc-num">03</span>技术篇</a></li>
+      <li><a href="#m4"><span class="toc-num">04</span>实战篇</a></li>
+      <li><a href="#m5"><span class="toc-num">05</span>黑客松准备</a></li>
+      <li><a href="#m6"><span class="toc-num">06</span>龙虾专题·基础</a></li>
+      <li><a href="#m7"><span class="toc-num">07</span>产品商业化篇</a></li>
+      <li><a href="#m8"><span class="toc-num">08</span>小程序应用实战</a></li>
+      <li><a href="#m9"><span class="toc-num">09</span>APP 应用实战</a></li>
+      <li><a href="#m10"><span class="toc-num">10</span>龙虾专题·进阶</a></li>
+      <li><a href="#ip"><span class="toc-num">★</span>IP 直播（10场）</a></li>
+      <li><a href="#verify"><span class="toc-num">✓</span>实战验证与升级</a></li>
+      <li><a href="#refund"><span class="toc-num">↻</span>退款机制</a></li>
+    </ul>
+  </aside>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- ========== 前置课专栏 · Pre-Course ========== -->
+    <section class="module prep-intro" id="prep">
+      <div class="module-head" style="background:linear-gradient(180deg,var(--paper-2) 0%,var(--card) 100%)">
+        <span class="module-badge" style="background:var(--gold);color:var(--paper)">★ 前置课</span>
+        <h2>免费前置课：理解 AI，做出作品，建立认知</h2>
+        <span class="module-count">3 章 · 10 节 · 全免费 · 零基础友好</span>
+      </div>
+      <div class="module-summary">这套免费课程帮你完成三件事：<strong>配好环境</strong>、<strong>用 AI 做出第一个网页</strong>、<strong>理解与 AI 协作的正确方式</strong>。学完之后如果你觉得有帮助，再决定是否进入下面的正课。10 节课，完全免费，零基础友好。</div>
+      <div class="meta-grid" style="background:var(--paper)">
+        <div class="meta-card">
+          <div class="meta-label">课前你要知道</div>
+          <p>前置课是正课的「环境与认知打底」。目的是让你在第 1 周就拿出第一个可运行作品，避免在工具链上反复折腾。</p>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">你需要的准备</div>
+          <p>一台能上网的电脑，一个能翻墙的网络环境，一份愿意动手 30-60 分钟的耐心。课程里会带你在 10 节课里完成从「配环境」到「做出第一个 web 工具」。</p>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">信息来源</div>
+          <p>本专栏内容整理自 <code style="font-family:var(--mono);font-size:12px;background:var(--paper-2);padding:1px 5px;border-radius:3px">aicourse.ipwriter.com/setup/</code> / <code style="font-family:var(--mono);font-size:12px;background:var(--paper-2);padding:1px 5px;border-radius:3px">/web-dev/</code> / <code style="font-family:var(--mono);font-size:12px;background:var(--paper-2);padding:1px 5px;border-radius:3px">/claude/</code> 三个栏目下的 10 节课。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 前置课 · Chapter 1 ========== -->
+    <section class="module" id="prep-c1">
+      <div class="module-head">
+        <span class="module-badge" style="background:var(--gold);color:var(--paper)">前置课 · 1</span>
+        <h2>01 环境准备</h2>
+        <span class="module-count">5 节</span>
+      </div>
+      <div class="module-summary">配置 AI IDE、选择工具，扫除学习障碍。先看懂 2026 年 AI 编程工具的全景，再上手把 Trae、Claude Code、CC Switch、效率工具装到自己的电脑里。</div>
+      <div class="topics">
+
+        <!-- Lesson 1: /setup/ide/ -->
+        <div class="topic" id="prep-c1-l1">
+          <span class="topic-num">01</span>
+          <div class="topic-content">
+            <strong>AI 编程工具对比：2026 年全景</strong>
+            <div class="lesson-meta" style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 12px">
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--red-bg);padding:3px 9px;border-radius:5px">阶段 01</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">预计 12 分钟</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">工具对比</span>
+            </div>
+            <p style="color:var(--ink-soft);font-size:14px;line-height:1.75;margin-bottom:14px">2026 年主流 AI 编程工具全景对比：Trae、Claude Code、Cursor 的功能、价格、适用场景。以下产品信息已按 <strong>2026-04-10</strong> 的官网和市场数据更新。</p>
+
+            <h4 style="font-family:var(--cn-serif);font-size:15px;color:var(--ink);margin:18px 0 8px;font-weight:700">2026 年 AI 编程工具全景</h4>
+            <p style="color:var(--ink-soft);font-size:14px;line-height:1.75;margin-bottom:8px">截至 2026 年 4 月，AI 编程工具市场已经成熟，主要分为三类：</p>
+            <ul class="topic-points">
+              <li><strong>AI IDE</strong>：图形界面工作台（Trae）</li>
+              <li><strong>Agent 工具</strong>：能读代码、改文件、跑命令的自主编码助手（Claude Code）</li>
+              <li><strong>AI 编辑器</strong>：在传统编辑器中深度集成 AI（Cursor）</li>
+            </ul>
+
+            <h4 style="font-family:var(--cn-serif);font-size:15px;color:var(--ink);margin:22px 0 10px;font-weight:700">工具定位对比</h4>
+            <div style="overflow-x:auto;margin:6px 0 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper)">
+              <table style="width:100%;border-collapse:collapse;font-size:13px;line-height:1.5">
+                <thead>
+                  <tr style="background:var(--paper-2)">
+                    <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);font-family:var(--cn-serif);font-weight:700;color:var(--ink)">工具</th>
+                    <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);font-family:var(--cn-serif);font-weight:700;color:var(--ink)">定位</th>
+                    <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);font-family:var(--cn-serif);font-weight:700;color:var(--ink)">月费</th>
+                    <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);font-family:var(--cn-serif);font-weight:700;color:var(--ink)">核心特性</th>
+                    <th style="text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);font-family:var(--cn-serif);font-weight:700;color:var(--ink)">适合人群</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft)"><a href="https://www.trae.ai" target="_blank" style="color:var(--red);text-decoration:underline">Trae</a></td>
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft)">AI IDE</td>
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft);font-family:var(--mono);color:var(--ink)">$3 / $10</td>
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft)">图形界面、项目管理、AI 交互区</td>
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft)">第一次接触 AI 编程</td>
+                  </tr>
+                  <tr style="background:var(--paper)">
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft)"><a href="https://claude.com/claude-code" target="_blank" style="color:var(--red);text-decoration:underline">Claude Code</a></td>
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft)">Agent 工具</td>
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft);font-family:var(--mono);color:var(--ink)">官方 API 计费</td>
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft)">Terminal/VS Code/Desktop、跨文件修改、命令执行</td>
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft)">愿意进入真实工程工作流</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft)"><a href="https://cursor.com" target="_blank" style="color:var(--red);text-decoration:underline">Cursor</a></td>
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft)">AI 编辑器</td>
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft);font-family:var(--mono);color:var(--ink)">Free / $20</td>
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft)">Agent Mode、Subagents、多模型支持</td>
+                    <td style="padding:10px 12px;border-bottom:1px solid var(--line-soft)">复杂项目、企业用户</td>
+                  </tr>
+                  <tr style="background:var(--paper)">
+                    <td style="padding:10px 12px"><a href="https://openai.com/index/codex/" target="_blank" style="color:var(--red);text-decoration:underline">Codex</a></td>
+                    <td style="padding:10px 12px">Multi-Agent 系统</td>
+                    <td style="padding:10px 12px;font-family:var(--mono);color:var(--ink)">$20 / $100</td>
+                    <td style="padding:10px 12px">多 agent 协作、自动化、并行任务</td>
+                    <td style="padding:10px 12px">管理复杂并行任务</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h4 style="font-family:var(--cn-serif);font-size:15px;color:var(--ink);margin:22px 0 10px;font-weight:700">详细功能对比</h4>
+
+            <div class="tool-block" style="background:var(--paper);border:1px solid var(--line-soft);border-radius:10px;padding:16px 18px;margin:10px 0">
+              <h5 style="font-family:var(--cn-serif);font-size:15.5px;color:var(--red);margin:0 0 8px;font-weight:700">Trae</h5>
+              <ul class="topic-points">
+                <li><strong>定位</strong>：新手友好的 AI IDE</li>
+                <li><strong>价格</strong>：待确认（提供 TRAE IDE 和 TRAE SOLO 两条产品线）</li>
+                <li><strong>核心功能</strong>：图形界面工作台（文件树、编辑区、AI 交互区）；项目管理和文件操作；AI 辅助编码和修改</li>
+                <li><strong>优势</strong>：界面直观、下载即用；不需要适应命令行；适合快速上手做第一个项目</li>
+                <li><strong>缺点</strong>：产品线更新快，TRAE IDE 和 TRAE SOLO 容易混淆；功能相对基础，进阶能力有限</li>
+                <li><strong>适合场景</strong>：第一次做网页或小工具；想快速看到「提需求 → AI 改代码 → 立刻看效果」；还不想接触终端和命令行</li>
+              </ul>
+            </div>
+
+            <div class="tool-block" style="background:var(--paper);border:1px solid var(--line-soft);border-radius:10px;padding:16px 18px;margin:10px 0">
+              <h5 style="font-family:var(--cn-serif);font-size:15.5px;color:var(--red);margin:0 0 8px;font-weight:700">Claude Code</h5>
+              <ul class="topic-points">
+                <li><strong>定位</strong>：Agent 式编码工具，能在 Terminal、VS Code、Desktop、Web 工作</li>
+                <li><strong>价格</strong>：使用 Anthropic 官方 API，按 token 计费</li>
+                <li><strong>核心功能</strong>：读取整个代码库；跨文件修改代码；执行命令并查看结果；Plan mode（规划模式）和 diff review</li>
+                <li><strong>优势</strong>：执行力强，工作流完整；不只是聊天，能真正改代码、跑命令；支持多种工作方式（Terminal/IDE/Desktop）</li>
+                <li><strong>缺点</strong>：需要适应命令行（Terminal 版）；需要理解 diff 和 plan 的工作方式</li>
+                <li><strong>适合场景</strong>：想让 AI 同时跨多个文件工作；想直接跑命令、看输出、继续修改；准备进入真实的工程工作流</li>
+              </ul>
+            </div>
+
+            <div class="tool-block" style="background:var(--paper);border:1px solid var(--line-soft);border-radius:10px;padding:16px 18px;margin:10px 0">
+              <h5 style="font-family:var(--cn-serif);font-size:15.5px;color:var(--red);margin:0 0 8px;font-weight:700">Cursor</h5>
+              <ul class="topic-points">
+                <li><strong>定位</strong>：AI-first 编辑器，2026 年 Fortune 500 公司广泛使用</li>
+                <li><strong>价格</strong>：Hobby — Free（有限的 Agent 请求和 Tab 补全）；Pro — $20/月；Business — 企业定价</li>
+                <li><strong>核心功能</strong>：Agent Mode（自主规划和执行任务）；Subagents（并行运行多个 AI agent）；多模型支持（GPT-5.4、Claude Opus 4.6、Gemini 3 Pro）；Background Agents（后台执行长任务）</li>
+                <li><strong>优势</strong>：企业级成熟度（Fortune 500 使用）；最强的 Agent 能力（可并行 8 个 agent）；生态最完整</li>
+                <li><strong>缺点</strong>：价格是 GitHub Copilot 的 2 倍（$20 vs $10）；2026 年定价调整引发用户争议</li>
+                <li><strong>适合场景</strong>：复杂项目和大型代码库；企业团队协作；需要最强的 Agent 自主能力</li>
+                <li><strong>2026 年市场评价</strong>：最完整的 AI 编辑器，但 $20/月的定价让很多用户转向 Windsurf；如果预算不是问题，Cursor 仍然是最强选择</li>
+              </ul>
+            </div>
+
+            <div class="tool-block" style="background:var(--paper);border:1px solid var(--line-soft);border-radius:10px;padding:16px 18px;margin:10px 0">
+              <h5 style="font-family:var(--cn-serif);font-size:15.5px;color:var(--red);margin:0 0 8px;font-weight:700">Codex</h5>
+              <ul class="topic-points">
+                <li><strong>定位</strong>：OpenAI 的 Multi-Agent 编码系统</li>
+                <li><strong>核心特性</strong>：多 agent 协作；Worktree 隔离；Skills 和 Automations；并行任务管理</li>
+                <li><strong>适合场景</strong>：管理复杂的并行任务；需要多个 agent 协同工作；进阶自动化需求</li>
+              </ul>
+            </div>
+
+            <h4 style="font-family:var(--cn-serif);font-size:15px;color:var(--ink);margin:26px 0 10px;font-weight:700">选择建议</h4>
+
+            <h5 style="font-family:var(--cn-serif);font-size:14px;color:var(--ink-soft);margin:14px 0 6px;font-weight:700">按使用场景推荐</h5>
+            <ul class="topic-points">
+              <li><strong>新手起步</strong>：首选 <strong>Trae</strong>（图形界面，快速上手）</li>
+              <li><strong>进阶开发</strong>：首选 <strong>Claude Code</strong>（真实工程工作流）</li>
+              <li><strong>企业项目</strong>：首选 <strong>Cursor</strong>（最成熟的企业级方案）</li>
+            </ul>
+
+            <h5 style="font-family:var(--cn-serif);font-size:14px;color:var(--ink-soft);margin:18px 0 6px;font-weight:700">按预算推荐</h5>
+            <ul class="topic-points">
+              <li><strong>Free</strong>：Cursor Hobby（有限功能）</li>
+              <li><strong>$20+/月</strong>：Cursor Pro（$20，最强 Agent）</li>
+            </ul>
+
+            <h5 style="font-family:var(--cn-serif);font-size:14px;color:var(--ink-soft);margin:18px 0 6px;font-weight:700">按工作流推荐</h5>
+            <ul class="topic-points">
+              <li><strong>图形界面</strong>：Trae（新手友好）</li>
+              <li><strong>命令行</strong>：Claude Code Terminal（Agent 工作流）</li>
+              <li><strong>编辑器集成</strong>：Cursor（AI-first 编辑器）</li>
+            </ul>
+
+            <h4 style="font-family:var(--cn-serif);font-size:15px;color:var(--ink);margin:28px 0 12px;font-weight:700">本课程推荐路径</h4>
+
+            <div class="path-callout" style="background:var(--paper-2);border:1px dashed var(--gold);border-radius:10px;padding:14px 18px;margin:6px 0 14px">
+              <p style="font-family:var(--mono);font-size:12px;color:var(--gold);font-weight:600;margin:0 0 4px">推荐组合</p>
+              <p style="font-family:var(--cn-serif);font-size:15.5px;color:var(--ink);margin:0;line-height:1.6"><strong>起步</strong>：Trae &nbsp;→&nbsp; <strong>进阶</strong>：Claude Code</p>
+            </div>
+
+            <p style="font-family:var(--cn-serif);font-size:14.5px;color:var(--ink);font-weight:600;margin:14px 0 6px">为什么是这个组合：</p>
+
+            <ol style="padding-left:22px;margin:0 0 14px">
+              <li style="color:var(--ink);font-size:14px;line-height:1.75;margin-bottom:10px">
+                <strong>Trae</strong> 让你快速拿到第一波正反馈
+                <ul class="topic-points" style="margin-top:4px">
+                  <li>不需要学命令行</li>
+                  <li>界面直观，容易理解「AI 如何改代码」</li>
+                  <li>适合做第一个网页、第一个小工具</li>
+                </ul>
+              </li>
+              <li style="color:var(--ink);font-size:14px;line-height:1.75;margin-bottom:10px">
+                <strong>Claude Code</strong> 把你带进真实的 Agent 工作流
+                <ul class="topic-points" style="margin-top:4px">
+                  <li>学会跨文件修改</li>
+                  <li>学会让 AI 跑命令、看结果、继续改</li>
+                  <li>学会 Plan mode 和 diff review</li>
+                </ul>
+              </li>
+              <li style="color:var(--ink);font-size:14px;line-height:1.75;margin-bottom:10px">
+                <strong>其他工具</strong>（Cursor）也值得了解，但不需要在第一周就切入
+                <ul class="topic-points" style="margin-top:4px">
+                  <li>等你完成第一个项目后，再根据需求选择</li>
+                  <li>Cursor 适合需要更强 Agent 能力的场景</li>
+                </ul>
+              </li>
+            </ol>
+
+            <h4 style="font-family:var(--cn-serif);font-size:15px;color:var(--ink);margin:26px 0 10px;font-weight:700">本节任务</h4>
+            <div class="task-box" style="background:linear-gradient(135deg,var(--green-bg) 0%,var(--paper) 100%);border:1px solid var(--green);border-radius:10px;padding:18px 22px;margin:6px 0 4px">
+              <p style="font-family:var(--mono);font-size:11px;color:var(--green);font-weight:700;letter-spacing:.1em;margin:0 0 10px">本节 3 件事</p>
+              <ol style="padding-left:22px;margin:0;color:var(--ink)">
+                <li style="font-size:14px;line-height:1.75;margin-bottom:6px">浏览上面的对比表格，了解 2026 年主流 AI 编程工具的定位</li>
+                <li style="font-size:14px;line-height:1.75;margin-bottom:6px">如果你是第一次学 AI 编程，默认选择 <strong>Trae</strong> 作为起步工具</li>
+                <li style="font-size:14px;line-height:1.75;margin-bottom:0">进入下一节，安装你选择的工具</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lesson 2: /setup/trae-install/ -->
+        <div class="topic" id="prep-c1-l2">
+          <span class="topic-num">02</span>
+          <div class="topic-content">
+            <strong>Trae 安装与上手</strong>
+            <div class="lesson-meta" style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px">
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">阶段 01</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">预计 12 分钟</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">环境安装</span>
+            </div>
+            <p style="color:var(--ink-faint);font-size:13px;line-height:1.7;margin:6px 0;padding:8px 12px;background:var(--paper-2);border-left:3px solid var(--gold);border-radius:4px">⏳ 等待你发 /setup/trae-install/ 的截图来补充详细内容。</p>
+          </div>
+        </div>
+
+        <!-- Lesson 3: /setup/claude-code-install/ -->
+        <div class="topic" id="prep-c1-l3">
+          <span class="topic-num">03</span>
+          <div class="topic-content">
+            <strong>Claude Code 安装与配置</strong>
+            <div class="lesson-meta" style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px">
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">阶段 01</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">预计 12 分钟</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">环境安装</span>
+            </div>
+            <p style="color:var(--ink-faint);font-size:13px;line-height:1.7;margin:6px 0;padding:8px 12px;background:var(--paper-2);border-left:3px solid var(--gold);border-radius:4px">⏳ 等待你发 /setup/claude-code-install/ 的截图来补充详细内容。</p>
+          </div>
+        </div>
+
+        <!-- Lesson 4: /setup/cc-switch/ -->
+        <div class="topic" id="prep-c1-l4">
+          <span class="topic-num">04</span>
+          <div class="topic-content">
+            <strong>CC Switch：多模型切换工具</strong>
+            <div class="lesson-meta" style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px">
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">阶段 01</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">预计 12 分钟</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">工具链</span>
+            </div>
+            <p style="color:var(--ink-faint);font-size:13px;line-height:1.7;margin:6px 0;padding:8px 12px;background:var(--paper-2);border-left:3px solid var(--gold);border-radius:4px">⏳ 等待你发 /setup/cc-switch/ 的截图来补充详细内容。</p>
+          </div>
+        </div>
+
+        <!-- Lesson 5: /setup/efficiency-tools/ -->
+        <div class="topic" id="prep-c1-l5">
+          <span class="topic-num">05</span>
+          <div class="topic-content">
+            <strong>提效工具箱：让 AI 编程流更顺</strong>
+            <div class="lesson-meta" style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px">
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">阶段 01</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">预计 12 分钟</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">提效</span>
+            </div>
+            <p style="color:var(--ink-faint);font-size:13px;line-height:1.7;margin:6px 0;padding:8px 12px;background:var(--paper-2);border-left:3px solid var(--gold);border-radius:4px">⏳ 等待你发 /setup/efficiency-tools/ 的截图来补充详细内容。</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========== 前置课 · Chapter 2 ========== -->
+    <section class="module" id="prep-c2">
+      <div class="module-head">
+        <span class="module-badge" style="background:var(--gold);color:var(--paper)">前置课 · 2</span>
+        <h2>02 做出作品</h2>
+        <span class="module-count">2 节</span>
+      </div>
+      <div class="module-summary">亲手用 AI 做出网页和小工具，体验完整的协作流程。本章结束你会拿到 1-2 个能跑、能看、能分享的小作品。</div>
+      <div class="topics">
+
+        <!-- Lesson 6: /web-dev/first-site/ -->
+        <div class="topic" id="prep-c2-l1">
+          <span class="topic-num">06</span>
+          <div class="topic-content">
+            <strong>第一个属于自己的网站</strong>
+            <div class="lesson-meta" style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px">
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">阶段 02</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">预计 12 分钟</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">首个作品</span>
+            </div>
+            <p style="color:var(--ink-faint);font-size:13px;line-height:1.7;margin:6px 0;padding:8px 12px;background:var(--paper-2);border-left:3px solid var(--gold);border-radius:4px">⏳ 等待你发 /web-dev/first-site/ 的截图来补充详细内容。</p>
+          </div>
+        </div>
+
+        <!-- Lesson 7: /web-dev/pomodoro/ -->
+        <div class="topic" id="prep-c2-l2">
+          <span class="topic-num">07</span>
+          <div class="topic-content">
+            <strong>做一个 Web 工具：番茄钟</strong>
+            <div class="lesson-meta" style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px">
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">阶段 02</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">预计 12 分钟</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">完整作品</span>
+            </div>
+            <p style="color:var(--ink-faint);font-size:13px;line-height:1.7;margin:6px 0;padding:8px 12px;background:var(--paper-2);border-left:3px solid var(--gold);border-radius:4px">⏳ 等待你发 /web-dev/pomodoro/ 的截图来补充详细内容。</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========== 前置课 · Chapter 3 ========== -->
+    <section class="module" id="prep-c3">
+      <div class="module-head">
+        <span class="module-badge" style="background:var(--gold);color:var(--paper)">前置课 · 3</span>
+        <h2>03 认知升级</h2>
+        <span class="module-count">3 节</span>
+      </div>
+      <div class="module-summary">理解 AI 原理和协作范式，从「会用工具」到「会指挥 AI」。最后一章带你看 Claude API 的安装、调用和自动化。</div>
+      <div class="topics">
+
+        <!-- Lesson 8: /claude/install/ -->
+        <div class="topic" id="prep-c3-l1">
+          <span class="topic-num">08</span>
+          <div class="topic-content">
+            <strong>Claude 安装与环境准备</strong>
+            <div class="lesson-meta" style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px">
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">阶段 03</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">预计 12 分钟</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">环境</span>
+            </div>
+            <p style="color:var(--ink-faint);font-size:13px;line-height:1.7;margin:6px 0;padding:8px 12px;background:var(--paper-2);border-left:3px solid var(--gold);border-radius:4px">⏳ 等待你发 /claude/install/ 的截图来补充详细内容。</p>
+          </div>
+        </div>
+
+        <!-- Lesson 9: /claude/api/ -->
+        <div class="topic" id="prep-c3-l2">
+          <span class="topic-num">09</span>
+          <div class="topic-content">
+            <strong>Claude API 入门与调用</strong>
+            <div class="lesson-meta" style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px">
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">阶段 03</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">预计 12 分钟</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">API</span>
+            </div>
+            <p style="color:var(--ink-faint);font-size:13px;line-height:1.7;margin:6px 0;padding:8px 12px;background:var(--paper-2);border-left:3px solid var(--gold);border-radius:4px">⏳ 等待你发 /claude/api/ 的截图来补充详细内容。</p>
+          </div>
+        </div>
+
+        <!-- Lesson 10: /claude/automation/ -->
+        <div class="topic" id="prep-c3-l3">
+          <span class="topic-num">10</span>
+          <div class="topic-content">
+            <strong>Claude 自动化：让 AI 自己跑起来</strong>
+            <div class="lesson-meta" style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px">
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">阶段 03</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">预计 12 分钟</span>
+              <span class="meta-chip" style="font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--paper-2);padding:3px 9px;border-radius:5px">自动化</span>
+            </div>
+            <p style="color:var(--ink-faint);font-size:13px;line-height:1.7;margin:6px 0;padding:8px 12px;background:var(--paper-2);border-left:3px solid var(--gold);border-radius:4px">⏳ 等待你发 /claude/automation/ 的截图来补充详细内容。</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========== Module 1 ========== -->
+    <section class="module" id="m1">
+      <div class="module-head">
+        <span class="module-badge">模块 1</span>
+        <h2>预备篇</h2>
+        <span class="module-count">1 个主题</span>
+      </div>
+      <div class="module-summary">开课前先完成学习准备，确保工具、网络和环境都能正常工作，避免正式开始后被基础问题反复卡住。</div>
+      <div class="topics">
+        <div class="topic">
+          <span class="topic-num">01</span>
+          <div class="topic-content">
+            <strong>AI 编程准备清单</strong>
+            <ul class="topic-points">
+              <li>为什么小白也能用 AI 学 AI 编程</li>
+              <li>社区权益及年度安排说明</li>
+              <li>工具准备：Claude Code、Codex、Trae、Cursor</li>
+              <li>网络条件与环境验收</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Module 2 ========== -->
+    <section class="module" id="m2">
+      <div class="module-head">
+        <span class="module-badge">模块 2</span>
+        <h2>入门篇</h2>
+        <span class="module-count">8 个主题</span>
+      </div>
+      <div class="module-summary">从第一个网站、第一条 Skill、第一次多 Skill 协作开始，让零基础用户尽快感受到 AI 编程的节奏、界面和效果。</div>
+      <div class="topics">
+        <div class="topic">
+          <span class="topic-num">01</span>
+          <div class="topic-content">
+            <strong>初体验：做出第一个属于自己的网站</strong>
+            <ul class="topic-points">
+              <li>如何跟 AI 高效沟通</li>
+              <li>用自然语言指挥 AI 干活，感受界面、节奏和效果</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">02</span>
+          <div class="topic-content">
+            <strong>怎样跟 AI 讨论需求，初识 Skill</strong>
+            <ul class="topic-points">
+              <li>不需要成为产品经理，但要知道如何说清楚需求</li>
+              <li>Claude Skills 是什么，为什么它最适合小白入门</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">03</span>
+          <div class="topic-content">
+            <strong>创造第一个实用的 Skill</strong>
+            <ul class="topic-points">
+              <li>找到自己经常要做的事，梳理流程和 SOP</li>
+              <li>跟 AI 对话，做出第一个可用的 Skill</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">04</span>
+          <div class="topic-content">
+            <strong>多场景的 Skill 实操</strong>
+            <ul class="topic-points">
+              <li>个人场景 Skill：信息资讯、习惯打卡、读书笔记等</li>
+              <li>办公场景 Skill：会议纪要、周报生成、数据分析等</li>
+              <li>梳理自己的场景，实操 Skill 实现需求</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">05</span>
+          <div class="topic-content">
+            <strong>多 Skill 的协作运用</strong>
+            <ul class="topic-points">
+              <li>复杂场景下如何组织多 Skill 协作运用</li>
+              <li>从工具到工作流的转变，提高生产力</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">06</span>
+          <div class="topic-content">
+            <strong>如何挖掘优质 Skill 为我所用</strong>
+            <ul class="topic-points">
+              <li>如何善用 GitHub 优质资源</li>
+              <li>一句话安装 Skill</li>
+              <li>Skill 的管理，在精不在多</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">07</span>
+          <div class="topic-content">
+            <strong>Skill 阶段复盘</strong>
+            <ul class="topic-points">
+              <li>把重复的事情 SOP 化，再把 SOP AI-Skill 化</li>
+              <li>同学分享优质 Skill 构建经验</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">08</span>
+          <div class="topic-content">
+            <strong>从 Skill 到产品转变</strong>
+            <ul class="topic-points">
+              <li>开发真正意义的 AI 产品</li>
+              <li>初识 PRD，学习产品构建的思维方式</li>
+              <li>AI 编程里，80% 时间花在制定计划上</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Module 3 ========== -->
+    <section class="module" id="m3">
+      <div class="module-head">
+        <span class="module-badge">模块 3</span>
+        <h2>技术篇</h2>
+        <span class="module-count">8 个主题</span>
+      </div>
+      <div class="module-summary">不把学员带进传统编程术语泥潭，只补齐真正会在做产品时遇到的核心概念和风险意识。</div>
+      <div class="topics">
+        <div class="topic">
+          <span class="topic-num">01</span>
+          <div class="topic-content">
+            <strong>前端、后端、数据库，既要面子也有里子</strong>
+            <ul class="topic-points">
+              <li>前端：用户看到的界面</li>
+              <li>后端：处理逻辑的大脑</li>
+              <li>数据库：存储信息的仓库</li>
+              <li>三者如何配合工作</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">02</span>
+          <div class="topic-content">
+            <strong>编程必备的关键技能</strong>
+            <ul class="topic-points">
+              <li>Git 是什么，为什么你不写代码也要懂一点</li>
+              <li>环境变量，你敢把密码直接发给 AI 大模型吗</li>
+              <li>源码管理：代码托管、仓库开源与私有</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">03</span>
+          <div class="topic-content">
+            <strong>API 让产品连接世界</strong>
+            <ul class="topic-points">
+              <li>什么是 API</li>
+              <li>你到底需要用到哪些 API</li>
+              <li>API 的成本控制与常见的坑</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">04</span>
+          <div class="topic-content">
+            <strong>找到适合自己的编程工具</strong>
+            <ul class="topic-points">
+              <li>Trae、Cursor、Codex、Claude Code 的熟悉</li>
+              <li>图形界面 VS 命令行：各有优势</li>
+              <li>Prompt、上下文、Token、模型能力边界</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">05</span>
+          <div class="topic-content">
+            <strong>Debug：产品出问题了怎么办</strong>
+            <ul class="topic-points">
+              <li>看报错信息，用 AI 辅助</li>
+              <li>查日志：产品运行的黑匣子</li>
+              <li>一个 AI 解决不了，问另一个</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">06</span>
+          <div class="topic-content">
+            <strong>部署上线：让别人用起来</strong>
+            <ul class="topic-points">
+              <li>本地 vs 线上：你电脑上能跑，不代表别人能访问</li>
+              <li>域名：给产品起个好记的网址</li>
+              <li>为什么有时候本地能跑，上线就出问题</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">07</span>
+          <div class="topic-content">
+            <strong>MCP：AI 时代的乐高积木</strong>
+            <ul class="topic-points">
+              <li>MCP 是什么：让 AI 连接各种工具的协议</li>
+              <li>哪里找到好用的 MCP 并让 AI 连接它</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">08</span>
+          <div class="topic-content">
+            <strong>安全管理，别让你的产品裸奔</strong>
+            <ul class="topic-points">
+              <li>基础的安全意识建立</li>
+              <li>密码、源码、备份与应急处理</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Module 4 ========== -->
+    <section class="module" id="m4">
+      <div class="module-head">
+        <span class="module-badge">模块 4</span>
+        <h2>实战篇</h2>
+        <span class="module-count">4 个主题</span>
+      </div>
+      <div class="module-summary">通过真实项目练出产品感和交付感，不只是"能跑"，而是能分享、能展示、能继续打磨。</div>
+      <div class="topics">
+        <div class="topic">
+          <span class="topic-num">01</span>
+          <div class="topic-content">
+            <strong>实战一：浏览器插件，解决高频重复动作</strong>
+            <ul class="topic-points">
+              <li>浏览器插件的基本结构</li>
+              <li>如何操作网页元素</li>
+              <li>插件的安装和调试</li>
+              <li>Chrome 插件商店发布（可选）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">02</span>
+          <div class="topic-content">
+            <strong>实战二：网页工具 / 应用，从工具到应用</strong>
+            <ul class="topic-points">
+              <li>前端界面设计</li>
+              <li>调用 AI API 处理文本或图片</li>
+              <li>后端逻辑处理与数据库使用</li>
+              <li>Vercel 一键部署与多页面组织</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">03</span>
+          <div class="topic-content">
+            <strong>实战三：把你的 Skill 做成产品</strong>
+            <ul class="topic-points">
+              <li>如何把 Skill 的逻辑转化为产品</li>
+              <li>选择合适的产品形态：网页、插件或其他</li>
+              <li>用户界面设计、部署与分享</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">04</span>
+          <div class="topic-content">
+            <strong>实战四：产品优化与打磨</strong>
+            <ul class="topic-points">
+              <li>性能优化：加载速度、响应时间</li>
+              <li>体验优化：交互细节、错误提示、加载状态</li>
+              <li>视觉优化：界面美化、品牌感</li>
+              <li>如何收集反馈和迭代</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="meta-grid">
+        <div class="meta-card">
+          <div class="meta-label">目标</div>
+          <p>做一个真正有用、能给别人演示的项目，而不是只停留在示例代码。</p>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">技术栈</div>
+          <p>纯前端、前后端协作、AI API、数据库与部署，按项目难度逐步增加。</p>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">案例</div>
+          <p>网页内容提取器、文案改写器、会议纪要网页工具、周报助手等。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Module 5 ========== -->
+    <section class="module" id="m5">
+      <div class="module-head">
+        <span class="module-badge">模块 5</span>
+        <h2>黑客松准备</h2>
+        <span class="module-count">2 个主题</span>
+      </div>
+      <div class="module-summary">用比赛场景倒逼选题、进度和表达，帮助学员把已有成果升级成可展示的作品。</div>
+      <div class="topics">
+        <div class="topic">
+          <span class="topic-num">01</span>
+          <div class="topic-content">
+            <strong>黑客松准备：选题与规则</strong>
+            <ul class="topic-points">
+              <li>如何选择黑客松项目，优先解决真实问题</li>
+              <li>评选标准说明</li>
+              <li>时间规划和里程碑</li>
+              <li>学习优秀案例</li>
+              <li>可以选择做新项目，或升级现有 Skill / 产品</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">02</span>
+          <div class="topic-content">
+            <strong>黑客松展示与评选</strong>
+            <ul class="topic-points">
+              <li>如何展示你的作品：演示与讲解</li>
+              <li>作品的包装和呈现</li>
+              <li>评选和反馈、奖学金</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Module 6 ========== -->
+    <section class="module special" id="m6">
+      <div class="module-head">
+        <span class="module-badge">模块 6</span>
+        <h2>龙虾专题：Openclaw 的基础入门</h2>
+        <span class="module-count">1 个主题</span>
+      </div>
+      <div class="topics">
+        <div class="topic">
+          <span class="topic-num">01</span>
+          <div class="topic-content">
+            <strong>Openclaw 的基础入门</strong>
+            <ul class="topic-points">
+              <li>Openclaw 是什么，了解它能为你做什么</li>
+              <li>深入对话，掌握与 AI 助理对话的技巧</li>
+              <li>让 AI 助理帮你处理网络、文件、写代码</li>
+              <li>基础风险意识和风控</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Module 7 ========== -->
+    <section class="module" id="m7">
+      <div class="module-head">
+        <span class="module-badge">模块 7</span>
+        <h2>产品商业化篇</h2>
+        <span class="module-count">6 个主题</span>
+      </div>
+      <div class="module-summary">从对标调研到支付和冷启动，帮助学员把"我做了一个工具"升级成"我在验证一门生意"。</div>
+      <div class="topics">
+        <div class="topic">
+          <span class="topic-num">01</span>
+          <div class="topic-content">
+            <strong>市场需求调研：抄、超、钞方法论</strong>
+            <ul class="topic-points">
+              <li>如何用 Skill 进行需求调研</li>
+              <li>抄：找到对标产品，分析功能和定价</li>
+              <li>超：找到差异化点，做得更好</li>
+              <li>钞：验证付费意愿，找到愿意付费的用户</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">02</span>
+          <div class="topic-content">
+            <strong>营销落地页：让用户看一眼就想买</strong>
+            <ul class="topic-points">
+              <li>落地页的核心要素：痛点、解决方案、信任背书、行动号召</li>
+              <li>用 AI 快速生成落地页</li>
+              <li>A/B 测试和转化率优化</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">03</span>
+          <div class="topic-content">
+            <strong>用户系统：让产品认识每一个用户</strong>
+            <ul class="topic-points">
+              <li>用户注册和登录</li>
+              <li>用户中心和权限管理</li>
+              <li>用户数据安全存储</li>
+              <li>用户转介绍和产品裂变设计</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">04</span>
+          <div class="topic-content">
+            <strong>接入支付：让产品收到第一笔钱</strong>
+            <ul class="topic-points">
+              <li>常见的支付方式选择</li>
+              <li>订单和支付管理</li>
+              <li>支付安全和风控</li>
+              <li>相关政策和风控</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">05</span>
+          <div class="topic-content">
+            <strong>成本优化：别让 Token 费用吃掉利润</strong>
+            <ul class="topic-points">
+              <li>按需功能的 API 组合</li>
+              <li>模型选择策略：什么时候用 GPT-5，什么时候用其他模型</li>
+              <li>Prompt 优化减少 Token 消耗</li>
+              <li>缓存策略、结果复用、成本监控和预警</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">06</span>
+          <div class="topic-content">
+            <strong>冷启动：找到愿意为你付费的前 100 人</strong>
+            <ul class="topic-points">
+              <li>种子用户获取渠道</li>
+              <li>冷启动策略与转化路径</li>
+              <li>用户反馈收集、快速迭代、早期用户维护与转介绍</li>
+              <li>用户访谈和需求验证</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Module 8 ========== -->
+    <section class="module" id="m8">
+      <div class="module-head">
+        <span class="module-badge">模块 8</span>
+        <h2>小程序应用实战</h2>
+        <span class="module-count">2 个主题</span>
+      </div>
+      <div class="topics">
+        <div class="topic">
+          <span class="topic-num">01</span>
+          <div class="topic-content">
+            <strong>小程序开发：从网页到微信生态</strong>
+            <ul class="topic-points">
+              <li>小程序 vs 网页：为什么要做小程序</li>
+              <li>小程序开发框架选择</li>
+              <li>小程序的用户系统、支付接入和数据分析</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">02</span>
+          <div class="topic-content">
+            <strong>小程序审核和发布</strong>
+            <ul class="topic-points">
+              <li>小程序审核规则和常见拒审原因</li>
+              <li>如何准备审核材料：资质证明</li>
+              <li>小程序类目选择、权限申请、版本管理和灰度发布</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Module 9 ========== -->
+    <section class="module" id="m9">
+      <div class="module-head">
+        <span class="module-badge">模块 9</span>
+        <h2>APP 应用实战</h2>
+        <span class="module-count">2 个主题</span>
+      </div>
+      <div class="topics">
+        <div class="topic">
+          <span class="topic-num">01</span>
+          <div class="topic-content">
+            <strong>APP 开发：做一个真正的移动应用</strong>
+            <ul class="topic-points">
+              <li>APP vs 小程序 vs 网页：什么时候需要做 APP</li>
+              <li>跨平台开发框架</li>
+              <li>用 AI 辅助 APP 开发</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">02</span>
+          <div class="topic-content">
+            <strong>APP 审核和发布</strong>
+            <ul class="topic-points">
+              <li>APP 的打包和签名</li>
+              <li>App Store 和安卓应用市场上架流程</li>
+              <li>版本更新与管理</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Module 10 ========== -->
+    <section class="module special" id="m10">
+      <div class="module-head">
+        <span class="module-badge">模块 10</span>
+        <h2>龙虾专题：Openclaw 的进阶使用</h2>
+        <span class="module-count">1 个主题</span>
+      </div>
+      <div class="topics">
+        <div class="topic">
+          <span class="topic-num">01</span>
+          <div class="topic-content">
+            <strong>Openclaw 的进阶使用</strong>
+            <ul class="topic-points">
+              <li>Skill 拓展，让龙虾长出手脚</li>
+              <li>自动化运行，打造真正的 AI 生产力</li>
+              <li>多 Agent 协作、设备联动，继续解锁潜力</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== IP 直播 ========== -->
+    <section class="module live" id="ip">
+      <div class="module-head">
+        <span class="module-badge">★ IP 直播</span>
+        <h2>IP 直播课（10 场）</h2>
+        <span class="module-count">1-2 周/场 · 约 3 个月完成</span>
+      </div>
+      <div class="module-summary">编程学录播，IP 学直播。10 场内容围绕冷启动、内容杠杆和直播转化展开，随学员实际情况动态调整节奏。</div>
+      <div class="topics">
+        <div class="topic">
+          <span class="topic-num">01</span>
+          <div class="topic-content">
+            <strong>启动课：OPC，如何冷启动开启一人公司</strong>
+            <ul class="topic-points">
+              <li>利用代码和自媒体杠杆成为 AI 时代超级个体</li>
+              <li>发展路线图解析</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">02</span>
+          <div class="topic-content">
+            <strong>启动课：一人公司变现的三个阶段</strong>
+            <ul class="topic-points">
+              <li>从 0 到 1：依靠个人专业技能提供服务</li>
+              <li>从 1 到 10：多种变现方式组合</li>
+              <li>从 10 到 100：用产品杠杆实现被动收入</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">03</span>
+          <div class="topic-content">
+            <strong>流量杠杆：以终为始，个人 IP 帐号定位</strong>
+            <ul class="topic-points">
+              <li>商业定位、人设定位、账号定位</li>
+              <li>AI 在此过程中的运用</li>
+              <li>账号装修和基本布局</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">04</span>
+          <div class="topic-content">
+            <strong>流量杠杆：爆款选题和内容创作</strong>
+            <ul class="topic-points">
+              <li>围绕定位准备 100 条不同形式的选题</li>
+              <li>选题的来源、套路和结构</li>
+              <li>AI 做选题的巧劲和工作流</li>
+              <li>搭建选题库</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">05</span>
+          <div class="topic-content">
+            <strong>流量杠杆：脚本输出和拍摄形式</strong>
+            <ul class="topic-points">
+              <li>自然流、提纲、全脚本三种类别</li>
+              <li>如何撰写脚本和 AI 大幅提效</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">06</span>
+          <div class="topic-content">
+            <strong>流量杠杆：剪辑如何逻辑重构</strong>
+            <ul class="topic-points">
+              <li>三种不同类型的样片剪辑示范</li>
+              <li>五步剪辑法的学习</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">07</span>
+          <div class="topic-content">
+            <strong>流量杠杆：短视频的结构拆解</strong>
+            <ul class="topic-points">
+              <li>用数据的眼光进行短视频拉片</li>
+              <li>开头、要点、结尾的系统设计</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">08</span>
+          <div class="topic-content">
+            <strong>流量杠杆：AI 短视频完整流程</strong>
+            <ul class="topic-points">
+              <li>灵动写手的完整流程和实现效果</li>
+              <li>灵动 AI 合作项目参与</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">09</span>
+          <div class="topic-content">
+            <strong>流量杠杆：数据分析 / 私域设计</strong>
+            <ul class="topic-points">
+              <li>掌握优质短视频的 Benchmark</li>
+              <li>了解用户故事地图和工作流</li>
+              <li>私域设计的 AI 化和 workflow 价值</li>
+              <li>矩阵账号的分发逻辑</li>
+            </ul>
+          </div>
+        </div>
+        <div class="topic">
+          <span class="topic-num">10</span>
+          <div class="topic-content">
+            <strong>流量杠杆：直播的 10 倍效益放大</strong>
+            <ul class="topic-points">
+              <li>用专业的眼光看懂直播套路</li>
+              <li>如何策划一场精细化的直播</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 实战验证 ========== -->
+    <section class="module special" id="verify">
+      <div class="module-head">
+        <span class="module-badge">实战验证</span>
+        <h2>实战验证与升级路径</h2>
+        <span class="module-count">2 个项目</span>
+      </div>
+      <div class="meta-grid">
+        <div class="meta-card">
+          <div class="meta-label">100 天自媒体打卡</div>
+          <p>启动百日打卡，跑出第一批种子客户，联动 AI 编程产品完成第一次变现，并通过时间规划、里程碑、案例学习与评选反馈持续推进。</p>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">优秀学员签约机会</div>
+          <p>通过双选机制互相评估，优秀学员可签约成为公司 IP，获得为期 3 年的 0 收费 IP 陪跑服务。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 退款机制 ========== -->
+    <section class="module" id="refund">
+      <div class="module-head">
+        <span class="module-badge">权益规则</span>
+        <h2>退款机制</h2>
+        <span class="module-count">先学先做，再决定</span>
+      </div>
+      <div class="module-summary">这套课强调真实投入与结果导向，不鼓励冲动报名。退款机制的存在，是为了让学员在明确规则的前提下放心开始，而不是把课程理解成"买完就结束"的消费品。</div>
+      <div class="meta-grid">
+        <div class="meta-card">
+          <div class="meta-label">01 · 筛选机制</div>
+          <p>先完成前置学习，再决定是否进入正课。前置课本身就是筛选机制。只有在你确认自己愿意投入时间做作品、做作业、做复盘后，再进入正课更合适。</p>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">02 · 明确规则</div>
+          <p>退款不是逃避执行，而是基于明确规则的保障。如果学员在规定周期内认真完成要求但依然确认不适合继续，可以按课程约定申请后续处理，避免信息不对称带来的焦虑。</p>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">03 · 风险边界</div>
+          <p>最终目标是把风险边界讲清楚。你会提前知道这门课适合谁、需要投入什么、完成标准是什么，从而以更理性的方式判断自己是否继续升级。</p>
+        </div>
+      </div>
+      <div class="module-summary" style="border-top:1px solid var(--line-soft);background:var(--paper-2)">
+        <strong>建议理解方式：</strong> 最重要的不是"能不能退"，而是你是否愿意按课程节奏完成作品、作业和复盘。真正适合这门课的人，通常在前两周就会感受到明显产出。
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ========== Audience ========== -->
+<section class="audience-section">
+  <span class="section-eyebrow">Who Is This For</span>
+  <h2 class="section-title">这门课适合谁</h2>
+  <p class="section-desc">4 类典型学员画像 —— 如果你命中其中一类，这门课的整个节奏就是为你设计的。</p>
+  <div class="audience-grid">
+    <div class="audience-card">
+      <div class="audience-num">01</div>
+      <strong>完全零基础的学员</strong>
+      <p>没写过代码，也希望借助 AI 进入编程和产品世界。</p>
+    </div>
+    <div class="audience-card">
+      <div class="audience-num">02</div>
+      <strong>内容与运营岗位</strong>
+      <p>想把选题、脚本、复盘、转化和信息整理逐步交给 AI 协助完成。</p>
+    </div>
+    <div class="audience-card">
+      <div class="audience-num">03</div>
+      <strong>想做产品或副业的人</strong>
+      <p>想把自己的 Skill、工作流或经验升级成真正能分享、能交付的产品。</p>
+    </div>
+    <div class="audience-card">
+      <div class="audience-num">04</div>
+      <strong>想建立个人 IP 的实践者</strong>
+      <p>希望把 AI 编程能力和内容表达结合起来，打开长期增长与变现空间。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== Footer ========== -->
+<footer class="foot">
+  <p>本课表内容整理自 ipwriter 灵动-AI 编程实战课公开页面</p>
+  <p style="margin-top:6px">HTML 文档结构 / 设计：Mavis · 数据来源：aicourse.ipwriter.com/course/</p>
+  <div class="src">2026-07-11 扒取 · 单文件离线版</div>
+</footer>
+
+<script>
+// 左侧目录高亮 + 平滑滚动
+(function(){
+  const tocLinks = document.querySelectorAll('.toc-list a');
+  const sections = Array.from(tocLinks).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+  function setActive(id){
+    tocLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+    });
+  }
+
+  // 滚动监听
+  let ticking = false;
+  window.addEventListener('scroll', function(){
+    if(!ticking){
+      window.requestAnimationFrame(function(){
+        let current = sections[0]?.id;
+        const offset = 120;
+        for(const s of sections){
+          if(s.getBoundingClientRect().top - offset <= 0) current = s.id;
+        }
+        if(current) setActive(current);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, {passive:true});
+
+  // 点击平滑滚动
+  tocLinks.forEach(a => {
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      const id = this.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if(el){
+        window.scrollTo({top: el.offsetTop - 16, behavior: 'smooth'});
+        setActive(id);
+      }
+    });
+  });
+
+  // 搜索过滤
+  const searchInput = document.getElementById('searchInput');
+  const topicContents = document.querySelectorAll('.topic');
+  const topicLabels = document.querySelectorAll('.topic-content strong');
+  const topicPoints = document.querySelectorAll('.topic-points li');
+  const moduleHeaders = document.querySelectorAll('.module');
+
+  function clearHighlights(){
+    document.querySelectorAll('mark.hl').forEach(m => {
+      const parent = m.parentNode;
+      parent.replaceChild(document.createTextNode(m.textContent), m);
+      parent.normalize();
+    });
+  }
+  function highlight(el, q){
+    if(!q) return;
+    const text = el.textContent;
+    const lower = text.toLowerCase();
+    const ql = q.toLowerCase();
+    const idx = lower.indexOf(ql);
+    if(idx === -1) return;
+    // 简化：仅高亮第一次出现
+    // 真实高亮重建（保留 DOM 结构）
+  }
+
+  searchInput.addEventListener('input', function(){
+    const q = this.value.trim().toLowerCase();
+    clearHighlights();
+    if(!q){
+      topicContents.forEach(t => t.parentElement.style.display = '');
+      moduleHeaders.forEach(m => m.style.display = '');
+      return;
+    }
+    // 遍历 topic
+    let visibleCount = 0;
+    topicContents.forEach(t => {
+      const text = t.textContent.toLowerCase();
+      const match = text.includes(q);
+      t.parentElement.style.display = match ? '' : 'none';
+      if(match) visibleCount++;
+    });
+    // 隐藏完全没匹配的 module
+    moduleHeaders.forEach(m => {
+      const hasVisible = Array.from(m.querySelectorAll('.topic')).some(t => t.style.display !== 'none');
+      m.style.display = hasVisible ? '' : 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>
