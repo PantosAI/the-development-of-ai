@@ -1243,6 +1243,77 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
   .drive-hero::after { display: none; }
 }
 
+/* ════════ 疲劳驾驶评估 ════════ */
+/* 行为指标对比表 */
+.fatigue-table-wrap {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  padding: 4px 0; box-shadow: var(--shadow); overflow: hidden; margin-bottom: 8px;
+}
+.fatigue-table {
+  width: 100%; border-collapse: collapse; font-size: 12.5px;
+}
+.fatigue-table th, .fatigue-table td {
+  text-align: left; padding: 11px 16px; line-height: 1.55; border-bottom: 1px solid var(--border);
+}
+.fatigue-table th {
+  background: var(--ink); color: var(--paper);
+  font-family: 'Noto Serif SC', serif; font-weight: 700; font-size: 13px; letter-spacing: 0.5px;
+}
+.fatigue-table th:first-child { border-top-left-radius: 4px; }
+.fatigue-table th:last-child { border-top-right-radius: 4px; }
+.fatigue-table tbody tr:last-child td { border-bottom: none; }
+.fatigue-table tbody tr:hover { background: var(--paper2); }
+.fatigue-table td:first-child { color: var(--ink); font-family: 'Noto Serif SC', serif; font-weight: 700; }
+.fatigue-table td:nth-child(2) { color: var(--green); }
+.fatigue-table td:nth-child(3) { color: var(--accent); }
+.fatigue-table td b { color: var(--accent); }
+
+/* STOP 自检 · 四问大框 */
+.stop-box {
+  background: var(--ink); color: var(--paper); border-radius: 4px;
+  padding: 22px 26px 24px; box-shadow: var(--shadow-lg);
+  border-left: 5px solid var(--accent); position: relative; overflow: hidden;
+}
+.stop-box::after {
+  content: 'STOP'; position: absolute; right: 22px; top: 50%;
+  transform: translateY(-50%); font-family: 'JetBrains Mono', monospace;
+  font-size: 90px; font-weight: 900; color: rgba(200,64,26,0.10);
+  letter-spacing: -3px; line-height: 1; pointer-events: none;
+}
+.stop-row { display: flex; gap: 16px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.08); position: relative; z-index: 1; }
+.stop-row:last-child { border-bottom: none; padding-bottom: 0; }
+.stop-row:first-child { padding-top: 0; }
+.stop-letter {
+  font-family: 'JetBrains Mono', monospace; font-size: 30px; font-weight: 900;
+  color: var(--accent); line-height: 1; flex-shrink: 0; width: 38px; text-align: center;
+  padding-top: 2px;
+}
+.stop-body { flex: 1; }
+.stop-h { font-family: 'Noto Serif SC', serif; font-size: 15px; font-weight: 700; color: var(--paper); margin-bottom: 4px; }
+.stop-b { font-size: 12.5px; line-height: 1.7; color: rgba(245,240,232,.72); }
+.stop-b b { color: var(--paper); font-weight: 700; }
+
+/* 法律与标准 · 三卡 */
+.legal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.legal-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  padding: 16px 18px; box-shadow: var(--shadow); border-top: 3px solid var(--ink);
+  transition: transform .18s, box-shadow .18s;
+}
+.legal-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.legal-flag { font-size: 24px; line-height: 1; margin-bottom: 8px; }
+.legal-h { font-family: 'Noto Serif SC', serif; font-size: 14.5px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.legal-b { font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+.legal-b b { color: var(--accent); }
+
+@media(max-width: 600px) {
+  .stop-box { padding: 18px 18px 20px; }
+  .stop-box::after { display: none; }
+  .stop-letter { font-size: 24px; width: 30px; }
+  .fatigue-table { font-size: 11.5px; }
+  .fatigue-table th, .fatigue-table td { padding: 9px 10px; }
+}
+
 </style>
 </head>
 <body>
@@ -1269,6 +1340,7 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
     <button onclick="show('course',this)"><span class="ico">◈</span>原理课</button>
     <button onclick="show('mods',this)"><span class="ico">▲</span>改装</button>
     <button onclick="show('drive',this)"><span class="ico">◉</span>驾车技巧</button>
+    <button onclick="show('fatigue',this)"><span class="ico">◐</span>疲劳评估</button>
     <button onclick="show('diagnose',this)"><span class="ico">⚠</span>故障反查</button>
     <button onclick="show('calc',this)"><span class="ico">▤</span>保养计算器</button>
     <button onclick="show('maintenance',this)"><span class="ico">≣</span>保养手册</button>
@@ -2482,6 +2554,299 @@ section.active .sys-card:nth-child(n+2) { animation-delay: calc((var(--i, 0)) * 
     <div class="route-honest">
       <b>诚实说明 · 乡镇这块（已基本核实）：</b>整条骨架按官方区划核过了——<b>合德 → 兴桥 → 盘湾 → 特庸 → 亭湖（南洋）→ 盐城市区</b>。要点：兴桥北邻合德、南邻盘湾，所以<b>不经过新坍</b>（新坍在兴桥西边）；盘湾正南就是特庸，特庸西/南直接贴着亭湖区。剩下唯一的小不确定，是特庸进市区具体走南洋哪条路——这个按高德实际报的为准。真正的硬锚点仍是你自己认的 <b>永兴饭店 → 盘湾大牛 → 宏大村牌</b>。
     </div>
+  </div>
+
+  <!-- 实战场景：白天 / 夜间 / 国道 -->
+  <h3 class="drive-block-title"><span class="dbt-i" style="background:var(--purple)">⚑</span>实战场景 · 白天 / 夜间 / 国道</h3>
+  <p class="section-sub" style="margin:-4px 0 14px">三块内容都是从路上被坑出来的经验，归在一起看着方便。每条都留着当时的气话——因为气话背后是真实的路面。原则仍然是<b>预判 + 控速</b>，但白天靠"看见"，夜间靠"灯光"，国道靠"活着下来"。</p>
+
+  <div class="drive-grid">
+
+    <div class="drive-card" style="border-top-color:var(--green)">
+      <div class="dc-num">☀</div>
+      <div class="dc-h">白天行车 · 红绿灯路口的"吃苍蝇"瞬间</div>
+      <div class="dc-b">
+        车流密集的红绿灯路口，<b>低头看手机的那个人</b>最危险——他不是在开车，他在刷屏。<b>绿灯亮了你也未必能起步</b>，因为前车在看手机；前车起步了你也别急着跟，因为对面<b>左拐 / 直行</b>的车正堵在路口中央。
+      </div>
+      <ul class="dc-list" style="margin-top:8px">
+        <li><b>穿绿衣的坑：</b>有人穿一身和草垛 / 绿化带<b>同色</b>的衣服站在路口边，视线直接被背景吃掉。路口减速到 10–20，<b>默认每个"绿块"都可能是人</b>。</li>
+        <li><b>左拐 / 直行卡中央：</b>对向车道<b>左拐车 + 直行车</b>同时挤到路口正中央那条线，谁也不让谁。你直行经过时，<b>脚下备刹，眼睛盯紧缝</b>，别赌对方突然想起来走。</li>
+        <li><b>保护自己：</b>路口前 50 米就把脚挪到刹车上，<b>绿灯起步先看左再看右</b>，别起步就冲。</li>
+        <li><b>被别人吃苍蝇怎么办：</b>被加塞 / 别了，<b>不赌气、不摇窗、不下车</b>，记住车牌走法律途径。路上一秒钟的情绪，回家可能要付一年。</li>
+      </ul>
+    </div>
+
+    <div class="drive-card" style="border-top-color:var(--ink)">
+      <div class="dc-num">☽</div>
+      <div class="dc-h">夜间行车 · 远近光交替，避开三类"鬼"</div>
+      <div class="dc-b">
+        夜间的核心不是"看得更远"，是<b>让对方看见你 + 你看见对方</b>。远近光交替是基础动作，但真正要命的是路上三种"无光目标"。
+      </div>
+      <ul class="dc-list" style="margin-top:8px">
+        <li><b>远近光交替：</b>会车前 <b>100–150 米切近光</b>；跟车别开远光（后视镜会亮瞎前车）；超车闪两下远光提示。</li>
+        <li><b>无灯三蹦子 / 农用车：</b>12 点国道上，<b>老两口开一辆没灯的三蹦子</b>，走在车流量大、没路灯的路上——这种车<b>没灯、没反光贴、速度慢</b>，肉眼只能靠对方眼睛的反光点判断。远远看到路面有<b>两点悬空微光</b>，立刻减速备刹。</li>
+        <li><b>夜间动物：</b>猫狗家畜对远光<b>会愣在原地</b>，不是没看见你，是吓傻了。变近光 + 鸣笛，<b>点刹等它自己跑</b>，别急打方向避让——夜间高速避让动物是翻车第一诱因。</li>
+        <li><b>夜间横穿乡道的人：</b>乡间窄路、流量大，<b>慢慢悠悠横过马路的人</b>，永远比你以为的更近。路口 / 村庄段 <b>30 以下</b>，脚在刹车上。</li>
+        <li><b>对向远光：</b>被对面远光晃到，<b>看右侧白线</b>保持车道；不要盯着光源、不要本能地往左躲。</li>
+      </ul>
+    </div>
+
+    <div class="drive-card" style="border-top-color:var(--accent)">
+      <div class="dc-num">⚑</div>
+      <div class="dc-h">国道 · 实话放心里，要说好话</div>
+      <div class="dc-b">
+        <b>实话：国道我是真不想开了，全是大车。</b>好话：大车不主动找你麻烦，你就赢了一半。原则是两条——<b>① 优先下国道</b>，<b>② 离大车远一点</b>。但这两条放在一起有个矛盾要先解决。
+      </div>
+      <ul class="dc-list" style="margin-top:8px">
+        <li><b>下去的路口未必能下：</b>很多国道，下去的路口是<b>下不了的</b>。不是每个下去的路口都有<b>缺口</b>——很多是<b>实线</b>，过不去。眼看导航说"前方 200 米右转下国道"，到跟前发现是实线，那就<b>老老实实继续走</b>，别赌压线下去——12 分的事。</li>
+        <li><b>优先级排序：</b>看到路牌提示下方有缺口，<b>提前 1–2 公里并到最右车道</b>，别等到跟前再变道。错过一个就等下一个，<b>不要倒车、不要急刹强行并道</b>。</li>
+        <li><b>离大车的距离：</b>同向跟车至少 <b>50 米以上</b>，给前车的大车和你之间的反应留余量；<b>不要跟在大车正后方</b>——视线全被挡，前方有任何情况你都看不见。</li>
+        <li><b>不要为了"远"而走错：</b>"离大车远一点"的代价不是"没意义地变道"，而是<b>选对时机一次性变过去</b>。来回变道、变来变去都下不去国道，才是真坑。</li>
+        <li><b>超车：</b>国道的超车窗口<b>短、盲区大、对向有车</b>，必须 <b>远光 + 鸣笛 + 看准</b> 三件套，绝不强行。宁可多跟 5 分钟。</li>
+        <li><b>夜间国道加倍：</b>夜间大车的轮廓灯 <b>只有轮廓</b>，车厢内的车完全看不见——大车后面跟着一辆没灯的车是常事。<b>夜间国道少超车</b>，跟车距离加倍。</li>
+      </ul>
+      <div class="dc-b" style="margin-top:8px"><span class="hot">一句话：</span>国道活着下来的办法不是"开得快"，是<b>不抢、不赌、不变来变去</b>。有时候好话就是实话——把命留着比赶十分钟重要。</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ 疲劳驾驶评估 ══════════ -->
+<section id="fatigue">
+  <div class="sec-head">
+    <h2 class="section-title"><span class="idx">◐</span>疲劳驾驶评估</h2>
+    <p class="section-sub">疲劳是<b>静默杀手</b>——比酒驾更隐蔽，因为没有"测一测就抓"的硬指标。评估要分四层看：<b>自己感觉（主观）→ 身体信号（生理）→ 开车表现（行为）→ 设备数据（技术）</b>。下面按这四层把可操作的判断方法拆开。</p>
+  </div>
+
+  <!-- 头条：疲劳是静默杀手 -->
+  <div class="drive-hero">
+    <div class="dh-kicker">核心结论</div>
+    <div class="dh-title">疲劳驾驶 · <span class="hl">自己评估不了自己</span></div>
+    <div class="dh-mine">
+      疲劳的可怕不在于"困了"，在于<b>你困了的时候，你已经判断不准自己困不困</b>。研究里反复出现的现象是：驾驶员主观觉得自己"还行"的时候，客观脑电已经在掉到 θ 波了——也就是大脑已经"半睡"，身体却以为还在工作。所以下面四个层面，<b>主观只用来提醒，客观才用来下结论</b>。
+    </div>
+    <div class="dh-what">
+      <b>关键数据：</b>24 小时内睡眠不足 6 小时，事故风险增加 2 倍；睡眠不足 4 小时，风险增加 10 倍以上。一次 4–5 秒的<b>微睡眠（microsleep）</b>，以 100 km/h 的速度就等于<b>盲开 100 多米</b>。
+    </div>
+    <div class="dh-punch">
+      <b>记住这条：</b>你不需要"撑到极限"才叫疲劳——出现第一个主观信号，就可以停了。
+    </div>
+  </div>
+
+  <!-- 四层评估框架 -->
+  <h3 class="drive-block-title"><span class="dbt-i">①</span>第一层 · 主观自评（最方便，但最不可靠）</h3>
+  <p class="section-sub" style="margin:-4px 0 14px">靠"自己感觉"判断。优势是随时能做；劣势是<b>人困了会高估自己</b>。所以主观自评只能用来<b>触发</b>更进一步的判断，<b>不能用来否决</b>客观信号。</p>
+
+  <div class="drive-grid">
+
+    <div class="drive-card" style="border-top-color:var(--accent2)">
+      <div class="dc-num">A</div>
+      <div class="dc-h">三个常用量表</div>
+      <div class="dc-b">选一个，记下来对比：</div>
+      <ul class="dc-list" style="margin-top:8px">
+        <li><b>KSS（Karolinska）</b>：1–9 级困倦自评，驾驶前后快速打分。≥7 视为高危。</li>
+        <li><b>SSS（Stanford）</b>：1–7 级清醒度评估，科研和临床常用。</li>
+        <li><b>DSQ 驾驶困倦问卷</b>：评估驾驶中困倦的<b>频率和触发情境</b>，适合做长期风险筛查。</li>
+      </ul>
+    </div>
+
+    <div class="drive-card" style="border-top-color:var(--accent)">
+      <div class="dc-num">B</div>
+      <div class="dc-h">关键主观信号（出现任何一条都算疲劳）</div>
+      <ul class="dc-list">
+        <li>频繁打哈欠、眼皮沉重、眼睛不自觉地眯</li>
+        <li>注意力涣散，<b>出现"放空"片段</b>，回过神不知刚才几秒发生了什么</li>
+        <li>对路况<b>记忆断片</b>——<b>微睡眠（microsleep）</b>，持续 2–30 秒</li>
+        <li>错过出口、错过路标、错过转弯提示</li>
+        <li>不自觉地<b>提高音量</b>、开窗、打自己脸——这些是身体在自救</li>
+      </ul>
+      <div class="dc-b" style="margin-top:8px"><span class="hot">判断：</span>出现以上任何一条，<b>立刻找地方停</b>，不要再"再撑一段"。</div>
+    </div>
+
+  </div>
+
+  <h3 class="drive-block-title"><span class="dbt-i" style="background:var(--accent)">②</span>第二层 · 客观生理指标（自己测不了，但可以观察）</h3>
+  <p class="section-sub" style="margin:-4px 0 14px">这些是研究/设备层面的硬指标，自己车上没法直接测，但有车的 DMS、车队管理、智能手表在用。了解它们，<b>知道高端怎么量化、为什么系统会报警</b>。</p>
+
+  <div class="drive-grid">
+
+    <div class="drive-card" style="border-top-color:var(--accent)">
+      <div class="dc-num">1</div>
+      <div class="dc-h">眼部特征（最常用、最准）</div>
+      <ul class="dc-list">
+        <li><b>PERCLOS</b>：眼睑闭合 ≥ 80% 的时间占比。<b>&gt;15% 视为疲劳临界</b>，&gt;20% 已经重度。</li>
+        <li><b>眨眼频率</b>：正常 15–20 次/分钟；疲劳时<b>先显著下降，再突然增加</b>（补偿性眨眼）。</li>
+        <li><b>瞳孔</b>：疲劳时对光反射<b>变迟钝</b>，瞳孔直径波动变小。</li>
+        <li><b>眼动</b>：视线扫视频率下降，<b>凝视</b>某处时间变长（典型微睡眠前兆）。</li>
+      </ul>
+    </div>
+
+    <div class="drive-card" style="border-top-color:var(--accent2)">
+      <div class="dc-num">2</div>
+      <div class="dc-h">脑电与心电（专业级）</div>
+      <ul class="dc-list">
+        <li><b>EEG（脑电）</b>：θ 波增多、α 波增强，是大脑进入困倦的标志。司法上常作为疲劳的客观证据。</li>
+        <li><b>HRV（心率变异性）</b>：副交感神经活跃度升高，<b>高频成分增加</b>。</li>
+        <li><b>心率/血压</b>：持续驾驶后心率<b>下降</b>，是自主神经疲劳的信号。</li>
+      </ul>
+    </div>
+
+    <div class="drive-card" style="border-top-color:var(--gold)">
+      <div class="dc-num">3</div>
+      <div class="dc-h">其他生理信号（辅助判断）</div>
+      <ul class="dc-list">
+        <li><b>头部姿态</b>：点头、歪头（瞌睡点头）——出现就已经是重度疲劳。</li>
+        <li><b>面部肌肉</b>：松弛、表情僵化、嘴微张。</li>
+        <li><b>皮肤电反应（GSR）</b>：出汗模式变化，反应警觉度下降。</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <h3 class="drive-block-title"><span class="dbt-i" style="background:var(--gold)">③</span>第三层 · 驾驶行为指标（自己最容易忽略的）</h3>
+  <p class="section-sub" style="margin:-4px 0 14px">行为变化是<b>最该警惕的</b>——因为它在主观感觉之前就发生了，而你开车时根本不会注意到自己开歪了。</p>
+
+  <div class="fatigue-table-wrap">
+    <table class="fatigue-table">
+      <thead>
+        <tr>
+          <th style="width:22%">指标</th>
+          <th style="width:39%">正常状态</th>
+          <th style="width:39%">疲劳状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>车道偏离</b></td>
+          <td>居中稳定，微调修正</td>
+          <td><b>蛇形行驶、压线、突然偏出</b></td>
+        </tr>
+        <tr>
+          <td><b>方向盘控制</b></td>
+          <td>小幅度持续微调</td>
+          <td><b>长时间不动</b>（瞌睡）<b>或突然剧烈修正</b>（惊醒）</td>
+        </tr>
+        <tr>
+          <td><b>跟车距离</b></td>
+          <td>稳定保持</td>
+          <td>忽近忽远，<b>不自觉加速</b>追前车</td>
+        </tr>
+        <tr>
+          <td><b>反应时间</b></td>
+          <td>0.7–1.0 秒</td>
+          <td>&gt;1.5 秒，<b>遇到情况迟疑</b></td>
+        </tr>
+        <tr>
+          <td><b>速度波动</b></td>
+          <td>稳定</td>
+          <td>忽快忽慢，<b>无意识超速或过慢</b></td>
+        </tr>
+        <tr>
+          <td><b>变道/超车</b></td>
+          <td>规范流畅</td>
+          <td>犹豫、<b>忘记打灯</b>、错过并回时机</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="drive-block-title"><span class="dbt-i" style="background:var(--green)">④</span>第四层 · 技术检测手段（车机/穿戴在做的事）</h3>
+  <p class="section-sub" style="margin:-4px 0 14px">这一层你不直接参与，但理解一下，<b>知道车子在替你"看"你</b>——以及这些设备的局限在哪。</p>
+
+  <div class="drive-grid">
+
+    <div class="drive-card" style="border-top-color:var(--green)">
+      <div class="dc-num">A</div>
+      <div class="dc-h">DMS · 驾驶员监控系统</div>
+      <div class="dc-b">红外摄像头盯你的脸，实时分析<b>眼部状态、头部姿态、视线方向</b>。代表：特斯拉 Autopilot、奔驰 Attention Assist、沃尔沃 Driver Alert。判定疲劳后会<b>声音 + 振动 + 图标</b>提示，严重时强制停车。</div>
+    </div>
+
+    <div class="drive-card" style="border-top-color:var(--accent2)">
+      <div class="dc-num">B</div>
+      <div class="dc-h">可穿戴设备</div>
+      <ul class="dc-list">
+        <li><b>智能手表/手环</b>：监测 HRV、血氧、呼吸率</li>
+        <li><b>智能眼镜</b>：直接监测<b>眨眼和眼动</b>，比手腕准</li>
+        <li><b>EEG 头带</b>：专业级脑电监测，科研 / 长途司机配</li>
+      </ul>
+    </div>
+
+    <div class="drive-card" style="border-top-color:var(--purple)">
+      <div class="dc-num">C</div>
+      <div class="dc-h">车辆动力学分析（不动脸也能判断）</div>
+      <ul class="dc-list">
+        <li><b>EPS 转向</b>：方向盘<b>握力变小、修正频率变低</b> → 疲劳</li>
+        <li><b>车道保持</b>：频繁触发纠偏 → 注意力散</li>
+        <li><b>ACC 自适应巡航</b>：跟车距离不稳定 + 速度波动 → 司机接管能力下降</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- STOP 自检法 · 醒目的红框 -->
+  <h3 class="drive-block-title"><span class="dbt-i" style="background:var(--accent)">▲</span>实用自检 · 路上随时用的 "STOP" 四问</h3>
+  <p class="section-sub" style="margin:-4px 0 14px">如果你正开在路上、不想看长内容，只看这一段——问自己 4 个问题，<b>有 1 个答"是"就靠边停</b>。</p>
+
+  <div class="stop-box">
+    <div class="stop-row">
+      <div class="stop-letter">S</div>
+      <div class="stop-body">
+        <div class="stop-h">Sleepiness · 你现在困不困？</div>
+        <div class="stop-b">是不是已经在<b>打哈欠、眯眼、放空</b>？如果连这三个动作都被自己按下去了，那是身体已经开始"罢工"。</div>
+      </div>
+    </div>
+    <div class="stop-row">
+      <div class="stop-letter">T</div>
+      <div class="stop-body">
+        <div class="stop-h">Time · 已经连续开多久了？</div>
+        <div class="stop-b">超过 <b>2 小时</b>就要警惕；超过 <b>4 小时</b>必须停。中国交法也是按 4 小时划线。</div>
+      </div>
+    </div>
+    <div class="stop-row">
+      <div class="stop-letter">O</div>
+      <div class="stop-body">
+        <div class="stop-h">Observation · 有没有错过东西？</div>
+        <div class="stop-b">错过路标、错过出口、<b>记不清刚过去的那段路发生了什么</b>——这是<b>微睡眠</b>的明确信号。</div>
+      </div>
+    </div>
+    <div class="stop-row">
+      <div class="stop-letter">P</div>
+      <div class="stop-body">
+        <div class="stop-h">Performance · 方向盘还稳吗？</div>
+        <div class="stop-b">是不是在<b>压线、蛇行</b>，或者要更用力才能握住？车不是突然不听使唤，是你先松了手。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="do-banner" style="margin:18px 0 0;background:#fde8e0;border-color:#f0c4b8">
+    <b>硬规则：</b>4 个问题中<b>任意 1 个答"是"</b> → 立即找安全位置停车休息（≥ 20 分钟，最好睡 15–30 分钟）；<b>2 个以上答"是"</b> → 不要继续开，哪怕离目的地只剩 5 公里。
+  </div>
+
+  <!-- 法律与标准 -->
+  <h3 class="drive-block-title"><span class="dbt-i" style="background:var(--ink)">§</span>法律与标准 · 一句话边界</h3>
+  <p class="section-sub" style="margin:-4px 0 14px">这块不是"评估自己"，是<b>让你知道踩线后果</b>——用外部规则倒逼自己停下。</p>
+
+  <div class="legal-grid">
+    <div class="legal-card">
+      <div class="legal-flag">🇨🇳</div>
+      <div class="legal-h">中国《道路交通安全法》</div>
+      <div class="legal-b">连续驾驶超过 <b>4 小时</b>未停车休息，或停车休息 <b>&lt; 20 分钟</b>，视为疲劳驾驶。营运车辆还会被纳入征信。</div>
+    </div>
+    <div class="legal-card">
+      <div class="legal-flag">🇪🇺</div>
+      <div class="legal-h">欧盟职业驾驶员</div>
+      <div class="legal-b">必须使用 <b>Tachograph（行车记录仪）</b>，法规限值：单日驾驶 9 小时（每周两次可延至 10 小时）、每周 56 小时、双周 90 小时。</div>
+    </div>
+    <div class="legal-card">
+      <div class="legal-flag">📊</div>
+      <div class="legal-h">学术研究</div>
+      <div class="legal-b">24h 睡眠 <b>&lt; 6h</b>，事故风险 +2 倍；&lt; 4h，风险 +10 倍以上。事故发生前的 <b>最后 1 秒</b>，驾驶员 60% 已陷入微睡眠。</div>
+    </div>
+  </div>
+
+  <div class="do-banner" style="margin-top:18px">
+    <b>这一栏的底层逻辑：</b>疲劳评估不是"我还能不能开"，而是"<b>我现在信不信得过自己</b>"。<br>
+    <b>主观</b>用来发现信号，<b>生理指标</b>用来下结论，<b>行为</b>是最后的自检，<b>技术</b>是兜底——四层叠在一起，<b>任何一层亮红灯，就是停</b>。
   </div>
 </section>
 
