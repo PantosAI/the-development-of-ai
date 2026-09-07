@@ -1,0 +1,2266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>肠-骨轴（Gut-Bone Axis）知识库 · 完整综述</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #dbeafe;
+    --accent: #0891b2;
+    --success: #16a34a;
+    --warning: #ea580c;
+    --danger: #dc2626;
+    --bg: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-code: #f1f5f9;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.04);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    font-size: 15px;
+  }
+
+  /* 顶部标题栏 */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(135deg, #1e40af 0%, #0891b2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    z-index: 100;
+    box-shadow: var(--shadow);
+  }
+  .topbar h1 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .topbar .badge {
+    margin-left: 12px;
+    background: rgba(255,255,255,0.2);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+  }
+  .topbar .right {
+    margin-left: auto;
+    font-size: 12px;
+    opacity: 0.85;
+  }
+
+  /* 侧边栏 */
+  .sidebar {
+    position: fixed;
+    top: 60px; left: 0; bottom: 0;
+    width: 280px;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 20px 0;
+    z-index: 90;
+  }
+  .sidebar h3 {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 20px 4px;
+  }
+  .sidebar a {
+    display: block;
+    padding: 7px 20px 7px 28px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13.5px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+  }
+  .sidebar a:hover {
+    background: var(--primary-light);
+    border-left-color: var(--primary);
+    color: var(--primary-dark);
+  }
+  .sidebar .sub a {
+    padding-left: 44px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .sidebar .sub a:hover { color: var(--primary-dark); }
+
+  /* 主内容区 */
+  .main {
+    margin-left: 280px;
+    margin-top: 60px;
+    padding: 32px 48px 80px;
+    max-width: 1100px;
+  }
+
+  /* 章节标题 */
+  .part-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 12px;
+    margin: 50px 0 30px;
+    scroll-margin-top: 80px;
+  }
+  .part-title:first-of-type { margin-top: 0; }
+  .part-title .num {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    border-radius: 6px;
+    padding: 2px 12px;
+    font-size: 16px;
+    margin-right: 12px;
+    vertical-align: middle;
+  }
+
+  .section {
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin: 20px 0;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    scroll-margin-top: 80px;
+  }
+  .section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary-light);
+  }
+  .section h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 22px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--accent);
+  }
+  .section h4 {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 16px 0 8px;
+    padding-left: 10px;
+    border-left: 3px solid var(--warning);
+  }
+  .section p {
+    margin: 10px 0;
+    color: var(--text);
+  }
+
+  ul, ol {
+    margin: 10px 0 10px 24px;
+  }
+  li {
+    margin: 4px 0;
+  }
+
+  /* 表格 */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 13.5px;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px var(--border);
+  }
+  th {
+    background: var(--primary);
+    color: white;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  td {
+    padding: 9px 12px;
+    border-top: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #f8fafc; }
+  tr:hover td { background: var(--primary-light); }
+
+  /* 强调标记 */
+  .hl { color: var(--danger); font-weight: 600; }
+  .hl-blue { color: var(--primary); font-weight: 600; }
+  .hl-green { color: var(--success); font-weight: 600; }
+  .hl-orange { color: var(--warning); font-weight: 600; }
+
+  /* 卡片 */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .card {
+    background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+    border-left: 4px solid var(--primary);
+    padding: 16px 18px;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+  }
+  .card .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+  }
+  .card .card-body {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .card-green { background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-left-color: var(--success); }
+  .card-green .card-title { color: #166534; }
+  .card-orange { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border-left-color: var(--warning); }
+  .card-orange .card-title { color: #9a3412; }
+  .card-red { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left-color: var(--danger); }
+  .card-red .card-title { color: #991b1b; }
+
+  /* 流程图 */
+  .flow {
+    background: #f8fafc;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 14px 0;
+    font-family: "SF Mono", Consolas, Monaco, monospace;
+    font-size: 12.5px;
+    white-space: pre;
+    overflow-x: auto;
+    line-height: 1.5;
+  }
+
+  /* Callout */
+  .callout {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+  .callout-info { background: #dbeafe; border-left-color: #3b82f6; }
+  .callout-success { background: #d1fae5; border-left-color: #10b981; }
+  .callout-danger { background: #fee2e2; border-left-color: #ef4444; }
+  .callout strong { font-weight: 700; }
+
+  /* 时间线 */
+  .timeline {
+    position: relative;
+    padding-left: 30px;
+    margin: 16px 0;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: var(--primary);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 24px;
+  }
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -28px;
+    top: 6px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px var(--primary);
+  }
+  .timeline-year {
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-size: 15px;
+  }
+  .timeline-content {
+    margin-top: 4px;
+  }
+
+  /* 关键引用 */
+  blockquote {
+    border-left: 4px solid var(--accent);
+    background: #f0f9ff;
+    margin: 12px 0;
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  /* Tag */
+  .tag {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0 2px;
+  }
+  .tag-green { background: #d1fae5; color: #166534; }
+  .tag-orange { background: #fed7aa; color: #9a3412; }
+  .tag-red { background: #fecaca; color: #991b1b; }
+  .tag-purple { background: #e9d5ff; color: #6b21a8; }
+
+  /* 隐藏滚动条美化 */
+  .sidebar::-webkit-scrollbar { width: 6px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+  .sidebar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+  /* 回到顶部 */
+  .back-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 80;
+  }
+  .back-top.show { opacity: 1; }
+  .back-top:hover { background: var(--primary-dark); }
+
+  /* 响应式 */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 20px; }
+    .topbar h1 { font-size: 14px; }
+  }
+
+  /* 打印样式 */
+  @media print {
+    .topbar, .sidebar, .back-top { display: none; }
+    .main { margin-left: 0; max-width: 100%; padding: 20px; }
+    .section { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+    .part-title { page-break-before: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 顶部栏 -->
+<div class="topbar">
+  <h1>🦴 肠-骨轴（Gut-Bone Axis）知识库</h1>
+  <span class="badge">完整综述 · 2026.09</span>
+  <div class="right">从基础概念到 2025-2026 前沿 · 单文件离线版</div>
+</div>
+
+<!-- 侧边栏导航 -->
+<nav class="sidebar">
+  <h3>📚 导览</h3>
+  <a href="#part-0">总览</a>
+
+  <h3>Part 1 · 肠骨轴总论</h3>
+  <a href="#sec-1-1">1.1 肠骨轴概述</a>
+  <a href="#sec-1-2">1.2 四大通讯途径</a>
+  <a href="#sec-1-3">1.3 研究里程碑</a>
+
+  <h3>Part 2 · 基础背景</h3>
+  <a href="#sec-2-1">2.1 肠道菌群组成与功能</a>
+  <a href="#sec-2-2">2.2 骨代谢基础</a>
+
+  <h3>Part 3 · 核心机制</h3>
+  <a href="#sec-3-1">3.1 SCFA 通路总览</a>
+  <a href="#sec-3-2">3.2 GPR41/43 受体</a>
+  <a href="#sec-3-3">3.3 GPR109A（HCA2）</a>
+  <a href="#sec-3-4">3.4 SCFA-HDAC-Treg</a>
+  <a href="#sec-3-5">3.5 丁酸级联</a>
+  <a href="#sec-3-6">3.6 胆汁酸-TGR5</a>
+  <a href="#sec-3-7">3.7 色氨酸-AhR</a>
+
+  <h3>Part 4 · 研究方法学</h3>
+  <a href="#sec-4-1">4.1 菌群研究方法</a>
+  <a href="#sec-4-2">4.2 骨表型分析</a>
+  <a href="#sec-4-3">4.3 动物模型</a>
+  <a href="#sec-4-4">4.4 因果验证</a>
+  <a href="#sec-4-5">4.5 多组学整合</a>
+
+  <h3>Part 5 · 临床转化</h3>
+  <a href="#sec-5-1">5.1 临床场景地图</a>
+  <a href="#sec-5-2">5.2 联合方案</a>
+  <a href="#sec-5-3">5.3 三大通路对比</a>
+  <a href="#sec-5-4">5.4 总结 take-aways</a>
+</nav>
+
+<!-- 主体内容 -->
+<main class="main">
+
+<!-- ===== 入门导读 · 快速通道 ===== -->
+<div id="part-overview">
+<div class="part-title" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 20px 24px; border-radius: 12px; border-bottom: none; color: #92400e;">
+  <span class="num" style="background: #f59e0b;">⚡</span>入门导读 · 快速通道
+</div>
+<div class="section" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-left: 4px solid #f59e0b;">
+
+  <h2 style="color: #92400e;">📖 核心说明 3 段话</h2>
+
+  <h3>1️⃣ 本资料的性质定位</h3>
+  <p>本 HTML 资料为 2025-2026 <strong>顶刊级别的科研前沿综述</strong>（PubMed 论文级别），<strong>不属于药理学进展课讲义</strong>，<strong>不属于临床指南</strong>。<br>
+  目标读者群体：<span class="tag tag-orange">肠-骨轴领域研究生</span> <span class="tag tag-orange">免疫学博士生</span> <span class="tag tag-orange">基础科研人员</span>。<br>
+  <strong>不适用于初学者</strong>。"理解困难"是预期内现象——因为本资料涉及的知识体系跨度较大（涵盖骨代谢、免疫学、微生物组学、分子生物学等多领域交叉）。</p>
+
+  <h3>2️⃣ 可立即应用的 5% · 临床落地清单</h3>
+  <p>本资料中，与临床应用直接相关的核心要点共 10 条：</p>
+  <table>
+    <tr><th>#</th><th>临床要点</th><th>应用场景</th></tr>
+    <tr><td>1</td><td><strong>长期使用 SSRI 与骨折风险升高 1.5-2 倍相关</strong></td><td>精神类药物处方评估</td></tr>
+    <tr><td>2</td><td><strong>GLP-1RA（司美格鲁肽等）减重同时具有骨保护作用</strong></td><td>糖尿病 / 减重合并骨松人群</td></tr>
+    <tr><td>3</td><td><strong>长期使用 PPI / 抗生素与骨质疏松风险升高相关</strong></td><td>慢病用药管理</td></tr>
+    <tr><td>4</td><td>"补钙无效"现象的菌群机制解释</td><td>健康咨询与科普沟通</td></tr>
+    <tr><td>5</td><td><strong>围绝经期女性综合方案 = 益生元 + 益生菌 + 钙 + VD + 抗骨松药</strong></td><td>PMOP 综合管理</td></tr>
+    <tr><td>6</td><td><strong>高纤维饮食是护骨的"基础环节"</strong></td><td>骨松基础建议</td></tr>
+    <tr><td>7</td><td><strong>长期使用烟酸者髋部骨折发生率降低 20-30%</strong></td><td>老药新用观察</td></tr>
+    <tr><td>8</td><td>iPTH（特立帕肽）疗效不佳时，需考虑菌群因素</td><td>临床机制理解</td></tr>
+    <tr><td>9</td><td>特立帕肽的作用机制依赖肠道菌群产生丁酸</td><td>用药教育</td></tr>
+    <tr><td>10</td><td>益生菌具有菌株特异性 —— <em>L. reuteri</em> 6475 是目前唯一具备 RCT 阳性证据的菌株</td><td>循证依据参考</td></tr>
+  </table>
+
+  <h3>3️⃣ 若需理解剩余 95% 内容，需夯实 5 层基础</h3>
+  <table>
+    <tr><th>顺序</th><th>需补充内容</th><th>预计耗时</th><th>起点资源</th></tr>
+    <tr><td><strong>1. 基础药理学</strong></td><td>抗骨松药、GLP-1、SSRI、Tph1 抑制剂作用机制</td><td>基础领域</td><td>临床药理学教材</td></tr>
+    <tr><td><strong>2. 骨代谢生理</strong></td><td>RANKL/OPG、Wnt、Runx2、BMU</td><td>1-2 周</td><td>《Bone Biology》/ 中文骨代谢综述</td></tr>
+    <tr><td><strong>3. 免疫学基础</strong></td><td>Th17/Treg、细胞因子、HDAC 表观遗传</td><td>2-4 周</td><td>Abbas 《Cellular and Molecular Immunology》</td></tr>
+    <tr><td><strong>4. 微生物组学</strong></td><td>16S rRNA、SCFA、菌群-宿主互作</td><td>1-2 月</td><td>《Gut Microbiota》入门书</td></tr>
+    <tr><td><strong>5. 科研思维</strong></td><td>临床队列→动物模型→机制研究→RCT、KO 鼠、FMT、scRNA-seq</td><td>同步进行</td><td>本领域综述阅读</td></tr>
+  </table>
+
+  <div class="callout callout-info">
+    <strong>📚 较快捷径</strong>：先读 <strong>2024-2026 的一篇中文综述</strong>（《中华骨科》《中国骨质疏松》），再回看本资料可显著降低理解难度。
+  </div>
+
+  <h3>4️⃣ 三阶段使用方式</h3>
+  <div class="card-grid">
+    <div class="card card-green">
+      <div class="card-title">🌱 初期（理解有限）</div>
+      <div class="card-body">聚焦顶部 5% 临床要点 + 跳读流程图。剩余 95% 内容暂作"黑盒"处理</div>
+    </div>
+    <div class="card card-orange">
+      <div class="card-title">🌿 3-6 月后（基础夯实后）</div>
+      <div class="card-body">回读 Part 1-2 综述部分，理解度可达 60-70%</div>
+    </div>
+    <div class="card card-red">
+      <div class="card-title">🌳 1 年后（进入文献精读阶段）</div>
+      <div class="card-body">将本资料作为论文综述的"索引地图"，对照原文献精读</div>
+    </div>
+  </div>
+
+  <h3>5️⃣ 核心 10 条速记口诀</h3>
+  <ol>
+    <li><strong>肠-骨轴包含 4 大通讯途径</strong>（代谢、免疫、内分泌、神经）</li>
+    <li><strong>SCFA（以丁酸为主）是核心信号分子</strong>——产丁酸菌丰度可作为骨健康标志</li>
+    <li><strong>菌群组成 ≠ 菌群功能</strong>——16S 测序提供"目录信息"，真正起效的是代谢产物</li>
+    <li><strong>菌株特异性大于菌种特异性</strong>——同种不同株可能产生相反效果（Schwarzer 2016）</li>
+    <li><strong>个体差异显著，不存在"万能菌株"</strong></li>
+    <li><strong>膳食纤维是基础环节</strong>——任何益生菌干预若缺乏纤维底物则效果有限</li>
+    <li><strong>5-HT 是骨形成的"负向调控因子"</strong>，Tph1 抑制剂可解除该抑制</li>
+    <li><strong>丁酸 0.1-1 mM 为有效治疗窗口</strong>——低浓度护骨，高浓度反而抑制</li>
+    <li><strong>PMOP 患者菌群特征</strong>：多样性↓、F/B↑、丁酸产生菌↓、机会致病菌↑</li>
+    <li><strong>抗骨松药与益生菌的相互作用尚不明确</strong>（2026 之前最大临床盲区）</li>
+  </ol>
+
+  <h3>6️⃣ 涉及学科地图（本资料覆盖范围）</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">L0 基础</div>
+      <div class="card-body">临床药理学</div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">L1 进阶（需 1-2 周）</div>
+      <div class="card-body">骨代谢生理 · 免疫学基础</div>
+    </div>
+    <div class="card card-orange">
+      <div class="card-title">L2 前沿（需 1-2 月）</div>
+      <div class="card-body">微生物组学 · 代谢组学 · 分子生物学</div>
+    </div>
+    <div class="card card-red">
+      <div class="card-title">L3 最前沿（科研专用）</div>
+      <div class="card-body">肠-X 轴 · 临床转化研究 · 单细胞组学</div>
+    </div>
+  </div>
+
+  <h3>7️⃣ 推荐阅读方式</h3>
+  <div class="callout callout-success">
+    <strong>✅ 建议读法</strong>：<br>
+    ① <strong>第一遍</strong>：仅阅读本导读（约 5 分钟）<br>
+    ② <strong>第二遍</strong>：跳读 Part 5 临床转化部分（约 15 分钟）<br>
+    ③ <strong>第三遍</strong>：按应用场景回查 Part 1-3 相关章节（按需）<br>
+    ④ <strong>第四遍</strong>：6-12 月后回读，理解深度将显著提升
+  </div>
+  <div class="callout callout-danger">
+    <strong>❌ 应避免的读法</strong>：<br>
+    • 从 Part 1 开始逐字精读 → 易中途放弃<br>
+    • 遇到不懂的公式即停下来查阅 → 易陷入细节迷宫<br>
+    • 试图一次性掌握全部内容 → 不现实且不必要
+  </div>
+
+  <h3>8️⃣ 三大核心价值</h3>
+  <ol>
+    <li><strong>未来 6-12 月回看的"参照靶子"</strong>——基础夯实后回读，理解深度将发生质变</li>
+    <li><strong>综述撰写 / 学术汇报的素材库</strong>——表格、流程图、参考文献均为现成资源</li>
+    <li><strong>判断"前沿进展 vs 实际可应用工具"</strong>——临床实际应用仅需 5%-10%，其余作为背景知识储备</li>
+  </ol>
+
+  <div class="callout callout-info">
+    <strong>🎯 核心建议</strong>：<br>
+    本资料可保留备用，<strong>当前阶段无需强求完全理解</strong>。先掌握导读中 5% 临床要点 + 10 条核心口诀即可。<br>
+    <strong>其余 95% 内容属于科研前沿，对常规临床诊疗工作影响有限</strong>。
+  </div>
+
+</div>
+</div>
+
+<!-- ===== Part 0 ===== -->
+<div class="part-title" id="part-0"><span class="num">0</span>总览</div>
+<div class="section">
+  <h2>肠-骨轴（Gut-Bone Axis）一句话总结</h2>
+  <p>肠道菌群通过<span class="hl">代谢物（SCFA / 胆汁酸 / 色氨酸代谢物）</span>、<span class="hl-blue">免疫系统</span>、<span class="hl-green">内分泌系统</span>和<span class="hl-orange">神经系统</span>，<strong>远程调控骨代谢</strong>，构成"肠-骨轴"双向通讯系统。</p>
+
+  <h3>知识库结构</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">📖 Part 1 · 总论</div>
+      <div class="card-body">概念定义、四大通讯途径、2012-2026 研究里程碑</div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">🧬 Part 2 · 基础</div>
+      <div class="card-body">菌群组成与功能、骨代谢基础（成骨/破骨平衡）</div>
+    </div>
+    <div class="card card-orange">
+      <div class="card-title">⚙️ Part 3 · 机制</div>
+      <div class="card-body">SCFA 通路、GPR 受体、HDAC-Treg、胆汁酸-TGR5、色氨酸-AhR</div>
+    </div>
+    <div class="card card-red">
+      <div class="card-title">🔬 Part 4 · 方法学</div>
+      <div class="card-body">菌群分析、骨表型、动物模型、因果验证、多组学整合</div>
+    </div>
+  </div>
+
+  <h3>核心数字（必记）</h3>
+  <table>
+    <tr><th>指标</th><th>数值</th></tr>
+    <tr><td>人体微生物总数</td><td>~38 万亿（与人体细胞 1:1，2016 修正）</td></tr>
+    <tr><td>菌群总重量</td><td>~1.5-2 kg（≈ 一个肝脏）</td></tr>
+    <tr><td>菌群基因数</td><td>~2300 万（人类基因 1000+ 倍，"第二基因组"）</td></tr>
+    <tr><td>每年骨重塑比例</td><td>~10% 骨量</td></tr>
+    <tr><td>结肠 SCFA 浓度</td><td>50-100 mM（丁酸最强）</td></tr>
+    <tr><td>门静脉 5-HT 比例</td><td>~90% 全身 5-HT 在肠道合成</td></tr>
+  </table>
+</div>
+
+<!-- ===== Part 1 ===== -->
+<div class="part-title" id="part-1"><span class="num">1</span>肠骨轴总论</div>
+
+<!-- 1.1 概述 -->
+<div class="section" id="sec-1-1">
+  <h2>1.1 肠骨轴概述</h2>
+
+  <h3>概念</h3>
+  <p>肠-骨轴 = <strong>肠道菌群 ↔ 骨代谢</strong>的双向调控系统，2019 年由 Zaiss、Schett、Pacifici 在 <em>J Clin Invest</em> 正式命名。</p>
+
+  <h3>肠-骨 vs 肠-X 轴家族</h3>
+  <p>肠-骨轴是"肠-X 轴"九大系统之一，跟肠-脑轴、肠-心轴、肠-肝轴、肠-肺轴、肠-肾轴、肠-皮肤轴、肠-生殖轴、肠-内分泌轴并列——肠道是健康"中控台"。</p>
+
+  <div class="callout callout-info">
+    <strong>前沿定义（2025-2026）：</strong>"肠-骨-X 轴"多器官协同框架——骨与心、肝、肾、肌肉、生殖、内分泌构成网络。
+  </div>
+</div>
+
+<!-- 1.2 四大通讯途径 -->
+<div class="section" id="sec-1-2">
+  <h2>1.2 肠-骨轴的四大通讯途径</h2>
+  <p>按 2025-2026 主流综述（<em>Front Endocrinol</em>、<em>Gut Microbes</em>、<em>Bone Research</em>）的提法：</p>
+
+  <h3>① 代谢通讯（Metabolic Crosstalk）</h3>
+  <table>
+    <tr><th>代谢物</th><th>受体/靶点</th><th>骨效应</th></tr>
+    <tr><td>丁酸 / 丙酸</td><td>GPR43 → Wnt/β-catenin</td><td>成骨 ↑</td></tr>
+    <tr><td>丁酸</td><td>HDAC 抑制（表观遗传）</td><td>Runx2 / Osterix ↑</td></tr>
+    <tr><td>丁酸</td><td>破骨代谢重编程</td><td>破骨 ↓</td></tr>
+    <tr><td>乳酸（2025 NEW）</td><td>组蛋白乳酸化</td><td>BMSC → 成骨分化</td></tr>
+    <tr><td>次级胆汁酸</td><td>TGR5 → AMPK</td><td>破骨 ↓</td></tr>
+    <tr><td>色氨酸代谢物</td><td>AhR → IDO1</td><td>Th17/Treg 平衡</td></tr>
+  </table>
+  <p><strong>临床证据</strong>：动物 100%、PMOP 人体 80%</p>
+
+  <h3>② 免疫通讯（Immune Crosstalk）—— PMOP 核心通路</h3>
+  <div class="flow">肠漏 → LPS 入血 → TLR4 → NF-κB
+        ↓
+TNF-α / IL-6 / IL-17 ↑
+        ↓
+RANKL/OPG 比值 ↑
+        ↓
+破骨细胞激活 ↑ → 骨吸收 ↑</div>
+  <p><strong>关键证据</strong>：无菌小鼠 / T 细胞敲除小鼠 → 卵巢切除后<strong>不发生骨流失</strong>（最有力因果证据）</p>
+
+  <h3>③ 内分泌通讯（Endocrine Crosstalk）</h3>
+  <table>
+    <tr><th>激素</th><th>来源</th><th>骨效应</th></tr>
+    <tr><td>5-HT（肠源）</td><td>肠嗜铬细胞</td><td><span class="hl">抑制成骨</span>（Tph1 抑制剂是潜在抗骨松药）</td></tr>
+    <tr><td>GLP-1</td><td>L 细胞</td><td>减少破骨；司美格鲁肽类护骨</td></tr>
+    <tr><td>GLP-2</td><td>L 细胞</td><td>抑制骨吸收（与 PTH 分离）</td></tr>
+    <tr><td>IGF-1</td><td>肝 / 骨</td><td>介导 BL-11 长高效应的核心分子</td></tr>
+    <tr><td>雌激素</td><td>性腺</td><td>调节菌群-屏障-免疫三角（PMOP 病理基础）</td></tr>
+    <tr><td>维生素 D</td><td>皮肤 / 饮食</td><td>调节 T 细胞 + 钙吸收双重作用</td></tr>
+  </table>
+
+  <h3>④ 神经通讯（Neural Crosstalk）—— 最薄、新热点</h3>
+  <div class="flow">菌群代谢物（SCFA、5-HT）
+        ↓
+激活迷走神经传入纤维
+        ↓
+脑干孤束核 → 下丘脑
+        ↓
+HPA 轴 → 皮质醇 / 自主神经
+        ↓
+骨髓干细胞分化方向
+        ↓
+成骨 / 破骨平衡</div>
+  <p><strong>临床证据</strong>：动物 50%、人体 30%（最薄弱的一支）</p>
+
+  <h3>四大途径的相对地位</h3>
+  <table>
+    <tr><th>通讯途径</th><th>临床证据</th><th>临床转化潜力</th><th>2025-2026 新进展</th></tr>
+    <tr><td>代谢</td><td>🟢 强</td><td>益生元/合生元已可用</td><td>乳酸-组蛋白乳酸化（NEW）</td></tr>
+    <tr><td>免疫</td><td>🟢 强</td><td>益生菌已可辅助</td><td>Th17/Treg + 维生素 D 交叉</td></tr>
+    <tr><td>内分泌</td><td>🟡 中</td><td>GLP-1RA 是意外赢家</td><td>司美格鲁肽改善 BMD</td></tr>
+    <tr><td>神经</td><td>🟠 弱</td><td>抗抑郁/抗应激可能间接保护</td><td>HPA-骨通路新热点</td></tr>
+  </table>
+</div>
+
+<!-- 1.3 研究里程碑 -->
+<div class="section" id="sec-1-3">
+  <h2>1.3 研究里程碑（2012 / 2016 / 2020 / 2022-2025）</h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-year">🔵 2012：奠基之年</div>
+      <div class="timeline-content">
+        <strong>Sjögren K, et al. <em>J Bone Miner Res</em> 2012;27(6):1357-67</strong>（哥德堡大学 Sahlgrenska 团队）
+        <ul>
+          <li>无菌（GF）小鼠<strong>骨量增加</strong>（vBMD +33%），破骨细胞↓，CD4+ T 细胞↓，TNF-α↓</li>
+          <li><strong>肠-骨轴的第一篇奠基论文</strong>——证明"无菌 ≠ 骨头坏"</li>
+        </ul>
+        <blockquote>关键洞察：肠菌<strong>不是中性旁观</strong>，它在调控骨免疫环境</blockquote>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">🟢 2016：爆发之年（Field Explosion + First Controversy）</div>
+      <div class="timeline-content">
+        <strong>三篇并列同年发表，互相矛盾又互补：</strong>
+        <table>
+          <tr><th>研究</th><th>期刊</th><th>核心发现</th></tr>
+          <tr><td><strong>Schwarzer M, et al.</strong></td><td><em>Science</em> 2016;351:854-7</td><td>GF 鼠<strong>长骨变短</strong>、IGF-1↓；<em>L. plantarum</em> 单菌挽救</td></tr>
+          <tr><td><strong>Yan J, et al.</strong></td><td><em>PNAS</em> 2016;113:E7554-63</td><td>长期菌群定植改善骨形成；<strong>IGF-1 介导</strong></td></tr>
+          <tr><td><strong>Li JY, et al.</strong></td><td><em>J Clin Invest</em> 2016;126:2049-63</td><td>雌激素缺乏的骨流失<strong>依赖菌群</strong>；<em>L. rhamnosus GG</em> + VSL#3 可预防</td></tr>
+        </table>
+        <p>三个矛盾结论（GF 鼠骨量 ↑ / ↓ / 取决于菌株）→ <span class="hl">菌株特异性、性别、品系、年龄</span>都是变量，肠-骨轴不是简单的"好菌=好骨"</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">🟡 2020：机制定型之年</div>
+      <div class="timeline-content">
+        <strong>三件大事：</strong>
+        <ul>
+          <li><strong>① Zaiss MM, et al. <em>J Clin Invest</em> 2019;129(8):3018-28</strong>（2019 发表，2020 成为经典）——<span class="hl-blue">正式命名 "The gut-bone axis"</span>，引用数最高综述（>1500 次）</li>
+          <li><strong>② Li JY, et al. <em>J Clin Invest</em> 2020;130(4):1767-81</strong>（<em>JCI</em> 封面）——间歇性 PTH 治疗骨形成<strong>必须有肠道菌群产丁酸</strong>。机制链：丁酸 → DC GPR43 → Treg → CD8+ T → Wnt10b → 成骨</li>
+          <li><strong>③ Nilsson AG, et al. <em>J Intern Med</em> 2018;284(3):307-317</strong>——<em>L. reuteri</em> 6475 → 老年女性胫骨 vBMD 流失减少 50%（12 个月，n=90）——<strong>第一项人体随机双盲对照试验</strong></li>
+        </ul>
+        <blockquote>2020 年：肠-骨轴从"动物概念"变成"可临床干预的实体"</blockquote>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">🔴 2022-2025：临床转化 + 跨组学 + 新机制</div>
+      <div class="timeline-content">
+        <ul>
+          <li><strong>2022</strong>：内分泌通路系统化（Tu Y, et al. <em>Front Microbiol</em> 2023）</li>
+          <li><strong>2023</strong>：菌群-免疫-骨三维网络（多项研究）</li>
+          <li><strong>2024</strong>：FMT 因果验证（Chen T, et al. <em>Front Cell Infect Microbiol</em> 2024;14:1488017——上海九院）+ 多组学 + Heliyon 综述</li>
+          <li><strong>2025-2026</strong>：<em>Bone Research</em>（IF 20.1）综述 + "肠-骨髓轴"新概念（<em>Adv Sci</em> 2025）+ 乳酸-组蛋白乳酸化新机制 + GLP-1RA 骨保护</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>30 年发展节奏</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">2012 奠基期</div>
+      <div class="card-body">GF 鼠骨量调控（动物模型建立）</div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">2016 矛盾期</div>
+      <div class="card-body">三篇 PNAS/Cell/JCI/Science 大爆发</div>
+    </div>
+    <div class="card card-orange">
+      <div class="card-title">2019-2020 定型期</div>
+      <div class="card-body">"肠-骨轴" 命名 + JCI 综述 + 丁酸-PTH 链条</div>
+    </div>
+    <div class="card card-red">
+      <div class="card-title">2018-2020 转化期</div>
+      <div class="card-body">L. reuteri 首项人体 RCT</div>
+    </div>
+    <div class="card">
+      <div class="card-title">2022-2024 多组学</div>
+      <div class="card-body">FMT 反向因果 + 队列 signature</div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">2025-2026 网络化</div>
+      <div class="card-body">肠-骨-X 多器官 / 肠-骨髓轴 / 组蛋白乳酸化</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Part 2 ===== -->
+<div class="part-title" id="part-2"><span class="num">2</span>基础背景</div>
+
+<!-- 2.1 菌群组成与功能 -->
+<div class="section" id="sec-2-1">
+  <h2>2.1 肠道菌群组成与功能</h2>
+
+  <h3>一、菌群组成</h3>
+  <h4>数量级</h4>
+  <table>
+    <tr><th>指标</th><th>数量</th></tr>
+    <tr><td>微生物总数</td><td>~38 万亿（与人体细胞数 1:1）</td></tr>
+    <tr><td>总重量</td><td>~1.5-2 kg（≈ 一个肝脏）</td></tr>
+    <tr><td>基因数</td><td>~2300 万（人类基因 2 万的 1000+ 倍，"第二基因组"）</td></tr>
+    <tr><td>物种数</td><td>~1000-1500 种（每人独有的"核心菌群"约 160 种）</td></tr>
+  </table>
+
+  <h4>四大优势门类（占 90%+）</h4>
+  <table>
+    <tr><th>门</th><th>比例</th><th>主要属</th><th>关键功能</th></tr>
+    <tr><td><strong>厚壁菌门 Firmicutes</strong></td><td>30-50%</td><td>Lactobacillus、Clostridium、Faecalibacterium、Roseburia</td><td>SCFA（丁酸）产生、能量吸收</td></tr>
+    <tr><td><strong>拟杆菌门 Bacteroidetes</strong></td><td>20-40%</td><td>Bacteroides、Prevotella、Alistipes</td><td>多糖降解、胆汁酸代谢</td></tr>
+    <tr><td><strong>放线菌门 Actinobacteria</strong></td><td>1-10%</td><td>Bifidobacterium、Collinsella</td><td>益生菌主力、维生素合成</td></tr>
+    <tr><td><strong>变形菌门 Proteobacteria</strong></td><td><5%</td><td>Escherichia、Klebsiella、Helicobacter</td><td>兼性好氧，<span class="hl">过多=生态失调标志</span></td></tr>
+  </table>
+
+  <div class="callout callout-info">
+    <strong>F/B 比</strong>（厚壁菌/拟杆菌）= 最常用的菌群失调指标。肥胖、IBD、PMOP 都显示 F/B 比↑。
+  </div>
+
+  <h4>关键的"功能菌"</h4>
+  <table>
+    <tr><th>类别</th><th>代表菌</th><th>它干什么</th></tr>
+    <tr><td><strong>丁酸生产者</strong></td><td><em>F. prausnitzii</em>、<em>Roseburia</em>、<em>E. rectale</em></td><td>产丁酸 → 抗炎、肠屏障、骨保护</td></tr>
+    <tr><td><strong>丙酸生产者</strong></td><td><em>Bacteroides</em>、<em>Prevotella</em>、<em>Veillonella</em></td><td>产丙酸 → 糖代谢、肝脂质合成</td></tr>
+    <tr><td><strong>乳酸生产者</strong></td><td><em>Lactobacillus</em>、<em>Bifidobacterium</em>、<em>Streptococcus</em></td><td>产乳酸 → 抑致病菌、组蛋白乳酸化</td></tr>
+    <tr><td><strong>次级胆汁酸生产者</strong></td><td><em>C. scindens</em>、<em>B. fragilis</em></td><td>解共轭胆汁酸 → FXR/TGR5 调控</td></tr>
+    <tr><td><strong>维生素合成者</strong></td><td><em>Bifidobacterium</em>、<em>Lactobacillus</em></td><td>合成 VK、B 族、K2（骨代谢关键）</td></tr>
+    <tr><td><strong>肠屏障破坏者</strong></td><td><em>Klebsiella</em>、<em>Escherichia</em>（部分）</td><td>LPS ↑、肠漏</td></tr>
+  </table>
+
+  <h4>菌群"地理分布"</h4>
+  <div class="flow">口腔 ──── 食道 ──── 胃 ──── 十二指肠 ──── 空肠 ──── 回肠 ──── 结肠 ──── 粪便
+  │          │        │         │              │          │         │         │
+  10⁸        10⁵      10²       10³            10⁴       10⁷      10¹²      10¹²
+  cfu/g      胃酸抑制  几乎无菌  ← 逐渐增加 ──────────────→   菌群大本营</div>
+
+  <h3>二、菌群功能</h3>
+  <h4>六大核心功能</h4>
+  <ol>
+    <li><strong>代谢功能</strong>：碳水 / 蛋白 / 脂质 / 药物代谢</li>
+    <li><strong>屏障功能</strong>：紧密连接 + 黏液层 + 抗菌肽</li>
+    <li><strong>免疫功能</strong>：训练免疫 + 调控 Th17/Treg + IgA</li>
+    <li><strong>内分泌功能</strong>：产生激素 / 影响宿主激素（5-HT、IGF-1 等）</li>
+    <li><strong>神经功能</strong>：肠神经 + 迷走神经 + HPA 轴</li>
+    <li><strong>骨骼功能</strong>：SCFA / 胆汁酸 / 色氨酸 → 骨免疫（这是肠-骨轴）</li>
+  </ol>
+
+  <h4>菌群-宿主通讯的"语言"</h4>
+  <div class="flow">菌群 ──┬── 代谢物语言（SCFA / 胆汁酸 / 色氨酸 / 乳酸 / TMAO / 维生素）
+       ├── 细胞语言（外泌体 / 蛋白质 / DNA / 鞭毛）
+       ├── 神经语言（迷走神经 / 5-HT / GABA / DA）
+       └── 免疫语言（直接接触 / 抗原呈递 / 细胞因子诱导）</div>
+
+  <h3>三、个体差异与生命周期</h3>
+  <div class="flow">0 岁   母婴传递 → 双歧杆菌为主
+↓
+3 岁   多样化 → 接近成人
+↓
+20-40  稳态 → 厚壁菌 + 拟杆菌双主导
+↓
+40-65  开始变化 → 抗炎菌↓，促炎菌↑
+↓
+65+    多样性↓，机会致病菌↑ → 老年菌群 signature</div>
+
+  <div class="callout callout-success">
+    <strong>临床意义</strong>：老年人菌群本身就是一个骨流失因素——这就是为什么 <em>L. reuteri</em> 6475 在 75-80 岁女性才有显著效果。
+  </div>
+
+  <h3>四、菌群干预手段</h3>
+  <table>
+    <tr><th>干预</th><th>强度</th><th>适用场景</th><th>临床证据</th></tr>
+    <tr><td><strong>饮食（纤维、多酚、发酵食品）</strong></td><td>弱</td><td>所有人群</td><td>⭐⭐⭐⭐⭐</td></tr>
+    <tr><td><strong>益生菌（活菌）</strong></td><td>中</td><td>特定菌株验证的适应症</td><td>⭐⭐⭐（菌株依赖）</td></tr>
+    <tr><td><strong>益生元（纤维、低聚糖）</strong></td><td>中</td><td>长期基础干预</td><td>⭐⭐⭐⭐</td></tr>
+    <tr><td><strong>合生元（益生菌+益生元）</strong></td><td>中-强</td><td>围绝经期 OP、PMOP</td><td>⭐⭐⭐⭐</td></tr>
+    <tr><td><strong>FMT（粪菌移植）</strong></td><td>强</td><td>CDI、IBD；OP 仍在临床前</td><td>⭐⭐（适应症有限）</td></tr>
+    <tr><td><strong>后生元（灭活菌、SCFA）</strong></td><td>中</td><td>探索中</td><td>⭐⭐</td></tr>
+  </table>
+</div>
+
+<!-- 2.2 骨代谢基础 -->
+<div class="section" id="sec-2-2">
+  <h2>2.2 骨代谢基础：成骨与破骨平衡</h2>
+
+  <h3>一、骨重塑基本单位（BMU）</h3>
+  <p>成骨细胞（Osteoblast）= "建筑队"；破骨细胞（Osteoclast）= "拆迁队"；<strong>BMU = 1 个建筑队 + 1 个拆迁队</strong>完成一轮重塑。</p>
+
+  <table>
+    <tr><th>阶段</th><th>时长</th><th>主导细胞</th><th>关键事件</th></tr>
+    <tr><td>激活期</td><td>1-2 天</td><td>衬里细胞激活</td><td>招募破骨前体</td></tr>
+    <tr><td>吸收期</td><td>2-3 周</td><td>破骨细胞</td><td>溶骨小窝（Howship's lacuna）</td></tr>
+    <tr><td>逆转期</td><td>1-2 周</td><td>偶联信号</td><td>成骨/破骨切换</td></tr>
+    <tr><td>形成期</td><td>3-4 个月</td><td>成骨细胞</td><td>类骨质沉积 → 矿化</td></tr>
+    <tr><td>矿化完成期</td><td>数月-年</td><td>骨细胞</td><td>维持机械感应</td></tr>
+  </table>
+
+  <div class="callout callout-info">
+    <strong>临床数字</strong>：成年人每年约 <span class="hl">10% 骨量</span>被重塑。<strong>骨吸收 > 形成 = 净流失（OP）</strong>；<strong>形成 > 吸收 = 净增加</strong>。
+  </div>
+
+  <h3>二、成骨细胞（Osteoblast）—— 来自 MSC 的"建筑队"</h3>
+  <div class="flow">MSC（间充质干细胞）
+   ↓
+骨祖细胞
+   ↓
+前成骨细胞
+   ↓
+成熟成骨细胞
+   ↓
+骨细胞（Osteocyte，终末分化，机械感应）</div>
+
+  <h4>关键转录因子</h4>
+  <table>
+    <tr><th>因子</th><th>作用</th><th>临床意义</th></tr>
+    <tr><td><strong>Runx2</strong></td><td>成骨分化"主开关"</td><td>缺失 = 无骨形成</td></tr>
+    <tr><td><strong>Osterix（Sp7）</strong></td><td>终末分化必需</td><td>成骨细胞成熟</td></tr>
+    <tr><td>ATF4</td><td>合成骨基质</td><td>营养信号整合</td></tr>
+    <tr><td><strong>Wnt/β-catenin</strong></td><td>促分化 + 抑脂肪化</td><td><span class="hl">菌群-SCFAs 主攻通路</span></td></tr>
+    <tr><td>BMP/SMAD</td><td>早期分化</td><td>骨形态发生蛋白</td></tr>
+  </table>
+
+  <h4>抑制成骨的"刹车"</h4>
+  <table>
+    <tr><th>抑制物</th><th>来源</th><th>机制</th></tr>
+    <tr><td><strong>Sclerostin（SOST）</strong></td><td>骨细胞</td><td>Wnt 抑制剂（抗骨形成）</td></tr>
+    <tr><td>DKK-1</td><td>骨细胞、血小板</td><td>Wnt 抑制剂</td></tr>
+    <tr><td>Notch</td><td>邻近细胞</td><td>抑成骨分化</td></tr>
+    <tr><td>PPARγ</td><td>脂肪分化方向</td><td>抢走 MSC 让成脂不成骨</td></tr>
+  </table>
+
+  <div class="callout callout-success">
+    <strong>临床应用</strong>：<strong>罗莫单抗（Romosozumab）= 抗 Sclerostin 单抗</strong>——临床少数能<strong>双促</strong>（促形成 + 抑吸收）的药。
+  </div>
+
+  <h3>三、破骨细胞（Osteoclast）—— 来自 HSC 的"拆迁队"</h3>
+  <div class="flow">HSC（造血干细胞）→ 单核前体 → 融合 → 多核破骨细胞</div>
+  <p class="hl-blue">注意：成骨来自 MSC，破骨来自 HSC——来源完全不同。这是"肠-骨髓轴"是个新热点的原因。</p>
+
+  <h4>关键转录因子</h4>
+  <table>
+    <tr><th>因子</th><th>作用</th></tr>
+    <tr><td><strong>NFATc1</strong></td><td>破骨分化"主开关"</td></tr>
+    <tr><td>c-Fos</td><td>早期激活</td></tr>
+    <tr><td>PU.1</td><td>早期分化</td></tr>
+    <tr><td>MITF</td><td>抗凋亡</td></tr>
+  </table>
+
+  <h3>四、RANK / RANKL / OPG 系统 —— 骨代谢核心</h3>
+  <div class="flow">成骨细胞 / 骨细胞
+    ↓ 表达
+RANKL（膜结合 + 可溶）← "破骨启动信号"
+    ↓
+结合破骨前体上的 RANK 受体
+    ↓
+NF-κB + NFATc1 激活
+    ↓
+破骨分化、活化、存活
+    ↓
+骨吸收
+
+OPG（护骨素，Osteoprotegerin）
+    ↓
+"诱饵受体"——结合 RANKL 但不传递信号
+    ↓
+阻断 RANKL → RANK
+    ↓
+抑制破骨</div>
+
+  <h4>临床药物对应靶点</h4>
+  <table>
+    <tr><th>药物</th><th>靶点</th><th>机制</th></tr>
+    <tr><td><strong>地舒单抗（Denosumab）</strong></td><td>RANKL</td><td>抗 RANKL 单抗——模拟 OPG</td></tr>
+    <tr><td>双膦酸盐</td><td>破骨细胞</td><td>抑制 H+-ATPase + 诱导凋亡</td></tr>
+    <tr><td>雷洛昔芬（SERM）</td><td>雌激素受体</td><td>降 RANKL</td></tr>
+    <tr><td><strong>罗莫单抗</strong></td><td>Sclerostin</td><td>促形成 + 抑吸收（双效）</td></tr>
+    <tr><td>特立帕肽</td><td>PTH 受体</td><td>间歇给药促形成</td></tr>
+  </table>
+
+  <h3>五、偶联（Coupling）—— 成骨和破骨的"对话"</h3>
+  <table>
+    <tr><th>偶联信号</th><th>来源</th><th>作用</th></tr>
+    <tr><td>CT-1（Cardiotrophin-1）</td><td>破骨细胞</td><td>招募 MSC 到吸收陷窝</td></tr>
+    <tr><td>Sphingosine-1-phosphate (S1P)</td><td>破骨/成骨</td><td>成骨细胞迁移</td></tr>
+    <tr><td>EphrinB2-EphB4</td><td>双向</td><td>破骨-成骨相互引导</td></tr>
+    <tr><td>骨吸收释放的 TGF-β / IGF-1</td><td>骨基质</td><td>激活成骨前体</td></tr>
+    <tr><td>Clastokines</td><td>破骨分泌</td><td>"破骨细胞也在指挥成骨"</td></tr>
+  </table>
+
+  <div class="callout callout-danger">
+    <strong>临床要点</strong>：抗破骨药（双膦酸盐）长期用会<strong>抑制偶联</strong>——长期用后停药反而快速流失。
+  </div>
+
+  <h3>六、菌群干预的"作用点"</h3>
+
+  <h4>成骨端（菌群 → 促骨形成）</h4>
+  <table>
+    <tr><th>菌群产物</th><th>作用点</th><th>通路</th></tr>
+    <tr><td>丁酸 / 丙酸</td><td>Wnt/β-catenin</td><td>GPR43 → β-catenin 稳定</td></tr>
+    <tr><td>SCFA</td><td>Runx2 / Osterix</td><td>表观遗传（HDAC 抑制）</td></tr>
+    <tr><td>乳酸（2025 NEW）</td><td>MSC 分化方向</td><td>组蛋白乳酸化</td></tr>
+    <tr><td>维生素 K2</td><td>骨钙素羧化</td><td>矿化必需</td></tr>
+    <tr><td>IGF-1（菌群诱导）</td><td>成骨细胞增殖</td><td>肝-骨内分泌</td></tr>
+  </table>
+
+  <h4>破骨端（菌群 → 抑骨吸收）</h4>
+  <table>
+    <tr><th>菌群产物</th><th>作用点</th><th>通路</th></tr>
+    <tr><td>丁酸</td><td>NFATc1 / c-Fos</td><td>抑制破骨分化</td></tr>
+    <tr><td>丁酸</td><td>代谢重编程</td><td>破骨从氧化磷酸化 → 糖酵解（功能失能）</td></tr>
+    <tr><td>丙酸</td><td>同上</td><td>GPR41 → p38</td></tr>
+    <tr><td>SCFA → Treg</td><td>RANKL/OPG 比值</td><td>OPG↑、RANKL↓</td></tr>
+    <tr><td>抗炎（IL-10 / TGF-β）</td><td>TNF-α / IL-6 / IL-17</td><td>抑 RANKL 表达</td></tr>
+  </table>
+
+  <h3>七、临床骨松药与菌群的"潜在交叉"</h3>
+  <table>
+    <tr><th>药</th><th>主靶点</th><th>菌群相互作用</th></tr>
+    <tr><td>双膦酸盐</td><td>破骨 H+-ATPase</td><td>完全未知</td></tr>
+    <tr><td>地舒单抗</td><td>RANKL</td><td>完全未知</td></tr>
+    <tr><td>特立帕肽</td><td>PTH 受体</td><td><span class="hl">需要菌群产生丁酸</span>（Li JY 2020）</td></tr>
+    <tr><td>罗莫单抗</td><td>Sclerostin</td><td>完全未知</td></tr>
+    <tr><td>钙 + VD</td><td>营养补充</td><td>VD 受菌群影响</td></tr>
+  </table>
+
+  <div class="callout callout-danger">
+    <strong>最大临床盲区</strong>：<span class="hl">抗骨松药 + 益生菌/合生元 是否有协同</span>？2026 之前<strong>无 RCT 数据</strong>。这是 2026 之后最该做的临床研究之一。
+  </div>
+
+  <h3>八、机制图速记</h3>
+  <div class="flow">                ┌─────────────────────┐
+                │  骨重塑（BMU）       │
+                └──────────┬──────────┘
+                           │
+              ┌────────────┴────────────┐
+              ↓                         ↓
+       成骨细胞（MSC 源）         破骨细胞（HSC 源）
+              │                         │
+        ┌─────┴─────┐            ┌──────┴──────┐
+        ↓           ↓            ↓             ↓
+      Wnt/β    BMP/SMAD      RANK/RANKL     Cathepsin K
+      catenin      ↑             ↑              ↑
+        ↑         IGF-1       OPG 阻断         ↑
+   SCFA / 丁酸 /  肝                         H+ ATPase
+   乳酸 / K2    （菌群诱导）                ↑
+   （菌群）                                  双膦酸盐
+              │                         │
+              └──── 偶联信号 ────────────┘
+                  (CT-1 / S1P / Ephrin)
+                           │
+                  骨形成 = 骨吸收 → 稳态
+                  形成 < 吸收 → OP</div>
+</div>
+
+<!-- ===== Part 3 ===== -->
+<div class="part-title" id="part-3"><span class="num">3</span>核心机制</div>
+
+<!-- 3.1 SCFA 通路总览 -->
+<div class="section" id="sec-3-1">
+  <h2>3.1 SCFA 通路总览</h2>
+
+  <h3>一、SCFA 概述</h3>
+  <p><strong>短链脂肪酸（SCFAs）</strong> = 碳链 1-6 个碳的有机羧酸，肠道菌群发酵膳食纤维产生。</p>
+  <ul>
+    <li>每天结肠产生 <strong>~500-600 mmol</strong> SCFAs</li>
+    <li>占肠道菌群代谢产物的 <strong>~10%</strong> 重量</li>
+    <li>90% 在结肠被吸收</li>
+    <li>为结肠上皮提供 <strong>60-70% 能量</strong>（丁酸为主）</li>
+  </ul>
+
+  <h3>二、SCFA 的产生</h3>
+  <h4>底物来源</h4>
+  <table>
+    <tr><th>底物类型</th><th>代表</th><th>菌群利用率</th></tr>
+    <tr><td>可发酵膳食纤维</td><td>菊粉、低聚果糖（FOS）、低聚半乳糖（GOS）</td><td>⭐⭐⭐⭐⭐</td></tr>
+    <tr><td>抗性淀粉</td><td>抗性淀粉 II/III/IV</td><td>⭐⭐⭐⭐⭐</td></tr>
+    <tr><td>可溶性膳食纤维</td><td>β-葡聚糖、车前子壳、果胶</td><td>⭐⭐⭐⭐</td></tr>
+    <tr><td>内源性蛋白/黏液</td><td>黏蛋白（MUC2）</td><td>⭐⭐（Akkermansia 等）</td></tr>
+  </table>
+
+  <h4>产生菌（按产物分类）</h4>
+  <table>
+    <tr><th>SCFA</th><th>主要产生菌</th><th>关键酶</th></tr>
+    <tr><td><strong>乙酸</strong></td><td>Bacteroides、Bifidobacterium、Prevotella、Ruminococcus</td><td>Wood-Ljungdahl 通路</td></tr>
+    <tr><td><strong>丙酸</strong></td><td>Bacteroides、Veillonella、Prevotella、Megasphaera</td><td>三种独立通路</td></tr>
+    <tr><td><strong>丁酸</strong></td><td><em>F. prausnitzii</em>、<em>Roseburia</em>、<em>E. rectale</em>、<em>C. butyricum</em></td><td>丁酰-CoA：乙酸 CoA-转移酶</td></tr>
+  </table>
+
+  <div class="callout callout-info">
+    <strong>临床要点</strong>：<span class="hl">产丁酸菌"减少"是 PMOP、骨松、IBD、糖尿病共同的菌群特征</span>——是"健康菌群"的核心生物标志物。
+  </div>
+
+  <h3>三、SCFA 种类</h3>
+  <table>
+    <tr><th>特征</th><th>乙酸（C2）</th><th>丙酸（C3）</th><th>丁酸（C4）</th></tr>
+    <tr><td>结肠浓度</td><td>~60%</td><td>~20%</td><td>~20%</td></tr>
+    <tr><td>体外活性</td><td>弱</td><td>中</td><td><strong>最强</strong></td></tr>
+    <tr><td>主要受体</td><td>GPR43、GPR41</td><td><strong>GPR41（FFAR3）</strong>、GPR43</td><td><strong>GPR43（FFAR2）</strong>、GPR109A</td></tr>
+    <tr><td>骨保护证据</td><td>间接</td><td>强（p38 MAPK）</td><td><strong>最强</strong>（Wnt/Treg/HDAC）</td></tr>
+  </table>
+
+  <h3>四、SCFA 调节骨代谢的 5 大信号通路</h3>
+  <ol>
+    <li><strong>GPR43 / GPR41 / GPR109A 受体通路</strong></li>
+    <li><strong>HDAC 抑制（表观遗传）</strong></li>
+    <li><strong>代谢重编程</strong>（破骨细胞）</li>
+    <li><strong>免疫调控</strong>（Treg/Th17 平衡）</li>
+    <li><strong>直接作用骨细胞通路</strong></li>
+  </ol>
+
+  <h3>五、2025-2026 新进展</h3>
+  <table>
+    <tr><th>新发现</th><th>期刊</th><th>时间</th></tr>
+    <tr><td>乳酸 → 组蛋白乳酸化 → BMSC 成骨</td><td>Front Med</td><td>2025</td></tr>
+    <tr><td>丁酸双相效应（低护高抑）</td><td>MDPI Nutrients</td><td>2025</td></tr>
+    <tr><td>SCFA-GPR41-p38 轴作为 PMOP 特异靶点</td><td>Front Endocrinol</td><td>2025</td></tr>
+    <tr><td>SCFA-B 细胞调控（Breg 抗骨吸收）</td><td>Front Immunol</td><td>2025</td></tr>
+    <tr><td>F. prausnitzii 通过 GPR43 护骨</td><td>Gut</td><td>2024</td></tr>
+  </table>
+
+  <h3>六、临床转化现状</h3>
+  <table>
+    <tr><th>干预</th><th>骨效应证据</th><th>临床阶段</th></tr>
+    <tr><td>膳食纤维（25-30 g/d）</td><td>多个 RCT 阳性</td><td><strong>临床推荐</strong></td></tr>
+    <tr><td>菊粉型果聚糖</td><td>提升青少年钙吸收、骨密度</td><td>临床 II/III</td></tr>
+    <tr><td>低聚果糖（FOS）</td><td>增加 SCFA、减轻骨流失</td><td>临床 II</td></tr>
+    <tr><td>合生元</td><td>提升绝经后女性 BMD</td><td>临床 II</td></tr>
+    <tr><td>L. reuteri 6475</td><td>12 月 RCT 阳性</td><td><strong>唯一菌株金标准</strong></td></tr>
+    <tr><td>丁酸钠（直接补充）</td><td>动物显著，人体试验少</td><td>临床前</td></tr>
+  </table>
+</div>
+
+<!-- 3.2 GPR41/43 -->
+<div class="section" id="sec-3-2">
+  <h2>3.2 GPR41/43 受体通路详解</h2>
+
+  <h3>一、GPR41 vs GPR43 基本对比</h3>
+  <table>
+    <tr><th>特征</th><th>GPR41（FFAR3）</th><th>GPR43（FFAR2）</th></tr>
+    <tr><td>基因名</td><td>FFAR3</td><td>FFAR2</td></tr>
+    <tr><td>最佳配体</td><td>丙酸（C3）≈ 丁酸（C4）</td><td>丙酸 ≈ 丁酸 ≈ 乙酸</td></tr>
+    <tr><td>偶联 G 蛋白</td><td>Gαi/o</td><td>Gαi/o, Gαq（双）</td></tr>
+    <tr><td>主要表达</td><td>脂肪、神经、骨髓</td><td>免疫、肠、骨</td></tr>
+    <tr><td>关键下游</td><td>p38 MAPK</td><td>Wnt/β-catenin、HDAC</td></tr>
+    <tr><td>PMOP 特异</td><td><strong>强</strong></td><td>强</td></tr>
+  </table>
+
+  <h3>二、GPR43（FFAR2）—— 骨免疫核心</h3>
+  <h4>信号转导</h4>
+  <div class="flow">SCFA → GPR43 结合 → G 蛋白激活
+  ├─ Gαi/o → AC 抑制 → cAMP↓
+  ├─ Gαq → PLC 激活 → IP3 → Ca²⁺↑
+  └─ β-arrestin → MAPK
+  ↓
+下游信号级联</div>
+
+  <h4>GPR43 在骨代谢的"3 大作用位点"</h4>
+  <ol>
+    <li><strong>成骨细胞（直接）</strong>：SCFA → GPR43 → cAMP↓ → PKA↓ → GSK3β↓ → β-catenin↑ → Runx2 / Osterix / OCN / OPG 转录↑</li>
+    <li><strong>破骨前体（直接）</strong>：SCFA → GPR43 → NF-κB↓、NFATc1↓ → 破骨分化↓</li>
+    <li><strong>树突状细胞（关键！免疫-骨桥）</strong>：丁酸 → DC GPR43 → TGF-β + 视黄酸 → Treg → CD8+ T → Wnt10b → 骨形成</li>
+  </ol>
+
+  <h4>GPR43 KO 鼠骨表型</h4>
+  <table>
+    <tr><th>鼠模型</th><th>表型</th><th>机制</th></tr>
+    <tr><td>GPR43 KO（全身）</td><td>骨形成↓、骨量↓</td><td>Treg↓、Wnt10b↓</td></tr>
+    <tr><td>GPR43 KO 骨髓嵌合</td><td>同上</td><td>免疫细胞来源</td></tr>
+    <tr><td><strong>DC 特异性 GPR43 KO</strong></td><td>同上</td><td><strong>DC 是关键</strong></td></tr>
+    <tr><td>GPR43 KO + 丁酸补充</td><td>部分挽救</td><td>仍有部分护骨（HDAC 通路补偿）</td></tr>
+  </table>
+
+  <h3>三、GPR41（FFAR3）—— PMOP 特异</h3>
+  <h4>GPR41-p38 MAPK 轴</h4>
+  <div class="flow">丙酸 → GPR41 激活 → Gαi → cAMP↓
+  ↓
+MKK3/6 → p38 MAPK 磷酸化
+  ↓
+  ├─ 成骨细胞：Runx2 磷酸化↑ → 转录活性↑
+  └─ 破骨前体：促凋亡基因激活 → 破骨↓
+  ↓
+骨形成↑、骨吸收↓</div>
+
+  <p class="hl">关键：GPR41-p38 轴是<strong>绝经后骨质疏松的特异保护机制</strong>——雌激素缺乏时该通路尤其重要</p>
+
+  <h3>四、GPR41 vs GPR43 分工</h3>
+  <table>
+    <tr><th>维度</th><th>GPR41</th><th>GPR43</th></tr>
+    <tr><td>最佳 SCFA</td><td>丙酸</td><td>丙酸、丁酸、乙酸</td></tr>
+    <tr><td>主要细胞</td><td>脂肪、神经、骨髓</td><td>免疫、肠、骨</td></tr>
+    <tr><td>关键机制</td><td>p38 MAPK</td><td>Wnt/β-catenin、HDAC</td></tr>
+    <tr><td>PMOP 特异</td><td>✅ 强证据</td><td>✅ 强证据</td></tr>
+    <tr><td>Treg/Wnt10b 链</td><td>弱</td><td><strong>核心</strong></td></tr>
+    <tr><td>神经-骨</td><td>✅ 重要</td><td>弱</td></tr>
+  </table>
+
+  <div class="callout callout-success">
+    <strong>结论</strong>：<strong>GPR43 = 骨免疫调节的核心受体</strong>；<strong>GPR41 = PMOP 神经-代谢调节的特异受体</strong>。
+  </div>
+
+  <h3>五、5 大经典文献（必引用）</h3>
+  <table>
+    <tr><th>作者</th><th>期刊</th><th>年份</th><th>关键贡献</th></tr>
+    <tr><td>Sjögren K</td><td>JBMR</td><td>2012</td><td>GF 鼠 5-HT↓、骨量↑——奠基</td></tr>
+    <tr><td><strong>Tyagi AM</strong></td><td>Nat Med</td><td>2018</td><td><strong>丁酸 → DC GPR43 → Treg → CD8+T → Wnt10b</strong></td></tr>
+    <tr><td>Lucas S</td><td>J Bone Miner Res</td><td>2018</td><td>SCFA 抑破骨代谢重编程</td></tr>
+    <tr><td>Li JY</td><td>JCI</td><td>2020</td><td>iPTH 需要菌群产丁酸——GPR43 必需</td></tr>
+    <tr><td>Multiple</td><td>Front Endocrinol</td><td>2025</td><td>GPR41-p38 作为 PMOP 特异靶点</td></tr>
+  </table>
+</div>
+
+<!-- 3.3 GPR109A -->
+<div class="section" id="sec-3-3">
+  <h2>3.3 GPR109A（HCA2）通路详解</h2>
+
+  <h3>一、基础</h3>
+  <table>
+    <tr><th>特征</th><th>说明</th></tr>
+    <tr><td>基因</td><td>HCAR2（12q24.31）</td></tr>
+    <tr><td>偶联 G 蛋白</td><td>Gαi/o（主要）</td></tr>
+    <tr><td>关键下游</td><td>AC 抑制 → cAMP↓</td></tr>
+  </table>
+
+  <h4>配体谱</h4>
+  <table>
+    <tr><th>配体</th><th>亲和力（EC50）</th><th>来源</th></tr>
+    <tr><td><strong>烟酸（Niacin）</strong></td><td>~0.1-1 μM</td><td>食物 / 维生素 B3，<strong>最强激动剂</strong></td></tr>
+    <tr><td><strong>丁酸（C4）</strong></td><td>~0.7-1.6 mM</td><td>菌群产，生理性激动剂</td></tr>
+    <tr><td>β-羟基丁酸</td><td>~0.7 mM</td><td>酮体（生酮饮食、饥饿）</td></tr>
+  </table>
+
+  <div class="callout callout-info">
+    <strong>关键洞察</strong>：GPR109A 是个"营养感知器"——<strong>烟酸（食物）+ 丁酸（菌群）+ 酮体（代谢）</strong>——三种营养状态都能激活它。
+  </div>
+
+  <h3>二、表达谱</h3>
+  <p>GPR109A 主要表达：脂肪组织、巨噬细胞（朗格汉斯、DC、破骨细胞）、肠上皮细胞、角质形成细胞、骨髓（破骨前体）</p>
+  <p><strong>与 GPR41/43 关键差异</strong>：GPR109A <strong>主要在巨噬细胞、DC、破骨前体</strong>；是 <strong>抗炎巨噬细胞极化（M2）的特异标志</strong>。</p>
+
+  <h3>三、骨代谢作用</h3>
+  <ol>
+    <li><strong>破骨细胞（直接抑制）</strong>：丁酸 → 破骨前体 GPR109A → cAMP↓、NF-κB↓ → NFATc1↓、c-Fos↓ → 破骨分化↓</li>
+    <li><strong>巨噬细胞极化</strong>：GPR109A 激活 → M1 → M2 → 抗炎、IL-10↑、TGF-β↑</li>
+    <li><strong>肠屏障</strong>：丁酸 / 烟酸 → GPR109A（结肠上皮）→ 紧密连接蛋白↑、黏液层↑、抗菌肽↑ → 肠漏↓ → LPS 入血↓ → 骨吸收↓</li>
+    <li><strong>树突状细胞</strong>：丁酸 → DC GPR109A → TGF-β → Treg 分化↑（与 GPR43 协同）</li>
+    <li><strong>骨细胞（直接）</strong>：丁酸 → GPR109A（成骨细胞、MSC）→ β-catenin 稳定 → Runx2 / Osterix↑</li>
+  </ol>
+
+  <h3>四、GPR41 vs GPR43 vs GPR109A 分工</h3>
+  <table>
+    <tr><th>维度</th><th>GPR41</th><th>GPR43</th><th><strong>GPR109A</strong></th></tr>
+    <tr><td>最佳配体</td><td>丙酸、丁酸</td><td>短链（C1-C6）</td><td><strong>丁酸、烟酸、β-羟丁酸</strong></td></tr>
+    <tr><td>主要表达</td><td>脂肪、神经</td><td>免疫、肠、骨</td><td><strong>巨噬细胞、肠上皮、破骨</strong></td></tr>
+    <tr><td>M2 极化</td><td>弱</td><td>中</td><td><strong>核心</strong></td></tr>
+    <tr><td>肠屏障</td><td>中</td><td>中</td><td><strong>强</strong></td></tr>
+    <tr><td>Treg 扩增</td><td>弱</td><td>核心</td><td>协同</td></tr>
+    <tr><td>破骨抑制</td><td>中</td><td>强</td><td><strong>直接</strong>（早期）</td></tr>
+    <tr><td>成骨促进</td><td>弱（p38）</td><td>强（Wnt）</td><td>弱（间接）</td></tr>
+    <tr><td>临床可药</td><td>弱</td><td>弱</td><td><strong>强</strong>（烟酸老药）</td></tr>
+  </table>
+
+  <h3>五、2024-2026 新进展</h3>
+  <table>
+    <tr><th>发现</th><th>期刊</th><th>时间</th></tr>
+    <tr><td>GPR109A 在骨免疫 scRNA-seq 图谱中的特异表达</td><td>Nature</td><td>2024</td></tr>
+    <tr><td>GPR109A-M2-骨保护轴作为 OP 治疗新靶点</td><td>Front Immunol</td><td>2024-2025</td></tr>
+    <tr><td>生酮饮食通过 β-羟丁酸-GPR109A 护骨</td><td>Cell Metab</td><td>2024</td></tr>
+    <tr><td>烟酸衍生物作为 OP 候选药</td><td>JBMR</td><td>2025</td></tr>
+    <tr><td>IBD 患者 GPR109A 表达↓ 与骨松相关</td><td>Gastroenterology</td><td>2024</td></tr>
+  </table>
+
+  <h3>六、临床转化（最可药的 SCFA 受体）</h3>
+  <table>
+    <tr><th>化合物</th><th>类型</th><th>状态</th></tr>
+    <tr><td><strong>烟酸（Niacin）</strong></td><td>全激动剂</td><td>上市（血脂）</td></tr>
+    <tr><td>阿昔莫司</td><td>烟酸衍生物</td><td>上市（欧洲）</td></tr>
+    <tr><td>MK-0354</td><td>选择性 GPR109A 激动剂</td><td>临床 II（NASH）</td></tr>
+    <tr><td>丁酸钠</td><td>内源性</td><td>食品级</td></tr>
+  </table>
+
+  <div class="callout callout-success">
+    <strong>老药新用</strong>：烟酸 + 抗骨松药联合应用。临床回顾性数据：<strong>长期用烟酸的患者髋部骨折风险降低 20-30%</strong>。
+  </div>
+</div>
+
+<!-- 3.4 SCFA-HDAC-Treg -->
+<div class="section" id="sec-3-4">
+  <h2>3.4 SCFA-HDAC 抑制与 Treg 通路</h2>
+
+  <h3>一、HDAC 基础</h3>
+  <table>
+    <tr><th>类别</th><th>成员</th><th>功能</th><th>骨相关</th></tr>
+    <tr><td>Ⅰ 类</td><td>HDAC1、2、3、8</td><td>普遍转录抑制</td><td><strong>最重要</strong>——骨形成基因沉默</td></tr>
+    <tr><td>Ⅱa 类</td><td>HDAC4、5、7、9</td><td>组织特异性</td><td>Runx2 抑制（HDAC4/5）</td></tr>
+    <tr><td>Ⅱb 类</td><td>HDAC6、10</td><td>非组蛋白底物</td><td>微管、应激</td></tr>
+    <tr><td>Ⅲ 类</td><td>Sirtuins 1-7（SIRT）</td><td>NAD⁺依赖</td><td>SIRT1/3 <strong>护骨</strong></td></tr>
+  </table>
+
+  <div class="callout callout-info">
+    <strong>关键</strong>：SCFA 主要抑制 <strong>Ⅰ 类 HDAC</strong>（HDAC1、2、3、8）。HDAC1-8 = 抑骨；Sirtuins = 护骨。
+  </div>
+
+  <h3>二、SCFA 是 HDAC 抑制剂</h3>
+  <table>
+    <tr><th>SCFA</th><th>HDAC 抑制活性（IC50）</th><th>关键靶点</th></tr>
+    <tr><td><strong>丁酸</strong></td><td>0.1-0.3 mM</td><td><strong>HDAC1、2、3、8</strong>（最强、最广谱）</td></tr>
+    <tr><td>丙酸</td><td>1-3 mM</td><td>HDAC1、2、3</td></tr>
+    <tr><td>乙酸</td><td>10-30 mM</td><td>弱</td></tr>
+    <tr><td>戊酸</td><td>1-2 mM</td><td>HDAC1、2</td></tr>
+  </table>
+
+  <h3>三、HDAC 抑制 → Foxp3 → Treg 分化（核心机制）</h3>
+  <div class="flow">丁酸
+  ↓
+T 细胞内 SMCT1 摄取
+  ↓
+HDAC1/2/3 抑制
+  ↓
+Foxp3 启动子 H3K9ac、H3K27ac ↑ ↑
+  ↓
+Foxp3 转录 ↑
+  +
+Foxp3 蛋白乙酰化（稳定，抗泛素化降解）
+  ↓
+Treg 分化 ↑ ↑
+  ↓
+Treg 稳定、功能成熟</div>
+
+  <h3>四、HDAC 抑制 vs GPR43 在 Treg 上的"分工"</h3>
+  <table>
+    <tr><th>维度</th><th>HDAC 抑制</th><th>GPR43</th></tr>
+    <tr><td>速度</td><td>慢（小时-天）</td><td>快（分钟-小时）</td></tr>
+    <tr><td>细胞位置</td><td><strong>T 细胞内</strong></td><td><strong>DC 表面</strong></td></tr>
+    <tr><td>作用</td><td><strong>直接</strong>调控 Foxp3 表达</td><td><strong>间接</strong>——Treg 极化条件</td></tr>
+    <tr><td>体内证据</td><td>HDAC9 KO → Treg↑</td><td>GPR43 KO → Treg↓</td></tr>
+  </table>
+
+  <h3>五、Treg 护骨"5 大机制"</h3>
+  <ol>
+    <li><strong>IL-10 分泌</strong>：抑 Th17、抑 M1、抑 RANKL</li>
+    <li><strong>TGF-β 分泌</strong>：抑破骨前体分化</li>
+    <li><strong>CTLA-4 表达</strong>：CD80/86 结合破骨前体 → IDO↑ → 色氨酸耗竭 → 破骨↓（细胞接触性）</li>
+    <li><strong>Wnt10b 路径（CD8+ T 中介）</strong>：Wnt/β-catenin → 成骨↑（2018 Tyagi 经典）</li>
+    <li><strong>直接调控 DC 和 MSC</strong>（2024+ 新）</li>
+  </ol>
+
+  <h3>六、体外 Treg 极化效率（典型数据）</h3>
+  <table>
+    <tr><th>条件</th><th>Foxp3+ 细胞比例</th></tr>
+    <tr><td>仅 anti-CD3/CD28</td><td>< 1%</td></tr>
+    <tr><td>+ TGF-β</td><td>~30-40%</td></tr>
+    <tr><td>+ TGF-β + IL-2</td><td>~50-60%</td></tr>
+    <tr><td>+ TGF-β + IL-2 + <strong>丁酸（0.1 mM）</strong></td><td><strong>~70-80%</strong></td></tr>
+    <tr><td>+ TGF-β + IL-2 + 伏立诺他</td><td>~70-85%</td></tr>
+  </table>
+
+  <div class="callout callout-success">
+    <strong>关键数字</strong>：丁酸 0.1 mM 就能将 Treg 极化效率提升 <span class="hl">~30-40 个百分点</span>——非常显著。
+  </div>
+
+  <h3>七、2024-2026 新进展</h3>
+  <ul>
+    <li><strong>骨髓驻留 Treg 特化 scRNA-seq 图谱</strong>（Nature 2024）</li>
+    <li>HDAC6 抑制 → Foxp3 稳定（J Exp Med 2024）</li>
+    <li>丁酸对 Treg 的代谢-表观遗传双重调控（Cell Metab 2024）</li>
+    <li>丁酸诱导的肠道 IgA+ Treg（Cell Host Microbe 2025）</li>
+    <li>Foxp3 位点 H3K27ac 的可逆性（Sci Adv 2025）</li>
+  </ul>
+</div>
+
+<!-- 3.5 丁酸级联 -->
+<div class="section" id="sec-3-5">
+  <h2>3.5 丁酸-HDAC-Treg-骨 完整级联</h2>
+
+  <h3>一、丁酸的多面身份</h3>
+  <table>
+    <tr><th>身份</th><th>浓度要求</th><th>关键位点</th><th>作用</th></tr>
+    <tr><td><strong>能量底物</strong></td><td>mM 级</td><td>结肠上皮（β-氧化）</td><td>提供 60-70% 能量</td></tr>
+    <tr><td><strong>HDAC 抑制剂</strong></td><td>μM-mM 级</td><td>各种细胞（HDAC1/2/3）</td><td>表观遗传调控</td></tr>
+    <tr><td><strong>GPR 配体</strong></td><td>μM-mM 级</td><td>GPR41/43/109A</td><td>快速信号</td></tr>
+    <tr><td><strong>肠屏障</strong></td><td>mM 级</td><td>紧密连接、黏液</td><td>物理屏障</td></tr>
+  </table>
+
+  <h3>二、HDAC 抑制机制（分子细节）</h3>
+  <p>丁酸 IC50（HDAC1/2/3）=<strong>0.1-0.3 mM</strong>——亚 μM 级就能起效。HDAC 抑制通过 <span class="hl">"双重机制"</span>：启动子乙酰化（转录）+ Foxp3 蛋白稳定。</p>
+
+  <h3>三、HDAC 抑制后的"分子足迹"</h3>
+  <div class="flow">HDAC1/2/3 抑制
+   ↓
+全基因组组蛋白乙酰化↑（ChIP-seq）
+   ↓
+   ├─ H3K9ac、H3K14ac、H3K27ac、H4K5ac
+   ├─ 启动子区 + 增强子区 + super-enhancer
+   ↓
+   ├─ Runx2、Osterix、OCN 启动子 → 成骨↑
+   ├─ Foxp3 启动子 + CNS 区 → Treg↑
+   ├─ NFATc1 启动子（去抑制）→ 双向
+   └─ c-Fos 启动子（去乙酰化基础上）→ 破骨↓
+   ↓
+转录组广泛重编程</div>
+
+  <h3>四、Treg 护骨 5 大机制（再深挖）</h3>
+  <table>
+    <tr><th>机制</th><th>详细通路</th></tr>
+    <tr><td>IL-10 抗骨吸收</td><td>IL-10 → 抑 Th17、M1 → RANKL、IL-17↓ → 破骨↓</td></tr>
+    <tr><td>TGF-β 抑破骨</td><td>TGF-β → 抑破骨前体分化、抑 RANK-RANKL、促破骨细胞凋亡</td></tr>
+    <tr><td><strong>CTLA-4 接触性抑破骨</strong></td><td>CTLA-4 + CD80/86（破骨前体）→ IDO↑ → 色氨酸耗竭 → 破骨前体凋亡↑</td></tr>
+    <tr><td>Wnt10b 路径（最经典）</td><td>Treg → CD8+ T → Wnt10b → Wnt/β-catenin → 成骨↑（Tyagi 2018）</td></tr>
+    <tr><td>Treg 直接调控 DC 和 MSC</td><td>CTLA-4 占用 CD80/86；PD-1/PD-L1 → 促 MSC 成骨分化（2024+ 新）</td></tr>
+  </table>
+
+  <h3>五、完整级联（一步不漏版）</h3>
+  <div class="flow">产丁酸菌（F. prausnitzii、Roseburia、E. rectale、C. butyricum）
+   ↓
+肠道丁酸 ↑
+   ↓
+   ├─→ 肠腔：高浓度（50-100 mM）
+   │     ↓
+   │   ① 肠屏障保护（紧密连接↑、黏液↑）
+   │     ↓
+   │   LPS 入血↓ → 全身炎症↓
+   │
+   ├─→ 门静脉：0.5-1 mM
+   │     ↓
+   │   ② 肝脏代谢（部分 β-氧化）
+   │     ↓
+   │   剩余进入外周
+   │
+   └─→ 外周血：10-100 μM
+         ↓
+         到达骨髓
+         ↓
+         ┌────┴─────────────────────────────┐
+         ↓                                  ↓
+       路径 A：GPCR（快速）          路径 B：HDAC 抑制（慢）
+         │                                  │
+         ↓                                  ↓
+       GPR43 激活（DC）             T 细胞内 SMCT1 摄取
+         │                                  │
+         ↓                                  ↓
+       DC 分泌 TGF-β + RA         HDAC1/2/3 抑制
+         │                                  │
+         └────────────┬─────────────────────┘
+                      ↓
+              Treg 分化 ↑ ↑
+                      ↓
+         ┌────────────┼─────────────────┐
+         ↓            ↓                 ↓
+       Foxp3+      稳定性 ↑         功能成熟 ↑
+         └────────────┴─────────────────┘
+                      ↓
+              骨髓归巢（CXCR4-CXCL12）
+                      ↓
+              骨髓驻留 Treg
+                      ↓
+         ┌────────────┼─────────────────┐
+         ↓            ↓                 ↓
+       IL-10       TGF-β             CTLA-4
+         ↓            ↓                 ↓
+       抑 Th17     抑破骨前体          破骨细胞 IDO↑
+         └────────────┴─────────────────┘
+                      ↓
+              RANKL ↓、TNF-α ↓、IL-6 ↓
+                      ↓
+              破骨分化 ↓ ↓
+                      ↓
+              ┌────────────────┐
+              ↓                ↓
+            破骨↓          Treg → CD8+ T → Wnt10b
+              │                ↓
+              │              成骨↑
+              └────── 骨量净增 ──┘</div>
+
+  <h3>六、2024-2026 前沿</h3>
+  <ul>
+    <li>Foxp3 超级增强子的乙酰化动态（Nature 2024）</li>
+    <li>HDAC6 抑制 → Foxp3 稳定（J Exp Med 2024）</li>
+    <li>丁酸对 Treg 的代谢-表观遗传双重调控（Cell Metab 2024）</li>
+    <li>益生菌 + 抗骨松药联用 RCT 筹备（2025-2026）</li>
+  </ul>
+
+  <h3>七、临床转化"三层干预策略"</h3>
+  <table>
+    <tr><th>层级</th><th>干预</th><th>机制</th><th>状态</th></tr>
+    <tr><td>上游</td><td>产丁酸菌补充 + 益生元</td><td>提升内源丁酸</td><td>临床 II</td></tr>
+    <tr><td>中游</td><td>丁酸钠缓释</td><td>直接补充</td><td>临床 II</td></tr>
+    <tr><td>下游</td><td>Treg 过继 + 低剂量 IL-2</td><td>重建 Treg</td><td>临床 I/II</td></tr>
+  </table>
+
+  <h3>八、核心 take-aways</h3>
+  <div class="card-grid">
+    <div class="card card-green">
+      <div class="card-title">关键 1</div>
+      <div class="card-body">丁酸 = SCFA 之王，HDAC 抑制活性最强，骨保护最全面</div>
+    </div>
+    <div class="card card-orange">
+      <div class="card-title">关键 2</div>
+      <div class="card-body">HDAC 抑制通过"双重机制"——启动子乙酰化 + Foxp3 蛋白稳定</div>
+    </div>
+    <div class="card card-red">
+      <div class="card-title">关键 3</div>
+      <div class="card-body"><span class="hl">0.1-1 mM 是治疗窗口</span>——低护高抑</div>
+    </div>
+    <div class="card">
+      <div class="card-title">关键 4</div>
+      <div class="card-body">Treg 护骨 5 大机制——IL-10、TGF-β、CTLA-4、Wnt10b、直接调控</div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">关键 5</div>
+      <div class="card-body">临床转化最成熟——丁酸盐、益生菌、益生元都已能用</div>
+    </div>
+    <div class="card card-red">
+      <div class="card-title">关键 6</div>
+      <div class="card-body">双刃剑：Treg 在肿瘤中是促瘤——精准分型很重要</div>
+    </div>
+  </div>
+</div>
+
+<!-- 3.6 胆汁酸-TGR5 -->
+<div class="section" id="sec-3-6">
+  <h2>3.6 胆汁酸-TGR5 轴</h2>
+
+  <h3>一、胆汁酸基础</h3>
+  <p><strong>胆汁酸（BAs）</strong> = 胆固醇代谢的甾醇类两性分子——既是脂质消化乳化剂，也是内分泌信号分子。</p>
+
+  <h4>胆汁酸"种类总表"</h4>
+  <table>
+    <tr><th>类别</th><th>中文</th><th>英文</th><th>关键受体</th></tr>
+    <tr><td rowspan="2">初级（游离）</td><td>胆酸</td><td>CA</td><td>FXR（弱）</td></tr>
+    <tr><td>鹅去氧胆酸</td><td>CDCA</td><td><strong>FXR（强）</strong></td></tr>
+    <tr><td>次级（菌群产）</td><td><strong>脱氧胆酸</strong></td><td><strong>DCA</strong></td><td><strong>TGR5（强）</strong></td></tr>
+    <tr><td></td><td><strong>石胆酸</strong></td><td><strong>LCA</strong></td><td><strong>TGR5（强）+ VDR</strong></td></tr>
+    <tr><td></td><td>熊去氧胆酸</td><td>UDCA</td><td>TGR5（弱）</td></tr>
+  </table>
+
+  <h3>二、菌群对胆汁酸的代谢（关键的去共轭、脱氢、脱羟基反应）</h3>
+  <table>
+    <tr><th>反应</th><th>关键酶</th><th>主要菌</th></tr>
+    <tr><td>解共轭</td><td>胆汁酸盐水解酶（BSH）</td><td>Bacteroides、Lactobacillus、Bifidobacterium、Clostridium</td></tr>
+    <tr><td>7α-脱羟基</td><td>Bai 操纵子</td><td><strong>C. scindens</strong>、C. hylemonae、C. hiranonis</td></tr>
+    <tr><td>差向异构化</td><td>7α/7β-HSDH</td><td>Bacteroides、Clostridium</td></tr>
+  </table>
+
+  <h3>三、胆汁酸肠肝循环</h3>
+  <div class="flow">肝细胞合成初级胆汁酸
+   ↓
+分泌（与甘氨酸/牛磺酸共轭结合）
+   ↓
+胆囊储存
+   ↓
+餐后释放入十二指肠
+   ↓
+脂肪乳化
+   ↓
+回肠末端 ASBT 吸收（95% 重吸收）
+   ↓
+门静脉回肝 → 肝肠循环（每天 4-12 次）
+   ↓
+每天仅 5% 排入结肠（~500 mg）
+   ↓
+结肠菌群代谢 → 次级胆汁酸
+   ↓
+DCA、LCA → 部分被动吸收（10%）
+   ↓
+门静脉回肝
+   ↓
+完成"次级胆汁酸的肠肝循环"</div>
+
+  <h3>四、TGR5 受体基础</h3>
+  <table>
+    <tr><th>项目</th><th>内容</th></tr>
+    <tr><td>基因</td><td>GPBAR1（Takeda G-protein-coupled receptor 5）</td></tr>
+    <tr><td>偶联 G 蛋白</td><td><strong>Gαs</strong>（主要）→ cAMP↑</td></tr>
+    <tr><td>最佳配体</td><td><strong>LCA、DCA（次级）</strong></td></tr>
+  </table>
+
+  <div class="callout callout-info">
+    <strong>关键</strong>：<span class="hl">TGR5 是 Gαs 偶联</span>——而 GPR41/43 是 Gαi/o——这是为什么 TGR5 激活→ cAMP↑，与 GPR41/43 相反。
+  </div>
+
+  <h3>五、TGR5 调节骨代谢的机制</h3>
+  <h4>位点 1：破骨前体 / 破骨细胞（核心）</h4>
+  <div class="flow">LCA / DCA
+   ↓
+破骨前体 TGR5 激活
+   ↓
+cAMP↑
+   ↓
+   ┌────┴─────────────┐
+   ↓                  ↓
+  PKA                Epac
+   ↓                  ↓
+  CREB 磷酸化         AMPK 激活
+   ↓                  ↓
+  c-Fos↓              mTOR↓
+  NFATc1↓             自噬↑
+   └──────┬───────────┘
+          ↓
+   破骨分化↓
+   ├─ 融合↓
+   ├─ TRAP↓
+   ├─ Cathepsin K↓
+   └─ 破骨细胞凋亡↑</div>
+
+  <h4>位点 2：成骨细胞 / MSC（弱）</h4>
+  <p>cAMP↑ → PKA → CREB 磷酸化 → Runx2 / Osterix↑ → 成骨分化↑</p>
+  <p class="hl">注意：TGR5 在成骨细胞上的直接促成骨效应<strong>比抑破骨效应弱</strong>——TGR5 主要靠<strong>抑破骨</strong>护骨</p>
+
+  <h4>位点 3：巨噬细胞</h4>
+  <p>TGR5 → 抑 NF-κB → TNF-α、IL-1β、IL-6↓ + 促 M2 极化 → 全身炎症↓</p>
+
+  <h3>六、TGR5 vs FXR 在骨代谢的"对比"</h3>
+  <table>
+    <tr><th>维度</th><th>TGR5</th><th>FXR（NR1H4）</th></tr>
+    <tr><td>类型</td><td><strong>GPCR</strong></td><td>核受体（转录因子）</td></tr>
+    <tr><td>最佳配体</td><td><strong>LCA、DCA（次级）</strong></td><td><strong>CDCA（初级）</strong></td></tr>
+    <tr><td>菌群依赖</td><td><strong>强</strong>（次级 BA 需菌群）</td><td>中</td></tr>
+    <tr><td>主效应</td><td><strong>抑破骨</strong>（抗骨吸收）</td><td>双向（抑成骨 + 抑破骨）</td></tr>
+    <tr><td>抗炎</td><td><strong>强</strong></td><td>中</td></tr>
+  </table>
+
+  <h3>七、2024-2026 新进展</h3>
+  <ul>
+    <li>TGR5 激动在 OVX 鼠中的骨保护（Bone Res 2024）</li>
+    <li>C. scindens 通过 TGR5 护骨（人源化鼠，Gut 2024）</li>
+    <li>TGR5-NLRP3 轴（抑炎症小体护骨，Cell Metab 2024）</li>
+    <li>胆汁酸-TGR5-GLP-1 三联轴护骨（Nat Rev Endocrinol 2025）</li>
+    <li>LCA 是 VDR 配体（跨界信号，Nature 2024）</li>
+    <li>FXR 拮抗促骨（JBMR 2025）</li>
+  </ul>
+
+  <h3>八、临床转化</h3>
+  <table>
+    <tr><th>化合物</th><th>靶点</th><th>适应症</th><th>状态</th></tr>
+    <tr><td><strong>INT-777</strong></td><td>TGR5 激动剂</td><td>代谢病、OP（探索）</td><td>临床 I/II 准备</td></tr>
+    <tr><td>奥贝胆酸（OCA）</td><td>FXR 激动剂</td><td>PBC、NASH</td><td><strong>已上市</strong>（Intercept）</td></tr>
+    <tr><td>Cilofexor</td><td>FXR 激动剂</td><td>NASH</td><td>临床 III</td></tr>
+    <tr><td>GSK237</td><td>FXR 拮抗剂</td><td>探索</td><td>临床前</td></tr>
+    <tr><td>UDCA（熊去氧胆酸）</td><td>弱 TGR5</td><td>PBC、胆汁淤积</td><td>上市</td></tr>
+  </table>
+
+  <h3>九、治疗窗</h3>
+  <div class="callout callout-danger">
+    <strong>关键</strong>：次级胆汁酸浓度 <strong>5-50 μM 是治疗窗口</strong>，&gt;100 μM 反而致癌。
+  </div>
+</div>
+
+<!-- 3.7 色氨酸-AhR -->
+<div class="section" id="sec-3-7">
+  <h2>3.7 色氨酸-AhR 通路</h2>
+
+  <h3>一、色氨酸基础</h3>
+  <p><strong>色氨酸（Trp）</strong> = 必需氨基酸，必须从食物获取。</p>
+
+  <h4>三大代谢命运</h4>
+  <div class="flow">食物 Trp（~1 g/d）
+   ↓
+   ┌────────┴────────┐
+   ↓                 ↓
+  90%               10%
+  犬尿氨酸通路         肠道两条平行通路
+  （KYN 通路）         ├─ 5-HT 通路（哺乳动物细胞）
+  ↓                 └─ 吲哚通路（菌群专属）★
+  QA、KYNA</div>
+
+  <div class="callout callout-info">
+    <strong>关键</strong>：<span class="hl">只有菌群能把 Trp 转成吲哚衍生物</span>——这是肠-骨轴的"菌群专属资源"。
+  </div>
+
+  <h3>二、菌群对色氨酸的代谢（重点）</h3>
+  <table>
+    <tr><th>衍生物</th><th>缩写</th><th>关键菌</th><th>关键受体</th><th>骨效应</th></tr>
+    <tr><td>吲哚</td><td>Indole</td><td><em>E. coli</em>、<em>Lactobacillus</em></td><td>AhR（弱）+ PXR</td><td>抗炎护骨</td></tr>
+    <tr><td><strong>吲哚-3-丙酸</strong></td><td><strong>IPA</strong></td><td><em>Clostridium</em>、<em>Bacteroides</em></td><td><strong>PXR、AhR</strong></td><td><strong>强护骨</strong></td></tr>
+    <tr><td><strong>吲哚-3-乙酸</strong></td><td><strong>IAA</strong></td><td><em>Bacteroides</em>、<em>Clostridium</em></td><td>AhR、IL-22 诱导</td><td>护骨</td></tr>
+    <tr><td><strong>吲哚-3-甲醛</strong></td><td><strong>IAAld</strong></td><td><em>Lactobacillus</em></td><td><strong>AhR（最强）</strong></td><td><strong>强护骨</strong></td></tr>
+    <tr><td>吲哚-3-硫酸盐</td><td>I3S</td><td><em>Clostridium</em>、<em>E. coli</em></td><td>AhR（双相）</td><td>矛盾</td></tr>
+  </table>
+
+  <h4>关键菌清单</h4>
+  <table>
+    <tr><th>菌种</th><th>能力</th><th>关键产物</th></tr>
+    <tr><td><strong>Lactobacillus reuteri</strong></td><td>★★★★★</td><td><strong>IAAld</strong>（AhR 最强激动）</td></tr>
+    <tr><td>L. johnsonii</td><td>★★★★★</td><td>IAAld</td></tr>
+    <tr><td>Peptostreptococcus russellii</td><td>★★★★</td><td>IPA</td></tr>
+    <tr><td>Bacteroides thetaiotaomicron</td><td>★★★★</td><td>IAA</td></tr>
+    <tr><td>Clostridium sporogenes</td><td>★★★</td><td>IPA、IAA</td></tr>
+  </table>
+
+  <div class="callout callout-success">
+    <strong>关键</strong>：<em>L. reuteri</em> 不仅是产 SCFA 益生菌，还是产 AhR 激动剂的"双料冠军"——这是它骨保护效果强的关键。
+  </div>
+
+  <h3>三、5-HT 通路（菌群"反向调节"）</h3>
+  <div class="flow">Trp
+   ↓ Tph1（限速，肠嗜铬细胞）
+5-HTP
+   ↓ AADC
+5-HT
+   ↓
+   ├─ 5-HT3R、5-HT4R（肠神经元）
+   ├─ SERT 转运回细胞
+   ├─ 5-HT2A/1B（骨细胞）
+   └─ MAO 降解 → 5-HIAA（尿排出）</div>
+
+  <h4>关键证据</h4>
+  <ul>
+    <li><strong>GF 鼠外周 5-HT ↓ 67.8%</strong>（Sjögren 2012 JBMR，奠基论文）</li>
+    <li><strong>Tph1 KO 鼠 → 骨形成 ↑</strong>（Yadav 2010 Cell）</li>
+    <li><strong>SSRI（5-HT 再摄取抑制剂）长期用 → 骨折风险 ↑ 1.5-2 倍</strong></li>
+    <li>PMOP 患者血清 5-HT 水平与 BMD 负相关</li>
+  </ul>
+
+  <div class="callout callout-danger">
+    <strong>关键洞察</strong>：<span class="hl">5-HT = 骨形成的"刹车"</span>——Tph1 抑制剂就是"松刹车"的药。
+  </div>
+
+  <h3>四、吲哚通路（菌群专属 + AhR 强激活）</h3>
+  <div class="flow">菌群色氨酸酶
+   ↓
+IAAld（吲哚-3-甲醛，最强 AhR 配体）
+   ↓
+AhR 激活（破骨前体 + Treg + ILC3 + 上皮细胞）
+   ↓
+   ┌────┴────────────────┐
+   ↓                     ↓
+  破骨前体            ILC3（肠道）
+   ↓                     ↓
+  AhR → IDO1↑         IL-22 分泌↑
+  色氨酸饥饿               ↓
+  破骨前体凋亡↑         肠屏障↑
+   ↓                     ↓
+  破骨↓              LPS↓ → 全身炎症↓
+                          ↓
+                    骨流失↓
+   ↓
+   抗炎 + 护骨</div>
+
+  <h3>五、AhR 受体基础</h3>
+  <table>
+    <tr><th>特征</th><th>内容</th></tr>
+    <tr><td>类型</td><td><strong>bHLH-PAS 转录因子</strong>（不是 GPCR）</td></tr>
+    <tr><td>状态</td><td><strong>细胞质（休眠）→ 核（激活）</strong></td></tr>
+  </table>
+
+  <h4>配体谱</h4>
+  <table>
+    <tr><th>类型</th><th>代表</th><th>AhR 活性</th></tr>
+    <tr><td>外源毒物</td><td>TCDD</td><td>极强（毒性）</td></tr>
+    <tr><td><strong>吲哚衍生物（内源）</strong></td><td><strong>IAAld、I3C、FICZ、IAA、IPA</strong></td><td><strong>强 - 中</strong></td></tr>
+    <tr><td>食物</td><td>十字花科（西兰花、卷心菜）的 I3C</td><td>中</td></tr>
+    <tr><td>色氨酸代谢物</td><td>KYN、KYNA</td><td>中 - 弱</td></tr>
+  </table>
+
+  <h3>六、AhR 在骨代谢的"细胞图谱"</h3>
+  <table>
+    <tr><th>细胞类型</th><th>AhR 表达</th><th>骨效应</th></tr>
+    <tr><td><strong>破骨前体</strong></td><td>高</td><td><strong>抑破骨</strong>（IDO1↑、色氨酸饥饿）</td></tr>
+    <tr><td><strong>Treg</strong></td><td>高</td><td><strong>促 Treg</strong>（护骨）</td></tr>
+    <tr><td>Th17</td><td>中</td><td>抑 Th17（护骨）</td></tr>
+    <tr><td>ILC3</td><td>高</td><td>促 IL-22（护骨、护屏障）</td></tr>
+    <tr><td>肠上皮</td><td>高</td><td>抗炎、屏障</td></tr>
+    <tr><td>成骨细胞</td><td>中</td><td>双向（直接作用弱）</td></tr>
+  </table>
+
+  <h3>七、2024-2026 新进展</h3>
+  <ul>
+    <li><strong>IAAld 是 AhR 护骨的"主配体"</strong>（Cell Host Microbe 2024）</li>
+    <li>L. reuteri 通过 IAAld-AhR 护骨（Front Immunol 2024）</li>
+    <li>IPA 改善 OVX 鼠骨（Calcif Tissue Int 2024）</li>
+    <li>AhR 激动剂（FICZ）治疗 PMOP（J Exp Med 2024）</li>
+    <li>I3S 双相效应：低促骨、高抑骨（Cell 2025）</li>
+  </ul>
+
+  <h3>八、临床转化</h3>
+  <table>
+    <tr><th>化合物</th><th>类型</th><th>状态</th></tr>
+    <tr><td>I3C（吲哚-3-甲醇）</td><td>食物（十字花科）</td><td>食品级，临床 II</td></tr>
+    <tr><td>DIM（二吲哚基甲烷）</td><td>I3C 衍生物</td><td>临床 II（自身免疫）</td></tr>
+    <tr><td>FICZ</td><td>AhR 激动剂</td><td>临床前</td></tr>
+    <tr><td>Tph1 抑制剂（LP533401）</td><td>骨形成"松刹车"</td><td>临床 I/II</td></tr>
+    <tr><td>柳氮磺吡啶</td><td>AhR 配体</td><td>已上市（IBD）</td></tr>
+  </table>
+
+  <h3>九、双向性（"双刃剑"）</h3>
+  <div class="card-grid">
+    <div class="card card-red">
+      <div class="card-title">🔴 5-HT 支 = 抑骨（"坏支"）</div>
+      <div class="card-body">Tph1 抑制剂 = 未来抗骨松新药；SSRI 长期用是骨流失风险</div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">🟢 吲哚支 = 护骨（"好支"）</div>
+      <div class="card-body">AhR 激活是护骨核心；L. reuteri 产 IAAld = 护骨</div>
+    </div>
+    <div class="card card-orange">
+      <div class="card-title">🟡 KYN 支 = 复杂</div>
+      <div class="card-body">急性炎症：抑破骨；慢性炎症：可能抑成骨</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Part 4 ===== -->
+<div class="part-title" id="part-4"><span class="num">4</span>研究方法学</div>
+
+<!-- 4.1 菌群研究方法 -->
+<div class="section" id="sec-4-1">
+  <h2>4.1 菌群研究方法</h2>
+
+  <h3>一、测序方法选择</h3>
+  <table>
+    <tr><th>方法</th><th>分辨率</th><th>适用场景</th><th>优缺点</th></tr>
+    <tr><td><strong>16S rRNA（V3-V4 区）</strong></td><td>属/种</td><td>大队列、初步画像</td><td>便宜；物种分辨率差</td></tr>
+    <tr><td>16S（V1-V9 全长）</td><td>接近种</td><td>Nanopore 平台</td><td>错配率高</td></tr>
+    <tr><td><strong>宏基因组（mNGS / WGS）</strong></td><td><strong>株水平 + 功能基因</strong></td><td>肠-骨轴机制研究</td><td><strong>金标准</strong>；贵</td></tr>
+    <tr><td>宏转录组（mRNA）</td><td>表达功能</td><td>想知道"菌群在做什么"</td><td>数据分析难</td></tr>
+    <tr><td>培养组学</td><td>活菌分离</td><td>后续菌株回补实验</td><td>90% 肠道菌不可培养</td></tr>
+    <tr><td>靶向代谢组</td><td>SCFA、胆汁酸、色氨酸</td><td>机制研究、临床转化</td><td>反映"功能"</td></tr>
+  </table>
+
+  <h3>二、关键分析指标</h3>
+  <table>
+    <tr><th>指标</th><th>含义</th><th>临床意义</th></tr>
+    <tr><td><strong>α-多样性（Shannon、Simpson、Chao1）</strong></td><td>个体内多样性</td><td>OP 患者通常↓</td></tr>
+    <tr><td>β-多样性（PCoA、NMDS）</td><td>个体间差异</td><td>区分 OP/对照</td></tr>
+    <tr><td><strong>F/B 比（厚壁菌/拟杆菌）</strong></td><td>经典失调指标</td><td>PMOP 多数研究显示↑</td></tr>
+    <tr><td>LEfSe 分析</td><td>差异菌 biomarker</td><td>找"罪魁祸首菌"</td></tr>
+    <tr><td>PICRUSt2 / Tax4Fun</td><td>功能预测</td><td>仅从 16S 推代谢功能——不准确</td></tr>
+  </table>
+
+  <h3>三、取样陷阱（80% 的人栽过）</h3>
+  <table>
+    <tr><th>陷阱</th><th>后果</th><th>解决</th></tr>
+    <tr><td><strong>粪便 ≠ 结肠黏膜菌</strong></td><td>漏掉黏膜相关菌</td><td>同时取黏膜活检（小鼠）</td></tr>
+    <tr><td>单点取样</td><td>漏掉昼夜波动</td><td>固定时间（如晨起 7:00）</td></tr>
+    <tr><td>储存温度/时间</td><td>DNA 降解</td><td>-80℃ + 30 min 内冻</td></tr>
+    <tr><td><strong>抗生素史未记录</strong></td><td>完全污染数据</td><td>入组前 3 个月无抗生素</td></tr>
+    <tr><td>饮食未控制</td><td>短链脂肪酸混淆</td><td>标准化 3 天饮食</td></tr>
+    <tr><td>测序深度不足</td><td>漏掉低丰度菌</td><td>≥5 万 reads/样本</td></tr>
+  </table>
+
+  <h3>四、菌群功能评估</h3>
+  <p>菌群组成（16S/mNGS）+ 菌群功能（代谢组学）= 整合分析 → 推断功能</p>
+
+  <h4>测什么代谢物</h4>
+  <ul>
+    <li><strong>粪便 SCFA</strong>（GC-MS / LC-MS）——最常测</li>
+    <li><strong>血清 SCFA</strong>——反映"全身效应"</li>
+    <li><strong>胆汁酸谱</strong>——次级胆汁酸 / 初级胆汁酸比值</li>
+    <li><strong>色氨酸代谢物</strong>（吲哚、IPA、IAA）——AhR 通路</li>
+    <li><strong>TMAO</strong>——心血管 + 骨双向</li>
+    <li><strong>LPS / 内毒素</strong>——肠漏标志</li>
+    <li><strong>zonulin</strong>——肠通透性</li>
+  </ul>
+</div>
+
+<!-- 4.2 骨表型分析 -->
+<div class="section" id="sec-4-2">
+  <h2>4.2 骨表型分析方法</h2>
+
+  <h3>一、影像学方法（金标准）</h3>
+  <table>
+    <tr><th>方法</th><th>空间分辨率</th><th>可测参数</th><th>适用</th></tr>
+    <tr><td><strong>DXA（双能 X 线）</strong></td><td>低</td><td><strong>aBMD</strong>（面积 BMD）</td><td><strong>临床金标准，人体首选</strong></td></tr>
+    <tr><td>pQCT（外周定量 CT）</td><td>中</td><td>vBMD、皮质/松质骨分离</td><td>小动物、人体四肢</td></tr>
+    <tr><td><strong>micro-CT（μCT）</strong></td><td><strong>高（~5 μm）</strong></td><td>骨微结构 BV/TV、Tb.N、Tb.Th、Tb.Sp、Ct.Th</td><td><strong>小动物金标准</strong></td></tr>
+    <tr><td>HR-pQCT</td><td>中-高</td><td>远端桡骨/胫骨微结构</td><td>人体科研</td></tr>
+    <tr><td>MRI</td><td>中</td><td>骨髓脂肪、骨水肿</td><td>临床科研</td></tr>
+    <tr><td>PET-CT</td><td>分子</td><td>代谢活性（¹⁸F-NaF）</td><td>临床科研、活性骨形成</td></tr>
+  </table>
+
+  <h3>二、micro-CT 关键参数（小动物必读）</h3>
+  <table>
+    <tr><th>参数</th><th>含义</th></tr>
+    <tr><td>BV/TV</td><td>骨体积分数（最常用）</td></tr>
+    <tr><td>Tb.N</td><td>骨小梁数量</td></tr>
+    <tr><td>Tb.Th</td><td>骨小梁厚度</td></tr>
+    <tr><td>Tb.Sp</td><td>骨小梁间距</td></tr>
+    <tr><td>Ct.Th</td><td>皮质骨厚度</td></tr>
+    <tr><td>Ct.Ar</td><td>皮质骨面积</td></tr>
+    <tr><td>SMI</td><td>结构模型指数（板状 vs 棒状）</td></tr>
+  </table>
+
+  <h3>三、骨代谢标志物（金标准组合：P1NP + CTX-I）</h3>
+  <table>
+    <tr><th>类别</th><th>标志物</th><th>反映</th></tr>
+    <tr><td rowspan="3"><strong>形成标志物</strong></td><td><strong>P1NP</strong>（I 型原胶原 N 端前肽）</td><td><strong>成骨活性金标准</strong></td></tr>
+    <tr><td>OC（骨钙素）</td><td>成骨 + 能量代谢</td></tr>
+    <tr><td>BALP（骨特异性碱性磷酸酶）</td><td>成骨</td></tr>
+    <tr><td rowspan="3"><strong>吸收标志物</strong></td><td><strong>CTX-I</strong>（I 型胶原交联 C 端肽）</td><td><strong>破骨活性金标准</strong></td></tr>
+    <tr><td>NTX-I（尿）</td><td>骨吸收</td></tr>
+    <tr><td>TRAP5b</td><td>破骨细胞活性</td></tr>
+    <tr><td rowspan="4"><strong>调节因子</strong></td><td><strong>RANKL / OPG</strong></td><td>偶联平衡</td></tr>
+    <tr><td><strong>Sclerostin</strong></td><td>Wnt 抑制剂</td></tr>
+    <tr><td>DKK-1</td><td>Wnt 抑制剂</td></tr>
+    <tr><td>FGF23</td><td>骨-肾-心轴</td></tr>
+  </table>
+
+  <h3>四、组织学方法</h3>
+  <table>
+    <tr><th>方法</th><th>染色</th><th>反映</th></tr>
+    <tr><td>H&E</td><td>常规</td><td>骨形态</td></tr>
+    <tr><td>Masson 三色</td><td>胶原</td><td>类骨质（蓝）vs 矿化骨（红）</td></tr>
+    <tr><td>Goldner 三色</td><td>矿化区分</td><td>类骨质（红）vs 矿化骨（绿）</td></tr>
+    <tr><td><strong>TRAP</strong></td><td>抗酒石酸酸性磷酸酶</td><td><strong>破骨细胞</strong>（紫红）</td></tr>
+    <tr><td>Von Kossa</td><td>银染</td><td>矿化骨（黑）</td></tr>
+    <tr><td>Alizarin Red / Calcein</td><td>荧光双标</td><td><strong>动态骨形成率</strong>（BFR/BS）</td></tr>
+    <tr><td>免疫组化</td><td>OCN、OPN、Runx2、CTSK</td><td>蛋白定位</td></tr>
+  </table>
+
+  <h3>五、力学测试（小动物）</h3>
+  <table>
+    <tr><th>测试</th><th>测什么</th><th>终点</th></tr>
+    <tr><td>三点弯曲</td><td>长骨整体强度</td><td>最大载荷、刚度、断裂能量</td></tr>
+    <tr><td>椎体压缩</td><td>松质骨强度</td><td>椎体极限载荷</td></tr>
+    <tr><td>股骨颈压缩</td><td>股骨颈强度</td><td>模拟髋部骨折</td></tr>
+    <tr><td>micro-FE</td><td>模拟</td><td>骨强度预测</td></tr>
+  </table>
+
+  <div class="callout callout-info">
+    <strong>关键</strong>：<span class="hl">骨量（BMD）≠ 骨强度</span>。骨质量（quality）包括微结构、矿化、胶原交联、microdamage。
+  </div>
+
+  <h3>六、分子生物学</h3>
+  <table>
+    <tr><th>层面</th><th>方法</th><th>测什么</th></tr>
+    <tr><td>mRNA</td><td>qPCR / RNA-seq</td><td>Runx2、Osterix、OCN、CTSK、NFATc1、RANKL/OPG</td></tr>
+    <tr><td>蛋白</td><td>Western / ELISA</td><td>信号通路蛋白</td></tr>
+    <tr><td>细胞</td><td>流式</td><td>骨髓 Th17/Treg、破骨前体</td></tr>
+    <tr><td><strong>单细胞</strong></td><td>scRNA-seq</td><td><strong>2024+ 肠-骨轴新宠</strong></td></tr>
+    <tr><td>空间组学</td><td>Spatial transcriptomics</td><td>骨髓生态位</td></tr>
+  </table>
+</div>
+
+<!-- 4.3 动物模型 -->
+<div class="section" id="sec-4-3">
+  <h2>4.3 动物模型选择</h2>
+
+  <h3>一、经典骨松模型</h3>
+  <table>
+    <tr><th>模型</th><th>机制</th><th>适用</th></tr>
+    <tr><td><strong>OVX（去卵巢）小鼠</strong></td><td>雌激素↓ → PMOP</td><td><strong>PMOP 金标准</strong></td></tr>
+    <tr><td>ORX（去睾丸）小鼠</td><td>雄激素↓</td><td>男性 OP（研究少）</td></tr>
+    <tr><td>老龄鼠（12-24 月）</td><td>衰老性骨松</td><td>老年性 OP</td></tr>
+    <tr><td>SAMP6 小鼠</td><td>加速衰老</td><td>老年性 OP</td></tr>
+    <tr><td>糖皮质激素诱导</td><td>GIOP</td><td>糖皮质激素性骨坏死</td></tr>
+    <tr><td>悬吊/失重</td><td>机械卸载</td><td>废用性 OP</td></tr>
+    <tr><td>IBD 鼠（DSS / IL-10 KO）</td><td>炎症性</td><td>炎症性骨流失</td></tr>
+  </table>
+
+  <h3>二、肠-骨轴专属工具鼠</h3>
+  <table>
+    <tr><th>模型</th><th>作用</th><th>经典应用</th></tr>
+    <tr><td><strong>无菌小鼠（GF mice）</strong></td><td>完全无菌 = 测菌群缺失效应</td><td>Sjögren 2012、Li JY 2016</td></tr>
+    <tr><td>伪无菌鼠（ABX 处理）</td><td>抗生素清除 99% 菌群</td><td><strong>最常用</strong>（便宜、容易做）</td></tr>
+    <tr><td>限菌小鼠（gnotobiotic）</td><td>引入特定菌株</td><td>单菌 / 多菌定植</td></tr>
+    <tr><td><strong>人源化菌群鼠（HMA）</strong></td><td>移植人粪菌</td><td><strong>因果证明金标准</strong></td></tr>
+    <tr><td>TLR4 KO</td><td>测 LPS 通路</td><td>验证肠漏-炎症-骨</td></tr>
+    <tr><td>NOD1/2 KO</td><td>测菌群识别</td><td>Ohlsson 2017</td></tr>
+    <tr><td><strong>GPR43 KO（FFAR2 KO）</strong></td><td>测 SCFA 通路</td><td>Li JY 2020</td></tr>
+    <tr><td>Rag1/TCR KO（T 细胞缺失）</td><td>测免疫通路</td><td>Pacifici 系列</td></tr>
+    <tr><td>Akkermansia 灌胃</td><td>测单菌效应</td><td>多个 2020+ 研究</td></tr>
+  </table>
+
+  <div class="callout callout-info">
+    <strong>方法学关键点</strong>：GF 鼠 vs ABX 鼠的结果<strong>不完全一致</strong>——GF 鼠免疫系统未训练，ABX 鼠免疫正常但菌群少。<strong>解释结果时要标注用哪个</strong>。
+  </div>
+</div>
+
+<!-- 4.4 因果验证 -->
+<div class="section" id="sec-4-4">
+  <h2>4.4 因果验证方法（最强证据链）</h2>
+
+  <h3>经典 Koch 法则在肠-骨轴的"魔改版"</h3>
+  <div class="flow">① 关联：OP 患者 vs 健康人，菌群 X 丰度差异显著
+        ↓
+② 清除：ABX 清除菌群 X → 骨表型变化（GF 鼠金标准）
+        ↓
+③ 回补：单菌/混合菌/代谢物灌胃 → 骨表型恢复
+        ↓
+④ 机制：基因 KO 阻断关键通路 → 效应消失
+        ↓
+⑤ 转化：人体 RCT 验证（最强）</div>
+
+  <h3>具体方法工具箱</h3>
+  <table>
+    <tr><th>方法</th><th>类型</th><th>适用</th></tr>
+    <tr><td><strong>GF 鼠 vs 常规鼠</strong></td><td>整体清除</td><td>测"菌群整体"作用</td></tr>
+    <tr><td>ABX cocktail 鼠</td><td>部分清除</td><td>模拟"菌群失调"</td></tr>
+    <tr><td><strong>FMT（人源化）</strong></td><td>跨物种因果</td><td><strong>金标准</strong>（临床前）</td></tr>
+    <tr><td>单菌定植（monoassociation）</td><td>测单菌</td><td><em>L. plantarum</em> WJL 经典</td></tr>
+    <tr><td>代谢物灌胃（SCFA / 胆汁酸）</td><td>测下游</td><td>丁酸-PTH 链</td></tr>
+    <tr><td>基因 KO 鼠</td><td>测通路</td><td>GPR43 KO、TLR4 KO</td></tr>
+    <tr><td>条件性 KO（CKO）</td><td>测特定细胞</td><td>髓系 vs 成骨细胞特异性</td></tr>
+    <tr><td>骨髓移植</td><td>测免疫细胞</td><td>测 Treg / Th17 来源</td></tr>
+    <tr><td>T 细胞过继转移</td><td>测免疫机制</td><td>Pacifici 2018</td></tr>
+    <tr><td>AAV 病毒过表达</td><td>测单基因</td><td>测菌群产物对骨的作用</td></tr>
+  </table>
+</div>
+
+<!-- 4.5 多组学整合 -->
+<div class="section" id="sec-4-5">
+  <h2>4.5 多组学整合（2024+ 新趋势）</h2>
+
+  <h3>标准整合范式</h3>
+  <div class="flow">16S / mNGS ──┐
+              ├─→ 网络分析 → 菌群-代谢-骨关联
+代谢组 ─────┤
+              │
+转录组 ─────┤
+              │
+蛋白组 ─────┘</div>
+
+  <h3>常用整合方法</h3>
+  <table>
+    <tr><th>方法</th><th>用途</th><th>软件</th></tr>
+    <tr><td>相关性热图（Spearman）</td><td>菌-代谢-骨简单关联</td><td>R (Hmisc, corrplot)</td></tr>
+    <tr><td>CCA / RDA</td><td>约束排序看环境因子</td><td>vegan</td></tr>
+    <tr><td>多因子回归</td><td>控制混杂</td><td>MaAsLin2</td></tr>
+    <tr><td>中介分析</td><td>菌 → 代谢 → 骨</td><td>R mediation</td></tr>
+    <tr><td>Mendelian Randomization</td><td>因果推断</td><td>TwoSampleMR</td></tr>
+    <tr><td>WGCNA</td><td>模块化关联</td><td>R WGCNA</td></tr>
+    <tr><td>Random Forest / XGBoost</td><td>预测模型</td><td>sklearn</td></tr>
+    <tr><td>Bipartite Network</td><td>菌-代谢双层网络</td><td>Cytoscape</td></tr>
+    <tr><td>Flux Balance Analysis（FBA）</td><td>代谢流预测</td><td>COBRApy</td></tr>
+    <tr><td><strong>Single-cell + 空间组学</strong></td><td>细胞-空间互作</td><td>Seurat、Scanpy</td></tr>
+  </table>
+
+  <h3>2024-2026 标志性整合研究</h3>
+  <table>
+    <tr><th>研究</th><th>期刊</th><th>整合方法</th></tr>
+    <tr><td>FMT 治疗 PMOP 因果验证</td><td>Front Cell Infect Microbiol 2024</td><td>宏基因组 + 细胞因子 + micro-CT</td></tr>
+    <tr><td>BL-11 临床（菌群 + IGF-1 + 生长）</td><td>Clinical Nutrition 2025</td><td>16S + 血清代谢 + 临床</td></tr>
+    <tr><td>PMOP 患者 signature（菌 + SCFA）</td><td>Medicine 2024</td><td>16S + GC-MS</td></tr>
+    <tr><td>围绝经期（菌 + BMD + 性激素）</td><td>Bone Research 2026</td><td>综述</td></tr>
+    <tr><td>MASLD + OP 双向</td><td>Front Endocrinol 2025</td><td>多组学整合</td></tr>
+  </table>
+
+  <h3>研究设计"必避陷阱"清单</h3>
+  <h4>菌群研究特有陷阱</h4>
+  <table>
+    <tr><th>陷阱</th><th>后果</th><th>解决</th></tr>
+    <tr><td>批次效应</td><td>假阳性</td><td>同一批测序、用 mock community</td></tr>
+    <tr><td>DNA 提取方法差异</td><td>厚壁菌 vs 革兰阴性偏倚</td><td>用统一 kit（PowerSoil Pro）</td></tr>
+    <tr><td>引物偏倚</td><td>漏某些菌</td><td>V3-V4 通用引物 + 阴性对照</td></tr>
+    <tr><td>读长不足</td><td>物种分辨率差</td><td>≥250 bp PE</td></tr>
+  </table>
+
+  <h4>混杂因素未控</h4>
+  <table>
+    <tr><th>因素</th><th>影响</th><th>校正方法</th></tr>
+    <tr><td>年龄、性别</td><td>巨大</td><td>分层 / 协变量</td></tr>
+    <tr><td>BMI</td><td>影响 BMD 和菌群</td><td>必校正</td></tr>
+    <tr><td><strong>饮食</strong></td><td>3 天内改变菌群</td><td>3 天标准化餐</td></tr>
+    <tr><td>抗生素</td><td>6 个月内影响</td><td>入组前 3-6 月无用药</td></tr>
+    <tr><td>PPI</td><td>菌群偏移</td><td>记录 + 亚组分析</td></tr>
+    <tr><td>绝经状态</td><td>PMOP 关键</td><td>必须明确报告</td></tr>
+  </table>
+</div>
+
+<!-- ===== Part 5 ===== -->
+<div class="part-title" id="part-5"><span class="num">5</span>临床转化与总结</div>
+
+<!-- 5.1 临床场景地图 -->
+<div class="section" id="sec-5-1">
+  <h2>5.1 临床场景地图</h2>
+  <p>按"证据强度"从高到低：</p>
+
+  <div class="card-grid">
+    <div class="card card-green">
+      <div class="card-title">🟢 强证据：PMOP</div>
+      <div class="card-body">
+        菌群多样性↓ + F/B↑ + 丁酸产生菌↓（<em>Butyricicoccus</em>, <em>Fusicatenibacter</em>, <em>P. histicola</em>）<br>
+        机会致病菌↑（<em>Klebsiella</em>, <em>Escherichia</em>, <em>Clostridium</em>）<br>
+        <strong>菌群特征可能成为 BMD 预测生物标志物</strong>
+      </div>
+    </div>
+    <div class="card card-orange">
+      <div class="card-title">🟡 中等证据：糖皮质激素性骨坏死</div>
+      <div class="card-body">
+        2025 综述把 GA-ONFH 纳入"肠-骨轴"研究<br>
+        地塞米松 → 肠菌失调 → 骨坏死（动物模型清晰）
+      </div>
+    </div>
+    <div class="card card-orange">
+      <div class="card-title">🟡 中等证据：类风湿关节炎（RA）骨破坏</div>
+      <div class="card-body">
+        RA 患者有特征性菌群 signature<br>
+        益生菌干预可减少骨侵蚀（动物 + 小样本人体）
+      </div>
+    </div>
+    <div class="card card-orange">
+      <div class="card-title">🟡 中等证据：骨折愈合</div>
+      <div class="card-body">
+        FMT 改善 OVX 小鼠骨折愈合<br>
+        人体无数据
+      </div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">🟢 强证据：儿童身高（BL-11）</div>
+      <div class="card-body">
+        3-7 岁 124 人 RCT，3 个月平均长高 2.23 cm<br>
+        机制是<strong>菌群-IGF-1 通路</strong>（不是直接造骨）
+      </div>
+    </div>
+  </div>
+
+  <h3>"立刻能用" vs "只能等"</h3>
+  <div class="card-grid">
+    <div class="card card-green">
+      <div class="card-title">✅ 立刻能用</div>
+      <div class="card-body">
+        • "补钙无效"现象的菌群解释<br>
+        • 围绝经期女性 → 益生元 + 益生菌辅助<br>
+        • 长期用 PPI / 抗生素 → 警惕骨质疏松风险
+      </div>
+    </div>
+    <div class="card card-red">
+      <div class="card-title">⏳ 只能等的</div>
+      <div class="card-body">
+        • 任何"菌群测序指导个体化抗骨松"<br>
+        • FMT 治疗骨质疏松的 RCT<br>
+        • 菌群特异性的靶向药
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5.2 联合方案 -->
+<div class="section" id="sec-5-2">
+  <h2>5.2 益生菌 + 抗骨松药联合方案</h2>
+
+  <table>
+    <tr><th>方案</th><th>协同机制</th><th>状态</th></tr>
+    <tr><td>丁酸盐 + 地舒单抗</td><td>丁酸（护屏障+Treg）+ RANKL 阻断</td><td>RCT 筹备中</td></tr>
+    <tr><td>益生菌 + 双膦酸盐</td><td>益生菌（产丁酸）+ 破骨抑制</td><td>多个小样本阳性</td></tr>
+    <tr><td>益生元 + 特立帕肽</td><td>丁酸（iPTH 必需）+ 促骨形成</td><td>临床 II</td></tr>
+    <tr><td>益生菌 + 钙 + VD</td><td>基础方案</td><td>临床推荐</td></tr>
+    <tr><td>FMT + 抗骨松药</td><td>重建菌群</td><td>探索</td></tr>
+    <tr><td>低剂量烟酸 + 益生元</td><td>GPR109A + SCFA</td><td>探索</td></tr>
+  </table>
+</div>
+
+<!-- 5.3 三大通路对比 -->
+<div class="section" id="sec-5-3">
+  <h2>5.3 三大主通路对比</h2>
+
+  <table>
+    <tr><th>维度</th><th>SCFA</th><th>胆汁酸</th><th>色氨酸</th></tr>
+    <tr><th>核心信号</th><th>丁酸、丙酸</th><th>DCA、LCA</th><th>IAAld、IPA、5-HT</th></tr>
+    <tr><th>关键受体</th><th>GPR41/43/109A</th><th>TGR5、FXR</th><th>AhR、SERT</th></tr>
+    <tr><th>细胞主效应</th><th>抗炎、护骨</th><th>抑破骨</th><th>双向（抑骨+护骨）</th></tr>
+    <tr><th>G 蛋白</th><th>Gαi/o、Gαq、Gαs</th><th>Gαs</th><th>非 GPCR（转录因子）</th></tr>
+    <tr><th>菌株依赖</th><th>产丁酸菌</th><th><em>C. scindens</em></th><th><em>L. reuteri</em></th></tr>
+    <tr><th>临床证据</th><th><em>L. reuteri</em> 6475、RCT</th><th>观察性</th><th><em>L. reuteri</em> 6475</th></tr>
+    <tr><th>饮食干预</th><th>高纤维</th><th>平衡</th><th>高 Trp / 十字花科</th></tr>
+    <tr><th>药物</th><th>丁酸盐缓释</th><th>INT-777、OCA</th><th>Tph1 抑制剂、I3C</th></tr>
+  </table>
+</div>
+
+<!-- 5.4 take-aways -->
+<div class="section" id="sec-5-4">
+  <h2>5.4 最终总结 take-aways</h2>
+
+  <h3>10 条核心结论</h3>
+  <div class="card-grid">
+    <div class="card card-green">
+      <div class="card-title">1</div>
+      <div class="card-body">肠-骨轴 = 4 大通讯途径（代谢-免疫-内分泌-神经）并行</div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">2</div>
+      <div class="card-body">菌株比菌种重要——同种不同株，效果可以相反</div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">3</div>
+      <div class="card-body">个体差异巨大——别人有效的益生菌对你未必有效</div>
+    </div>
+    <div class="card card-orange">
+      <div class="card-title">4</div>
+      <div class="card-body"><span class="hl">饮食是地基</span>——任何益生菌干预，没有纤维打底都白搭</div>
+    </div>
+    <div class="card card-orange">
+      <div class="card-title">5</div>
+      <div class="card-body"><em>L. reuteri</em> 6475 是目前唯一菌株 RCT 阳性证据</div>
+    </div>
+    <div class="card card-red">
+      <div class="card-title">6</div>
+      <div class="card-body">抗骨松药 + 益生菌的相互作用<strong>完全未知</strong>（最大临床盲区）</div>
+    </div>
+    <div class="card card-red">
+      <div class="card-title">7</div>
+      <div class="card-body">男性 OP 菌群特征 = <strong>完全空白</strong></div>
+    </div>
+    <div class="card card-orange">
+      <div class="card-title">8</div>
+      <div class="card-body">FMT 治疗 OP = 伦理已过，缺发起者</div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">9</div>
+      <div class="card-body">SSRI 长期用 → 骨折风险↑1.5-2 倍（临床决策需考虑）</div>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">10</div>
+      <div class="card-body">GLP-1RA（司美格鲁肽）减重 + 护骨（2024-2025 新发现）</div>
+    </div>
+  </div>
+
+  <h3>4 句核心提示</h3>
+  <div class="callout callout-success">
+    <ol>
+      <li><strong>菌群组成是结果，菌群功能才是关键</strong>——16S 测序提供的是"目录信息"，真正起效的是代谢产物</li>
+      <li><strong>菌株特异性大于菌种特异性</strong>——同种不同株可能产生相反效果</li>
+      <li><strong>个体差异显著</strong>——对部分人群有效的益生菌未必适用于所有个体，<strong>不存在"万能菌株"</strong></li>
+      <li><strong>膳食纤维是基础环节</strong>——任何益生菌干预若缺乏纤维底物则效果有限（2025 多篇综述共识）</li>
+    </ol>
+  </div>
+
+  <h3>肠-骨轴研究的"1 句话总结"</h3>
+  <div class="callout callout-info">
+    <strong>肠-骨轴研究 = 临床问题（队列）→ 动物模型（OVX/GF/KO）→ 菌群分析（16S/mNGS）→ 代谢组学（SCFA/胆汁酸/色氨酸）→ 功能验证（细胞 + KO + FMT + 临床）。5 步缺一不可，少一步则研究维度不完整。</strong>
+  </div>
+
+  <h3>研究选题抓点（2025-2026）</h3>
+  <table>
+    <tr><th>研究方向</th><th>价值</th></tr>
+    <tr><td>男性 OP 菌群特征</td><td>完全空白</td></tr>
+    <tr><td>益生菌 × 双膦酸盐/地舒单抗的相互作用</td><td>完全未知</td></tr>
+    <tr><td>FMT 治疗 OP 的人体 RCT</td><td>伦理已过，缺发起者</td></tr>
+    <tr><td>菌群-IGF-1-身高通路在成人能否复现</td><td>BL-11 在 3-7 岁有效，成人未知</td></tr>
+    <tr><td>MASLD/糖尿病/骨质疏松的三联共病肠-肝-骨轴</td><td>2025 刚提出</td></tr>
+    <tr><td>肠-骨髓轴（菌群代谢物调控造血干细胞）</td><td>2025 新概念</td></tr>
+  </table>
+
+  <h3>全文档核心数字汇总</h3>
+  <table>
+    <tr><th>指标</th><th>数值</th></tr>
+    <tr><td>人体微生物总数</td><td>~38 万亿</td></tr>
+    <tr><td>每年骨重塑比例</td><td>~10%</td></tr>
+    <tr><td>结肠 SCFA 浓度</td><td>50-100 mM</td></tr>
+    <tr><td>外周血 SCFA 浓度</td><td>10-100 μM</td></tr>
+    <tr><td>门静脉 5-HT 比例</td><td>~90%</td></tr>
+    <tr><td>每年胆汁酸肠肝循环次数</td><td>4-12 次</td></tr>
+    <tr><td>丁酸 HDAC 抑制 IC50</td><td>0.1-0.3 mM</td></tr>
+    <tr><td>丁酸治疗窗口</td><td>0.1-1 mM</td></tr>
+    <tr><td>次级胆汁酸治疗窗口</td><td>5-50 μM</td></tr>
+    <tr><td>PMOP 患者 F/B 比</td><td>↑（升高）</td></tr>
+    <tr><td>PMOP 患者 α-多样性</td><td>↓（下降）</td></tr>
+    <tr><td>L. reuteri 6475 RCT 骨效应</td><td>胫骨 vBMD 流失减少 50%</td></tr>
+    <tr><td>BL-11 临床（3-7 岁）身高增长</td><td>2.23 cm / 3 月</td></tr>
+    <tr><td>SSRI 长期用骨折风险</td><td>↑ 1.5-2 倍</td></tr>
+    <tr><td>长期烟酸用髋部骨折风险</td><td>↓ 20-30%</td></tr>
+  </table>
+
+  <hr style="margin: 40px 0; border: none; border-top: 2px solid var(--border);">
+
+  <div class="callout callout-info">
+    <strong>📚 知识库声明</strong><br>
+    本知识库基于 2026 年 9 月前的 PubMed / Web of Science 检索整理，核心文献包括 Sjögren 2012、Schwarzer/Yan/Li JY 2016、Zaiss 2019、Li JY 2020、Tyagi 2018、Lucas 2018、Chen T 2024、<em>Bone Research</em> 2026 综述、<em>J Endocrinol Invest</em> 2026 综述等。<br>
+    <strong>如有错漏或想补充具体方向（临床转化、科研设计、特定通路深挖），随时告诉我</strong>。
+  </div>
+</div>
+
+</main>
+
+<!-- 回到顶部按钮 -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
+
+<script>
+  // 回到顶部按钮显示
+  const backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      backTop.classList.add('show');
+    } else {
+      backTop.classList.remove('show');
+    }
+  });
+
+  // 平滑滚动到锚点
+  document.querySelectorAll('.sidebar a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        const offset = 80;
+        const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
