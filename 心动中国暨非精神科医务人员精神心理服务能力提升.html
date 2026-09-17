@@ -1,0 +1,1890 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>心·动中国 · 精神心理临床实践学习版 | 非精神科医务人员能力提升培训</title>
+<style>
+/* ============ 全局变量 ============ */
+:root{
+  --bg:#f6f8fb;
+  --surface:#ffffff;
+  --ink:#1a1f36;
+  --ink-2:#4a5468;
+  --ink-3:#7a8599;
+  --line:#e6eaf2;
+  --line-2:#dbe0ea;
+  --brand:#1a8b5a;        /* 心·动中国 主绿 */
+  --brand-2:#0f6e45;
+  --brand-soft:#e8f5ee;
+  /* 章节色 */
+  --c1:#e25c2f; --c1-soft:#fbece4;     /* 抑郁·橙 */
+  --c2:#2476c9; --c2-soft:#e8f0fa;     /* 焦虑·蓝 */
+  --c3:#2a9d6f; --c3-soft:#e8f5ee;     /* 失眠·绿 */
+  --c4:#6b46c1; --c4-soft:#efeafb;     /* 沟通·紫 */
+  --c5:#b15c00; --c5-soft:#fbf0e3;     /* 职业化·棕 */
+  --c6:#2d3a55; --c6-soft:#e9ecf4;     /* 提醒·深蓝 */
+  --warn:#c44a3a;
+  --good:#1a8b5a;
+  --info:#2476c9;
+  --shadow:0 1px 2px rgba(20,30,55,.06), 0 4px 16px rgba(20,30,55,.06);
+}
+
+/* ============ 基础 ============ */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.7;font-size:15px;-webkit-font-smoothing:antialiased}
+a{color:var(--brand-2);text-decoration:none}
+hr{border:0;border-top:1px solid var(--line);margin:32px 0}
+
+/* ============ 顶部品牌栏 ============ */
+.brand-bar{background:linear-gradient(120deg,#0f6e45,#1a8b5a 60%,#3da576);color:#fff;padding:14px 0;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(15,110,69,.25)}
+.brand-bar .wrap{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px}
+.brand-bar .logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.5px}
+.brand-bar .logo .heart{width:30px;height:30px;background:#fff;border-radius:50%;display:grid;place-items:center;color:#1a8b5a;font-size:16px}
+.brand-bar .meta{margin-left:auto;font-size:13px;opacity:.92;display:flex;gap:18px;align-items:center}
+.brand-bar .meta a{color:#fff;border-bottom:1px dotted rgba(255,255,255,.5)}
+
+/* ============ Hero ============ */
+.hero{background:linear-gradient(135deg,#0f6e45 0%,#1a8b5a 50%,#3da576 100%);color:#fff;padding:56px 24px 48px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 30%,rgba(255,255,255,.16),transparent 50%),radial-gradient(circle at 10% 80%,rgba(255,255,255,.10),transparent 50%)}
+.hero .wrap{max-width:1100px;margin:0 auto;position:relative}
+.hero .eyebrow{display:inline-block;padding:4px 12px;background:rgba(255,255,255,.18);border-radius:30px;font-size:12px;letter-spacing:2px;margin-bottom:18px;backdrop-filter:blur(6px)}
+.hero h1{font-size:36px;line-height:1.25;margin:0 0 16px;font-weight:800;letter-spacing:-.5px}
+.hero h1 .accent{color:#ffd699}
+.hero p.lede{font-size:16px;line-height:1.8;max-width:780px;opacity:.95;margin:0 0 24px}
+.hero .meta-strip{display:flex;gap:24px;flex-wrap:wrap;font-size:14px;opacity:.95}
+.hero .meta-strip .item{display:flex;align-items:center;gap:8px}
+
+/* ============ 主容器 ============ */
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+main{padding:40px 0 64px}
+
+/* ============ 章节块 ============ */
+.chapter{margin:48px 0 0;background:var(--surface);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line)}
+.chapter .head{padding:28px 32px 22px;border-bottom:1px solid var(--line);position:relative}
+.chapter .head::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--accent)}
+.chapter .ch-num{font-size:12px;letter-spacing:4px;color:var(--accent);font-weight:700;margin-bottom:6px;text-transform:uppercase}
+.chapter h2{font-size:26px;margin:0 0 8px;font-weight:800;letter-spacing:-.3px}
+.chapter .ch-sub{color:var(--ink-2);font-size:14px;margin:0}
+.chapter .body{padding:8px 32px 32px}
+
+/* 章节色注入 */
+.chapter.c1{--accent:var(--c1);--accent-soft:var(--c1-soft)}
+.chapter.c2{--accent:var(--c2);--accent-soft:var(--c2-soft)}
+.chapter.c3{--accent:var(--c3);--accent-soft:var(--c3-soft)}
+.chapter.c4{--accent:var(--c4);--accent-soft:var(--c4-soft)}
+.chapter.c5{--accent:var(--c5);--accent-soft:var(--c5-soft)}
+.chapter.c6{--accent:var(--c6);--accent-soft:var(--c6-soft)}
+
+/* ============ 小节 ============ */
+section.sec{padding:22px 0;border-top:1px solid var(--line)}
+section.sec:first-child{border-top:0}
+section.sec h3{font-size:19px;margin:0 0 12px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+section.sec h3 .badge{display:inline-block;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:700;padding:3px 9px;border-radius:6px;letter-spacing:.5px}
+section.sec h4{font-size:16px;margin:18px 0 8px;font-weight:700;color:var(--ink-2)}
+section.sec h5{font-size:14px;margin:14px 0 6px;font-weight:700;color:var(--ink-2);letter-spacing:.5px;text-transform:uppercase}
+section.sec p{margin:8px 0;color:var(--ink-2)}
+section.sec strong{color:var(--ink);font-weight:700}
+section.sec ul,section.sec ol{margin:8px 0;padding-left:22px;color:var(--ink-2)}
+section.sec li{margin:4px 0}
+section.sec code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#f1f4f9;padding:1px 6px;border-radius:4px;font-size:13px;color:var(--ink-2)}
+
+/* ============ 重点盒子 ============ */
+.callout{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:8px;padding:14px 18px;margin:14px 0;font-size:14px;line-height:1.7;color:var(--ink)}
+.callout strong{color:var(--accent)}
+.callout.warn{border-color:var(--warn);background:#fbeae7;color:var(--ink)}
+.callout.warn strong{color:var(--warn)}
+.callout.good{border-color:var(--good);background:#e8f5ee;color:var(--ink)}
+.callout.good strong{color:var(--good)}
+.callout.info{border-color:var(--info);background:#e8f0fa;color:var(--ink)}
+.callout.info strong{color:var(--info)}
+
+/* ============ 表格 ============ */
+.tbl-wrap{overflow-x:auto;margin:14px 0;border-radius:10px;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+table th,table td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table th{background:#f9fbfd;font-weight:700;color:var(--ink-2);font-size:12.5px;letter-spacing:.3px;text-transform:uppercase}
+table tr:last-child td{border-bottom:0}
+table tr:hover td{background:#fafcfe}
+.hl{background:var(--accent-soft);color:var(--accent);padding:1px 6px;border-radius:4px;font-weight:600;font-size:12.5px}
+
+/* ============ 数据条 ============ */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:14px 0}
+.stat-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;text-align:center;transition:.15s}
+.stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--accent)}
+.stat-card .num{font-size:26px;font-weight:800;color:var(--accent);line-height:1.1;letter-spacing:-1px}
+.stat-card .label{font-size:12.5px;color:var(--ink-2);margin-top:6px;line-height:1.4}
+
+/* ============ 口诀卡 ============ */
+.rhyme{background:linear-gradient(135deg,var(--accent-soft),#fff);border:2px dashed var(--accent);border-radius:12px;padding:16px 20px;margin:14px 0}
+.rhyme .title{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase}
+.rhyme .body{font-size:15.5px;color:var(--ink);font-weight:600;line-height:1.85}
+.rhyme .body strong{color:var(--accent);font-weight:800;background:rgba(255,255,255,.6);padding:2px 8px;border-radius:4px;margin:0 2px}
+
+/* ============ 时间线 ============ */
+.timeline{position:relative;padding:10px 0 10px 28px;margin:14px 0}
+.timeline::before{content:"";position:absolute;left:8px;top:0;bottom:0;width:3px;background:var(--accent-soft);border-radius:2px}
+.timeline .item{position:relative;margin:14px 0}
+.timeline .item::before{content:"";position:absolute;left:-26px;top:8px;width:14px;height:14px;background:#fff;border:3px solid var(--accent);border-radius:50%}
+.timeline .item h5{margin:0 0 4px;font-size:15px;font-weight:700;color:var(--ink)}
+.timeline .item p{margin:0;color:var(--ink-2);font-size:14px}
+
+/* ============ Grid 卡 ============ */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:14px 0}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:14px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;transition:.15s}
+.card:hover{border-color:var(--accent);box-shadow:var(--shadow)}
+.card .icon{width:32px;height:32px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:16px;font-weight:700;margin-bottom:10px}
+.card h4{margin:0 0 6px;font-size:15px;font-weight:700}
+.card p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.6}
+
+/* ============ 比较表 ============ */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0}
+@media(max-width:700px){.compare{grid-template-columns:1fr}}
+.compare .col{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px}
+.compare .col h5{margin:0 0 10px;font-size:13px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase}
+.compare .col ul{margin:0;padding-left:18px;font-size:13.5px}
+
+/* ============ 药名卡片 ============ */
+.drug-card{border:1px solid var(--line);border-radius:8px;padding:10px 14px;background:#fff}
+.drug-card .name{font-weight:700;color:var(--ink);font-size:14px}
+.drug-card .meta{font-size:12px;color:var(--ink-3);margin-top:2px}
+
+/* ============ 速查标签 ============ */
+.tagrow{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.tag{display:inline-block;padding:3px 10px;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:600;border-radius:20px}
+
+/* ============ 锚点导航 ============ */
+.toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin:32px 0 0;position:sticky;top:80px;z-index:10;box-shadow:var(--shadow)}
+.toc h4{margin:0 0 12px;font-size:13px;letter-spacing:2px;color:var(--ink-3);text-transform:uppercase}
+.toc .links{display:flex;flex-wrap:wrap;gap:8px}
+.toc .links a{padding:6px 12px;background:#f5f7fb;border-radius:20px;font-size:13px;color:var(--ink-2);transition:.15s;border:1px solid transparent}
+.toc .links a:hover{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+
+/* ============ SVG 容器 ============ */
+.svg-wrap{display:flex;justify-content:center;margin:18px 0;background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px}
+.svg-wrap svg{max-width:100%;height:auto}
+.svg-caption{font-size:12px;color:var(--ink-3);text-align:center;margin-top:-6px;margin-bottom:14px}
+
+/* ============ 模型框（SPIKES/NURSE/CALM） ============ */
+.model-box{border:1px solid var(--accent);border-radius:12px;overflow:hidden;margin:14px 0;background:#fff}
+.model-box .model-head{background:var(--accent);color:#fff;padding:12px 18px;font-weight:700;letter-spacing:2px;font-size:13px}
+.model-box .model-body{padding:14px 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.model-box .step{background:var(--accent-soft);border-radius:8px;padding:10px 14px}
+.model-box .step .letter{font-size:24px;font-weight:800;color:var(--accent);line-height:1;margin-bottom:4px}
+.model-box .step .name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.model-box .step .desc{font-size:12px;color:var(--ink-2);line-height:1.5}
+
+/* ============ 金字塔（CALM） ============ */
+.pyramid{display:flex;flex-direction:column;align-items:center;gap:0;margin:18px 0}
+.pyramid .layer{padding:10px 14px;color:#fff;text-align:center;font-size:13px;font-weight:600;border-radius:4px;margin-bottom:2px}
+.pyramid .layer .lname{font-size:14px;letter-spacing:1px}
+.pyramid .layer .ldesc{font-size:11px;opacity:.9;margin-top:2px}
+
+/* ============ 沟通对话块 ============ */
+.dialogue{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14px;line-height:1.8}
+.dialogue .who{display:inline-block;font-weight:700;min-width:60px}
+.dialogue .who.doctor{color:var(--c2)}
+.dialogue .who.patient{color:var(--c5)}
+.dialogue .line{margin:4px 0;color:var(--ink-2)}
+.dialogue .line.emo{font-style:italic;color:var(--ink-3)}
+
+/* ============ 流程步骤 ============ */
+.flow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:16px 0}
+.flow-step{position:relative;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;padding-left:46px}
+.flow-step .num{position:absolute;left:14px;top:14px;width:26px;height:26px;background:var(--accent);color:#fff;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700}
+.flow-step h5{margin:0 0 4px;font-size:14px;font-weight:700;color:var(--ink)}
+.flow-step p{margin:0;font-size:12.5px;color:var(--ink-2);line-height:1.55}
+
+/* ============ Footer ============ */
+footer.foot{background:#0f1a2c;color:#cfd5e0;padding:32px 24px;margin-top:64px;text-align:center;font-size:13px}
+footer.foot .logo{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;font-weight:700;color:#fff}
+footer.foot p{margin:6px 0;opacity:.85}
+footer.foot .small{font-size:12px;opacity:.55;margin-top:14px}
+
+/* ============ 响应式 ============ */
+@media(max-width:720px){
+  .hero h1{font-size:26px}
+  .hero{padding:40px 20px 32px}
+  .chapter .body{padding:8px 20px 24px}
+  .chapter .head{padding:22px 20px 16px}
+  section.sec{padding:18px 0}
+  .brand-bar .meta{display:none}
+  .toc{position:static}
+}
+
+/* ============ 打印 ============ */
+@media print{
+  .brand-bar,.toc{position:static}
+  .hero{padding:24px;background:#fff;color:#000}
+  .hero .eyebrow,.hero .meta-strip{display:none}
+  .chapter{break-inside:avoid;box-shadow:none}
+}
+
+.ref-link{font-size:12px;color:var(--brand-2)}
+.chapter.c6 .card p{font-size:13px}
+@media print{a[href]:after{content:""}}
+</style>
+</head>
+<body>
+
+<!-- ============ 顶部品牌栏 ============ -->
+<header class="brand-bar">
+  <div class="wrap">
+    <div class="logo">
+      <span class="heart">❤</span>
+      <span>心·动中国</span>
+    </div>
+    <div class="meta">
+      <a href="#info">课程概览</a>
+      <a href="#ch-depress">抑郁</a>
+      <a href="#ch-anxiety">焦虑</a>
+      <a href="#ch-insomnia">失眠</a>
+      <a href="#ch-comm">医患沟通</a>
+      <a href="#ch-career">医生职业化</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ Hero ============ -->
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">心·动中国 · 临床实践版</span>
+    <h1>非精神科医务人员精神心理<br/>服务能力<span class="accent">提升培训</span></h1>
+    <p class="lede">围绕<strong>识别—评估—干预—沟通—转诊</strong>重构培训内容，聚焦抑郁、焦虑、失眠及医患沟通，并用近年临床指南校正关键诊疗表述，使这份讲义更适合作为非精神科医生的长期临床学习资料。</p>
+  </div>
+</section>
+
+<main>
+<div class="wrap">
+
+<!-- ============ 锚点导航 ============ -->
+<nav class="toc" id="info">
+  <h4>本页导览</h4>
+  <div class="links">
+    <a href="#info">课程概览</a>
+    <a href="#ch-depress">第一章 · 抑郁障碍</a>
+    <a href="#ch-anxiety">第二章 · 焦虑障碍</a>
+    <a href="#ch-insomnia">第三章 · 失眠障碍</a>
+    <a href="#ch-comm">第四章 · 医患问题沟通技能</a>
+    <a href="#ch-career">第五章 · 医生职业化与人本化</a>
+    <a href="#guideline-update">指南更新</a>
+  </div>
+</nav>
+
+<!-- ============ 课程概览 ============ -->
+<section class="chapter c1">
+  <div class="head">
+    <div class="ch-num">课程概览</div>
+    <h2>一条主线：识别 → 评估 → 干预 → 沟通</h2>
+    <p class="ch-sub">讲者：王高华 · 武汉大学人民医院精神卫生中心</p>
+  </div>
+  <div class="body">
+
+    <section class="sec">
+      <h3><span class="badge">主线</span>精神卫生能力 × 沟通能力 × 职业能力</h3>
+      <p>王高华老师整套讲义的内在主线，是把<strong>非精神科医生</strong>需要的三层能力打通——<strong>识别</strong>（临床能力）→<strong>连接</strong>（沟通能力）→<strong>成长</strong>（职业能力）。</p>
+      <div class="grid3">
+        <div class="card">
+          <div class="icon">①</div>
+          <h4>临床识别与处理</h4>
+          <p><strong>识别与评估</strong>：症状、功能、风险、共病、量表及转诊边界</p>
+        </div>
+        <div class="card">
+          <div class="icon">②</div>
+          <h4>沟通与共同决策</h4>
+          <p><strong>连接</strong>：倾听、共情、风险沟通、共同决策、确认理解</p>
+        </div>
+        <div class="card">
+          <div class="icon">③</div>
+          <h4>职业能力与人本化</h4>
+          <p><strong>成长</strong>：整体医学观、人本化医疗、风险意识、规范记录与协作</p>
+        </div>
+      </div>
+      <div class="callout info">
+        <strong>关键洞察：</strong>精神心理识别不是“心理科专属能力”，而是综合临床评估的一部分：先识别症状、功能与风险，再决定沟通方式、治疗路径和是否需要专科协作。
+      </div>
+    </section>
+
+  </div>
+</section>
+
+<!-- ============ 第一章 · 抑郁 ============ -->
+<section class="chapter c1" id="ch-depress">
+  <div class="head">
+    <div class="ch-num">CHAPTER 01</div>
+    <h2>抑郁障碍的识别与处理</h2>
+    <p class="ch-sub">从基础认知、识别、量表到药物治疗——非精神科医生必备</p>
+  </div>
+  <div class="body">
+
+    <section class="sec">
+      <h3><span class="badge">1.1</span> 基础认知：抑郁是情绪，不是软弱</h3>
+      <div class="compare">
+        <div class="col">
+          <h5>正常抑郁情绪</h5>
+          <ul>
+            <li>对<strong>丧失</strong>的情绪反应</li>
+            <li>促使自我反思、能量积蓄</li>
+            <li>短暂、可调节</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h5>病理性抑郁</h5>
+          <ul>
+            <li><strong>长期、难以调整</strong>的抑郁情绪</li>
+            <li>功能受损</li>
+            <li>= <strong>疾病</strong>，需要治疗</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <strong>关键区分：</strong>心理学视角看——<strong>抑郁 = 对丧失的情绪反应</strong>；<strong>焦虑 = 对现实性威胁的情绪反应</strong>。两者经常并存（共病率 50% 以上）。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">1.2</span> 流行病学：必须知道的硬数据</h3>
+      <div class="stat-row">
+        <div class="stat-card"><div class="num">3.22<span style="font-size:18px">亿</span></div><div class="label">全球抑郁患者（WHO）</div></div>
+        <div class="stat-card"><div class="num">6.8%</div><div class="label">中国抑郁患病率</div></div>
+        <div class="stat-card"><div class="num">31.8%</div><div class="label">住院患者抑郁发生率</div></div>
+        <div class="stat-card"><div class="num">50%+</div><div class="label">焦虑-抑郁共病率</div></div>
+      </div>
+      <p>非精神科医生的重点不是凭量表“定诊”，而是<strong>尽早识别、评估风险、识别共病并建立转诊/随访路径</strong>。WHO 的 mhGAP 2023 第三版明确面向非专科卫生工作者提供循证精神卫生照护建议。</p>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">1.3</span> 识别与评估：症状 + 病程 + 功能 + 风险</h3>
+      <h4>核心框架（用于识别，不替代精神科诊断）</h4>
+      <div class="grid2">
+        <div class="card">
+          <h4>核心症状（必备 1 条以上）</h4>
+          <ul>
+            <li><strong>心境低落</strong>或<strong>兴趣/愉悦感下降</strong>是核心表现</li>
+            <li>同时评估精力、睡眠、食欲/体重、认知、自我评价等</li>
+            <li><strong>病程、功能受损与风险</strong>决定临床意义</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>附加症状（满足几条分轻重）</h4>
+          <ul>
+            <li>注意力下降 / 自我评价低 / 无价值感</li>
+            <li>自罪观念 / 无价值感</li>
+            <li>悲观 / 自杀念头或行为</li>
+            <li>睡眠障碍 / 食欲下降</li>
+            <li>精神运动性迟滞或激越</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rhyme">
+        <div class="title">临床识别口诀</div>
+        <div class="body">
+          <strong>≥ 2 周</strong>的持续性情绪/兴趣改变 + 其他抑郁症状 + <strong>功能受损</strong> → 进入进一步评估；同时主动评估<strong>自杀风险、躁狂/轻躁狂史、物质使用及躯体共病</strong>。
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">1.4</span> DSM-5 重性抑郁障碍诊断标准</h3>
+      <p>非精神科医生不据此下诊断，但需要<strong>会数症状、识别核心症状、把握转诊时机</strong>。DSM-5 标准是临床评估的"通用语言"——会诊、转诊、随访都基于它。</p>
+
+      <div class="rhyme">
+        <div class="title">DSM-5 重性抑郁发作诊断口诀</div>
+        <div class="body">
+          <strong>5/9、1/2</strong> —— <strong>2 周</strong>内出现 ≥ <strong>5 个</strong>症状（共 <strong>9 项</strong>），且至少 <strong>1 项</strong>是核心症状（<strong>2 项</strong>核心之一：<strong>抑郁心境</strong> OR <strong>兴趣/愉快感丧失</strong>）
+        </div>
+      </div>
+
+      <h4>DSM-5 9 项症状清单</h4>
+      <div class="grid3">
+        <div class="card" style="border-top:4px solid var(--c1)"><div class="icon">1</div><h4>抑郁心境</h4><p>几乎每天的大部分时间，<strong>主观感到</strong>悲伤、空虚、绝望</p></div>
+        <div class="card" style="border-top:4px solid var(--c1)"><div class="icon">2</div><h4>兴趣/愉快感丧失</h4><p>几乎每天的大部分时间，对所有或几乎所有活动的兴趣或愉快感<strong>明显减少</strong></p></div>
+        <div class="card"><div class="icon">3</div><h4>体重或食欲变化</h4><p>明显体重减轻/增加，或食欲减退/增加</p></div>
+        <div class="card"><div class="icon">4</div><h4>睡眠障碍</h4><p>失眠或睡眠过多（<strong>几乎每天</strong>）</p></div>
+        <div class="card"><div class="icon">5</div><h4>精神运动性改变</h4><p>激越或迟滞（他人可观察到，<strong>不仅主观感受</strong>）</p></div>
+        <div class="card"><div class="icon">6</div><h4>疲劳或精力不足</h4><p>几乎每天，<strong>即使很小活动</strong>也感到疲惫</p></div>
+        <div class="card"><div class="icon">7</div><h4>无价值感/过度内疚</h4><p>几乎每天，<strong>不限于自责</strong>，可达妄想程度</p></div>
+        <div class="card"><div class="icon">8</div><h4>思维/注意力下降</h4><p>几乎每天，<strong>他人可观察到</strong>的犹豫不决或注意力涣散</p></div>
+        <div class="card" style="border-top:4px solid var(--warn)"><div class="icon">9</div><h4>自杀观念/行为</h4><p>反复出现想死的念头、<strong>自杀观念</strong>或<strong>企图</strong>——任一出现即触发立即评估</p></div>
+      </div>
+
+      <div class="callout info">
+        <strong>晨重夜轻（Diurnal variation）——非精神科医生最容易漏掉的特征：</strong>抑郁患者的疲乏、无价值感、情绪低落常呈<strong>晨起最重、傍晚减轻</strong>的节律。<strong>区别于一般的疲劳（通常活动后加重、休息后缓解）</strong>。主动询问"早上和晚上哪个时段最难受"，可以快速识别典型抑郁。
+      </div>
+
+      <div class="callout warn">
+        <strong>临床定位：</strong>DSM-5 标准是<strong>精神科执业医师的诊断工具</strong>，非精神科医生<strong>不据此下诊断</strong>，但需要：① 能数够 5 项 + 1 项核心 → 启动转诊；② 第 9 项阳性 → 立即评估自杀风险；③ 晨重夜轻等特征 → 提示抑郁而非一般疲劳。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">1.5</span> 抑郁 ≠ 软弱，但有 3 类"伪装的软弱"</h3>
+      <div class="callout">
+        <strong>非精神科门诊最容易漏诊的抑郁：</strong>
+      </div>
+      <ul>
+        <li><strong>"反复就诊"型</strong>：头痛、失眠、慢性疼痛查无器质病因</li>
+        <li><strong>"易激惹"型</strong>：以脾气大、抱怨多就诊</li>
+        <li><strong>"躯体化主诉"型</strong>：疲乏、胸闷、心慌、躯体多处不适</li>
+      </ul>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">1.6</span> PHQ-9：筛查与症状监测工具，不是单独诊断依据</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>过去 2 周内，以下问题困扰您的频率</th><th>完全不会</th><th>有几天</th><th>一半以上</th><th>几乎每天</th></tr></thead>
+          <tbody>
+            <tr><td>1. 做事没有兴趣或乐趣</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>2. 心情低落、抑郁或绝望</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>3. 入睡困难、睡不安稳或睡得过多</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>4. 感觉疲倦或没有精力</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>5. 食欲不振或吃太多</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>6. 觉得自己不好 / 失败 / 让家人失望</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>7. 难以集中注意力（看电视/读报）</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>8. 动作或说话慢到被注意 / 烦躁坐立不安</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>9. "不如死了更好 / 自伤念头"</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="num">0-4</div><div class="label">无抑郁</div></div>
+        <div class="stat-card"><div class="num">5-9</div><div class="label">轻度症状提示</div></div>
+        <div class="stat-card" style="border-color:var(--c1)"><div class="num">10-14</div><div class="label">中度症状提示</div></div>
+        <div class="stat-card" style="background:var(--c1-soft);border-color:var(--c1)"><div class="num">15-19</div><div class="label">中重度症状提示</div></div>
+        <div class="stat-card" style="background:#fbeae7;border-color:var(--warn)"><div class="num">20-27</div><div class="label">重度症状提示</div></div>
+      </div>
+      <div class="callout warn">
+        <strong>安全红线：</strong>PHQ-9 第 9 题出现阳性答案时，应立即进行临床面谈与自杀风险评估；<strong>不能用量表总分或第 9 题单独判断风险等级</strong>。如存在当前意图、计划、近期行为或无法保证安全，按本地急诊/精神科危机流程处理。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">1.7</span> 抗抑郁治疗：以分层、共同决策和随访为核心</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>药物</th><th>常用剂量(mg/d)</th><th>特点</th></tr></thead>
+          <tbody>
+            <tr><td><strong>舍曲林 (Sertraline)</strong></td><td>50-200</td><td>老年常用；与心血管药物合用注意 CYP2D6 相互作用</td></tr>
+            <tr><td><strong>艾司西酞普兰 (Escitalopram)</strong></td><td>10-20</td><td>耐受性好，肝肾负担小</td></tr>
+            <tr><td><strong>帕罗西汀 (Paroxetine)</strong></td><td>20-60</td><td>焦虑型抑郁优选，但撤药反应较明显</td></tr>
+            <tr><td><strong>氟西汀 (Fluoxetine)</strong></td><td>20-60</td><td>半衰期长，漏服不易撤药反应</td></tr>
+            <tr><td><strong>文拉法辛 (Venlafaxine, SNRI)</strong></td><td>75-225</td><td>难治性抑郁；高剂量注意血压</td></tr>
+            <tr><td><strong>度洛西汀 (Duloxetine, SNRI)</strong></td><td>60-120</td><td>抑郁 + 慢性疼痛合并优选</td></tr>
+            <tr><td><strong>米氮平 (Mirtazapine)</strong></td><td>15-45</td><td>食欲差 / 失眠突出者优选；注意体重增加</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <strong>更新要点：</strong>治疗应根据严重程度、既往治疗反应、共病、患者偏好与风险共同决定。NICE NG222 建议抗抑郁药开始后：<strong>2 周</strong>评估副作用、依从性与自杀风险，<strong>4 周</strong>评估初步疗效；不要机械等到 8 周才第一次复评。缓解后通常仍需继续治疗并定期复核，停药应逐步减量以降低撤药症状风险。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">1.8</span> 抑郁章节速记卡</h3>
+      <div class="grid3">
+        <div class="card"><h4>DSM-5 口诀</h4><p>5/9、1/2：2 周内 ≥5 项（共 9 项）+ ≥1 项核心（抑郁心境 OR 兴趣/愉快感丧失）/ <strong>晨重夜轻</strong>要主动问</p></div>
+        <div class="card"><h4>筛查工具</h4><p>PHQ-9 5/10/15/20 四档分级；首选 SSRI（舍曲林/艾司西酞普兰）</p></div>
+        <div class="card"><h4>共病识别</h4><p>50%+ 焦虑共病 / 失眠是首发信号 / 自杀风险必查</p></div>
+      </div>
+    </section>
+
+  </div>
+</section>
+
+<!-- ============ 第二章 · 焦虑 ============ -->
+<section class="chapter c2" id="ch-anxiety">
+  <div class="head">
+    <div class="ch-num">CHAPTER 02</div>
+    <h2>焦虑障碍的识别与处理</h2>
+    <p class="ch-sub">非精神科门诊最常被漏诊的精神问题</p>
+  </div>
+  <div class="body">
+
+    <section class="sec">
+      <h3><span class="badge">2.1</span> 流行病学 · 颠覆认知</h3>
+      <div class="callout warn">
+        <strong>焦虑是综合医院门诊的第一位精神问题</strong>——综合医院患者中焦虑发生率显著高于普通人群；躯体化主诉患者中 40% 以上符合焦虑障碍诊断。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">2.2</span> 焦虑的 5 大躯体表现</h3>
+      <div class="grid3">
+        <div class="card"><div class="icon">1</div><h4>心血管</h4><p>心悸、胸闷、心慌（无器质病因）</p></div>
+        <div class="card"><div class="icon">2</div><h4>呼吸</h4><p>气短、过度换气、窒息感</p></div>
+        <div class="card"><div class="icon">3</div><h4>神经</h4><p>头晕、震颤、麻木、感觉异常</p></div>
+        <div class="card"><div class="icon">4</div><h4>消化</h4><p>恶心、腹泻、腹部不适</p></div>
+        <div class="card"><div class="icon">5</div><h4>植物神经</h4><p>出汗、潮红、手抖、口干</p></div>
+      </div>
+      <p>→ <strong>门诊启示：</strong>遇到跨科室反复就诊、检查无异常的"心慌胸闷气短"组合，<strong>第一时间考虑焦虑</strong>。</p>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">2.3</span> 案例：42 岁女教师，失眠背痛心慌 8 个月</h3>
+      <div class="callout">
+        反复就诊于心内 / 神内 / 内分泌 / 骨科 / 肿瘤科，各种检查未见异常，对诊疗不信任、忧心忡忡。接诊时表述急迫、眉头紧锁。家属不耐烦："都是她自己想出来的病。"<br/><br/>
+        <strong>关键线索：</strong>母亲和姐姐均因胰腺癌去世。典型 <span class="hl">疾病焦虑障碍</span>，伪装成躯体症状。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">2.4</span> 病理性焦虑 6 特征</h3>
+      <ul>
+        <li><strong>缺乏明确诱发因素</strong>，或症状与诱因不相称</li>
+        <li>严重程度<strong>超出现实</strong></li>
+        <li>指向<strong>未来的不确定性</strong></li>
+        <li>有躯体症状，但<strong>无明确病理损害证据</strong></li>
+        <li><strong>明显的痛苦</strong>体验</li>
+        <li>社会功能<strong>多个维度</strong>受损</li>
+      </ul>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">2.5</span> 焦虑障碍分类（ICD-11 / DSM-5 双标准对照）</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>ICD-11</th><th>DSM-5</th><th>核心症状</th></tr></thead>
+          <tbody>
+            <tr><td>广泛性焦虑障碍</td><td>广泛性焦虑障碍</td><td>多事件过度担忧、难以控制、坐立不安 ≥6 月</td></tr>
+            <tr><td>惊恐障碍</td><td>惊恐障碍</td><td>突发强烈恐惧/不适，伴多种自主神经症状；需结合反复发作、预期焦虑/回避及鉴别诊断综合判断</td></tr>
+            <tr><td>广场恐惧症</td><td>广场恐惧症</td><td>对场景明显不合理恐惧、主动回避</td></tr>
+            <tr><td>特定恐惧症</td><td>特定恐惧症</td><td>对具体事物（飞行、高度、动物、见血、打针）恐惧</td></tr>
+            <tr><td>社交焦虑障碍</td><td>社交焦虑障碍</td><td>在被人关注的社会环境中过度恐惧</td></tr>
+            <tr><td>分离性焦虑障碍</td><td>分离性焦虑障碍</td><td>与依恋对象分离时显著焦虑</td></tr>
+            <tr><td>选择性缄默症</td><td>选择性缄默症</td><td>特定社交场合无法说话</td></tr>
+            <tr><td>强迫障碍</td><td>强迫障碍</td><td>强迫思维 + 强迫行为</td></tr>
+            <tr><td>创伤后应激障碍</td><td>PTSD</td><td>创伤后持续再体验 + 回避 + 高警觉</td></tr>
+            <tr><td>—</td><td>疾病焦虑障碍</td><td>担心得重病，反复就医、检查</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout good">
+        <strong>非精神科医生重点识别 4 类：</strong>广泛性焦虑、惊恐障碍、社交焦虑、特定恐惧/广场恐惧。强迫、PTSD 通常需要精神科主导。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">2.6</span> 评估 · 非精神科医生必学 7 问</h3>
+      <div class="callout">
+        <strong>症状评估 7 问</strong>（开门见山）：诱因 / 最坏情况 / 躯体反应 / 病程 / 功能损害 / 物质使用 / 其他
+      </div>
+      <div class="rhyme">
+        <div class="title">焦虑筛查 7 问（任一"是"就要警惕 GAD）</div>
+        <div class="body">
+          <strong>过度</strong>了吗？· 家人也觉得你<strong>过度</strong>了吗？· <strong>睡眠</strong>问题？· <strong>坐立不安</strong>？· 把结果想得很<strong>糟糕</strong>？· 努力<strong>不去想</strong>？· <strong>陷在情绪里</strong>出不来？
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">2.7</span> GAD-7：筛查与症状监测工具，不是单独诊断依据</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>过去 2 周内，以下问题困扰您的频率</th><th>完全不会</th><th>有几天</th><th>一半以上</th><th>几乎每天</th></tr></thead>
+          <tbody>
+            <tr><td>1. 感觉紧张、焦虑或急切</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>2. 不能够停止或控制担心</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>3. 对各种各样的事情担忧过多</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>4. 很难放松下来</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>5. 由于不安而无法静坐</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>6. 变得容易烦躁或急躁</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td>7. 感到似乎将有可怕的事情发生而害怕</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card"><div class="num">0-4</div><div class="label">无焦虑</div></div>
+        <div class="stat-card"><div class="num">5-9</div><div class="label">轻度症状提示</div></div>
+        <div class="stat-card" style="border-color:var(--c2)"><div class="num">10-14</div><div class="label">中度（建议治疗）</div></div>
+        <div class="stat-card" style="background:var(--c2-soft);border-color:var(--c2)"><div class="num">15-21</div><div class="label">重度（必须干预）</div></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">2.8</span> 鉴别诊断 · 4 大伪装者</h3>
+      <ul>
+        <li><strong>各种躯体疾病</strong>：甲亢、低血糖、心律失常、嗜铬细胞瘤等</li>
+        <li><strong>药物/物质</strong>：咖啡因、酒精、兴奋剂、安眠药戒断</li>
+        <li><strong>急性应激反应</strong>：事件后 1 个月内</li>
+        <li><strong>抑郁障碍</strong>：常共病，焦虑 + 抑郁需同时评估</li>
+      </ul>
+      <div class="callout warn">
+        <strong>鉴别诊断原则：</strong>根据症状和病史有针对性地排查躯体疾病、药物/物质因素及其他精神障碍；<span class="hl">不建议把“生化全套 + 甲功 + 心电图”作为所有焦虑患者的固定三件套</span>，检查应由临床表现和风险驱动。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">2.9</span> 治疗决策树</h3>
+      <div class="grid2">
+        <div class="col" style="border-top:4px solid var(--c2)">
+          <h5>急性发作 / 惊恐发作</h5>
+          <ul>
+            <li>急性焦虑/惊恐首先排除急症并提供支持性干预</li>
+            <li><strong>苯二氮䓬类不作为常规长期治疗</strong>，需警惕依赖、跌倒、认知影响及与酒精/阿片类合用风险</li>
+            <li>具体药物使用遵循当地说明书、指南与专科意见</li>
+          </ul>
+        </div>
+        <div class="col" style="border-top:4px solid var(--good)">
+          <h5>慢性焦虑 / GAD</h5>
+          <ul>
+            <li><strong>SSRI / SNRI + CBT</strong> 是首选</li>
+            <li><strong>8 周评估节点</strong>，别过早判定无效</li>
+            <li>头 2 周可能更焦虑，要坚持</li>
+          </ul>
+        </div>
+      </div>
+
+      <h4>8 周评估无效的"5 步排查"</h4>
+      <ol>
+        <li>诊断对吗？（重新评估）</li>
+        <li>共病查了吗？（抑郁、物质使用）</li>
+        <li>患者真的在吃药吗？（依从性）</li>
+        <li>剂量给够了吗？（非精神科最常踩的坑）</li>
+        <li>副作用是否影响依从性？</li>
+      </ol>
+
+      <h4>常用苯二氮䓬速查</h4>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>药物</th><th>常用剂量(mg/d)</th><th>半衰期(h)</th><th>特点</th></tr></thead>
+          <tbody>
+            <tr><td>阿普唑仑</td><td>0.4-2.0</td><td>12-18</td><td>速效，急性惊恐常用</td></tr>
+            <tr><td>劳拉西泮</td><td>1.0-4.0</td><td>10-20</td><td><strong>老年人首选</strong>（肝肾双通道）</td></tr>
+            <tr><td>艾司唑仑</td><td>1.0-2.0</td><td>18</td><td>国产老药，门诊最常用</td></tr>
+            <tr><td>地西泮</td><td>5.0-20.0</td><td>20-50</td><td>长效 + 抗惊厥，酒精戒断首选</td></tr>
+            <tr><td>氯硝西泮</td><td>2.0-6.0</td><td>20-38</td><td>长效强效，易蓄积</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warn">
+        <strong>BZD 安全线：</strong>避免常规长期使用；警惕依赖、耐受、跌倒与认知风险；绝对避免与酒精/阿片类等中枢抑制物质危险联用；长期使用者停药应个体化、逐步减量，必要时专科协作
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">2.10</span> 非药物 · 床旁 7 件事</h3>
+      <div class="grid3">
+        <div class="card"><div class="icon">1</div><h4>保持镇定</h4><p>医务人员/家属的镇定 = 患者的第一味药</p></div>
+        <div class="card"><div class="icon">2</div><h4>必要查体</h4><p>排除躯体急症</p></div>
+        <div class="card"><div class="icon">3</div><h4>必要保证</h4><p>"发作虽难受但不会致命"</p></div>
+        <div class="card"><div class="icon">4</div><h4>指导呼吸</h4><p>腹式、6 次/分钟，最有用的急救</p></div>
+        <div class="card"><div class="icon">5</div><h4>身体放松</h4><p>渐进式肌肉放松</p></div>
+        <div class="card"><div class="icon">6</div><h4>改善环境</h4><p>安静、暗淡、舒适</p></div>
+        <div class="card"><div class="icon">7</div><h4>生活安排</h4><p>作息规律、避咖啡因、适度运动</p></div>
+      </div>
+    </section>
+
+    <section class="sec" style="background:var(--c2-soft);border-radius:12px;margin:24px-32px;padding:24px">
+      <h3 style="color:var(--c2)"> 焦虑章节速记卡</h3>
+      <div class="grid3">
+        <div class="card"><h4>识别口诀</h4><p>过度担忧 + 灾难化思维 + 回避/安全行为 + 多病共病</p></div>
+        <div class="card"><h4>分类速记</h4><p>GAD 啥都怕；惊恐 无触发；恐惧 怕具体；社交 怕被人看</p></div>
+        <div class="card"><h4>用药底线</h4><p>急性用 BZD；慢病 SSRI；8 周评估；CBT 是黄金搭档</p></div>
+      </div>
+    </section>
+
+  </div>
+</section>
+
+<!-- ============ 第三章 · 失眠 ============ -->
+<section class="chapter c3" id="ch-insomnia">
+  <div class="head">
+    <div class="ch-num">CHAPTER 03</div>
+    <h2>失眠障碍的识别与处理</h2>
+    <p class="ch-sub">非精神科最常见主诉 · CBT-I 是一线治疗</p>
+  </div>
+  <div class="body">
+
+    <section class="sec">
+      <h3><span class="badge">3.1</span> 睡眠基础知识</h3>
+
+      <h4>睡眠时长：以年龄、个体需求与日间功能为核心</h4>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>年龄段</th><th>推荐睡眠时长</th></tr></thead>
+          <tbody>
+            <tr><td>4-12 岁儿童</td><td>10-12 小时</td></tr>
+            <tr><td>13-29 岁青年</td><td>约 8 小时</td></tr>
+            <tr><td>30-60 岁成人</td><td>约 7 小时</td></tr>
+            <tr><td>60 岁以上老人</td><td>6-7 小时</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout info">
+        <strong>指南化表述：</strong>不要把“7 小时”当作所有成年人或老年人的治疗目标。睡眠需求具有年龄和个体差异；临床更应关注睡眠机会、睡眠质量、日间功能以及是否存在其他睡眠障碍。
+      </div>
+
+      <h4>多导睡眠图（PSG）睡眠分期</h4>
+      <div class="stat-row">
+        <div class="stat-card"><div class="num">5%</div><div class="label">N1 入睡期</div></div>
+        <div class="stat-card"><div class="num">50%</div><div class="label">N2 浅睡期</div></div>
+        <div class="stat-card"><div class="num">15-25%</div><div class="label">N3 慢波睡眠</div></div>
+        <div class="stat-card"><div class="num">20-25%</div><div class="label">REM 快速眼动</div></div>
+      </div>
+
+      <p>前半夜 = 深睡主导（身体修复） / 后半夜 = REM 主导（记忆、情绪） / 一晚 4-6 个周期，每周期 90 分钟</p>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">3.2</span> 失眠的核心定义与诊断</h3>
+      <div class="callout">
+        <strong>失眠定义：</strong>尽管有合适的睡眠机会和环境，仍然对睡眠时间和（或）质量感到不满足，并且<strong>影响日间功能</strong>的一种<strong>主观体验</strong>。
+      </div>
+
+      <h4>失眠的 5 大表现</h4>
+      <div class="grid2">
+        <div class="card"><h4>① 入睡困难</h4><p>潜伏期 > 20-30 分钟</p></div>
+        <div class="card"><h4>② 维持困难</h4><p>整夜觉醒 ≥ 2 次</p></div>
+        <div class="card"><h4>③ 早醒</h4><p>比预期早醒，无法再入睡</p></div>
+        <div class="card"><h4>④ 总时间 &lt; 6 小时</h4><p>睡眠不足</p></div>
+        <div class="card" style="grid-column:span 2;border-color:var(--c3)"><h4>⑤ 睡眠质量下降</h4><p>+ 日间功能障碍（疲劳、情绪低落/激惹、躯体不适、认知障碍）</p></div>
+      </div>
+
+      <div class="rhyme">
+        <div class="title">慢性失眠诊断标准（ICSD-3）</div>
+        <div class="body">
+          ≥ <strong>3 个月</strong> + 每周 ≥ <strong>3 晚</strong> + 日间功能显著受损 + <strong>排除其他睡眠障碍或物质滥用</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">3.3</span> 流行病学 · 颠覆认知的数据</h3>
+      <div class="callout warn">
+        <strong>57% 的成年人一年内有过失眠，但只有 13% 曾跟医生谈及。</strong>这意味着你的门诊里每 4 个患者中就有 2 个睡眠有问题，但他们不会主动告诉你。<br/>
+        → <strong>"最近睡得怎么样？"应该是每位门诊医生的常规问句。</strong>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-card"><div class="num">40-70%</div><div class="label">综合医院患者存在睡眠问题</div></div>
+        <div class="stat-card"><div class="num">57%</div><div class="label">成年人一年内有失眠</div></div>
+        <div class="stat-card"><div class="num">53%</div><div class="label">症状超过 1 年</div></div>
+        <div class="stat-card"><div class="num">13%</div><div class="label">曾跟医生谈过</div></div>
+      </div>
+
+      <h4>失眠患者的具体表现分布</h4>
+      <ul>
+        <li>睡眠维持困难 <span class="hl">44%</span></li>
+        <li>日间功能受影响 <span class="hl">39%</span></li>
+        <li>入睡困难 <span class="hl">33%</span></li>
+        <li>职业活动受影响 <span class="hl">66%</span></li>
+      </ul>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">3.4</span> 失眠原因 · Spielman 3P 模型</h3>
+      <div class="grid3">
+        <div class="card" style="border-top:4px solid var(--c3)">
+          <h4>P1 · 易感因素</h4>
+          <p>脆弱的睡眠系统、生理时钟缺乏弹性、遗传体质 — <strong>长期存在</strong></p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--info)">
+          <h4>P2 · 诱发因素</h4>
+          <p>生活事件、工作压力、人际关系、倒班 — <strong>触发急性失眠</strong></p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--warn)">
+          <h4>P3 · 维持因素</h4>
+          <p>白天睡太多、缺乏运动、不当用药、周末过度补眠 — <strong>CBT-I 的治疗靶点</strong></p>
+        </div>
+      </div>
+      <div class="callout good">
+        <strong>临床金句：</strong>"急性失眠看诱发因素，慢性失眠看维持因素。" —— CBT-I 不需要解决生活事件，只打破维持因素就能治好慢性失眠。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">3.5</span> CBT-I：慢性失眠的一线治疗</h3>
+
+      <h4>5 大组件</h4>
+      <div class="card" style="background:var(--c3-soft);border:2px solid var(--c3);margin-bottom:14px">
+        <p><strong>1. 睡眠卫生教育</strong> · <strong>2. 刺激控制疗法</strong> · <strong>3. 睡眠限制时间</strong> · 4. 认知治疗 · 5. 放松训练</p>
+        <p style="margin-top:6px;color:var(--ink-3);font-size:13px">CBT-I 长期疗效优于药物（停药后仍有效），但国内能做的医院极少</p>
+      </div>
+
+      <h4>睡眠卫生：必要但通常不足以单独治疗慢性失眠</h4>
+      <div class="grid2">
+        <div class="card"><h4>① 睡眠时长</h4><p>取决于第二天的清醒状态，不强求 8 小时</p></div>
+        <div class="card"><h4>② 运动</h4><p>早上/下午定期运动，晚上入睡前避免剧烈</p></div>
+        <div class="card"><h4>③ 限酒</h4><p>尤其晚饭后</p></div>
+        <div class="card"><h4>④ 避茶/咖啡</h4><p>下午或晚上</p></div>
+        <div class="card"><h4>⑤ 睡前卸包</h4><p>睡前 1 小时处理脑子里的问题（可写"烦恼清单"）</p></div>
+        <div class="card"><h4>⑥ 晚餐适度</h4><p>不过饱、不多水，但睡前少量食物助眠</p></div>
+        <div class="card"><h4>⑦ 卧室环境</h4><p>安静、暗淡、温度适宜</p></div>
+        <div class="card"><h4>⑧ 固定作息</h4><p>固定起床时间、白天晒太阳、限制午睡</p></div>
+      </div>
+
+      <h4>刺激控制时间 6 条（CBT-I 最核心）</h4>
+      <div class="rhyme">
+        <div class="body">
+          <strong>① 只有困了才上床</strong><br/>
+          <strong>② 床只用来睡觉</strong>（不玩手机、不看电视、不读书、不吃东西、不想心事）<br/>
+          <strong>③ 20 分钟睡不着 → 下床活动</strong>，直到有睡意再上床<br/>
+          <strong>④ 睡眠时不要看表</strong><br/>
+          <strong>⑤ 无论几点入睡，早上准时起床</strong><br/>
+          <strong>⑥ 白天不要卧床</strong>
+        </div>
+      </div>
+      <div class="callout good">
+        <strong>终极处方：</strong>"如果睡不着就离开床，别在床上辗转反侧。" —— 比任何药物都管用。
+      </div>
+
+      <h4>睡眠限制时间</h4>
+      <p><strong>睡眠效率</strong> = 实际睡眠时间 / 卧床时间 × 100%</p>
+      <ul>
+        <li>卧床时间 = 实际睡眠时间（缩到必要范围）</li>
+        <li>效率 ≥ 85% → 下周提前 15-30 分钟上床</li>
+        <li>效率 85-90% → 维持原卧床时间</li>
+        <li>效率 &lt; 80% → 下周推迟 15-30 分钟上床</li>
+        <li><strong>卧床时间不能低于 5 小时</strong>（否则白天过度嗜睡）</li>
+      </ul>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">3.6</span> 失眠的其它治疗</h3>
+      <ul>
+        <li>呼吸放松（4-7-8 呼吸法）</li>
+        <li>经颅磁刺激（rTMS）</li>
+        <li>生物反馈</li>
+        <li>光照治疗（bright light therapy）</li>
+        <li>芳香疗法（薰衣草）</li>
+      </ul>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">3.7</span> 药物治疗：在明确适应证和风险后个体化使用</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>类别</th><th>代表药</th><th>适用</th></tr></thead>
+          <tbody>
+            <tr><td><strong>苯二氮䓬（BZD）</strong></td><td>艾司唑仑、阿普唑仑、劳拉西泮、地西泮</td><td>急性，短期</td></tr>
+            <tr><td><strong>非苯二氮䓬（Z药）</strong></td><td>唑吡坦、右佐匹克隆、佐匹克隆</td><td>原发性失眠首选</td></tr>
+            <tr><td><strong>褪黑素受体激动剂</strong></td><td>雷美替胺、阿戈美拉汀</td><td>昼夜节律障碍，不易依赖</td></tr>
+            <tr><td><strong>食欲素受体拮抗剂（DORAs）</strong></td><td>苏沃雷生</td><td>新兴机制</td></tr>
+            <tr><td><strong>有镇静作用的抗抑郁药</strong></td><td>曲唑酮、米氮平</td><td>失眠 <strong>+ 抑郁/焦虑</strong> 一举两得</td></tr>
+            <tr><td><strong>H1 受体阻滞剂</strong></td><td>多塞平（低剂量）</td><td>非处方药，老人慎用</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">3.8</span> 失眠的共病与转诊</h3>
+      <h4>常见共病</h4>
+      <p>慢性疼痛 / 癌症 / 更年期 / 妊娠 / 精神疾病 / 物质使用 / OSA（阻塞性睡眠呼吸暂停）/ 不安腿综合征（RLS）/ 倒班</p>
+
+      <div class="callout warn">
+        <strong>共病处理原则：</strong>失眠仍可作为主诉 → 病因治疗优先 → 心理和物理治疗仍适用 → 药物选择可能受其他用药影响
+      </div>
+
+      <h4>5 条转诊指征（非精神科医生的安全闸门）</h4>
+      <ol>
+        <li>失眠问题突出，但无明显相关躯体疾病</li>
+        <li>严重失眠且常规干预反应不佳</li>
+        <li>共病其他类型精神疾病</li>
+        <li>特殊群体：儿童、老人、妊娠/哺乳期</li>
+        <li>慢性失眠需要长期服药</li>
+      </ol>
+    </section>
+
+    <section class="sec" style="background:var(--c3-soft);border-radius:12px;margin:24px-32px;padding:24px">
+      <h3 style="color:var(--c3)"> 失眠章节速记卡</h3>
+      <div class="grid3">
+        <div class="card"><h4>3 个口诀</h4><p>睡不着就离开床 · 床只用来睡觉 · 白天别补觉</p></div>
+        <div class="card"><h4>3P 模型</h4><p>易感 + 诱发 + 维持；CBT-I 只打破"维持"</p></div>
+        <div class="card"><h4>睡眠处方 6 条</h4><p>困了上床 · 床只睡 · 20 分钟下床 · 不看表 · 固定起床 · 白天不卧床</p></div>
+      </div>
+    </section>
+
+  </div>
+</section>
+
+<!-- ============ 第四章 · 医患沟通 ============ -->
+<section class="chapter c4" id="ch-comm">
+  <div class="head">
+    <div class="ch-num">CHAPTER 04</div>
+    <h2>临床实践中的医患问题沟通技能</h2>
+    <p class="ch-sub">下午场 A · 王高华（武汉大学人民医院精神卫生中心）· 识别患者精神状态是沟通的前提</p>
+  </div>
+  <div class="body">
+
+    <section class="sec">
+      <h3><span class="badge">4.1</span> 医患关系定义</h3>
+      <p>医患关系是<strong>医疗服务活动中客观形成的医患双方</strong>以及与<strong>双方利益有密切关联的社会群体和个体之间</strong>的互动关系。</p>
+      <div class="compare">
+        <div class="col">
+          <h5>"医"的范畴</h5>
+          <ul>
+            <li>医生</li>
+            <li>护士</li>
+            <li>技师</li>
+            <li>管理人员</li>
+          </ul>
+          <p style="font-size:12px;color:var(--ink-3);margin-top:8px">→ 整个医务人员群体</p>
+        </div>
+        <div class="col">
+          <h5>"患"的范畴</h5>
+          <ul>
+            <li>患者本人</li>
+            <li>直接/间接亲属</li>
+            <li>监护人员</li>
+            <li>所在工作部门、单位</li>
+          </ul>
+          <p style="font-size:12px;color:var(--ink-3);margin-top:8px">→ 不只是病人本人</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.2</span> 医疗纠纷是一个中性词</h3>
+      <div class="callout">
+        <strong>医疗纠纷定义：</strong>医患双方<strong>因诊疗活动引发</strong>的争议。<strong>不是"医疗事故"，也不必然违法。</strong>
+      </div>
+      <h4>按情节和后果分三类</h4>
+      <div class="grid3">
+        <div class="card" style="border-top:4px solid var(--info)">
+          <h4>① 技术原因</h4>
+          <p>医学局限性、疾病复杂性、当前医学水平无法解决</p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--warn)">
+          <h4>② 责任心缺失</h4>
+          <p>违反医疗原则与医疗核心制度 —— <strong>可避免</strong></p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--good)">
+          <h4>③ 不可抗力</h4>
+          <p>意外、并发症、合理范围内的医疗风险</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.3</span> 经典案例：2006 深圳山厦医院</h3>
+      <div class="callout">
+        <strong>2006 年 12 月 26 日 · 深圳市龙岗区平湖街道山厦医院</strong>——医生、护士全部佩戴钢盔上班。<br/>
+        这是中国医患冲突的<strong>标志性事件</strong>：医患关系恶化到需要"防暴装备"的程度。
+      </div>
+      <p style="text-align:center;color:var(--ink-3);font-size:13px;margin-top:8px">[演讲 PPT 配图：医护人员穿防护服、戴钢盔列队站在救护车前]</p>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.4</span> 近年形势：医疗纠纷有所好转</h3>
+      <h4>2018 国家卫健委发布会数据（2013-2018）</h4>
+      <div class="stat-row">
+        <div class="stat-card"><div class="num">↓20.1%</div><div class="label">全国医疗纠纷总量累计</div></div>
+        <div class="stat-card"><div class="num">↓41.1%</div><div class="label">涉医案件累计</div></div>
+        <div class="stat-card"><div class="num">↑↑</div><div class="label">诊疗服务量持续增长</div></div>
+      </div>
+
+      <h4>2020 全国法院系统数据</h4>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>类型</th><th>件数</th><th>占比</th></tr></thead>
+          <tbody>
+            <tr><td>2020 年医疗损害责任纠纷二审判决合计</td><td><strong>3096 件</strong></td><td>100%</td></tr>
+            <tr><td>医疗过错责任纠纷</td><td>3071 件</td><td>99.2%</td></tr>
+            <tr><td>侵害患者知情同意权纠纷</td><td>14 件</td><td>0.5%</td></tr>
+            <tr><td>医疗产品责任纠纷</td><td>11 件</td><td>0.4%</td></tr>
+            <tr><td>较 2019 年减少</td><td>81 件</td><td>-2.5%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.5</span> 医疗纠纷原因分析 · 医方败诉原因（2020 全国数据）</h3>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg">
+          <text x="300" y="20" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1f36">2020 年医方败诉原因分布（% 累计 95）</text>
+          <g font-size="12" fill="#1a1f36">
+            <!-- 条形图 -->
+            <rect x="20" y="50" width="246" height="30" fill="#e25c2f"/>
+            <text x="280" y="70">41% — 未尽注意义务、延误治疗</text>
+
+            <rect x="20" y="90" width="114" height="30" fill="#f59675"/>
+            <text x="148" y="110">19% — 未尽告知义务</text>
+
+            <rect x="20" y="130" width="54" height="30" fill="#f5b29a"/>
+            <text x="88" y="150">9% — 病历</text>
+
+            <rect x="20" y="170" width="54" height="30" fill="#f5b29a"/>
+            <text x="88" y="190">9% — 术前评估不全面</text>
+
+            <rect x="20" y="210" width="42" height="30" fill="#fad0c5"/>
+            <text x="76" y="230">7% — 违反诊疗规范</text>
+
+            <rect x="20" y="250" width="42" height="30" fill="#fad0c5"/>
+            <text x="76" y="270">7% — 推定过错</text>
+
+            <rect x="20" y="290" width="30" height="30" fill="#fad0c5"/>
+            <text x="64" y="310">5% — 漏诊误诊</text>
+          </g>
+        </svg>
+      </div>
+      <div class="svg-caption">来源：2020 年全国医疗损害责任纠纷分析</div>
+
+      <div class="callout warn">
+        <strong>非精神科医生最容易踩的坑：</strong><span class="hl">未尽告知义务（19%）</span> + <span class="hl">病历书写（9%）</span>。这两个加起来近 30% 的医方败诉原因，<strong>几乎都跟沟通和病历记录有关</strong>，而不是医疗技术本身。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.6</span> 各科室医疗纠纷情况（前 5 位）</h3>
+      <div class="callout warn">
+        <strong>医疗损害责任纠纷案件前 5 位科室：</strong>妇产科、急（门）诊、骨科、肿瘤科、神经科
+      </div>
+      <p style="text-align:center;color:var(--ink-3);font-size:13px">来源：2020 年全国法院系统医疗损害责任纠纷案件数据</p>
+      <p>提示：<strong>高风险科室</strong>（妇产、急诊、骨科、肿瘤、神内）的医生更需要掌握医患沟通技能。</p>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.7</span>  核心：医疗纠纷中的精神卫生问题</h3>
+      <div class="callout info">
+        <strong>王高华老师的杀手锏：</strong>把精神卫生识别嵌入医患沟通——传统医患沟通课只讲技巧（倾听、共情、告知坏消息），但王老师把<strong>"识别患者/家属的精神状态"</strong>放在沟通技巧之前。
+      </div>
+
+      <h4>双视角 1：患者/家属的精神卫生问题</h4>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>类别</th><th>常见表现</th></tr></thead>
+          <tbody>
+            <tr><td><strong>焦虑心理</strong></td><td>对病因/转归/疼痛焦虑 · 环境陌生 · 家庭支柱担心 · 经济负担</td></tr>
+            <tr><td><strong>抑郁心理</strong></td><td>器官摘除/截肢/功能丧失 · 病情加重/预后不良 · 部分疾病临床表现（如甲减）</td></tr>
+            <tr><td><strong>恐惧心理</strong></td><td>对手术、特殊检查的恐惧</td></tr>
+            <tr><td><strong>退化心理</strong></td><td>高度自我中心，兴趣狭窄，依赖别人，对自身状况高度关注</td></tr>
+            <tr><td><strong>期待过高</strong></td><td>对诊疗效果期待过高，认为没有得到足够的同情和重视</td></tr>
+            <tr><td><strong>愤怒</strong></td><td>无法接受患病的现实，仇视医院或医务人员</td></tr>
+            <tr><td><strong>孤独</strong></td><td>远离亲人和朋友，与医护人员沟通不足</td></tr>
+            <tr><td><strong>猜疑与怀疑</strong></td><td>不信任医务人员</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>双视角 2：精神疾病维度</h4>
+      <div class="grid2">
+        <div class="card"><h4>人格障碍</h4><p>偏执型人格障碍、边缘型人格障碍……</p></div>
+        <div class="card"><h4>情绪障碍</h4><p>抑郁症、焦虑症等</p></div>
+        <div class="card"><h4>精神分裂症</h4><p>可能被误认为"难沟通"</p></div>
+        <div class="card"><h4>精神活性物质所致精神障碍</h4><p>酒精/毒品/药物滥用</p></div>
+        <div class="card" style="grid-column:span 2;border-color:var(--c4)"><h4>神经症性症状</h4><p>内感性不适、疑病、体像障碍、追求完美、强迫</p></div>
+      </div>
+
+      <h4>双视角 3：医护自身的精神卫生短板</h4>
+      <ul>
+        <li><strong>精神卫生知识欠缺</strong></li>
+        <li><strong>无法从言语及行为中识别</strong>可能有精神卫生问题的患者及家属</li>
+        <li><strong>沟通交流意识不够</strong></li>
+        <li><strong>自我保护意识不够</strong></li>
+      </ul>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.8</span> 医患沟通背景数据 · 为什么必须学</h3>
+      <div class="stat-row">
+        <div class="stat-card"><div class="num">20<span style="font-size:14px">万+</span></div><div class="label">医生执业生涯医患沟通次数</div></div>
+        <div class="stat-card"><div class="num">1/3</div><div class="label">医生工作时间用于沟通</div></div>
+        <div class="stat-card"><div class="num">70%</div><div class="label">疾病诊断基于沟通</div></div>
+        <div class="stat-card"><div class="num">↓</div><div class="label">良好沟通减少过度检查</div></div>
+      </div>
+      <p style="text-align:center;color:var(--ink-3);font-size:13px">数据来源：经典医患沟通研究综合</p>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.9</span> 两种医患关系模式对比</h3>
+      <div class="compare">
+        <div class="col" style="border-top:4px solid var(--warn)">
+          <h5 style="color:var(--warn)">医生为中心 · 家长式</h5>
+          <ul>
+            <li>准确诊断及为患者提供适当的治疗</li>
+            <li>侧重于<strong>医生的需要</strong>及其参照框架</li>
+            <li>沟通方式：设定时间框架 / 介绍医生主题 / 主导转换话题 / 打断 / 封闭式提问 / 访谈结束给予建议</li>
+          </ul>
+        </div>
+        <div class="col" style="border-top:4px solid var(--good)">
+          <h5 style="color:var(--good)">患者为中心 · 伙伴式</h5>
+          <ul>
+            <li>准确诊断 + 有效治疗 + 与患者建立牢固的信任与工作关系</li>
+            <li>侧重于<strong>患者的需要</strong>及其参照框架</li>
+            <li>沟通方式：开放空间 / 不打断 / 开放式提问 / 等待停顿 / 语言+非语言鼓励 / 用患者用词复述 / 自己语言总结 / 情感反馈</li>
+          </ul>
+        </div>
+      </div>
+
+      <h4>患者为中心沟通方式的效果（文献支持）</h4>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>效果</th><th>来源</th></tr></thead>
+          <tbody>
+            <tr><td>患者满意度提高</td><td>Gattelari, 2001</td></tr>
+            <tr><td>心理健康提升（更少焦虑、更少抑郁）</td><td>Fallowfield, 1994</td></tr>
+            <tr><td>更好的依从性</td><td>England &amp; Evans, 1992</td></tr>
+            <tr><td>与更少的并发症和更短的住院时间相关</td><td>多项研究综合</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.10</span> 医患沟通的基本操作技能（一）非语言信息</h3>
+      <p>非语言信息占沟通信息的<strong>绝大部分</strong>，常被非精神科医生忽视。</p>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+          <text x="350" y="20" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1f36">医患沟通中的非语言信息两大通道</text>
+
+          <!-- 左侧：视觉通道 -->
+          <circle cx="170" cy="120" r="35" fill="#2476c9"/>
+          <text x="170" y="126" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">视觉</text>
+          <g font-size="12" fill="#1a1f36">
+            <circle cx="60" cy="60" r="22" fill="#e8f0fa" stroke="#2476c9"/>
+            <text x="60" y="64" text-anchor="middle">眼睛</text>
+            <circle cx="170" cy="40" r="22" fill="#e8f0fa" stroke="#2476c9"/>
+            <text x="170" y="44" text-anchor="middle">服饰</text>
+            <circle cx="280" cy="60" r="22" fill="#e8f0fa" stroke="#2476c9"/>
+            <text x="280" y="64" text-anchor="middle">表情</text>
+            <circle cx="60" cy="180" r="22" fill="#e8f0fa" stroke="#2476c9"/>
+            <text x="60" y="184" text-anchor="middle">空间</text>
+            <circle cx="170" cy="200" r="22" fill="#e8f0fa" stroke="#2476c9"/>
+            <text x="170" y="204" text-anchor="middle">手势</text>
+            <circle cx="280" cy="180" r="22" fill="#e8f0fa" stroke="#2476c9"/>
+            <text x="280" y="184" text-anchor="middle">姿态</text>
+          </g>
+
+          <!-- 右侧：听觉通道 -->
+          <circle cx="540" cy="120" r="35" fill="#c44a3a"/>
+          <text x="540" y="126" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">听觉</text>
+          <g font-size="12" fill="#1a1f36">
+            <circle cx="430" cy="60" r="22" fill="#fbeae7" stroke="#c44a3a"/>
+            <text x="430" y="64" text-anchor="middle">音量</text>
+            <circle cx="540" cy="40" r="22" fill="#fbeae7" stroke="#c44a3a"/>
+            <text x="540" y="44" text-anchor="middle">语气</text>
+            <circle cx="650" cy="60" r="22" fill="#fbeae7" stroke="#c44a3a"/>
+            <text x="650" y="64" text-anchor="middle">声调</text>
+            <circle cx="430" cy="180" r="22" fill="#fbeae7" stroke="#c44a3a"/>
+            <text x="430" y="184" text-anchor="middle">节奏</text>
+            <circle cx="540" cy="200" r="22" fill="#fbeae7" stroke="#c44a3a"/>
+            <text x="540" y="204" text-anchor="middle">语速</text>
+            <circle cx="650" cy="180" r="22" fill="#fbeae7" stroke="#c44a3a"/>
+            <text x="650" y="184" text-anchor="middle">语量</text>
+          </g>
+        </svg>
+      </div>
+      <div class="svg-caption">非语言信息两大通道：视觉 + 听觉。医生最容易忽视的是<strong>语速/节奏</strong>和<strong>眼神/姿态</strong>。</div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.11</span> 医患沟通的基本操作技能（二）倾听 · 5 个层次金字塔</h3>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg">
+          <text x="250" y="20" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1f36">倾听的 5 个层次（金字塔）</text>
+
+          <polygon points="250,40 380,80 120,80" fill="#6b46c1"/>
+          <text x="250" y="68" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">设身处地的听</text>
+
+          <polygon points="120,85 380,85 410,125 90,125" fill="#8a6ccd"/>
+          <text x="250" y="113" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">专注的听</text>
+
+          <polygon points="90,130 410,130 440,170 60,170" fill="#a892d9"/>
+          <text x="250" y="158" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">有选择的听</text>
+
+          <polygon points="60,175 440,175 470,215 30,215" fill="#c4b8e5"/>
+          <text x="250" y="203" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">假装听</text>
+
+          <polygon points="30,220 470,220 500,260 0,260" fill="#e0d7f1"/>
+          <text x="250" y="248" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">听而不闻</text>
+
+          <text x="20" y="280" font-size="11" fill="#7a8599">↑ 高层次倾听</text>
+          <text x="20" y="296" font-size="11" fill="#7a8599">↑ 共情 / 信任建立</text>
+          <text x="350" y="290" font-size="11" fill="#7a8599" text-anchor="end">↓ 多数医生停留在这一层</text>
+          <text x="350" y="306" font-size="11" fill="#7a8599" text-anchor="end">↓ 容易漏掉关键信息</text>
+        </svg>
+      </div>
+      <div class="svg-caption">王老师讲义强调：<strong>"设身处地的听"</strong>是医患沟通的最高境界，但多数医生停留在"假装听"或"有选择的听"。</div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.12</span> 信息接收的 4 个层级</h3>
+      <p>医生听患者说话时，需要识别患者表达的<strong>四层信息</strong>：</p>
+      <div class="grid2">
+        <div class="card" style="border-left:4px solid var(--info)"><h4>① 事实</h4><p>信息的内容（最浅层）</p></div>
+        <div class="card" style="border-left:4px solid var(--good)"><h4>② 关系</h4><p>说话者怎样看对方的，以及他们所处的关系</p></div>
+        <div class="card" style="border-left:4px solid var(--warn)"><h4>③ 自我暴露</h4><p>说话者是如何感受的（情绪、感受）</p></div>
+        <div class="card" style="border-left:4px solid var(--c4)"><h4>④ 要求</h4><p>希望对方做什么（潜在诉求）</p></div>
+      </div>
+      <div class="callout">
+        <strong>门诊启示：</strong>当患者说"医生我不想治了"——
+        <ul style="margin-top:8px">
+          <li>① 事实：陈述不愿治疗</li>
+          <li>② 关系：对医生/医院不信任</li>
+          <li>③ 自我暴露：绝望、放弃</li>
+          <li>④ 要求：希望被倾听、被理解（不一定是字面意思）</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.13</span> 开放式 vs 封闭式问题（对比）</h3>
+      <div class="compare">
+        <div class="col" style="border-top:4px solid var(--good)">
+          <h5 style="color:var(--good)">开放式</h5>
+          <ul>
+            <li>收集全面信息</li>
+            <li>避免遗漏</li>
+            <li>不指向特定问题</li>
+            <li>鼓励患者自由叙述</li>
+          </ul>
+        </div>
+        <div class="col" style="border-top:4px solid var(--warn)">
+          <h5 style="color:var(--warn)">封闭式</h5>
+          <ul>
+            <li>寻求某一事实</li>
+            <li>避免罗嗦</li>
+            <li>带有引导性</li>
+            <li>追求效率，但可能漏掉信息</li>
+          </ul>
+        </div>
+      </div>
+
+      <h4>提问策略（按交流阶段）</h4>
+      <div class="grid3">
+        <div class="card" style="border-left:4px solid var(--info)"><h4>交谈开始</h4><p><strong>避免</strong>封闭式提问</p></div>
+        <div class="card" style="border-left:4px solid var(--warn)"><h4>深入交谈</h4><p><strong>结合式</strong>提问</p></div>
+        <div class="card" style="border-left:4px solid var(--good)"><h4>交谈后期</h4><p><strong>封闭式</strong>提问（确认细节）</p></div>
+      </div>
+      <div class="callout">
+        <strong>两种方式可以随时转换</strong>。提问的基础是<strong>观察和倾听</strong>。
+      </div>
+
+      <h4>示例对比</h4>
+      <div class="dialogue">
+        <div class="line"><span class="who doctor">医生：</span>您好！请问今天是因为什么问题来看病？</div>
+        <div class="line"><span class="who patient">患者：</span>医生，我头疼。</div>
+      </div>
+
+      <div class="rhyme">
+        <div class="title">❌ 反例：医生中心的封闭式提问</div>
+        <div class="body">
+          <span class="who doctor">医生：</span>什么时间开始的？<br/>
+          <span class="who patient">患者：</span>大概一个礼拜了。<br/>
+          <span class="who doctor">医生：</span>发热吗？<br/>
+          <span class="who patient">患者：</span>没有。<br/>
+          <span class="who doctor">医生：</span>呕吐吗？<br/>
+          <span class="who patient">患者：</span>没有吐，疼得厉害时有点恶心。<br/>
+          <span class="who doctor">医生：</span>看东西模糊吗？<br/>
+          <span class="who patient">患者：</span>没有。
+        </div>
+      </div>
+
+      <div class="rhyme" style="border-color:var(--good);background:linear-gradient(135deg,#e8f5ee,#fff)">
+        <div class="title" style="color:var(--good)">✅ 正例：患者中心的开放式引导</div>
+        <div class="body">
+          <span class="who doctor">医生：</span>您好！请问今天是因为什么问题来看病？<br/>
+          <span class="who patient">患者：</span>医生，我头疼。<br/>
+          <span class="who doctor">医生：</span>哦，头疼。您能详细说说吗？<br/>
+          <span class="who patient">患者：</span>我一个礼拜前去牙科诊所拔牙，之后吃了 3 天的药。从那时起就一直头疼。我昨天去问了牙科医生，他说拔牙以后愈合得没问题，头疼可能是别的原因，我就来找您了。不过从昨天起，头疼已经好点了。<br/>
+          <span class="who doctor">医生：</span>您能形容一下这种头疼吗？<br/>
+          <span class="who patient">患者：</span>整个头很疼，有点像以前酒后第二天那种头疼欲裂的感觉。从昨天减轻了，但头还是紧绷的……
+        </div>
+      </div>
+      <p style="text-align:center;color:var(--ink-3);font-size:13px">同一患者，同一主诉——<strong>开放式引导</strong>让患者自己说出了完整的病史（拔牙→吃药→持续头痛→已减轻），而封闭式追问只能得到碎片信息。</p>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.14</span> 患者最不喜欢医生说的话（实证调研）</h3>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg">
+          <text x="350" y="20" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1f36">患者最不喜欢医生说的话（实证调研）</text>
+
+          <g font-size="11" fill="#1a1f36">
+            <rect x="20" y="40" width="320" height="28" fill="#c44a3a"/>
+            <text x="345" y="58" fill="#c44a3a" font-weight="600">18.26% — 跟你说了你也不懂</text>
+
+            <rect x="20" y="72" width="305" height="28" fill="#c44a3a"/>
+            <text x="330" y="90" fill="#c44a3a" font-weight="600">17.40% — 想不想治？想治就回去准备钱吧</text>
+
+            <rect x="20" y="104" width="261" height="28" fill="#e25c2f"/>
+            <text x="286" y="122" fill="#e25c2f" font-weight="600">14.93% — 我推荐的药你不吃，后果自负</text>
+
+            <rect x="20" y="136" width="250" height="28" fill="#e25c2f"/>
+            <text x="275" y="154" fill="#e25c2f" font-weight="600">14.31% — 到外面等着去！</text>
+
+            <rect x="20" y="168" width="210" height="28" fill="#f59675"/>
+            <text x="235" y="186" fill="#c44a3a" font-weight="600">12.01% — 害什么羞，人体器官我们一天看几十个</text>
+
+            <rect x="20" y="200" width="142" height="28" fill="#f5b29a"/>
+            <text x="167" y="218" fill="#c44a3a" font-weight="600">8.11% — 怎么拖到这么晚才来看病？</text>
+
+            <rect x="20" y="232" width="136" height="28" fill="#f5b29a"/>
+            <text x="161" y="250" fill="#c44a3a" font-weight="600">7.79% — 你知道这病的后果有多严重吗？</text>
+
+            <rect x="20" y="264" width="69" height="28" fill="#fad0c5"/>
+            <text x="94" y="282" fill="#c44a3a" font-weight="600">3.95% — 谁让你抽这么多烟？</text>
+
+            <rect x="20" y="296" width="35" height="28" fill="#fad0c5"/>
+            <text x="60" y="314" fill="#c44a3a" font-weight="600">1.97% — 偏方别乱用</text>
+
+            <rect x="20" y="328" width="22" height="28" fill="#fad0c5"/>
+            <text x="47" y="346" fill="#c44a3a" font-weight="600">1.27% — 没事别瞎担心</text>
+          </g>
+        </svg>
+      </div>
+      <div class="svg-caption">王老师调研数据。最伤患者心的是<strong>"听不懂 / 自己看着办"</strong>类话语——本质上是把患者当外人。</div>
+
+      <div class="callout warn">
+        <strong>这些话语的红线：</strong>把患者当下级（"你不懂"） / 把治疗当交易（"准备钱"） / 把责任推给患者（"后果自负"） / 把关怀当施舍（"到外面等着"） / 把患者当物品（"一天看几十个"）。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.15</span> 共情（Empathy）· 罗杰斯定义</h3>
+      <div class="callout">
+        <strong>共情（Empathy）</strong>又作同理心、投情、同感、神入等，是指能<strong>设身处地</strong>地体会他人的处境，对他人的<strong>情绪和心境</strong>保持敏感和理解，在与他人交流时体验到对方的<strong>内心世界</strong>的感受，并<strong>能对对方的感情做出恰当的反应</strong>。<br/>
+        <span style="display:block;margin-top:8px;text-align:right">—— 罗杰斯（Carl Rogers）</span>
+      </div>
+      <div class="callout good">
+        <strong>共情 ≠ 同情：</strong>共情是"我理解你"，同情是"我替你难过"。医生要做的是共情，不是同情。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.16</span> 临床应用 4 大场景</h3>
+      <p>王老师把医患沟通技能归纳为<strong>4 个临床应用场景</strong>，每个场景都有前/中/后的结构化流程：</p>
+
+      <h4>场景 1 · 采集心身病史</h4>
+      <div class="flow-steps">
+        <div class="flow-step"><div class="num">1</div><h5>采集前</h5><p>开场白 / 目标和时间框架</p></div>
+        <div class="flow-step"><div class="num">2</div><h5>采集中</h5><p>主诉疾病发展 / 当前生活 / 个人成长关系压力应对 / 患者对自己疾病和治疗的观点</p></div>
+        <div class="flow-step"><div class="num">3</div><h5>采集后</h5><p>总结和正性反馈 / 给出进一步计划</p></div>
+      </div>
+
+      <h4>场景 2 · 解释病情</h4>
+      <div class="flow-steps">
+        <div class="flow-step"><div class="num">1</div><h5>解释前</h5><p>了解患者的患病观念</p></div>
+        <div class="flow-step"><div class="num">2</div><h5>解释中</h5><p>强调重点信息 / 保障理解（慎用专业术语）/ 清晰诊断/病因/预后 / 核对 / 共情</p></div>
+        <div class="flow-step"><div class="num">3</div><h5>解释后</h5><p>总结 / 澄清不同认识 / 询问患者疑惑</p></div>
+      </div>
+
+      <h4>场景 3 · 协商治疗</h4>
+      <div class="flow-steps">
+        <div class="flow-step"><div class="num">1</div><h5>制定前</h5><p>了解患者及家属认为可行的治疗</p></div>
+        <div class="flow-step"><div class="num">2</div><h5>制定中</h5><p>备选方案 / 医生推荐 / 患者倾向 / 双方同意 / 明确问题困难</p></div>
+        <div class="flow-step"><div class="num">3</div><h5>制定后</h5><p>达成协议 / 建立安全措施 / 安排随访</p></div>
+      </div>
+
+      <h4>场景 4 · 告知病情坏消息 + 面对愤怒不满（用三金模型）</h4>
+      <p>见下文 §4.17 / §4.18 / §4.19。</p>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.17</span>  金模型 1 · SPIKES（告知病情坏消息）</h3>
+      <p>国际通用框架，<strong>Baile et al. (2000) The Oncologist</strong>。王高华老师讲义采用。</p>
+      <div class="model-box">
+        <div class="model-head">SPIKES · 6 STEP PROTOCOL</div>
+        <div class="model-body">
+          <div class="step"><div class="letter">S</div><div class="name">Setting</div><div class="desc">设置（私密环境/关手机/充足时间/家属在场）</div></div>
+          <div class="step"><div class="letter">P</div><div class="name">Perception</div><div class="desc">评估患者对目前状况的理解（疾病相关信息和理解的水平）</div></div>
+          <div class="step"><div class="letter">I</div><div class="name">Invitation</div><div class="desc">获取患者对信息的需求（哪些想知道/哪些不想知道）</div></div>
+          <div class="step"><div class="letter">K</div><div class="name">Knowledge</div><div class="desc">提供知识（预警信号→小段信息→避免专业术语）</div></div>
+          <div class="step"><div class="letter">E</div><div class="name">Emotions</div><div class="desc">用共情对患者的情绪作出反应（NURSE 模型处理）</div></div>
+          <div class="step"><div class="letter">S</div><div class="name">Summary</div><div class="desc">总结（确保理解/讨论下一步/安排随访）</div></div>
+        </div>
+      </div>
+
+      <h4>告知坏消息 · "提供信息"的方法</h4>
+      <ul>
+        <li><strong>告知前给预警信号</strong>："很抱歉，但我今天不得不告诉你一个坏消息……"</li>
+        <li><strong>尽可能坦率</strong>，诚实回答令人不愉快的问题</li>
+        <li><strong>指出对患者生活的影响</strong></li>
+        <li><strong>金句：</strong>"怀着最美好的希望，做最坏的准备"</li>
+        <li><strong>绝不说：</strong>"我们无法再帮你做任何事了"（= 抛弃患者）</li>
+      </ul>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.18</span>  金模型 2 · NURSE（处理情绪 · Back et al. 2005）</h3>
+      <div class="model-box">
+        <div class="model-head">NURSE · EMOTION HANDLING</div>
+        <div class="model-body">
+          <div class="step"><div class="letter">N</div><div class="name">Naming</div><div class="desc">明确是什么情绪情感（"听起来您很担心……"）</div></div>
+          <div class="step"><div class="letter">U</div><div class="name">Understanding</div><div class="desc">理解患者的处境（"对您来说这一定很难"）</div></div>
+          <div class="step"><div class="letter">R</div><div class="name">Respecting</div><div class="desc">尊重患者的应对方式（"您能这样应对很不容易"）</div></div>
+          <div class="step"><div class="letter">S</div><div class="name">Supporting</div><div class="desc">支持患者（涉及心理或社会资源）</div></div>
+          <div class="step"><div class="letter">E</div><div class="name">Exploring</div><div class="desc">探索患者的需要（"现在什么最能帮助您？"）</div></div>
+        </div>
+      </div>
+      <div class="callout">
+        <strong>背景：</strong>告知坏消息最大的难点是<strong>处理情绪</strong>，不是给信息。NURSE 模型就是给医生一个<strong>可操作的 5 步</strong>，避免面对患者哭泣/愤怒时手足无措。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.19</span>  金模型 3 · CALM（面对愤怒不满患者）</h3>
+      <p>金字塔结构——从最底层的"接触"到顶层的"决策"，逐步升级。</p>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg">
+          <text x="300" y="25" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1f36">CALM 模型 · 金字塔结构</text>
+
+          <!-- 顶层：M · Make a decision（黄色矮胖三角形，文字下移到底部） -->
+          <polygon points="300,55 410,115 190,115" fill="#f5b129"/>
+          <text x="300" y="108" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">决策 Make a decision</text>
+
+          <!-- 第二层：L · Look ahead（深紫） -->
+          <rect x="200" y="120" width="200" height="42" fill="#6b46c1"/>
+          <text x="300" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">澄清角色和关系</text>
+
+          <!-- 第三层：A · Appoint（红褐） -->
+          <rect x="150" y="167" width="300" height="42" fill="#c44a3a"/>
+          <text x="300" y="193" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">情绪 Appoint · 点明和处理情绪</text>
+
+          <!-- 第四层：A 的 3 个子步骤（粉） -->
+          <rect x="100" y="214" width="130" height="42" fill="#e07c6e"/>
+          <text x="165" y="240" text-anchor="middle" font-size="11" fill="#fff">耐受攻击</text>
+          <rect x="235" y="214" width="130" height="42" fill="#e07c6e"/>
+          <text x="300" y="240" text-anchor="middle" font-size="11" fill="#fff">描述情绪</text>
+          <rect x="370" y="214" width="130" height="42" fill="#e07c6e"/>
+          <text x="435" y="240" text-anchor="middle" font-size="11" fill="#fff">理解情绪</text>
+
+          <!-- 底层：C · Contact（淡紫）4 个步骤 -->
+          <rect x="60" y="261" width="120" height="42" fill="#8a6ccd"/>
+          <text x="120" y="287" text-anchor="middle" font-size="11" fill="#fff">放松躯体语言</text>
+          <rect x="185" y="261" width="120" height="42" fill="#8a6ccd"/>
+          <text x="245" y="287" text-anchor="middle" font-size="11" fill="#fff">承认过失</text>
+          <rect x="310" y="261" width="120" height="42" fill="#8a6ccd"/>
+          <text x="370" y="287" text-anchor="middle" font-size="11" fill="#fff">理解困难处境</text>
+          <rect x="435" y="261" width="120" height="42" fill="#8a6ccd"/>
+          <text x="495" y="287" text-anchor="middle" font-size="11" fill="#fff">解释</text>
+
+          <!-- CALM 字母对应标注（从下到上） -->
+          <text x="20" y="340" font-size="11" font-weight="700" fill="#8a6ccd">C · Contact · 接触</text>
+          <text x="20" y="358" font-size="11" font-weight="700" fill="#8a6ccd">　└ 放松 / 承认 / 理解 / 解释</text>
+          <text x="20" y="380" font-size="11" font-weight="700" fill="#e07c6e">　└ 耐受攻击 / 描述情绪 / 理解情绪</text>
+          <text x="20" y="402" font-size="11" font-weight="700" fill="#c44a3a">A · Appoint · 情绪点明</text>
+          <text x="20" y="424" font-size="11" font-weight="700" fill="#6b46c1">L · Look ahead · 澄清角色关系</text>
+          <text x="20" y="446" font-size="11" font-weight="700" fill="#f5b129">M · Make a decision · 决策</text>
+          <text x="580" y="465" font-size="11" fill="#7a8599" text-anchor="end">↑ 越往上越接近解决</text>
+        </svg>
+      </div>
+      <div class="svg-caption">CALM · 面对愤怒不满的患者。自下而上：先接触稳住 → 耐受情绪 → 处理情绪 → 计划 → 决策。</div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.20</span> 共同决策：把“沟通”落到临床决策</h3>
+      <div class="flow-steps">
+        <div class="flow-step"><span class="num">1</span><h5>议题对齐</h5><p>先问患者最希望解决什么，明确本次讨论的重点。</p></div>
+        <div class="flow-step"><span class="num">2</span><h5>解释选择</h5><p>用患者能理解的语言说明诊断、检查或治疗选项。</p></div>
+        <div class="flow-step"><span class="num">3</span><h5>比较利弊</h5><p>讨论获益、风险、不确定性，以及“不做/暂缓”的后果。</p></div>
+        <div class="flow-step"><span class="num">4</span><h5>确认理解</h5><p>用 teach-back 请患者复述关键点，形成共同计划并约定复评。</p></div>
+      </div>
+      <div class="callout info"><strong>指南更新：</strong>NICE NG197 强调共同决策不是“把选择丢给患者”，而是把临床证据、专业判断与患者价值偏好放在同一个决策框架中，并明确下一步与复评时间。</div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">4.21</span> 精神心理问题临床思路（4 步流程）</h3>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg">
+          <text x="400" y="20" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1f36">精神心理问题临床思路（症状→综合征→疾病→处置）</text>
+
+          <!-- 4 个步骤 -->
+          <rect x="20" y="60" width="170" height="120" fill="#e8f0fa" stroke="#2476c9" rx="6"/>
+          <text x="105" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#2476c9">① 症状</text>
+          <text x="105" y="105" text-anchor="middle" font-size="11" fill="#1a1f36">（具体）</text>
+          <text x="105" y="128" text-anchor="middle" font-size="11" fill="#1a1f36">现病史</text>
+          <text x="105" y="143" text-anchor="middle" font-size="11" fill="#1a1f36">面对面沟通</text>
+          <text x="105" y="158" text-anchor="middle" font-size="11" fill="#1a1f36">（精神检查）</text>
+
+          <rect x="210" y="60" width="170" height="120" fill="#e8f5ee" stroke="#2a9d6f" rx="6"/>
+          <text x="295" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#2a9d6f">② 综合征</text>
+          <text x="295" y="105" text-anchor="middle" font-size="11" fill="#1a1f36">（整体）</text>
+          <text x="295" y="135" text-anchor="middle" font-size="11" fill="#1a1f36">根据症状</text>
+          <text x="295" y="150" text-anchor="middle" font-size="11" fill="#1a1f36">构建综合征</text>
+
+          <rect x="400" y="60" width="170" height="120" fill="#fbece4" stroke="#e25c2f" rx="6"/>
+          <text x="485" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#e25c2f">③ 疾病</text>
+          <text x="485" y="125" text-anchor="middle" font-size="11" fill="#1a1f36">按诊断标准</text>
+          <text x="485" y="140" text-anchor="middle" font-size="11" fill="#1a1f36">和鉴别诊断</text>
+          <text x="485" y="155" text-anchor="middle" font-size="11" fill="#1a1f36">确定疾病</text>
+          <text x="485" y="170" text-anchor="middle" font-size="11" fill="#1a1f36">（精神科执业）</text>
+
+          <rect x="590" y="60" width="190" height="120" fill="#efeafb" stroke="#6b46c1" rx="6"/>
+          <text x="685" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#6b46c1">④ 处置</text>
+          <text x="685" y="118" text-anchor="middle" font-size="11" fill="#1a1f36">根据病情进</text>
+          <text x="685" y="133" text-anchor="middle" font-size="11" fill="#1a1f36">一步检查和</text>
+          <text x="685" y="148" text-anchor="middle" font-size="11" fill="#1a1f36">处置</text>
+          <text x="685" y="170" text-anchor="middle" font-size="11" fill="#1a1f36">病历记录</text>
+
+          <!-- 箭头 -->
+          <text x="195" y="125" font-size="22" fill="#7a8599">→</text>
+          <text x="385" y="125" font-size="22" fill="#7a8599">→</text>
+          <text x="575" y="125" font-size="22" fill="#7a8599">→</text>
+
+          <!-- 横贯 -->
+          <rect x="20" y="200" width="760" height="30" fill="#fff5e6" stroke="#b15c00" rx="4"/>
+          <text x="400" y="220" text-anchor="middle" font-size="12" font-weight="700" fill="#b15c00">风险评估和处置贯穿于诊疗过程</text>
+        </svg>
+      </div>
+      <div class="svg-caption">王老师临床思路：非精神科医生做到①②就足够启动干预/转诊，③是精神科执业医师的工作。</div>
+    </section>
+
+    <section class="sec" style="background:var(--c4-soft);border-radius:12px;margin:24px-32px;padding:24px">
+      <h3 style="color:var(--c4)"> 医患沟通章节速记卡</h3>
+      <div class="grid3">
+        <div class="card"><h4>三金模型</h4><p>SPIKES（告知坏消息）· NURSE（处理情绪）· CALM（面对愤怒）</p></div>
+        <div class="card"><h4>倾听五层次</h4><p>听而不闻 → 假装听 → 有选择的听 → 专注的听 → 设身处地的听</p></div>
+        <div class="card"><h4>沟通核心</h4><p>从医生中心（家长式）→ 患者中心（伙伴式）；开放式引导优于封闭式追问</p></div>
+      </div>
+    </section>
+
+  </div>
+</section>
+
+<!-- ============ 第五章 · 医生职业化 ============ -->
+<section class="chapter c5" id="ch-career">
+  <div class="head">
+    <div class="ch-num">CHAPTER 05</div>
+    <h2>医生的职业化训练和成长之路</h2>
+    <p class="ch-sub">下午第二讲 · 王高华 · 从合格医生到知名专家</p>
+  </div>
+  <div class="body">
+
+    <section class="sec">
+      <h3><span class="badge">5.1</span> 医学发展的趋势 · 细分的代价</h3>
+      <div class="callout">
+        <ul style="margin:0">
+          <li>解剖学发展是现代医学的起源</li>
+          <li>不断细分为系统 → 器官 → 细胞 → 分子</li>
+          <li>临床医学的发展目前以<strong>细分专业</strong>为导向</li>
+          <li>取得了巨大成绩，<strong>也暴露了一些问题</strong></li>
+        </ul>
+      </div>
+
+      <h4>细分的代价</h4>
+      <div class="grid3">
+        <div class="card" style="border-top:4px solid var(--warn)">
+          <h4>单一学科局限</h4>
+          <p>以单一学科和专业解决疾病问题，存在一定局限</p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--info)">
+          <h4>研究侧</h4>
+          <p>学科需进一步细分（科研角度）</p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--good)">
+          <h4>临床侧</h4>
+          <p>需要多学科整合（治疗角度）</p>
+        </div>
+      </div>
+
+      <h4>未来方向</h4>
+      <div class="rhyme">
+        <div class="body">
+          <strong>内科外科化</strong> · <strong>外科微创化</strong> · <strong>诊断精准化</strong> · <strong>治疗舒适化</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">5.2</span> 医务人员需要什么样的知识结构</h3>
+      <div class="grid2">
+        <div class="card" style="border-top:4px solid var(--c5)">
+          <h4>医学三阶段</h4>
+          <ul>
+            <li><strong>预防医学</strong></li>
+            <li><strong>临床医学</strong></li>
+            <li><strong>康复医学</strong></li>
+          </ul>
+          <p style="color:var(--good);font-weight:700;margin-top:8px">→ 一体化理念</p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--c5)">
+          <h4>管理两维度</h4>
+          <ul>
+            <li><strong>治疗护理</strong></li>
+            <li><strong>疾病管理</strong></li>
+          </ul>
+          <p style="color:var(--good);font-weight:700;margin-top:8px">→ 一体化理念</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">5.3</span> 医务人员需要什么样的业务技能</h3>
+      <div class="compare">
+        <div class="col">
+          <h5>专业知识</h5>
+          <ul>
+            <li>医学基本知识</li>
+            <li>专科基本知识</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h5>专业技能</h5>
+          <ul>
+            <li>临床基本技能</li>
+            <li>专科相关技能</li>
+          </ul>
+        </div>
+      </div>
+
+      <h4>课程设置原则</h4>
+      <ul>
+        <li>课程设置<strong>依然要全面覆盖</strong></li>
+        <li>但课程内容<strong>可适当简化</strong></li>
+      </ul>
+      <div class="callout warn">
+        <strong>核心原则：不过度强调专科化。</strong>医生培养目标是<strong>整体观 + 全人观</strong>，不是早期就被切成某个器官的"专家"。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">5.4</span> 医生培养的两阶段目标</h3>
+      <div class="compare">
+        <div class="col" style="border-top:4px solid var(--good)">
+          <h5 style="color:var(--good)">基本目标</h5>
+          <p><strong>以成为合格医务工作者为基本目标</strong></p>
+          <ul>
+            <li>医学基本知识完备</li>
+            <li>临床基本技能扎实</li>
+            <li>沟通能力合格</li>
+            <li>法律意识清晰</li>
+            <li>职业精神稳定</li>
+          </ul>
+        </div>
+        <div class="col" style="border-top:4px solid var(--c5)">
+          <h5 style="color:var(--c5)">成长目标</h5>
+          <p><strong>以知名专家为成长目标</strong></p>
+          <ul>
+            <li>在某一细分领域深度钻研</li>
+            <li>形成独立学术观点</li>
+            <li>带领学科发展</li>
+            <li>培养后辈</li>
+            <li>行业影响力</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">5.5</span> 医务人员自身心理健康</h3>
+      <div class="callout warn">
+        <strong>医生也是精神心理问题的受害者——不是患者独有的问题。</strong>
+      </div>
+
+      <h4>医患纠纷中施暴者特点（2013 中国医院协会调查）</h4>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>维度</th><th>特征</th></tr></thead>
+          <tbody>
+            <tr><td>经济</td><td>贫困患者占 <strong>55%</strong></td></tr>
+            <tr><td>学历</td><td>小学 18% / 初中 27% / 高中 9% / 技校 9% / 不详 9%</td></tr>
+            <tr><td>职业</td><td>农民 18% / 无业者 <strong>37%</strong></td></tr>
+            <tr><td>家庭</td><td>父母离异 / 童年不幸 / 本人离异 / 未婚——<strong>家庭多有不睦</strong></td></tr>
+            <tr><td>精神状态</td><td>40% 内向/孤僻/偏执 / <strong>30% 有精神病或精神病史</strong></td></tr>
+            <tr><td>症状</td><td><strong>高度的主观性</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="text-align:center;color:var(--ink-3);font-size:13px">来源：2013 年 10 月 31 日《中国卫生》·中国医院协会调查</p>
+
+      <div class="callout info">
+        <strong>门诊启示：</strong>当一个具有上述特征的患者出现 + 提出不合理诉求 + 情绪激动时——<strong>大概率是精神心理问题，不是医疗问题</strong>。医生要识别这种"伪医患纠纷"，必要时请精神科会诊。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">5.6</span> 医疗纠纷相关法律法规</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>民事 / 主体法律</th><th>行政 / 部门规章</th></tr></thead>
+          <tbody>
+            <tr><td>民法典</td><td>医疗机构管理条例</td></tr>
+            <tr><td>执业医师法</td><td>医疗事故处理条例</td></tr>
+            <tr><td>护士条例</td><td>医疗纠纷预防和处理条例</td></tr>
+            <tr><td>传染病法</td><td>医疗机构病案管理办法</td></tr>
+            <tr><td>精神卫生法</td><td>处方管理办法</td></tr>
+            <tr><td>母婴保健法</td><td>医院感染管理办法</td></tr>
+            <tr><td>献血法</td><td>医疗机构病历书写规范</td></tr>
+            <tr><td>突发公共卫生事件应急条例</td><td>……</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <strong>非精神科医生最容易踩的两个法律坑：</strong>
+        <ul style="margin-top:6px">
+          <li><strong>《精神卫生法》</strong>——非精神科诊断精神疾病需转诊，避免误诊</li>
+          <li><strong>《医疗机构病历书写规范》</strong>——沟通记录 = 病历 = 法律证据（§4.5 提到 9% 的医方败诉原因就是病历）</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">5.7</span> 识别风险 · 以自伤自杀为例（参考 ASQ / C-SSRS）</h3>
+      <p>非精神科医生遇到有<strong>自伤自杀风险</strong>的患者，必须会识别、会问、会启动干预。</p>
+
+      <h4>三步走：观察 → 询问想法 → 询问行为</h4>
+      <div class="flow-steps">
+        <div class="flow-step"><div class="num">1</div><h5>观察</h5><p>体表伤口、自伤自杀行为</p></div>
+        <div class="flow-step"><div class="num">2</div><h5>询问想法</h5><p>"您有过不想活的念头吗？""您说不想活了，具体会怎么想？""会想到自杀吗？""想到用什么方法了断吗？""念头多频繁？多强烈？能控制住吗？""您认为自己会真的去做吗？""什么让您停下来了？""您后悔吗？后悔没死成，还是后悔自己做傻事？"</p></div>
+        <div class="flow-step"><div class="num">3</div><h5>询问行为</h5><p>"您做过什么样的准备？""您当时是怎么做的？有什么后果？""怎么被发现的？"</p></div>
+      </div>
+
+      <div class="callout warn">
+        <strong>关键：</strong>直接问"您是否想过自杀"<strong>不会诱发</strong>自杀行为，反而<strong>显著降低</strong>风险。多项研究证实：直接、平静地询问自杀念头是安全的，反而是回避询问可能错失干预时机。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">5.8</span> 精神检查 · 临床面对面沟通</h3>
+      <div class="callout info">
+        <strong>精神检查</strong>是通过与患者面谈，<strong>收集疾病信息 + 获取精神症状相关信息 + 获取精神状态的第一手资料</strong>（现场表现）。
+      </div>
+      <p>这与上午场讲的"采集心身病史"是同一个动作——精神检查本身就是一次完整的<strong>医患沟通 + 精神状态评估</strong>。</p>
+      <div class="callout good">
+        <strong>王老师整套培训设计的闭环：</strong>上午学会识别 → 下午学会沟通与人本化 → 在临床每次精神检查中整合应用。
+      </div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">5.9</span> 医学的人本化（Humanization）</h3>
+      <h4>医疗理念的人本化</h4>
+      <div class="grid2">
+        <div class="card" style="border-top:4px solid var(--good)">
+          <h4>历史演进</h4>
+          <p><strong>纯生物医学模式</strong> → <strong>生物-心理-社会医学模式</strong>（1977 Engel）</p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--info)">
+          <h4>未来方向</h4>
+          <p><strong>生物-心理-社会-环境医学模式？</strong>（环境因素日益重要）</p>
+        </div>
+      </div>
+
+      <h4>医疗技术的人本化</h4>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>维度</th><th>传统</th><th>人本化</th></tr></thead>
+          <tbody>
+            <tr><td>治疗方式选择</td><td>只看科学、规范</td><td>科学、规范 + <strong>患者感受</strong></td></tr>
+            <tr><td>症状评估</td><td>只看客观症状体征</td><td>客观症状体征 + <strong>患者主观感受</strong></td></tr>
+            <tr><td>关注点</td><td>治愈疾病</td><td>治愈疾病 + <strong>病人舒适度</strong>（音乐辅助拔牙 / 无痛胃镜 / 舒适医学中心）</td></tr>
+            <tr><td>生活质量</td><td>治病就行</td><td>美容整形快速发展 = 患者追求生活质量</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>医疗服务的人本化</h4>
+      <div class="compare">
+        <div class="col">
+          <h5>病人的权利</h5>
+          <ul>
+            <li><strong>生命健康权</strong></li>
+            <li><strong>知情权</strong></li>
+            <li><strong>隐私权</strong></li>
+            <li><strong>自主权</strong></li>
+            <li><strong>人格权</strong></li>
+          </ul>
+        </div>
+        <div class="col">
+          <h5>医疗服务人本化要求</h5>
+          <ul>
+            <li>平等</li>
+            <li>尊重</li>
+            <li>保密</li>
+            <li>关怀</li>
+            <li>交流</li>
+            <li>感受</li>
+          </ul>
+        </div>
+      </div>
+
+      <h4>医疗设施的人本化</h4>
+      <ul>
+        <li>满足医疗需求 + 患者需求 + 兼顾医护需求</li>
+        <li>满足特殊人群需求：<strong>无障碍设施</strong></li>
+        <li>与社会需求、科技发展相结合：<strong>人体工程学、智慧医疗</strong></li>
+        <li>原则：实用 / 健康 / 美观 / 舒适</li>
+      </ul>
+    </section>
+
+    <section class="sec" id="guideline-update">
+      <h3><span class="badge">指南更新</span> 2026 临床实践版的核心校正</h3>
+      <div class="grid2">
+        <div class="card"><h4>抑郁</h4><p>以症状、病程、功能和自杀风险综合评估；PHQ-9 用于筛查/监测，不替代临床诊断。治疗后应较早复评（2 周副作用/4 周疗效），而不是机械等待 6–8 周。</p></div>
+        <div class="card"><h4>焦虑</h4><p>GAD-7 是筛查/严重度监测工具；先根据临床表现排除重要躯体和物质因素。苯二氮䓬类不应成为慢性焦虑的常规长期方案。</p></div>
+        <div class="card"><h4>失眠</h4><p>慢性失眠优先考虑 CBT-I；睡眠卫生只是组成部分。对打鼾/呼吸暂停、昼间嗜睡、腿部不适等线索要考虑睡眠呼吸障碍、RLS 等鉴别。</p></div>
+        <div class="card"><h4>沟通</h4><p>从“解释给患者听”升级为共同决策：询问患者目标、解释选项、比较利弊、确认理解、共同制定计划并约定复评。</p></div>
+      </div>
+      <div class="callout good"><strong>适用边界：</strong>本页用于培训复盘和临床学习。具体处方、急危重症、自杀/自伤高风险、精神病性症状、躁狂/轻躁狂、复杂共病及儿童/孕产妇等情形，应依据当地最新指南、药品说明书和专科协作流程处理。</div>
+    </section>
+
+    <section class="sec">
+      <h3><span class="badge">5.10</span> 以患者为中心开展诊疗服务（总纲）</h3>
+      <div class="callout info">
+        <strong>王老师讲义的总纲：</strong>上午场教"识别精神症状"，下午场教"沟通"，再教"人本化"——这一切都指向<strong>以患者为中心开展诊疗服务</strong>。
+      </div>
+      <div class="grid3">
+        <div class="card"><div class="icon">1</div><h4>患者需要什么样的医生</h4><p>能识别精神状态、能沟通、能共情、有医学知识、有法律意识</p></div>
+        <div class="card"><div class="icon">2</div><h4>医院需要什么样的员工</h4><p>整体观 + 全人观 + 沟通力 + 抗压能力</p></div>
+        <div class="card"><div class="icon">3</div><h4>基本目标</h4><p>成为合格医务工作者（精神卫生识别 + 沟通 + 人本化）</p></div>
+        <div class="card"><div class="icon">4</div><h4>成长目标</h4><p>在细分领域成为知名专家（不影响整体观）</p></div>
+      </div>
+    </section>
+
+    <section class="sec" style="background:var(--c5-soft);border-radius:12px;margin:24px-32px;padding:24px">
+      <h3 style="color:var(--c5)"> 医生职业化章节速记卡</h3>
+      <div class="grid3">
+        <div class="card"><h4>3 个核心理念</h4><p>整体医学模式 · 人本化医疗 · 医生培养双目标（合格 + 专家）</p></div>
+        <div class="card"><h4>2 个易踩坑</h4><p>过度专科化 / 病历与沟通记录不规范</p></div>
+        <div class="card"><h4>1 个闭环</h4><p>识别 → 沟通 → 人本化 → 在每次精神检查中整合应用</p></div>
+      </div>
+    </section>
+
+  </div>
+</section>
+
+<!-- ============ 指南与参考 ============ -->
+<section class="chapter c6" id="references">
+  <div class="head">
+    <div class="ch-num">REFERENCES</div>
+    <h2>指南与参考依据</h2>
+    <p class="ch-sub">用于校正关键临床表述；不是对原培训讲义的逐字替代</p>
+  </div>
+  <div class="body">
+    <section class="sec">
+      <div class="grid2">
+        <div class="card"><h4>WHO mhGAP Guideline · 2023</h4><p>面向非专科卫生工作者的精神、神经及物质使用相关疾病循证指导。</p><p><a href="https://www.who.int/publications/i/item/9789240084278" target="_blank" rel="noopener">WHO 官方指南</a></p></div>
+        <div class="card"><h4>NICE NG222 · Depression in adults</h4><p>成人抑郁识别、风险评估、治疗、随访与复发预防；NICE 于 2026-01-30 完成最近一次审查。</p><p><a href="https://www.nice.org.uk/guidance/ng222" target="_blank" rel="noopener">NICE 官方指南</a></p></div>
+        <div class="card"><h4>NICE CG113 · GAD & Panic Disorder</h4><p>成人广泛性焦虑和惊恐障碍的识别与管理，2026 年仍有相关更新说明。</p><p><a href="https://www.nice.org.uk/guidance/cg113" target="_blank" rel="noopener">NICE 官方指南</a></p></div>
+        <div class="card"><h4>AASM · Insomnia</h4><p>慢性失眠强调 CBT-I 的一线地位，并区分行为治疗、睡眠卫生和药物治疗。</p><p><a href="https://aasm.org/clinical-resources/practice-standards/practice-guidelines/" target="_blank" rel="noopener">AASM 指南入口</a></p></div>
+        <div class="card"><h4>NICE NG197 · Shared decision making</h4><p>强调共同决策、chunk-and-check、teach-back、风险获益沟通及共同制定复评计划。</p><p><a href="https://www.nice.org.uk/guidance/ng197" target="_blank" rel="noopener">NICE 官方指南</a></p></div>
+        <div class="card"><h4>NICE CG138 · Patient experience</h4><p>强调清晰语言、开放式提问、总结与确认理解，以及让患者积极参与照护。</p><p><a href="https://www.nice.org.uk/guidance/cg138" target="_blank" rel="noopener">NICE 官方指南</a></p></div>
+      </div>
+    </section>
+    <section class="sec" id="disclaimer">
+      <div class="callout warn"><strong>临床安全声明：</strong>本 HTML 是培训资料的二次整理与指南校正版本，不构成个体患者的诊断或处方建议。指南可能更新，具体临床决策请以当前所在机构流程、最新指南、药品说明书及专科会诊意见为准。</div>
+    </section>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="logo"><span style="font-size:18px">❤</span> 心·动中国 · 精神心理临床实践学习版</div>
+  <p>非精神科医务人员精神心理服务能力提升培训 · 指南校正版</p>
+  <p class="small">用于培训复盘、临床学习与知识更新；不替代最新临床指南或个体化医疗决策</p>
+</footer>
+
+<script>
+// 平滑滚动到锚点
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const id=a.getAttribute('href').slice(1);
+    const el=document.getElementById(id);
+    if(el){
+      e.preventDefault();
+      const top=el.getBoundingClientRect().top+window.scrollY-80;
+      window.scrollTo({top,behavior:'smooth'});
+    }
+  });
+});
+</script>
+
+</body>
+</html>
