@@ -3,509 +3,1225 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Development of AI</title>
+<title>The Development of AI · 索引</title>
+<meta name="description" content="45 篇个人作品的索引：从 AI 工程到临床诊疗、科研方法、公共事务与生活。PantosAI · OpenClaw。">
+<meta name="author" content="PantosAI">
+<meta name="theme-color" content="#f7f6f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15151a" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://pantosai.github.io/the-development-of-ai/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+<!-- Open Graph / 社交分享卡片 -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Development of AI">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:url" content="https://pantosai.github.io/the-development-of-ai/">
+<meta property="og:title" content="The Development of AI · 索引">
+<meta property="og:description" content="45 篇个人作品的索引：从 AI 工程到临床诊疗、科研方法、公共事务与生活。">
+<meta property="og:image" content="https://pantosai.github.io/the-development-of-ai/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Development of AI · 45 篇作品索引">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Development of AI · 索引">
+<meta name="twitter:description" content="45 篇个人作品的索引：从 AI 工程到临床诊疗、科研方法、公共事务与生活。">
+<meta name="twitter:image" content="https://pantosai.github.io/the-development-of-ai/assets/og.png">
+
 <style>
+  :root {
+    --bg: #f7f6f2;
+    --surface: #ffffff;
+    --ink: #23231f;
+    --ink-2: #55544d;
+    --ink-3: #66645c;
+    --accent: #4b41a8;
+    --accent-soft: #eeecfa;
+    --line: #e2e0d8;
+    --line-soft: #eceae3;
+    --radius: 10px;
+    --max: 720px;
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
-    background: #f5f4f0;
-    color: #2c2c2a;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans CJK SC",
+                 "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
     min-height: 100vh;
-    padding: 64px 24px;
+    padding: 64px 24px 80px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
-  .container { max-width: 560px; margin: 0 auto; }
-  h1 {
-    font-size: 22px;
-    font-weight: 500;
-    margin-bottom: 8px;
-  }
-  .desc {
-    font-size: 14px;
-    color: #888780;
-    margin-bottom: 48px;
-  }
-  .section-title {
-    font-size: 11px;
-    font-weight: 500;
-    color: #b4b2a9;
-    letter-spacing: 0.08em;
+
+  .container { max-width: var(--max); margin: 0 auto; }
+
+  /* ---------- Header ---------- */
+  header.site { margin-bottom: 40px; }
+
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
     margin-bottom: 12px;
   }
-  ul {
-    list-style: none;
+
+  .lede {
+    font-size: 15px;
+    color: var(--ink-2);
+    max-width: 56ch;
+    margin-bottom: 22px;
+  }
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .stat {
+    font-size: 12px;
+    color: var(--ink-2);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 5px 12px;
+  }
+  .stat b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Search ---------- */
+  .search-wrap { margin-bottom: 12px; }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0 14px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .search-box:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(75, 65, 168, .14);
+  }
+  .search-box svg { flex: none; opacity: .5; }
+  #search {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font: inherit;
+    font-size: 15px;
+    color: var(--ink);
+    padding: 13px 0;
+  }
+  #search::placeholder { color: var(--ink-3); }
+  #search:disabled {
+    -webkit-text-fill-color: var(--ink-3);
+    cursor: default;
+  }
+  #search:disabled::placeholder { color: var(--ink-3); opacity: .75; }
+  .search-count {
+    flex: none;
+    font-size: 12px;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
     margin-bottom: 40px;
   }
-  li {
-    border-top: 1px solid #e8e6df;
+  .chips[hidden] { display: none; }
+  .chip {
+    font: inherit;
+    font-size: 12.5px;
+    color: var(--ink-2);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: color .15s, border-color .15s, background .15s;
   }
-  li:last-child {
-    border-bottom: 1px solid #e8e6df;
+  .chip:hover { color: var(--ink); border-color: var(--ink-3); }
+  .chip[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
   }
-  a {
+
+  /* ---------- Sections ---------- */
+  .section { margin-bottom: 48px; }
+  .section[hidden] { display: none; }
+
+  .section-title {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 6px;
+  }
+  .section-title .n {
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+
+  .section-desc {
+    font-size: 13.5px;
+    color: var(--ink-3);
+    margin-bottom: 14px;
+  }
+
+  ul.items {
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+  li.items > li { border-top: 1px solid var(--line-soft); }
+  li.items > li:first-child { border-top: 0; }
+  li[hidden] { display: none; }
+
+  a.item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 14px 0;
+    align-items: flex-start;
+    gap: 16px;
     text-decoration: none;
-    color: #2c2c2a;
-    font-size: 15px;
+    color: var(--ink);
+    padding: 15px 4px 15px 0;
+    border-radius: 6px;
     transition: color .15s;
   }
-  a:hover { color: #534ab7; }
-  a:hover .arrow { color: #534ab7; }
-  .arrow {
+  a.item:hover { color: var(--accent); }
+  a.item:hover .arrow { color: var(--accent); transform: translateX(3px); }
+  a.item:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .item-left { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+
+  .item-title {
     font-size: 16px;
-    color: #d3d1c7;
-    transition: color .15s;
+    font-weight: 500;
+    line-height: 1.45;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
   }
+
   .meta {
-    font-size: 12px;
-    color: #b4b2a9;
-    margin-top: 2px;
+    font-size: 12.5px;
+    color: var(--ink-3);
+    line-height: 1.5;
   }
-  .item-left { display: flex; flex-direction: column; }
-  footer {
-    margin-top: 64px;
+
+  .tag {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 4px;
+    padding: 2px 6px;
+    white-space: nowrap;
+    transform: translateY(-1px);
+  }
+
+  .arrow {
+    flex: none;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-3);
+    transition: color .15s, transform .15s;
+  }
+
+  /* ---------- 近期更新 ---------- */
+  .fresh {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 44px;
+  }
+  .fresh h2 {
     font-size: 12px;
-    color: #d3d1c7;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 12px;
+  }
+  .fresh ul { list-style: none; }
+  .fresh li {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 14px;
+    padding: 5px 0;
+  }
+  .fresh li::before {
+    content: "";
+    flex: none;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translateY(-2px);
+  }
+  .fresh a { color: var(--ink); text-decoration: none; }
+  .fresh a:hover { color: var(--accent); text-decoration: underline; }
+  .fresh .d {
+    flex: none;
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .fresh[hidden] { display: none; }
+
+  /* ---------- Empty ---------- */
+  .empty {
+    text-align: center;
+    padding: 60px 0;
+    color: var(--ink-3);
+    font-size: 14px;
+  }
+  .empty[hidden] { display: none; }
+
+  /* ---------- Footer ---------- */
+  footer.site {
+    margin-top: 72px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    align-items: baseline;
+    font-size: 12.5px;
+    color: var(--ink-3);
+  }
+  footer.site a { color: var(--ink-3); }
+  footer.site a:hover { color: var(--accent); }
+  footer.site .grow { flex: 1; }
+
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+  @media (max-width: 520px) {
+    body { padding: 40px 18px 60px; }
+    h1 { font-size: 25px; }
+    .item-title { font-size: 15px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+
+  @media print {
+    .search-wrap, .chips { display: none; }
+    a.item { color: #000; }
   }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>The Development of AI</h1>
-  <p class="desc">PantosAI · OpenClaw</p>
 
-  <p class="section-title">杂文</p>
-  <ul>
-    <li>
-      <a href="嗜欲深者天机浅.html">
-        <div class="item-left">
-          <span>嗜欲深者天机浅：Dario Amodei 与有效利他主义的政治学</span>
-          <span class="meta">Mavis 评论 · TECH × IDEOLOGY · 6 节 · 含 3 幅图</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+  <header class="site">
+    <div class="eyebrow">PantosAI · OpenClaw</div>
+    <h1>The Development of AI</h1>
+    <p class="lede">
+      一个人的工作台与知识库。从 AI 工程到临床诊疗，从科研方法到公共事务——
+      45 篇可查阅、可复用的作品，按主题分域索引。
+    </p>
+    <div class="stats">
+      <span class="stat"><b>45</b> 篇作品</span>
+      <span class="stat"><b>8</b> 个主题域</span>
+      <span class="stat">最近更新 <b>2026-10-22</b></span>
+    </div>
+  </header>
 
-  <p class="section-title">黑客松</p>
-  <ul>
-    <li>
-      <a href="ai-practical-hackathon.html">
-        <div class="item-left">
-          <span>AI 实战黑客松 · 第 1 期</span>
-          <span class="meta">Mavis 实战 · 4 天 + 沉淀 · 5433 行 · 13+ 项目 · 含可运行 demo</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+  <div class="search-wrap">
+    <div class="search-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"></circle><line x1="20" y1="20" x2="16.5" y2="16.5"></line>
+      </svg>
+      <input id="search" type="search" placeholder="搜索标题或内容关键词…（按 / 聚焦）" autocomplete="off" aria-label="搜索作品" disabled>
+      <span class="search-count" id="searchCount" aria-live="polite">45 篇</span>
+    </div>
+  </div>
 
-  <p class="section-title">地图</p>
-  <ul>
-    <li>
-      <a href="ai-map.html">
-        <div class="item-left">
-          <span>AI 技术栈全景地图</span>
-          <span class="meta">技术栈结构 · 赛道动态 · 可交互</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="waic-2026-overview.html">
-        <div class="item-left">
-          <span>WAIC 2026 · 一页式全览</span>
-          <span class="meta">6 数字 · 5 方向 · 4 天节点 · 10 镇馆 · 5 产业判断</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="waic-2026-products.html">
-        <div class="item-left">
-          <span>WAIC 2026 产品全景</span>
-          <span class="meta">10 镇馆之宝 · SAIL 奖 · 官方汇总与重点报道</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+  <div class="chips" id="chips" role="group" aria-label="按主题域筛选" hidden>
+    <button class="chip" type="button" data-filter="all" aria-pressed="true">全部</button>
+    <button class="chip" type="button" data-filter="ai" aria-pressed="false">AI 与技术</button>
+    <button class="chip" type="button" data-filter="clinical" aria-pressed="false">临床诊疗</button>
+    <button class="chip" type="button" data-filter="research" aria-pressed="false">科研与专业</button>
+    <button class="chip" type="button" data-filter="policy" aria-pressed="false">制度与公共</button>
+    <button class="chip" type="button" data-filter="career" aria-pressed="false">事业与 IP</button>
+    <button class="chip" type="button" data-filter="life" aria-pressed="false">地理与生活</button>
+    <button class="chip" type="button" data-filter="learn" aria-pressed="false">学习与结构</button>
+    <button class="chip" type="button" data-filter="play" aria-pressed="false">运动与游戏</button>
+  </div>
 
-  <p class="section-title">AI 学习</p>
-  <ul>
-    <li>
-      <a href="like-a-programmer.html">
-        <div class="item-left">
-          <span>像程序员一样使用 AI · 操作手册</span>
-          <span class="meta">提示词 · 工作流 · 高效使用策略</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="ai-roadmap.html">
-        <div class="item-left">
-          <span>AI 进阶诊疗方案</span>
-          <span class="meta">工程纵深 · 前沿雷达 · 知识自转 · 实战引擎 · 可勾选</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="matrix-multi-studio.html">
-        <div class="item-left">
-          <span>MatrixMulti Studio · 矩阵乘法与异步重叠可视化</span>
-          <span class="meta">矩阵乘法 · 异步重叠 · 规范化 Cache · 交互工作台</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="lingdong-ai-bootcamp.html">
-        <div class="item-left">
-          <span>灵动-AI 编程实战课 · 完整课表</span>
-          <span class="meta">4 原则 · 入门 / 进阶 / 项目 · 课表 + 作业体系</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+  <section class="fresh" id="fresh">
+    <h2>近期更新</h2>
+    <ul>
+      <li><a href="township-27-disease-sop.html">乡镇地图与常见病种 SOP 速查</a><span class="d">2026-10-22</span></li>
+      <li><a href="china-disease-map.html">中国各地区常见疾病地图</a><span class="d">2026-10-22</span></li>
+      <li><a href="posture-gait-atlas.html">体位 · 姿势 · 步态图谱</a><span class="d">2026-10-22</span></li>
+      <li><a href="circrna-research-thinking.html">circRNA × 神经系统疾病 · 科研思维习惯培养</a><span class="d">2026-10-22</span></li>
+      <li><a href="china-food-map.html">中国美食地图</a><span class="d">2026-10-22</span></li>
+    </ul>
+  </section>
 
-  <p class="section-title">营销</p>
-  <ul>
-    <li>
-      <a href="vibe_marketing_tabbed.html">
-        <div class="item-left">
-          <span>Vibe Marketing · 分栏完整指南</span>
-          <span class="meta">认知 · 执行 · 落地 · 84 天课程体系</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+  <main id="main">
 
-  <p class="section-title">速查表</p>
-  <ul>
-    <li>
-      <a href="cs-venues.html">
-        <div class="item-left">
-          <span>AI & CS 顶级期刊与会议速查表</span>
-          <span class="meta">60+ 期刊与会议 · 按领域分类 · 可筛选</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+    <!-- ============ 1. AI 与技术前沿 ============ -->
+    <section class="section" data-domain="ai">
+      <h2 class="section-title">AI 与技术前沿 <span class="n" data-count>11</span></h2>
+      <p class="section-desc">工具链、实战记录、产业观察与检索入口。</p>
+      <ul class="items">
+        <li data-search="dario amodei 有效利他主义 政策 意识形态 杂文 评论">
+          <a class="item" href="嗜欲深者天机浅.html">
+            <div class="item-left">
+              <span class="item-title">嗜欲深者天机浅：Dario Amodei 与有效利他主义的政治学</span>
+              <span class="meta">技术 × 意识形态 · 6 节 · 含 3 幅图</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="黑客松 hackathon 4天 5433行 13项目 demo 实战">
+          <a class="item" href="ai-practical-hackathon.html">
+            <div class="item-left">
+              <span class="item-title">AI 实战黑客松 · 第 1 期</span>
+              <span class="meta">4 天 + 沉淀 · 5433 行 · 13+ 项目 · 含可运行 demo</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="ai map 技术栈 全景地图 赛道 交互 技术栈">
+          <a class="item" href="ai-map.html">
+            <div class="item-left">
+              <span class="item-title">AI 技术栈全景地图</span>
+              <span class="meta">技术栈结构 · 赛道动态 · 可交互</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="waic 2026 一页式 全览 6数字 5方向 4天 10镇馆 5产业判断">
+          <a class="item" href="waic-2026-overview.html">
+            <div class="item-left">
+              <span class="item-title">WAIC 2026 · 一页式全览</span>
+              <span class="meta">6 数字 · 5 方向 · 4 天节点 · 10 镇馆 · 5 产业判断</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="waic 2026 产品 全景 镇馆之宝 sail 奖 官方 报道">
+          <a class="item" href="waic-2026-products.html">
+            <div class="item-left">
+              <span class="item-title">WAIC 2026 产品全景</span>
+              <span class="meta">10 镇馆之宝 · SAIL 奖 · 官方汇总与重点报道</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="像程序员一样使用ai 提示词 工作流 提示词工程 手册">
+          <a class="item" href="like-a-programmer.html">
+            <div class="item-left">
+              <span class="item-title">像程序员一样使用 AI · 操作手册</span>
+              <span class="meta">提示词 · 工作流 · 高效使用策略</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="ai 进阶 诊疗 方案 工程纵深 前沿雷达 知识自转 实战引擎">
+          <a class="item" href="ai-roadmap.html">
+            <div class="item-left">
+              <span class="item-title">AI 进阶诊疗方案</span>
+              <span class="meta">工程纵深 · 前沿雷达 · 知识自转 · 实战引擎 · 可勾选</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="matrixmulti studio 矩阵乘法 异步重叠 规范化 cache 交互 工作台">
+          <a class="item" href="matrix-multi-studio.html">
+            <div class="item-left">
+              <span class="item-title">MatrixMulti Studio · 矩阵乘法与异步重叠可视化</span>
+              <span class="meta">矩阵乘法 · 异步重叠 · 规范化 Cache · 交互工作台</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="灵动 ai 编程 实战课 课表 作业 入门 进阶 项目">
+          <a class="item" href="lingdong-ai-bootcamp.html">
+            <div class="item-left">
+              <span class="item-title">灵动-AI 编程实战课 · 完整课表</span>
+              <span class="meta">4 原则 · 入门 / 进阶 / 项目 · 课表 + 作业体系</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="ai cs 顶级 期刊 会议 速查表 60 期刊 会议 分类 筛选">
+          <a class="item" href="cs-venues.html">
+            <div class="item-left">
+              <span class="item-title">AI &amp; CS 顶级期刊与会议速查表</span>
+              <span class="meta">60+ 期刊与会议 · 按领域分类 · 可筛选</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="ai 知识库 工具 对比 13款 个人 团队 企业级">
+          <a class="item" href="ai-knowledge-tools.html">
+            <div class="item-left">
+              <span class="item-title">AI 知识库工具对比</span>
+              <span class="meta">13 款主流产品 · 个人 / 团队 / 企业级横向梳理</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      </ul>
+    </section>
 
-  <p class="section-title">知识工具</p>
-  <ul>
-    <li>
-      <a href="ai-knowledge-tools.html">
-        <div class="item-left">
-          <span>AI 知识库工具对比</span>
-          <span class="meta">13 款主流产品 · 个人 / 团队 / 企业级横向梳理</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="党章学习手册.html">
-        <div class="item-left">
-          <span>中国共产党章程 · 学习手册</span>
-          <span class="meta">党章全文 · 结构化学习</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="k12-math-structure.html">
-        <div class="item-left">
-          <span>中国中小学数学知识结构图 · 全学段</span>
-          <span class="meta">小学 / 初中 / 高中 · 12 年一条线 · 元能力贯穿</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+    <!-- ============ 2. 临床诊疗 ============ -->
+    <section class="section" data-domain="clinical">
+      <h2 class="section-title">临床诊疗 <span class="n" data-count>9</span></h2>
+      <p class="section-desc">基层与专科的实操工具：体征、流程、用药与区域流行病学。</p>
+      <ul class="items">
+        <li data-search="方向校准 把本职做到顶尖 用ai 造ai 本职 优先 方向重置">
+          <a class="item" href="clinical-focus.html">
+            <div class="item-left">
+              <span class="item-title">方向校准 · 把本职做到顶尖</span>
+              <span class="meta">用 AI vs 造 AI · 本职优先 · 方向重置</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="乡镇 27 病种 sop 速查 门诊 急诊 住院 医共体 村 地图">
+          <a class="item" href="township-27-disease-sop.html">
+            <div class="item-left">
+              <span class="item-title">乡镇地图与常见病种 SOP 速查</span>
+              <span class="meta">27 份 SOP · 门诊 / 急诊 / 住院 · 乡镇地图联动</span>
+              <span class="tag">New</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="中国 各地区 常见疾病 地图 数据看板 v2 31省 7指标 危险因素 流行病学">
+          <a class="item" href="china-disease-map.html">
+            <div class="item-left">
+              <span class="item-title">中国各地区常见疾病地图</span>
+              <span class="meta">31 省 · 7 项指标 · 病种 + 危险因素 · 数据看板 v2</span>
+              <span class="tag">New</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="体位 姿势 步态 临床体征 图谱 强迫体位 8型 步态 22图 查体">
+          <a class="item" href="posture-gait-atlas.html">
+            <div class="item-left">
+              <span class="item-title">体位 · 姿势 · 步态 — 临床体征速查图谱</span>
+              <span class="meta">23 个体征条目 · 8 种强迫体位 · 7 种步态 · 22 幅图</span>
+              <span class="tag">New</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="头孢呋辛钠 皮试液 配制 操作手册 公式推导 4步 应急预案">
+          <a class="item" href="cefuroxime-skin-test-prep.html">
+            <div class="item-left">
+              <span class="item-title">头孢呋辛钠皮试液配制 · 完整操作手册</span>
+              <span class="meta">皮试液 · 公式推导 · 4 步流程 · 应急预案</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="舌诊 速查手册 舌象 证型 临床 图谱 2026">
+          <a class="item" href="tongue-diagnosis-quick-ref.html">
+            <div class="item-left">
+              <span class="item-title">临床医生舌诊速查手册 · 2026</span>
+              <span class="meta">舌象 · 证型 · 临床速查 · 含图谱</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="临床用药 速查 西药 中成药 用法用量 适应症 禁忌 特殊人群">
+          <a class="item" href="临床用药速查.html">
+            <div class="item-left">
+              <span class="item-title">临床用药速查 · 西药与中成药</span>
+              <span class="meta">用法用量 · 适应症 · 禁忌 · 特殊人群</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="自费疫苗 速查 狂犬 乙肝 九价hpv 流感 接种">
+          <a class="item" href="vaccines.html">
+            <div class="item-left">
+              <span class="item-title">自费疫苗速查</span>
+              <span class="meta">狂犬 · 乙肝 · 九价 HPV · 流感</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="医院 职能 分工 总览 科室 行政 职能结构 全景">
+          <a class="item" href="hospital-functions.html">
+            <div class="item-left">
+              <span class="item-title">医院职能分工总览</span>
+              <span class="meta">科室 · 行政 · 职能结构 · 全景地图</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      </ul>
+    </section>
 
-  <p class="section-title">旅行</p>
-  <ul>
-    <li>
-      <a href="china-travel-map.html">
-        <div class="item-left">
-          <span>中国旅游图志 · 山河人文</span>
-          <span class="meta">主题 · 区域 · 交通 · 多维透镜读懂山河</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+    <!-- ============ 3. 科研与专业深潜 ============ -->
+    <section class="section" data-domain="research">
+      <h2 class="section-title">科研与专业深潜 <span class="n" data-count>7</span></h2>
+      <p class="section-desc">研究方法、证据链路与专科深水区。</p>
+      <ul class="items">
+        <li data-search="circrna 神经系统疾病 科研思维 习惯培养 12条 6阶段 链路图 动画 circtlk1 立项 机制">
+          <a class="item" href="circrna-research-thinking.html">
+            <div class="item-left">
+              <span class="item-title">circRNA × 神经系统疾病 · 科研思维习惯培养</span>
+              <span class="meta">12 条思维 · 6 阶段链路图 · circTLK1 案例 · 含动画</span>
+              <span class="tag">New</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="医学 科研论文 写作 四阶段 选题 设计 撰写 投稿">
+          <a class="item" href="medical-paper-writing.html">
+            <div class="item-left">
+              <span class="item-title">医学科研论文写作 · 四阶段流程</span>
+              <span class="meta">选题 · 设计 · 撰写 · 投稿 · 全流程指南</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="医学 知识 供应链 证据等级 一级文献 教材 指南 床旁">
+          <a class="item" href="医学知识供应链.html">
+            <div class="item-left">
+              <span class="item-title">医学知识供应链 · 从产生到床旁</span>
+              <span class="meta">证据等级 · 一级文献 · 教材与指南 · 触达工具</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="肠骨轴 gut bone axis 菌群 骨代谢 4大通讯途径 前沿 临床转化">
+          <a class="item" href="gut-bone-axis-knowledge-base.html">
+            <div class="item-left">
+              <span class="item-title">肠-骨轴（Gut-Bone Axis）知识库</span>
+              <span class="meta">菌群-骨代谢 · 4 大通讯途径 · 2025-2026 前沿 · 临床转化清单</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="心律失常 瓣膜 介入 县域 心血管 五讲 精读 培训">
+          <a class="item" href="心律失常与瓣膜介入_五讲精读.html">
+            <div class="item-left">
+              <span class="item-title">心律 · 介入 — 县域心血管五讲精读</span>
+              <span class="meta">心律失常 · 瓣膜介入 · 临床培训精读</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="人体 疲劳 生理过程 免疫 神经 内分泌 机制 全链路">
+          <a class="item" href="human-fatigue-physiology.html">
+            <div class="item-left">
+              <span class="item-title">人体疲劳的完整生理过程与免疫关联</span>
+              <span class="meta">疲劳机制 · 神经-免疫-内分泌 · 全链路</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="心动中国 精神心理 临床实践 非精神科 培训 心理">
+          <a class="item" href="心动中国暨非精神科医务人员精神心理服务能力提升.html">
+            <div class="item-left">
+              <span class="item-title">心·动中国 · 精神心理临床实践学习版</span>
+              <span class="meta">精神心理 · 5 章节 · 非精神科培训 · 临床能力提升</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      </ul>
+    </section>
 
-  <p class="section-title">事业定位</p>
-  <ul>
-    <li>
-      <a href="一人公司拆解笔记.html">
-        <div class="item-left">
-          <span>一人公司 · 拆解笔记</span>
-          <span class="meta">三张名片状态盘点 · OpenClaw 定位反思</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="ai-ip-map.html">
-        <div class="item-left">
-          <span>AI × IP 定位图</span>
-          <span class="meta">赛道坐标 · 下一步该动哪一个</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+    <!-- ============ 4. 制度与公共事务 ============ -->
+    <section class="section" data-domain="policy">
+      <h2 class="section-title">制度与公共事务 <span class="n" data-count>3</span></h2>
+      <p class="section-desc">政策文本、机构运转与执法依据。</p>
+      <ul class="items">
+        <li data-search="中国共产党章程 党章 学习手册 全文 结构化">
+          <a class="item" href="党章学习手册.html">
+            <div class="item-left">
+              <span class="item-title">中国共产党章程 · 学习手册</span>
+              <span class="meta">党章全文 · 结构化学习</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="财政局 怎么运转 地方财政 预算 国库 监管">
+          <a class="item" href="财政局工作全景.html">
+            <div class="item-left">
+              <span class="item-title">财政局是怎么运转的</span>
+              <span class="meta">地方财政工作全景 · 预算 · 国库 · 监管</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="市场监管 执法人员 违规 处罚 对照 依据 速查">
+          <a class="item" href="市场监管执法人员违规处罚对照.html">
+            <div class="item-left">
+              <span class="item-title">市场监管执法人员违规处罚对照</span>
+              <span class="meta">违规行为 · 处罚依据 · 速查对照</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      </ul>
+    </section>
 
-  <p class="section-title">自我认知</p>
-  <ul>
-    <li>
-      <a href="自我改善_四条.html">
-        <div class="item-left">
-          <span>自我改善 · 四条</span>
-          <span class="meta">行动清单 · 自我提升核心要点</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="以己为镜-性格自我勘测仪.html">
-        <div class="item-left">
-          <span>以己为镜 · 性格自我勘测仪</span>
-          <span class="meta">性格维度 · 自我认知 · 可交互测评</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+    <!-- ============ 5. 事业与 IP ============ -->
+    <section class="section" data-domain="career">
+      <h2 class="section-title">事业与 IP <span class="n" data-count>5</span></h2>
+      <p class="section-desc">个人定位、获客路径与自我认知工具。</p>
+      <ul class="items">
+        <li data-search="一人公司 拆解笔记 三张名片 定位反思 openclaw">
+          <a class="item" href="一人公司拆解笔记.html">
+            <div class="item-left">
+              <span class="item-title">一人公司 · 拆解笔记</span>
+              <span class="meta">三张名片状态盘点 · OpenClaw 定位反思</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="ai ip 定位图 赛道 坐标 下一步 动哪一个">
+          <a class="item" href="ai-ip-map.html">
+            <div class="item-left">
+              <span class="item-title">AI × IP 定位图</span>
+              <span class="meta">赛道坐标 · 下一步该动哪一个</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="vibe marketing 分栏 指南 认知 执行 落地 84天 课程">
+          <a class="item" href="vibe_marketing_tabbed.html">
+            <div class="item-left">
+              <span class="item-title">Vibe Marketing · 分栏完整指南</span>
+              <span class="meta">认知 · 执行 · 落地 · 84 天课程体系</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="自我改善 四条 行动清单 自我提升 核心要点">
+          <a class="item" href="自我改善_四条.html">
+            <div class="item-left">
+              <span class="item-title">自我改善 · 四条</span>
+              <span class="meta">行动清单 · 自我提升核心要点</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="以己为镜 性格 自我勘测仪 维度 测评 交互">
+          <a class="item" href="以己为镜-性格自我勘测仪.html">
+            <div class="item-left">
+              <span class="item-title">以己为镜 · 性格自我勘测仪</span>
+              <span class="meta">性格维度 · 自我认知 · 可交互测评</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      </ul>
+    </section>
 
-  <p class="section-title">生活方式</p>
-  <ul>
-    <li>
-      <a href="Softmaxxing形象专栏.html">
-        <div class="item-left">
-          <span>Softmaxxing 形象提升专栏</span>
-          <span class="meta">外形 · 健身 · 穿搭 · 全方位形象提升</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="car-systems.html">
-        <div class="item-left">
-          <span>汽车系统全览</span>
-          <span class="meta">工程手册 · 车型结构 · 系统解析</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="cuisine-systems.html">
-        <div class="item-left">
-          <span>中华八大菜系</span>
-          <span class="meta">风味手册 · 地域饮食文化</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="resource.html">
-        <div class="item-left">
-          <span>资源 · 一张被你撞见的地图</span>
-          <span class="meta">资源整合 · 可交互</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+    <!-- ============ 6. 地理与生活 ============ -->
+    <section class="section" data-domain="life">
+      <h2 class="section-title">地理与生活 <span class="n" data-count>5</span></h2>
+      <p class="section-desc">山河、人文、饮食与身体管理。</p>
+      <ul class="items">
+        <li data-search="中国美食地图 各省市 地标美食 34省 348道菜 风味 文化">
+          <a class="item" href="china-food-map.html">
+            <div class="item-left">
+              <span class="item-title">中国美食地图 · 各省市地标美食</span>
+              <span class="meta">34 省 · 348 道地标美食 · 悬停地图 · 含文化背景</span>
+              <span class="tag">New</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="中国旅游图志 山河人文 主题 区域 交通 透镜">
+          <a class="item" href="china-travel-map.html">
+            <div class="item-left">
+              <span class="item-title">中国旅游图志 · 山河人文</span>
+              <span class="meta">主题 · 区域 · 交通 · 多维透镜读懂山河</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="中华八大菜系 风味 地域 饮食文化">
+          <a class="item" href="cuisine-systems.html">
+            <div class="item-left">
+              <span class="item-title">中华八大菜系</span>
+              <span class="meta">风味手册 · 地域饮食文化</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="汽车系统 全览 工程手册 车型 结构 系统解析">
+          <a class="item" href="car-systems.html">
+            <div class="item-left">
+              <span class="item-title">汽车系统全览</span>
+              <span class="meta">工程手册 · 车型结构 · 系统解析</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="softmaxxing 形象提升 外形 健身 穿搭 专栏">
+          <a class="item" href="Softmaxxing形象专栏.html">
+            <div class="item-left">
+              <span class="item-title">Softmaxxing 形象提升专栏</span>
+              <span class="meta">外形 · 健身 · 穿搭 · 全方位形象提升</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      </ul>
+    </section>
 
-  <p class="section-title">医学知识</p>
-  <ul>
-    <li>
-      <a href="clinical-focus.html">
-        <div class="item-left">
-          <span>方向校准 · 把本职做到顶尖</span>
-          <span class="meta">用 AI vs 造 AI · 本职优先 · 方向重置</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="medical-paper-writing.html">
-        <div class="item-left">
-          <span>医学科研论文写作 · 四阶段流程</span>
-          <span class="meta">选题 · 设计 · 撰写 · 投稿 · 全流程指南</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="hospital-functions.html">
-        <div class="item-left">
-          <span>医院职能分工总览</span>
-          <span class="meta">科室 · 行政 · 职能结构 · 全景地图</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="心律失常与瓣膜介入_五讲精读.html">
-        <div class="item-left">
-          <span>心律 · 介入 — 县域心血管五讲精读</span>
-          <span class="meta">心律失常 · 瓣膜介入 · 临床培训精读</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="医学知识供应链.html">
-        <div class="item-left">
-          <span>医学知识供应链 · 从产生到床旁</span>
-          <span class="meta">证据等级 · 一级文献 · 教材与指南 · 触达工具</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="gut-bone-axis-knowledge-base.html">
-        <div class="item-left">
-          <span>肠-骨轴（Gut-Bone Axis）知识库</span>
-          <span class="meta">菌群-骨代谢 · 4 大通讯途径 · 2025-2026 前沿 · 临床转化清单</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="cefuroxime-skin-test-prep.html">
-        <div class="item-left">
-          <span>头孢呋辛钠皮试液配制 · 完整操作手册</span>
-          <span class="meta">皮试液 · 公式推导 · 4 步流程 · 应急预案</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="tongue-diagnosis-quick-ref.html">
-        <div class="item-left">
-          <span>临床医生舌诊速查手册 · 2026</span>
-          <span class="meta">舌象 · 证型 · 临床速查 · 含图谱</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="human-fatigue-physiology.html">
-        <div class="item-left">
-          <span>人体疲劳的完整生理过程与免疫关联</span>
-          <span class="meta">疲劳机制 · 神经-免疫-内分泌 · 全链路</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="心动中国暨非精神科医务人员精神心理服务能力提升.html">
-        <div class="item-left">
-          <span>心·动中国 · 精神心理临床实践学习版</span>
-          <span class="meta">精神心理 · 5 章节 · 非精神科培训 · 临床能力提升</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+    <!-- ============ 7. 学习与知识结构 ============ -->
+    <section class="section" data-domain="learn">
+      <h2 class="section-title">学习与知识结构 <span class="n" data-count>2</span></h2>
+      <p class="section-desc">学段知识地图与资源索引。</p>
+      <ul class="items">
+        <li data-search="k12 中小学 数学 知识结构图 全学段 小学 初中 高中 12年 元能力">
+          <a class="item" href="k12-math-structure.html">
+            <div class="item-left">
+              <span class="item-title">中国中小学数学知识结构图 · 全学段</span>
+              <span class="meta">小学 / 初中 / 高中 · 12 年一条线 · 元能力贯穿</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="资源 地图 撞见 整合 交互">
+          <a class="item" href="resource.html">
+            <div class="item-left">
+              <span class="item-title">资源 · 一张被你撞见的地图</span>
+              <span class="meta">资源整合 · 可交互</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      </ul>
+    </section>
 
-  <p class="section-title">健康</p>
-  <ul>
-    <li>
-      <a href="临床用药速查.html">
-        <div class="item-left">
-          <span>临床用药速查 · 西药与中成药</span>
-          <span class="meta">用法用量 · 适应症 · 禁忌 · 特殊人群</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="vaccines.html">
-        <div class="item-left">
-          <span>自费疫苗速查</span>
-          <span class="meta">狂犬 · 乙肝 · 九价 HPV · 流感</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+    <!-- ============ 8. 运动与游戏 ============ -->
+    <section class="section" data-domain="play">
+      <h2 class="section-title">运动与游戏 <span class="n" data-count>3</span></h2>
+      <p class="section-desc">球类原理与赛季指南。</p>
+      <ul class="items">
+        <li data-search="乒乓球 旋转 深度图解 原理 击球 技巧">
+          <a class="item" href="乒乓球旋转深度图解.html">
+            <div class="item-left">
+              <span class="item-title">乒乓球旋转 · 深度图解</span>
+              <span class="meta">旋转原理 · 击球技巧 · 图解分析</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="欧洲 五大联赛 2025-26 赛季 英超 西甲 德甲 意甲 法甲 对比">
+          <a class="item" href="european-football-2025-26.html">
+            <div class="item-left">
+              <span class="item-title">欧洲五大联赛 · 2025-26 赛季完全指南</span>
+              <span class="meta">英超 / 西甲 / 德甲 / 意甲 / 法甲 · 25-26 赛季 · 6 维度对比</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li data-search="lolm 峡谷 攻略 手册 138英雄 定位 分路 野区 时间表">
+          <a class="item" href="lolm_guide.html">
+            <div class="item-left">
+              <span class="item-title">LOLM 峡谷攻略手册</span>
+              <span class="meta">138 英雄定位 · 分路战术 · 野区资源时间表</span>
+            </div>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      </ul>
+    </section>
 
-  <p class="section-title">政务</p>
-  <ul>
-    <li>
-      <a href="财政局工作全景.html">
-        <div class="item-left">
-          <span>财政局是怎么运转的</span>
-          <span class="meta">地方财政工作全景 · 预算 · 国库 · 监管</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+    <p class="empty" id="empty" hidden>没有匹配的作品，试试别的关键词。</p>
 
-  <p class="section-title">法律</p>
-  <ul>
-    <li>
-      <a href="市场监管执法人员违规处罚对照.html">
-        <div class="item-left">
-          <span>市场监管执法人员违规处罚对照</span>
-          <span class="meta">违规行为 · 处罚依据 · 速查对照</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+  </main>
 
-  <p class="section-title">运动</p>
-  <ul>
-    <li>
-      <a href="乒乓球旋转深度图解.html">
-        <div class="item-left">
-          <span>乒乓球旋转 · 深度图解</span>
-          <span class="meta">旋转原理 · 击球技巧 · 图解分析</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-    <li>
-      <a href="european-football-2025-26.html">
-        <div class="item-left">
-          <span>欧洲五大联赛 · 2025-26 赛季完全指南</span>
-          <span class="meta">英超 / 西甲 / 德甲 / 意甲 / 法甲 · 25-26 赛季 · 6 维度对比</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
+  <footer class="site">
+    <span>PantosAI · OpenClaw</span>
+    <span class="grow"></span>
+    <a href="https://pantosai.github.io/the-development-of-ai/">pantosai.github.io/the-development-of-ai</a>
+  </footer>
 
-  <p class="section-title">游戏</p>
-  <ul>
-    <li>
-      <a href="lolm_guide.html">
-        <div class="item-left">
-          <span>LOLM 峡谷攻略手册</span>
-          <span class="meta">138 英雄定位 · 分路战术 · 野区资源时间表</span>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-    </li>
-  </ul>
-
-  <footer>pantosai.github.io/the-development-of-ai</footer>
 </div>
+
+<script>
+(function () {
+  var search   = document.getElementById('search');
+  var countEl  = document.getElementById('searchCount');
+  var emptyEl  = document.getElementById('empty');
+  var freshEl  = document.getElementById('fresh');
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var chips    = Array.prototype.slice.call(document.querySelectorAll('.chip'));
+  var activeDomain = 'all';
+
+  function normalize(s) {
+    return (s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+  }
+
+  // 预构建每条的检索文本：标题 + meta + 关键词 + 链接路径
+  var entries = [];
+  document.querySelectorAll('ul.items > li').forEach(function (li) {
+    var a     = li.querySelector('a.item');
+    var title = li.querySelector('.item-title');
+    var meta  = li.querySelector('.meta');
+    entries.push({
+      el: li,
+      hay: normalize([
+        title ? title.textContent : '',
+        meta  ? meta.textContent : '',
+        li.getAttribute('data-search') || '',
+        a ? a.getAttribute('href') : ''
+      ].join(' '))
+    });
+  });
+
+  function apply() {
+    var q = normalize(search.value);
+    var terms = q ? q.split(' ') : [];
+    var total = 0;
+
+    sections.forEach(function (sec) {
+      var domain = sec.getAttribute('data-domain');
+      var domainOk = activeDomain === 'all' || domain === activeDomain;
+      var shown = 0;
+
+      sec.querySelectorAll('li').forEach(function (li) {
+        var ok = domainOk;
+        if (ok && terms.length) {
+          var e = entries.filter(function (x) { return x.el === li; })[0];
+          ok = e ? terms.every(function (t) { return e.hay.indexOf(t) !== -1; }) : false;
+        }
+        li.hidden = !ok;
+        if (ok) shown++;
+      });
+
+      sec.hidden = shown === 0;
+      total += shown;
+
+      var badge = sec.querySelector('[data-count]');
+      if (badge) badge.textContent = shown;
+    });
+
+    countEl.textContent = total + ' 篇';
+    emptyEl.hidden = total !== 0;
+    // 有搜索或筛选时，"近期更新"与主列表重复，隐藏避免误读
+    freshEl.hidden = total === 0 || q !== '' || activeDomain !== 'all';
+  }
+
+  search.addEventListener('input', apply);
+  search.disabled = false;
+
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      activeDomain = chip.getAttribute('data-filter');
+      chips.forEach(function (c) {
+        c.setAttribute('aria-pressed', String(c === chip));
+      });
+      apply();
+    });
+  });
+
+  // JS 可用时才显示搜索与筛选控件
+  document.getElementById('chips').hidden = false;
+  search.placeholder = '搜索标题或内容关键词…（按 / 聚焦）';
+
+  // 快捷键：/ 聚焦搜索，Esc 清空
+  document.addEventListener('keydown', function (e) {
+    if (e.key === '/' && document.activeElement !== search) {
+      e.preventDefault();
+      search.focus();
+    }
+    if (e.key === 'Escape' && (document.activeElement === search || e.target === search)) {
+      e.preventDefault();
+      search.value = '';
+      apply();
+    }
+  });
+
+  apply();
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "The Development of AI",
+  "description": "45 篇个人作品的索引：从 AI 工程到临床诊疗、科研方法、公共事务与生活。",
+  "url": "https://pantosai.github.io/the-development-of-ai/",
+  "inLanguage": "zh-CN",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "The Development of AI",
+    "url": "https://pantosai.github.io/the-development-of-ai/"
+  },
+  "hasPart": [
+    {
+      "@type": "CreativeWork",
+      "name": "嗜欲深者天机浅：Dario Amodei 与有效利他主义的政治学",
+      "url": "https://pantosai.github.io/the-development-of-ai/%E5%97%9C%E6%AC%B2%E6%B7%B1%E8%80%85%E5%A4%A9%E6%9C%BA%E6%B5%85.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "AI 实战黑客松 · 第 1 期",
+      "url": "https://pantosai.github.io/the-development-of-ai/ai-practical-hackathon.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "AI 技术栈全景地图",
+      "url": "https://pantosai.github.io/the-development-of-ai/ai-map.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "WAIC 2026 · 一页式全览",
+      "url": "https://pantosai.github.io/the-development-of-ai/waic-2026-overview.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "WAIC 2026 产品全景",
+      "url": "https://pantosai.github.io/the-development-of-ai/waic-2026-products.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "像程序员一样使用 AI · 操作手册",
+      "url": "https://pantosai.github.io/the-development-of-ai/like-a-programmer.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "AI 进阶诊疗方案",
+      "url": "https://pantosai.github.io/the-development-of-ai/ai-roadmap.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "MatrixMulti Studio · 矩阵乘法与异步重叠可视化",
+      "url": "https://pantosai.github.io/the-development-of-ai/matrix-multi-studio.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "灵动-AI 编程实战课 · 完整课表",
+      "url": "https://pantosai.github.io/the-development-of-ai/lingdong-ai-bootcamp.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "AI & CS 顶级期刊与会议速查表",
+      "url": "https://pantosai.github.io/the-development-of-ai/cs-venues.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "AI 知识库工具对比",
+      "url": "https://pantosai.github.io/the-development-of-ai/ai-knowledge-tools.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "方向校准 · 把本职做到顶尖",
+      "url": "https://pantosai.github.io/the-development-of-ai/clinical-focus.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "乡镇地图与常见病种 SOP 速查",
+      "url": "https://pantosai.github.io/the-development-of-ai/township-27-disease-sop.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "中国各地区常见疾病地图",
+      "url": "https://pantosai.github.io/the-development-of-ai/china-disease-map.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "体位 · 姿势 · 步态 — 临床体征速查图谱",
+      "url": "https://pantosai.github.io/the-development-of-ai/posture-gait-atlas.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "头孢呋辛钠皮试液配制 · 完整操作手册",
+      "url": "https://pantosai.github.io/the-development-of-ai/cefuroxime-skin-test-prep.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "临床医生舌诊速查手册 · 2026",
+      "url": "https://pantosai.github.io/the-development-of-ai/tongue-diagnosis-quick-ref.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "临床用药速查 · 西药与中成药",
+      "url": "https://pantosai.github.io/the-development-of-ai/%E4%B8%B4%E5%BA%8A%E7%94%A8%E8%8D%AF%E9%80%9F%E6%9F%A5.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "自费疫苗速查",
+      "url": "https://pantosai.github.io/the-development-of-ai/vaccines.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "医院职能分工总览",
+      "url": "https://pantosai.github.io/the-development-of-ai/hospital-functions.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "circRNA × 神经系统疾病 · 科研思维习惯培养",
+      "url": "https://pantosai.github.io/the-development-of-ai/circrna-research-thinking.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "医学科研论文写作 · 四阶段流程",
+      "url": "https://pantosai.github.io/the-development-of-ai/medical-paper-writing.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "医学知识供应链 · 从产生到床旁",
+      "url": "https://pantosai.github.io/the-development-of-ai/%E5%8C%BB%E5%AD%A6%E7%9F%A5%E8%AF%86%E4%BE%9B%E5%BA%94%E9%93%BE.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "肠-骨轴（Gut-Bone Axis）知识库",
+      "url": "https://pantosai.github.io/the-development-of-ai/gut-bone-axis-knowledge-base.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "心律 · 介入 — 县域心血管五讲精读",
+      "url": "https://pantosai.github.io/the-development-of-ai/%E5%BF%83%E5%BE%8B%E5%A4%B1%E5%B8%B8%E4%B8%8E%E7%93%A3%E8%86%9C%E4%BB%8B%E5%85%A5_%E4%BA%94%E8%AE%B2%E7%B2%BE%E8%AF%BB.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "人体疲劳的完整生理过程与免疫关联",
+      "url": "https://pantosai.github.io/the-development-of-ai/human-fatigue-physiology.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "心·动中国 · 精神心理临床实践学习版",
+      "url": "https://pantosai.github.io/the-development-of-ai/%E5%BF%83%E5%8A%A8%E4%B8%AD%E5%9B%BD%E6%9A%A8%E9%9D%9E%E7%B2%BE%E7%A5%9E%E7%A7%91%E5%8C%BB%E5%8A%A1%E4%BA%BA%E5%91%98%E7%B2%BE%E7%A5%9E%E5%BF%83%E7%90%86%E6%9C%8D%E5%8A%A1%E8%83%BD%E5%8A%9B%E6%8F%90%E5%8D%87.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "中国共产党章程 · 学习手册",
+      "url": "https://pantosai.github.io/the-development-of-ai/%E5%85%9A%E7%AB%A0%E5%AD%A6%E4%B9%A0%E6%89%8B%E5%86%8C.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "财政局是怎么运转的",
+      "url": "https://pantosai.github.io/the-development-of-ai/%E8%B4%A2%E6%94%BF%E5%B1%80%E5%B7%A5%E4%BD%9C%E5%85%A8%E6%99%AF.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "市场监管执法人员违规处罚对照",
+      "url": "https://pantosai.github.io/the-development-of-ai/%E5%B8%82%E5%9C%BA%E7%9B%91%E7%AE%A1%E6%89%A7%E6%B3%95%E4%BA%BA%E5%91%98%E8%BF%9D%E8%A7%84%E5%A4%84%E7%BD%9A%E5%AF%B9%E7%85%A7.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "一人公司 · 拆解笔记",
+      "url": "https://pantosai.github.io/the-development-of-ai/%E4%B8%80%E4%BA%BA%E5%85%AC%E5%8F%B8%E6%8B%86%E8%A7%A3%E7%AC%94%E8%AE%B0.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "AI × IP 定位图",
+      "url": "https://pantosai.github.io/the-development-of-ai/ai-ip-map.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Vibe Marketing · 分栏完整指南",
+      "url": "https://pantosai.github.io/the-development-of-ai/vibe_marketing_tabbed.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "自我改善 · 四条",
+      "url": "https://pantosai.github.io/the-development-of-ai/%E8%87%AA%E6%88%91%E6%94%B9%E5%96%84_%E5%9B%9B%E6%9D%A1.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "以己为镜 · 性格自我勘测仪",
+      "url": "https://pantosai.github.io/the-development-of-ai/%E4%BB%A5%E5%B7%B1%E4%B8%BA%E9%95%9C-%E6%80%A7%E6%A0%BC%E8%87%AA%E6%88%91%E5%8B%98%E6%B5%8B%E4%BB%AA.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "中国美食地图 · 各省市地标美食",
+      "url": "https://pantosai.github.io/the-development-of-ai/china-food-map.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "中国旅游图志 · 山河人文",
+      "url": "https://pantosai.github.io/the-development-of-ai/china-travel-map.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "中华八大菜系",
+      "url": "https://pantosai.github.io/the-development-of-ai/cuisine-systems.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "汽车系统全览",
+      "url": "https://pantosai.github.io/the-development-of-ai/car-systems.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "Softmaxxing 形象提升专栏",
+      "url": "https://pantosai.github.io/the-development-of-ai/Softmaxxing%E5%BD%A2%E8%B1%A1%E4%B8%93%E6%A0%8F.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "中国中小学数学知识结构图 · 全学段",
+      "url": "https://pantosai.github.io/the-development-of-ai/k12-math-structure.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "资源 · 一张被你撞见的地图",
+      "url": "https://pantosai.github.io/the-development-of-ai/resource.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "乒乓球旋转 · 深度图解",
+      "url": "https://pantosai.github.io/the-development-of-ai/%E4%B9%92%E4%B9%93%E7%90%83%E6%97%8B%E8%BD%AC%E6%B7%B1%E5%BA%A6%E5%9B%BE%E8%A7%A3.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "欧洲五大联赛 · 2025-26 赛季完全指南",
+      "url": "https://pantosai.github.io/the-development-of-ai/european-football-2025-26.html"
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "LOLM 峡谷攻略手册",
+      "url": "https://pantosai.github.io/the-development-of-ai/lolm_guide.html"
+    }
+  ]
+}
+</script>
 </body>
 </html>

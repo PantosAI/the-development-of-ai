@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>circRNA × 神经系统疾病 · 科研思维习惯培养</title>
+<style>
+  :root{
+    --paper:#FBFAF7;
+    --paper-2:#F4F1EA;
+    --ink:#1C2B33;
+    --ink-soft:#3A4A52;
+    --petrol:#2A6F77;
+    --petrol-deep:#1F555B;
+    --red:#C8453C;
+    --muted:#6B7670;
+    --line:#E4E0D6;
+    --line-soft:#EEEAE1;
+    --shadow:0 1px 2px rgba(28,43,51,.04), 0 6px 24px rgba(28,43,51,.06);
+    --serif:Georgia,"Times New Roman","Songti SC","STSong",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    font-size:16px;
+  }
+
+  /* ---------- layout shell ---------- */
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- header ---------- */
+  header.hero{padding:72px 0 36px;border-bottom:1px solid var(--line);}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--petrol);margin:0 0 18px;
+  }
+  h1.title{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(34px,6vw,56px);
+    line-height:1.08;
+    letter-spacing:-.01em;
+    margin:0 0 18px;
+  }
+  h1.title em{font-style:italic;color:var(--petrol-deep);}
+  .lede{font-size:17px;color:var(--ink-soft);max-width:62ch;margin:0;}
+  .lede .pen{color:var(--red);font-style:italic;font-weight:600;}
+  .lede .quote{margin:18px 0 0;padding:14px 18px;border-left:3px solid var(--red);background:#FBF1F0;border-radius:0 12px 12px 0;font-family:var(--serif);font-size:16px;color:var(--ink);}
+
+  /* ---------- nav ---------- */
+  nav.phases{
+    position:sticky;top:0;z-index:20;
+    background:rgba(251,250,247,.9);
+    backdrop-filter:saturate(150%) blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .phases-inner{
+    max-width:920px;margin:0 auto;padding:0 24px;
+    display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;
+  }
+  .phases-inner::-webkit-scrollbar{display:none;}
+  nav.phases a{
+    flex:0 0 auto;
+    display:flex;align-items:baseline;gap:8px;
+    padding:16px 16px;
+    text-decoration:none;color:var(--muted);
+    border-bottom:2px solid transparent;
+    transition:color .2s,border-color .2s;
+    white-space:nowrap;
+  }
+  nav.phases a .n{font-family:var(--mono);font-size:12px;}
+  nav.phases a .t{font-size:14px;font-weight:600;}
+  nav.phases a:hover{color:var(--ink);}
+  nav.phases a.active{color:var(--ink);border-bottom-color:var(--red);}
+  nav.phases a.active .n{color:var(--red);}
+
+  /* ---------- section ---------- */
+  section{padding:64px 0;border-bottom:1px solid var(--line);}
+  .head{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start;margin-bottom:32px;}
+  .numeral{
+    font-family:var(--serif);
+    font-size:clamp(56px,10vw,92px);
+    line-height:.8;font-weight:600;
+    color:transparent;
+    -webkit-text-stroke:1.4px var(--petrol);
+    text-stroke:1.4px var(--petrol);
+    user-select:none;
+  }
+  section.acc .numeral{-webkit-text-stroke-color:var(--red);text-stroke:1.4px var(--red);}
+  .titles h2{
+    font-family:var(--serif);font-weight:600;
+    font-size:clamp(24px,4vw,32px);margin:2px 0 4px;letter-spacing:-.01em;
+  }
+  .titles .en{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--petrol);}
+  .titles .note{color:var(--ink-soft);margin:10px 0 0;font-size:15px;max-width:62ch;}
+
+  /* ---------- one-liner core ---------- */
+  .core{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:22px 24px;box-shadow:var(--shadow);
+    margin:6px 0 24px;
+    display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;
+  }
+  .core .k{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);}
+  .core .v{font-family:var(--serif);font-size:19px;color:var(--ink);line-height:1.4;}
+
+  /* ---------- step cards ---------- */
+  .step{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:22px 24px;box-shadow:var(--shadow);
+    margin-bottom:16px;
+  }
+  .step h3{
+    margin:0 0 12px;font-size:16px;font-weight:700;color:var(--ink);
+    display:flex;align-items:center;gap:10px;
+  }
+  .step h3 .dot{width:7px;height:7px;border-radius:50%;background:var(--petrol);flex:0 0 auto;}
+  section.acc .step h3 .dot{background:var(--red);}
+  .step ul{margin:0;padding-left:0;list-style:none;display:grid;gap:8px;}
+  .step ul li{position:relative;padding-left:20px;color:var(--ink-soft);font-size:15px;}
+  .step ul li::before{
+    content:"";position:absolute;left:2px;top:11px;
+    width:8px;height:1px;background:var(--petrol);
+  }
+  section.acc .step ul li::before{background:var(--red);}
+  .step ul li b{color:var(--ink);font-weight:600;}
+  .tag{
+    display:inline-block;font-family:var(--mono);font-size:11px;
+    letter-spacing:.05em;color:var(--petrol-deep);background:var(--paper-2);
+    border:1px solid var(--line);border-radius:6px;padding:1px 7px;margin:0 1px;
+  }
+  .tag.red{color:var(--red);border-color:#EBC8C5;background:#FBF1F0;}
+
+  /* ---------- case map ---------- */
+  .case{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:14px;
+    padding:22px 24px;margin:6px 0 24px;
+  }
+  .case .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--petrol);margin:0 0 10px;display:flex;align-items:center;gap:8px;}
+  .case .lbl::before{content:"";width:24px;height:1px;background:var(--petrol);}
+  .case .body{font-size:15px;color:var(--ink);}
+  .case .body p{margin:0 0 8px;}
+  .case .body p:last-child{margin:0;}
+  .case .body b{color:var(--petrol-deep);}
+
+  /* ---------- compare table ---------- */
+  .compare{
+    background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    box-shadow:var(--shadow);margin:6px 0 24px;
+  }
+  .compare .row{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid var(--line-soft);}
+  .compare .row:last-child{border-bottom:none;}
+  .compare .cell{padding:14px 18px;font-size:14.5px;color:var(--ink-soft);}
+  .compare .cell.k{background:var(--paper-2);font-family:var(--serif);font-weight:600;color:var(--petrol-deep);border-right:1px solid var(--line-soft);}
+
+  /* ---------- chain flow ---------- */
+  .chain{
+    display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+    margin:6px 0 0;
+  }
+  .chain .chip{
+    font-size:14px;font-weight:600;color:var(--ink);
+    background:#fff;border:1px solid var(--line);border-radius:999px;
+    padding:7px 15px;box-shadow:var(--shadow);
+  }
+  .chain .chip.dim{color:var(--muted);border-style:dashed;background:transparent;box-shadow:none;}
+  .chain .chip.red{color:var(--red);border-color:#EBC8C5;}
+  .chain .arr{color:var(--petrol);font-family:var(--mono);font-size:13px;}
+
+  /* ---------- training tip ---------- */
+  .tip{
+    margin-top:24px;border-left:3px solid var(--red);background:var(--paper-2);
+    border-radius:0 12px 12px 0;padding:18px 22px;
+  }
+  .tip .k{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin:0 0 8px;}
+  .tip p{margin:0;font-family:var(--serif);font-size:18px;color:var(--ink);line-height:1.5;}
+  .tip p + p{margin-top:10px;}
+
+  /* ---------- appendix ---------- */
+  .idtable{
+    background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  .idtable .idrow{
+    display:grid;grid-template-columns:34px 150px 1fr;gap:0;
+    border-bottom:1px solid var(--line-soft);align-items:center;
+  }
+  .idtable .idrow:last-child{border-bottom:none;}
+  .idtable .idn{
+    text-align:center;font-family:var(--mono);font-size:13px;color:var(--petrol);
+    align-self:stretch;display:flex;align-items:center;justify-content:center;
+    background:var(--paper-2);border-right:1px solid var(--line-soft);
+  }
+  .idtable .idk{padding:14px 16px;font-weight:600;font-size:15px;color:var(--ink);}
+  .idtable .idv{padding:14px 16px;font-size:14px;color:var(--ink-soft);word-break:break-all;}
+  .idtable .idv .code{
+    font-family:var(--mono);font-size:14px;color:var(--petrol-deep);
+    background:var(--paper-2);border:1px solid var(--line);border-radius:6px;
+    padding:1px 8px;letter-spacing:.02em;display:inline-block;margin:0 4px 4px 0;
+  }
+  .idtable .idv .ann{display:block;margin-top:5px;font-size:12.5px;color:var(--muted);}
+
+  /* ---------- pitfall grid ---------- */
+  .pitfall{
+    display:grid;gap:12px;margin:6px 0 0;
+  }
+  .pitfall .card{
+    background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:16px 18px;
+    display:grid;grid-template-columns:32px 1fr;gap:12px;align-items:start;
+  }
+  .pitfall .card .x{
+    font-family:var(--mono);font-size:14px;font-weight:600;color:#fff;
+    background:var(--red);width:28px;height:28px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .pitfall .card h4{margin:0 0 4px;font-size:15px;color:var(--ink);}
+  .pitfall .card p{margin:0;font-size:14px;color:var(--ink-soft);}
+
+  /* ---------- ref list ---------- */
+  .ref{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;box-shadow:var(--shadow);
+    display:grid;gap:14px;
+  }
+  .ref .item{
+    display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;
+    font-size:14px;color:var(--ink-soft);
+  }
+  .ref .item .n{
+    font-family:var(--mono);font-size:11px;color:var(--red);
+    background:#FBF1F0;border:1px solid #EBC8C5;border-radius:6px;
+    padding:3px 7px;flex:0 0 auto;
+  }
+  .ref .item .body b{color:var(--ink);font-weight:600;}
+  .ref .item .body a{color:var(--petrol-deep);text-decoration:none;border-bottom:1px solid var(--line);}
+  .ref .item .body a:hover{border-bottom-color:var(--petrol);}
+
+  /* ---------- chain diagram ---------- */
+  .chain-diagram{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:32px 24px 24px;box-shadow:var(--shadow);margin:6px 0 18px;
+    overflow-x:auto;
+  }
+  .chain-diagram svg{display:block;margin:0 auto;max-width:100%;height:auto;min-width:900px;}
+
+  .chain-legend{
+    display:flex;flex-wrap:wrap;gap:18px;justify-content:center;
+    margin:0 0 24px;padding:14px 18px;
+    background:var(--paper-2);border-radius:10px;
+    font-size:12.5px;color:var(--ink-soft);
+  }
+  .chain-legend .leg-item{display:flex;align-items:center;gap:6px;}
+  .chain-legend .leg-dot{width:12px;height:12px;border-radius:50%;display:inline-block;}
+  .chain-legend .leg-dot.start{background:#FBF1F0;border:2px solid var(--red);}
+  .chain-legend .leg-dot.mid{background:white;border:2px solid var(--petrol);}
+  .chain-legend .leg-line{width:22px;height:2px;background:var(--petrol);display:inline-block;border-radius:2px;}
+  .chain-legend .leg-line.dashed{background:transparent;border-top:2px dashed #EBC8C5;}
+
+  .chain-summary{
+    display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 24px;
+  }
+  .chain-summary .cs-item{
+    display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start;
+    background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;
+  }
+  .chain-summary .cs-num{
+    font-family:var(--serif);font-size:14px;font-weight:600;
+    color:#fff;background:var(--petrol);width:28px;height:28px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    margin-top:2px;
+  }
+  .chain-summary .cs-item.accent .cs-num{background:var(--red);}
+  .chain-summary .cs-body{font-size:13.5px;color:var(--ink-soft);line-height:1.55;}
+  .chain-summary .cs-body b{color:var(--ink);font-weight:600;}
+
+  /* ---------- chain diagram animation ---------- */
+  @keyframes nodeFadeIn{
+    from{opacity:0;}
+    to{opacity:1;}
+  }
+  @keyframes arrowDraw{
+    to{stroke-dashoffset:0;}
+  }
+  @keyframes labelFadeIn{
+    from{opacity:0;transform:translateY(4px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  .chain-diagram .node{
+    opacity:0;
+    animation:nodeFadeIn .55s ease-out forwards;
+  }
+  .chain-diagram .node-1{animation-delay:.30s;}
+  .chain-diagram .node-2{animation-delay:.85s;}
+  .chain-diagram .node-3{animation-delay:1.40s;}
+  .chain-diagram .node-4{animation-delay:1.95s;}
+  .chain-diagram .node-5{animation-delay:2.50s;}
+  .chain-diagram .node-6{animation-delay:3.05s;}
+  .chain-diagram .arrow{
+    stroke-dasharray:60;
+    stroke-dashoffset:60;
+    animation:arrowDraw .45s ease-out forwards;
+  }
+  .chain-diagram .arrow-12{animation-delay:.65s;}
+  .chain-diagram .arrow-23{animation-delay:1.20s;}
+  .chain-diagram .arrow-34{animation-delay:1.75s;}
+  .chain-diagram .arrow-45{animation-delay:2.30s;}
+  .chain-diagram .arrow-56{animation-delay:2.85s;}
+  .chain-diagram .label{
+    opacity:0;
+    transform-box:fill-box;
+    transform-origin:center;
+    animation:labelFadeIn .5s ease-out forwards;
+  }
+  .chain-diagram .label-1{animation-delay:.60s;}
+  .chain-diagram .label-2{animation-delay:1.15s;}
+  .chain-diagram .label-3{animation-delay:1.70s;}
+  .chain-diagram .label-4{animation-delay:2.25s;}
+  .chain-diagram .label-5{animation-delay:2.80s;}
+  .chain-diagram .label-6{animation-delay:3.35s;}
+  .chain-diagram .loop-arc{
+    opacity:0;
+    animation:nodeFadeIn 1.6s ease-in-out forwards;
+    animation-delay:3.85s;
+  }
+  .chain-diagram .loop-arrow{
+    opacity:0;
+    animation:nodeFadeIn .45s ease-out forwards;
+    animation-delay:5.35s;
+  }
+  .chain-diagram .loop-label{
+    opacity:0;
+    animation:nodeFadeIn .55s ease-out forwards;
+    animation-delay:3.85s;
+  }
+  .chain-diagram .summary,
+  .chain-summary{
+    opacity:0;
+    animation:nodeFadeIn .6s ease-out forwards;
+    animation-delay:5.85s;
+  }
+  .chain-diagram .play-hint{
+    opacity:0;
+    animation:nodeFadeIn .55s ease-out forwards;
+    animation-delay:6.45s;
+  }
+  @media (prefers-reduced-motion:reduce){
+    .chain-diagram .node,
+    .chain-diagram .arrow,
+    .chain-diagram .label,
+    .chain-diagram .loop-arc,
+    .chain-diagram .loop-arrow,
+    .chain-diagram .loop-label,
+    .chain-diagram .summary,
+    .chain-diagram .play-hint{
+      animation:none;
+      opacity:1;
+      stroke-dashoffset:0;
+      transform:none;
+    }
+  }
+
+  /* ---------- footer ---------- */
+  footer{padding:40px 0 64px;color:var(--muted);font-size:13px;}
+  footer .rule{height:1px;background:var(--line);margin-bottom:24px;}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:560px){
+    .head{grid-template-columns:1fr;gap:8px;}
+    .numeral{font-size:64px;}
+    .core{grid-template-columns:1fr;gap:6px;}
+    .compare .row{grid-template-columns:1fr;}
+    .compare .cell.k{border-right:none;border-bottom:1px solid var(--line-soft);}
+    .idtable .idrow{grid-template-columns:30px 110px 1fr;}
+  }
+
+  /* ---------- print ---------- */
+  @media print{
+    nav.phases{display:none;}
+    body{font-size:12px;}
+    section{break-inside:avoid;padding:24px 0;}
+    .step,.case,.compare,.core,.idtable,.ref,.tip{box-shadow:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">课堂讲义 · 12 个思维习惯</p>
+    <h1 class="title">circRNA × 神经系统疾病<br>·<em>科研思维习惯培养</em></h1>
+    <p class="lede">用一个具体的研究领域（circRNA × 神级系统疾病），把"做科研"这件事分解成 <b>12 个可训练的思维习惯</b>。方法论可以照搬，<span class="pen">思维习惯只能训练</span>——下次看到任何课题，你都能用同样的思路走通。</p>
+    <p class="lede quote">
+      所有基础研究的努力，<b>最终都要回到临床</b>。<br>
+      这份讲义不是 circRNA 知识手册，而是借这个课题，练一套可迁移的科研思维。
+    </p>
+  </div>
+</header>
+
+<nav class="phases" aria-label="思维习惯导航">
+  <div class="phases-inner">
+    <a href="#chain"><span class="n">链</span><span class="t">6 阶段链路图</span></a>
+    <a href="#m1"><span class="n">01</span><span class="t">从临床反常点出发</span></a>
+    <a href="#m2"><span class="n">02</span><span class="t">三重过滤筛选</span></a>
+    <a href="#m3"><span class="n">03</span><span class="t">跨物种跨组织双重验证</span></a>
+    <a href="#m4"><span class="n">04</span><span class="t">A 通过 B 的三段证实</span></a>
+    <a href="#m5"><span class="n">05</span><span class="t">位置正确性共定位</span></a>
+    <a href="#m6"><span class="n">06</span><span class="t">双面性干预</span></a>
+    <a href="#m7"><span class="n">07</span><span class="t">临床终点倒推机制</span></a>
+    <a href="#m8"><span class="n">08</span><span class="t">三新立项金标准</span></a>
+    <a href="#m9"><span class="n">09</span><span class="t">临床转化闭环</span></a>
+    <a href="#m10"><span class="n">10</span><span class="t">体外体内双轨验证</span></a>
+    <a href="#m11"><span class="n">11</span><span class="t">细胞特异性精准</span></a>
+    <a href="#m12"><span class="n">12</span><span class="t">技术选择目的导向</span></a>
+    <a href="#case"><span class="n">案</span><span class="t">circTLK1 案例论文</span></a>
+    <a href="#pitfalls"><span class="n">坑</span><span class="t">临床医生常见坑</span></a>
+    <a href="#refs"><span class="n">参</span><span class="t">参考文献</span></a>
+  </div>
+</nav>
+
+<!-- ============ 链路图 ============ -->
+<section id="chain">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral" style="-webkit-text-stroke-color:var(--red);text-stroke-color:var(--red);">链</div>
+      <div class="titles">
+        <span class="en">The chain · full pipeline</span>
+        <h2>科研思路 · 6 阶段链路图</h2>
+        <p class="note">从临床反常点到临床转化闭环——12 个思维习惯凝练成的 6 阶段完整链路。<b>起点是临床，终点也是临床</b>。</p>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="k">一句话核心</div>
+      <div class="v">科研不是串行的 12 步，而是<b>闭环的 6 段</b>——临床 → 机制 → 临床。</div>
+    </div>
+
+    <div class="chain-diagram">
+      <svg viewBox="0 0 950 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="科研思路链路图">
+        <defs>
+          <marker id="arrow-petrol" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#2A6F77"/>
+          </marker>
+          <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#C8453C"/>
+          </marker>
+        </defs>
+
+        <!-- 闭环弧线：从 06 顶部回到 01 顶部 -->
+        <path class="loop-arc" d="M 830 110 C 830 55, 830 35, 455 35 C 80 35, 80 55, 80 110"
+              stroke="#EBC8C5" stroke-width="1.6" fill="none"
+              stroke-dasharray="5 5"/>
+        <!-- 闭环箭头（指向 01） -->
+        <path class="loop-arrow" d="M 80 110 L 80 128" stroke="#C8453C" stroke-width="1.6" fill="none" marker-end="url(#arrow-red)"/>
+        <!-- 闭环说明 -->
+        <text class="loop-label" x="455" y="40" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="13" fill="#C8453C" font-style="italic" font-weight="600">闭环 · 临床 → 机制 → 临床</text>
+
+        <!-- 节点 1：临床反常点（红色起点） -->
+        <g class="node node-1">
+          <circle cx="80" cy="160" r="50" fill="#FBF1F0" stroke="#C8453C" stroke-width="2.5"/>
+          <text x="80" y="146" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#C8453C" font-weight="700" letter-spacing="0.15em">01</text>
+          <text x="80" y="166" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#1C2B33" font-weight="700">临床</text>
+          <text x="80" y="184" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#1C2B33" font-weight="700">反常点</text>
+        </g>
+        <text class="label label-1" x="80" y="240" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#2A6F77" font-weight="600">M01 · M07</text>
+        <text class="label label-1" x="80" y="260" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#6B7670">终点倒推机制</text>
+        <text class="label label-1" x="80" y="278" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#6B7670">"病人为什么这样"</text>
+
+        <!-- 箭头 1→2 -->
+        <path class="arrow arrow-12" d="M 135 160 L 175 160" stroke="#2A6F77" stroke-width="2" fill="none" marker-end="url(#arrow-petrol)"/>
+
+        <!-- 节点 2：三重过滤 -->
+        <g class="node node-2">
+          <circle cx="230" cy="160" r="50" fill="white" stroke="#2A6F77" stroke-width="2.5"/>
+          <text x="230" y="146" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#2A6F77" font-weight="700" letter-spacing="0.15em">02</text>
+          <text x="230" y="166" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#1C2B33" font-weight="700">三重</text>
+          <text x="230" y="184" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#1C2B33" font-weight="700">过滤</text>
+        </g>
+        <text class="label label-2" x="230" y="240" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#2A6F77" font-weight="600">M02</text>
+        <text class="label label-2" x="230" y="260" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#6B7670">显著 + P + FC</text>
+        <text class="label label-2" x="230" y="278" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#6B7670">三层过滤机制</text>
+
+        <!-- 箭头 2→3 -->
+        <path class="arrow arrow-23" d="M 285 160 L 325 160" stroke="#2A6F77" stroke-width="2" fill="none" marker-end="url(#arrow-petrol)"/>
+
+        <!-- 节点 3：双重验证 -->
+        <g class="node node-3">
+          <circle cx="380" cy="160" r="50" fill="white" stroke="#2A6F77" stroke-width="2.5"/>
+          <text x="380" y="146" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#2A6F77" font-weight="700" letter-spacing="0.15em">03</text>
+          <text x="380" y="166" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#1C2B33" font-weight="700">跨物种</text>
+          <text x="380" y="184" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#1C2B33" font-weight="700">跨组织</text>
+        </g>
+        <text class="label label-3" x="380" y="240" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#2A6F77" font-weight="600">M03</text>
+        <text class="label label-3" x="380" y="260" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#6B7670">小鼠 + 人</text>
+        <text class="label label-3" x="380" y="278" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#6B7670">血 + 靶组织</text>
+
+        <!-- 箭头 3→4 -->
+        <path class="arrow arrow-34" d="M 435 160 L 475 160" stroke="#2A6F77" stroke-width="2" fill="none" marker-end="url(#arrow-petrol)"/>
+
+        <!-- 节点 4：机制深挖（红色高亮） -->
+        <g class="node node-4">
+          <circle cx="530" cy="160" r="50" fill="#FBF1F0" stroke="#C8453C" stroke-width="2.5"/>
+          <text x="530" y="146" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#C8453C" font-weight="700" letter-spacing="0.15em">04</text>
+          <text x="530" y="166" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#1C2B33" font-weight="700">机制</text>
+          <text x="530" y="184" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#1C2B33" font-weight="700">深挖</text>
+        </g>
+        <text class="label label-4" x="530" y="240" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#2A6F77" font-weight="600">M04 · M05</text>
+        <text class="label label-4" x="530" y="260" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#6B7670">A 通过 B</text>
+        <text class="label label-4" x="530" y="278" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#6B7670">反向 rescue 金标</text>
+
+        <!-- 箭头 4→5 -->
+        <path class="arrow arrow-45" d="M 585 160 L 625 160" stroke="#2A6F77" stroke-width="2" fill="none" marker-end="url(#arrow-petrol)"/>
+
+        <!-- 节点 5：功能验证 -->
+        <g class="node node-5">
+          <circle cx="680" cy="160" r="50" fill="white" stroke="#2A6F77" stroke-width="2.5"/>
+          <text x="680" y="146" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#2A6F77" font-weight="700" letter-spacing="0.15em">05</text>
+          <text x="680" y="166" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#1C2B33" font-weight="700">功能</text>
+          <text x="680" y="184" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#1C2B33" font-weight="700">验证</text>
+        </g>
+        <text class="label label-5" x="680" y="240" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#2A6F77" font-weight="600">M06 · M10 · M11</text>
+        <text class="label label-5" x="680" y="260" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#6B7670">双面 · 双轨</text>
+        <text class="label label-5" x="680" y="278" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#6B7670">细胞特异性</text>
+
+        <!-- 箭头 5→6 -->
+        <path class="arrow arrow-56" d="M 735 160 L 775 160" stroke="#2A6F77" stroke-width="2" fill="none" marker-end="url(#arrow-petrol)"/>
+
+        <!-- 节点 6：临床回归（红色高亮） -->
+        <g class="node node-6">
+          <circle cx="830" cy="160" r="50" fill="#FBF1F0" stroke="#C8453C" stroke-width="2.5"/>
+          <text x="830" y="146" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#C8453C" font-weight="700" letter-spacing="0.15em">06</text>
+          <text x="830" y="166" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#1C2B33" font-weight="700">临床</text>
+          <text x="830" y="184" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#1C2B33" font-weight="700">回归</text>
+        </g>
+        <text class="label label-6" x="830" y="240" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#2A6F77" font-weight="600">M08 · M09 · M12</text>
+        <text class="label label-6" x="830" y="260" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#6B7670">三新 · 闭环</text>
+        <text class="label label-6" x="830" y="278" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#6B7670">诊断·治疗·预后</text>
+
+        <!-- 底部总结 -->
+        <text class="play-hint" x="455" y="365" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="15" fill="#1F555B" font-style="italic" font-weight="600">从临床出发，到临床做终</text>
+      </svg>
+    </div>
+
+    <!-- 链路图图例 -->
+    <div class="chain-legend">
+      <div class="leg-item"><span class="leg-dot start"></span> 起点 / 终点（临床相关阶段）</div>
+      <div class="leg-item"><span class="leg-dot mid"></span> 过程阶段（机制相关阶段）</div>
+      <div class="leg-item"><span class="leg-line"></span> 主链路流向（临床 → 机制 → 临床）</div>
+      <div class="leg-item"><span class="leg-line dashed"></span> 闭环弧线（终点 → 起点）</div>
+    </div>
+
+    <!-- 6 阶段链路对照表 -->
+    <div class="chain-summary summary">
+      <div class="cs-item accent">
+        <div class="cs-num">01</div>
+        <div class="cs-body"><b>临床反常点</b>（M01 · M07）<br>从临床终点出发，"病人为什么这样" → 倒推机制</div>
+      </div>
+      <div class="cs-item">
+        <div class="cs-num">02</div>
+        <div class="cs-body"><b>三重过滤</b>（M02）<br>显著 + P 值 + 差异倍数 — 不只看 P 值</div>
+      </div>
+      <div class="cs-item">
+        <div class="cs-num">03</div>
+        <div class="cs-body"><b>跨物种 + 跨组织</b>（M03）<br>小鼠 → 人；血 → 靶组织 — 双重保险</div>
+      </div>
+      <div class="cs-item accent">
+        <div class="cs-num">04</div>
+        <div class="cs-body"><b>机制深挖</b>（M04 · M05）<br>A 通过 B 三段证实 + 位置正确性共定位</div>
+      </div>
+      <div class="cs-item">
+        <div class="cs-num">05</div>
+        <div class="cs-body"><b>功能验证</b>（M06 · M10 · M11）<br>双面性干预 + 体外体内双轨 + 细胞特异性</div>
+      </div>
+      <div class="cs-item accent">
+        <div class="cs-num">06</div>
+        <div class="cs-body"><b>临床回归</b>（M08 · M09 · M12）<br>三新立项 + 诊断 / 治疗 / 预后三落点</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p class="k">链路图使用说明</p>
+      <p>这张图不是流程图，而是<b>科研思路的"主链路"</b>——每个阶段对应 1-3 个思维习惯，每个思维习惯在下面有详细展开。</p>
+      <p><b>临床 → 机制 → 临床</b>的闭环设计，是这张图的核心——起点是临床，终点也是临床，机制研究只是中间环节。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 思维 01 ============ -->
+<section id="m1">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">01</div>
+      <div class="titles">
+        <span class="en">Mind 01 · From clinical anomaly</span>
+        <h2>从临床反常点出发</h2>
+        <p class="note">不要从"我有个 idea"开始，要从"临床为什么这样"开始——反常点是科研的天然入口。</p>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="k">一句话核心</div>
+      <div class="v">好课题不是想出来的，是从<b>临床反常点</b>里挖出来的。</div>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>为什么要从反常点出发</h3>
+      <ul>
+        <li>绝大多数"我想做 X 机制"的研究，发表时审稿人第一句就问：<b>"这个研究的临床问题是什么"</b></li>
+        <li>反过来——任何<b>临床现象</b>都有不"标准"的地方（疾病实例），那就是你的入口</li>
+        <li>反常点 = <b>未被满足的临床需求</b>（unmet need）+ <b>知识缺口</b>（knowledge gap）的交集</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>5 类典型临床反常点</h3>
+      <ul>
+        <li><b>同样的诊断，预后差异巨大</b> → 找"调控"机制</li>
+        <li><b>标准治疗无效，但某亚组有效</b> → 找"分型"机制</li>
+        <li><b>罕见并发症 vs 常见并发症</b> → 找"保护/易感"机制</li>
+        <li><b>男女 / 老幼差异</b> → 找"易感性"机制</li>
+        <li><b>动物模型 vs 临床现象不一致</b> → 找"种属差异"机制</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <p class="lbl">circTLK1 案例映射</p>
+      <div class="body">
+        <p>临床反常点：<b>缺血性脑卒中</b>（ischemic stroke）病人神经损伤程度差异巨大——同样的梗死面积，有人恢复很好，有人持续恶化。</p>
+        <p>姚红红课题组切入点：脑缺血后<b>神经元死亡的分子开关鲜为人知</b> → 找环状 RNA 这种新分子类别 → 锁定 circTLK1。</p>
+        <p>这条研究的逻辑不是"我们想做 circTLK1"，而是"<b>缺血后神经元为什么死亡</b>"——circTLK1 是答案之一。</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p class="k">习惯培养 · 起点测试</p>
+      <p>下次想立项时，先问自己 3 个问题：</p>
+      <p>① 临床现象里有<b>反常点</b>吗？② 这个反常点有<b>知识缺口</b>吗？③ 我的研究能回答<b>"为什么"</b>吗？</p>
+      <p>三个都是 yes → 这个课题值得做。一个 no → 重新审视。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 思维 02 ============ -->
+<section id="m2">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">02</div>
+      <div class="titles">
+        <span class="en">Mind 02 · Triple filter</span>
+        <h2>三重过滤的筛选思维</h2>
+        <p class="note">不只看 P 值——好候选必须过"显著 + 统计 + 倍数"三关。</p>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="k">一句话核心</div>
+      <div class="v">测序给你一千个差异 circRNA，真正值得研究的只有几个——<b>筛选标准决定科研质量</b>。</div>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>三层过滤机制</h3>
+      <ul>
+        <li><b>① 显著升高</b>（方向正确）—— 在 model 组中上调，方向与疾病一致</li>
+        <li><b>② 统计学差异</b>（不是噪音）—— P 值达标（一般 P &lt; 0.05），但不要单看 P 值</li>
+        <li><b>③ 差异倍数</b>（生物学意义）—— <b>FC 越大越好</b>，变化越大 → 生物学作用可能越大</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>P 值的常见误区</h3>
+      <ul>
+        <li><b>样本量越大，P 值越容易显著</b>——但生物学意义不一定强</li>
+        <li><b>P &lt; 0.05 ≠ 临床有用</b>——只是"不太可能由偶然产生"</li>
+        <li>真正决定候选价值的是 <b>FC（fold change）</b> + <b>效应量</b>，而不是 P 值本身</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <p class="lbl">circTLK1 案例映射</p>
+      <div class="body">
+        <p>tMCAO 小鼠 vs sham 小鼠，circTLK1 在 <b>血浆中显著升高</b>（P = 0.0136）+ <b>缺血性皮层中也显著升高</b>（P = 0.0013）——两层显著。</p>
+        <p>注意：研究里要报告的不仅是 P 值，还要报告具体倍数（多少 FC）和置信区间。</p>
+      </div>
+    </div>
+
+    <div class="compare">
+      <div class="row"><div class="cell k">错误筛选</div><div class="cell">只看 P &lt; 0.05 → 一千个候选 → 全做 → 全都浅尝辄止</div></div>
+      <div class="row"><div class="cell k">正确筛选</div><div class="cell">显著 + P 值 + FC 三层过滤 → 几个候选 → 深挖 → 出顶刊</div></div>
+    </div>
+
+    <div class="tip">
+      <p class="k">习惯培养 · 黄金标准</p>
+      <p>下次看候选时，问：</p>
+      <p>① FC &gt; 2？ ② P &lt; 0.05？ ③ 临床样本可获得？</p>
+      <p>三个都是 → 深做。任何一个否 → 重新评估。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 思维 03 ============ -->
+<section id="m3">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">03</div>
+      <div class="titles">
+        <span class="en">Mind 03 · Cross-species cross-tissue</span>
+        <h2>跨物种 + 跨组织双重验证</h2>
+        <p class="note">单一证据不算证据——临床转化的硬要求是"双保险"。</p>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="k">一句话核心</div>
+      <div class="v">小鼠里能做的事 → <b>必须</b> 在人体里验证一遍；血液里能查的 → <b>必须</b> 在靶组织里再确认一次。</div>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>为什么是"双重"</h3>
+      <ul>
+        <li><b>跨物种</b>：小鼠 ≠ 人。种属差异巨大（小鼠和人基因相似度约 85%，但调控网络差异大）</li>
+        <li><b>跨组织</b>：外周血 ≠ 靶器官。液体活检虽然方便，但<b>不能替代靶组织验证</b></li>
+        <li>临床医生做基础研究的独特优势：<b>天然有临床队列和临床样本</b>——这是纯基础研究者没有的</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>"保守性分析"的具体落地</h3>
+      <ul>
+        <li><b>保守性</b> = 这个分子 / 通路在不同物种、不同个体之间<b>是否稳定存在并发挥类似功能</b></li>
+        <li>对 circRNA 来说：候选 circRNA 在 <b>人外周血</b> + <b>人脑组织</b>（或脑脊液）都要验证</li>
+        <li>circTLK1 论文里：血浆样本来自 <b>59 名男性 + 12 名女性</b> 急性缺血性卒中患者 → 跨性别 + 跨个体的双重保险</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <p class="lbl">circTLK1 案例映射</p>
+      <div class="body">
+        <p>① <b>小鼠</b>：tMCAO 模型脑组织 + 血浆，circTLK1 升高</p>
+        <p>② <b>人体</b>：急性缺血性卒中患者血浆（71 例），circTLK1 升高</p>
+        <p>③ <b>跨组织</b>：外周血 ↑ + 脑组织 ↑ 同时验证</p>
+        <p>三个维度齐备 = <b>临床转化的硬条件成立</b></p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p class="k">习惯培养 · 自检清单</p>
+      <p>做完一项研究，问自己：</p>
+      <p>① 我的结论只在小鼠里成立吗？② 人体样本验证了吗？③ 外周血和靶组织都验证了吗？</p>
+      <p>任何一个 no → 这项研究的临床价值大打折扣。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 思维 04 ============ -->
+<section id="m4" class="acc">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">04</div>
+      <div class="titles">
+        <span class="en">Mind 04 · A via B · three-stage proof</span>
+        <h2>"A 通过 B 发挥作用" · 三段证实</h2>
+        <p class="note">机制证明的金标准——必须过"各自独立 + 机制关联 + 反向 rescue"三关。</p>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="k">一句话核心</div>
+      <div class="v">"<b>相关性 ≠ 因果</b>"——A 通过 B 发挥作用，必须用"反向 rescue"作为机制铁证。</div>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>第 1 段 · 各自独立成立（前提）</h3>
+      <ul>
+        <li><b>A 本身有功能</b>：干扰 A / 过表达 A → 表型变化</li>
+        <li><b>B 本身有功能</b>：干扰 B / 过表达 B → 表型变化</li>
+        <li>⚠️ 这一步只是前提，<b>不能证明 A 通过 B</b></li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>第 2 段 · 机制关联（核心）</h3>
+      <ul>
+        <li><b>思路 1（上游追溯）</b>：干扰 A → B 是否变？B 跟着变 = A 调控 B</li>
+        <li><b>思路 2（rescue）</b>：A↓ + B↑ → 表型被挽救？挽救成功 = A 依赖 B</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>第 3 段 · 反向 rescue（机制金标准）⭐⭐⭐</h3>
+      <ul>
+        <li><b>实验设计</b>：<span class="tag red">增加 A</span> 的同时 <span class="tag red">减少 B</span>，是否继续发挥作用？</li>
+        <li><b>不再发挥</b> = A <b>必须</b> 通过 B 通路 ✅（机制铁证）</li>
+        <li><b>继续发挥</b> = A 不完全依赖 B（还有别的通路）</li>
+        <li>这是经典的 <b>上位性分析（epistasis）</b>——分子机制研究的最高标准</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <p class="lbl">circTLK1 案例映射</p>
+      <div class="body">
+        <p>机制链：<b>circTLK1 ↑ → 吸附 miR-335-3p → 释放 TIPARP → 神经元损伤</b></p>
+        <p>三段验证：</p>
+        <p>① <b>各自独立</b>：敲低 circTLK1 → 减少脑梗死；改变 miR-335-3p → 影响 TIPARP</p>
+        <p>② <b>机制关联</b>：circTLK1 通过 miR-335-3p 调控 TIPARP（双荧光素酶 + RNA pull-down 验证结合）</p>
+        <p>③ <b>反向 rescue</b>：circTLK1 敲低 → 神经元保护；再阻断 miR-335-3p → 保护消失（即 TIPARP 重新升高）</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p class="k">习惯培养 · 机制可信度自查</p>
+      <p>你的"A 通过 B"过了几关？</p>
+      <p>① 各自独立成立？ ② 机制关联 rescue？ ③ 反向 rescue 验证？</p>
+      <p>三关全过 = 顶刊潜力。一关没过 = 文章被审稿人挑战的雷。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 思维 05 ============ -->
+<section id="m5" class="acc">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">05</div>
+      <div class="titles">
+        <span class="en">Mind 05 · Spatial correctness</span>
+        <h2>位置正确性 · 共定位思维</h2>
+        <p class="note">分子机制不只是表达，还要在空间上正确。</p>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="k">一句话核心</div>
+      <div class="v">两个分子表达都升高 ≠ 它们能互作——必须<b>在同一个细胞、同一个亚细胞结构</b> 才能互作。</div>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>为什么"位置"比"量"更重要</h3>
+      <ul>
+        <li><b>circRNA 在神经元表达</b> ≠ circRNA 跟星形胶质细胞里的 miRNA 互作</li>
+        <li><b>细胞核里的转录因子</b> ≠ 它能激活细胞质里 mRNA 的翻译</li>
+        <li><b>空间正确性</b> = 分子机制可信度的<b>前提条件</b></li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>双 FISH 是验证共定位的金标准 ⭐⭐</h3>
+      <ul>
+        <li>同时标记两个分子（不同荧光颜色，如红 + 绿）</li>
+        <li><b>重叠（黄色）= 共定位</b> = 空间上能互作</li>
+        <li>单分子 FISH 还能验证 <b>细胞特异性</b>（在哪种细胞表达）</li>
+        <li>另一篇 circTLK1 论文里就用了 <b>FISH 验证 circTLK1 与 miR-26a-5p 在 N2a 细胞质中共定位</b></li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <p class="lbl">circTLK1 案例映射</p>
+      <div class="body">
+        <p>姚红红课题组：circTLK1 在 <b>脑组织</b> 升高，但具体什么细胞？什么亚细胞结构？</p>
+        <p>解答：通过 <b>circTLK1 shRNA-GFP 慢病毒 + NeuN（神经元标志物）+ DAPI</b> 三色染色，明确 circTLK1 在 <b>皮层神经元</b> 富集。</p>
+        <p>这是细胞特异性的视觉铁证——不是"在脑里"，是"在皮层神经元里"。</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p class="k">习惯培养 · 共定位三问</p>
+      <p>① 你的两个分子 <b>是否在同一细胞</b>？② <b>是否在同一亚细胞结构</b>？③ 你有 <b>共定位的实验证据</b>（双 FISH）吗？</p>
+      <p>任何一个否 → 互作机制的可信度都要打折扣。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 思维 06 ============ -->
+<section id="m6">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">06</div>
+      <div class="titles">
+        <span class="en">Mind 06 · Double-sided intervention</span>
+        <h2>双面性干预思维</h2>
+        <p class="note">既看正常状态，也看疾病状态——单面证据是审稿人最爱攻击的点。</p>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="k">一句话核心</div>
+      <div class="v">干预实验必须看<b>两个面</b>：对正常状态的影响（脱靶 / 毒性）+ 对疾病状态的影响（疗效）。</div>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>单面干预的常见雷区</h3>
+      <ul>
+        <li>只在疾病模型里做了"敲低 → 改善" → 审稿人问：<b>在正常小鼠里也敲低会怎样？会不会引起其他问题？</b></li>
+        <li>只在细胞里做了"过表达 → 促进凋亡" → 审稿人问：<b>细胞毒性大吗？脱靶效应？</b></li>
+        <li>答案要么是"也做了但没放正文"，要么是"忘了"——两个都不合格</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>双面干预的实验设计</h3>
+      <ul>
+        <li><b>疾病状态</b>：tMCAO 模型 + circTLK1 敲低 → 减少脑梗死 ✅（疗效证据）</li>
+        <li><b>正常状态</b>：sham 小鼠 + circTLK1 敲低 → 没有显著毒性（脱靶 / 副作用证据）</li>
+        <li>两个都做 = <b>干预措施安全 + 有效</b> = 临床转化潜力 ↑</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <p class="lbl">circTLK1 案例映射</p>
+      <div class="body">
+        <p>论文里的实验设计：</p>
+        <p>① <b>sham + shRNA-Con</b>（正常对照）② <b>tMCAO + shRNA-Con</b>（疾病对照）③ <b>tMCAO + shRNA-circTLK1</b>（治疗组）</p>
+        <p>还有：<b>CBF（脑血流）监测</b> 排除了 shRNA 病毒本身对血流的影响 → 这是双面干预 + 控制变量的典型示范。</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p class="k">习惯培养 · 干预设计 checklist</p>
+      <p>① 正常对照 + 处理？② 疾病模型 + 处理？③ 副作用 / 脱靶评估？④ 剂量梯度（MOI / 浓度）？</p>
+      <p>四个都做 = 干预证据扎实。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 思维 07 ============ -->
+<section id="m7" class="acc">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">07</div>
+      <div class="titles">
+        <span class="en">Mind 07 · Clinical endpoint backwards</span>
+        <h2>临床终点倒推机制</h2>
+        <p class="note">这是临床医生做基础研究的独特优势——天然站在临床终点往前推。</p>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="k">一句话核心</div>
+      <div class="v">不是"我有个 idea 所以做"，是"病人为什么这样，所以倒推机制"。</div>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>两种科研范式对比</h3>
+      <ul>
+        <li><b>纯基础研究者</b>：细胞里看到 X 通路 → 想想有没有临床意义（<b>)</b>）</li>
+        <li><b>临床医生做基础研究</b>：病人为什么这样 → 倒推分子机制（<b>（正向</b>）</li>
+        <li>前者经常被审稿人批"临床意义不清"；后者天然有临床问题</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>倒推机制的 3 个起点</h3>
+      <ul>
+        <li><b>临床终点 1</b>：病人症状 / 体征 → 哪个分子 / 通路变化？</li>
+        <li><b>临床终点 2</b>：病人对治疗的反应 → 哪些分子预测反应？</li>
+        <li><b>临床终点 3</b>：病人预后差异 → 哪些分子区分预后？</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <p class="lbl">circTLK1 案例映射</p>
+      <div class="body">
+        <p>姚红红课题组的逻辑链（倒推）：</p>
+        <p>① <b>临床终点</b>：缺血性脑卒中后<b>神经元死亡</b> 是决定结局的关键</p>
+        <p>② <b>机制倒推</b>：什么分子开关控制神经元死亡？→ 锁定 circRNA（非编码 RNA 里新分子）</p>
+        <p>③ <b>证据链</b>：circTLK1 在病人血浆升高 → 小鼠 MCAO 升高 → 敲低改善 → 机制是 miR-335-3p/TIPARP 轴</p>
+        <p>整条链是<b>从病人到分子</b>，方向感极强。</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p class="k">习惯培养 · 范式测试</p>
+      <p>下次设计课题，问：</p>
+      <p>① 我的研究起点是<b>临床终点</b>还是<b>分子机制</b>？② 我的终点能回答"病人为什么这样"吗？③ 我的临床样本 / 数据能用上吗？</p>
+      <p>三个 yes = 临床医生做基础研究的正确姿势。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 思维 08 ============ -->
+<section id="m8" class="acc">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">08</div>
+      <div class="titles">
+        <span class="en">Mind 08 · Three-new gold standard</span>
+        <h2>三新立项金标准</h2>
+        <p class="note">"靶点新 药物新 方法新"——立题时必经的审视。</p>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="k">一句话核心</div>
+      <div class="v">没有"三新"中的任何一新，论文发出来也是静悄悄——立项时的硬分界线。</div>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>三新含义</h3>
+      <ul>
+        <li><b>靶点新</b>：分子 / 通路没人做过（或做得不深）。不是 cdr1as 这种老牌，是 circTLK1 这种新发现</li>
+        <li><b>药物新</b>：现有药物不解决问题，你的发现能指导新药 / 新策略（如 ASO、AAV）</li>
+        <li><b>方法新</b>：研究路径有创新（双 FISH + 神经元特异性干扰、RPAD 富集等）</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>分界线硬标准</h3>
+      <ul>
+        <li><b>三新全占</b> → 顶刊潜力 ⭐⭐⭐</li>
+        <li><b>占两新</b> → 一区潜力 ⭐⭐</li>
+        <li><b>占一新</b> → 核心刊 ⭐</li>
+        <li><b>零新</b> → <span class="tag red">不要立项</span> ⛔</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <p class="lbl">circTLK1 案例映射（三"三新自检"）</p>
+      <div class="body">
+        <p>① <b>靶点新</b> ✅ circTLK1 是新发现 circRNA（不是 cdr1as 老牌）</p>
+        <p>② <b>药物新</b> ✅ shRNA / ASO 靶向 circTLK1 = 潜在卒中治疗策略</p>
+        <p>③ <b>方法新</b> ✅ 神经元特异性 shRNA + 双 FISH 共定位 + 慢病毒脑内注射 + CBF 激光散斑监测</p>
+        <p><b>三新全占 → J Neurosci（IF ~ 5.6）</b>，符合顶级老牌期刊定位。</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p class="k">习惯培养 · 立题 3 问</p>
+      <p>① 我的<b>靶点</b>新吗？② 我的<b>转化潜力</b>新吗？③ 我的<b>方法</b>新吗？</p>
+      <p>三问 yes → 立项。一问 no → 重新审视。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 思维 09 ============ -->
+<section id="m9" class="acc">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">09</div>
+      <div class="titles">
+        <span class="en">Mind 09 · Clinical translation loop</span>
+        <h2>临床转化的闭环思维</h2>
+        <p class="note">所有基础研究的努力，最终都要回到临床——这是终点，也是初心。</p>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="k">一句话核心</div>
+      <div class="v"><b>临床 → 机制 → 临床</b>——这是临床医生做基础研究的完整闭环，比纯基础研究者的根本优势。</div>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>闭环的 3 段</h3>
+      <ul>
+        <li><b>起点（临床）</b>：从临床反常点出发（思维 01）</li>
+        <li><b>过程（机制）</b>：筛选 → 验证 → 机制（思维 02-06）</li>
+        <li><b>终点（临床）</b>：诊断 / 治疗 / 预后（思维 09 自己）</li>
+        <li>终点反过来又能成为新的起点（新的反常点）</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>回归临床的 3 个落点</h3>
+      <ul>
+        <li><b>诊断标志物</b>：circRNA 在患者血液中的水平 → 早筛 / 确诊 / 分型（液体活检）</li>
+        <li><b>治疗靶点</b>：机制明确 → 干预策略（小分子 / ASO / AAV）</li>
+        <li><b>预后预测</b>：表达水平 → 临床终点相关性（风险分层 / 治疗决策）</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <p class="lbl">circTLK1 案例映射（闭环落点）</p>
+      <div class="body">
+        <p>① <b>诊断</b>：circTLK1 在急性缺血性卒中患者血浆 ↑ → 潜在液体活检标志物</p>
+        <p>② <b>治疗</b>：靶向 circTLK1 的 ASO / shRNA → 减少脑梗死 → 神经保护策略</p>
+        <p>③ <b>预后</b>：circTLK1 水平 → 神经功能缺损程度（mRS / NIHSS 预测）</p>
+        <p>三个落点齐全 = 这条研究的临床价值清晰。</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p class="k">习惯培养 · 闭环自检</p>
+      <p>① 我的研究<b>从临床反常点出发</b>吗？② 我的<b>终点</b>能回到诊断 / 治疗 / 预后 吗？</p>
+      <p>两个 yes → 闭环成立。任何一个 no → 沦为"为了发文章而做研究"。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 思维 10 ============ -->
+<section id="m10">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">10</div>
+      <div class="titles">
+        <span class="en">Mind 10 · In vitro + in vivo dual track</span>
+        <h2>体外 + 体内双轨验证</h2>
+        <p class="note">体外控变量、机制清晰；体内生理相关、临床转化——两个都做才完整。</p>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="k">一句话核心</div>
+      <div class="v">体内 + 体外不是二选一，是 <b>"双轨"</b>——体外证因果，体内证生理。</div>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>两个轨道的角色分工</h3>
+      <ul>
+        <li><b>体外（细胞模型）</b>：控变量、机制清晰、因果链明确。可以做 rescue、mimics、inhibitor 等精细干预</li>
+        <li><b>体内（动物模型）</b>：生理相关、临床转化、有行为学读数。但变量多、机制不清晰</li>
+        <li>两个都做 = <b>机制 + 生理 = 完整证据链</b></li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>circRNA 研究的标配双轨</h3>
+      <ul>
+        <li><b>体外</b>：神经元细胞系（N2a / SH-SY5Y）+ OGD/R 模型（氧糖剥夺 / 再灌注）</li>
+        <li><b>体内</b>：tMCAO 小鼠模型（短暂性大脑中动脉闭塞）+ 行为学评估</li>
+        <li>circTLK1 2 篇论文里：体外用 <b>N2a + OGD/R</b>，体内用 <b>MCAO 小鼠</b>——标准双轨</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <p class="lbl">circTLK1 案例映射（双轨实验设计）</p>
+      <div class="body">
+        <p><b>体外（N2a + OGD/R）</b>：</p>
+        <p>① 验证 circTLK1 在 OGD/R 后升高 ② 敲低 / 过表达验证功能 ③ FISH 共定位 miRNA ④ 双荧光素酶验证结合</p>
+        <p><b>体内（MCAO 小鼠）</b>：</p>
+        <p>① 验证 circTLK1 在皮层 / 血浆升高 ② 慢病毒 shRNA 敲低 → 减少脑梗死 ③ CBF 监测血流 ④ NeuN 神经元标志物共标</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p class="k">习惯培养 · 双轨 checklist</p>
+      <p>① 我有<b>体外机制证据</b>（细胞 + OGD/R）？② 我有<b>体内功能证据</b>（动物 + 行为学）？</p>
+      <p>两个 yes = 证据链完整。一个 no → 审稿人必问。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 思维 11 ============ -->
+<section id="m11" class="acc">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">11</div>
+      <div class="titles">
+        <span class="en">Mind 11 · Cell-type specificity</span>
+        <h2>细胞特异性的精准思维</h2>
+        <p class="note">机制研究必须落到正确的细胞类型——不是"在哪里都行"。</p>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="k">一句话核心</div>
+      <div class="v">"<b>circRNA 在脑里升高</b>" ≠ "<b>circRNA 在神经元里升高</b>"——后者才有意义。</div>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>为什么要细胞特异性</h3>
+      <ul>
+        <li><b>大脑是混合细胞群</b>：神经元（约 50%）、星形胶质细胞（约 20%）、少突胶质细胞、微胶质细胞、血管细胞</li>
+        <li><b>不同细胞功能完全不同</b>：神经元负责信号传递，星形胶质细胞负责支持</li>
+        <li>如果 circRNA 在<b>星形胶质细胞</b>里高表达，但你用<b>神经元特异性 shRNA</b>来敲低——你什么都没敲到</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>细胞特异性怎么验证</h3>
+      <ul>
+        <li><b>免疫荧光共标</b>：circRNA 探针 + 神经元标志物（NeuN）/ 星形胶质细胞标志物（GFAP）/ 微胶质细胞标志物（Iba1）</li>
+        <li><b>细胞特异性启动子</b>：用 CaMKII（神经元）/ GFAP（星形胶质细胞）启动子驱动 shRNA</li>
+        <li><b>单细胞测序</b>：scRNA-seq 看 circRNA 在哪些细胞类型富集</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <p class="lbl">circTLK1 案例映射</p>
+      <div class="body">
+        <p>姚红红课题组通过 <b>circTLK1 shRNA-GFP 慢病毒 + NeuN 神经元标志物 + DAPI</b> 三色染色，明确 circTLK1 shRNA 感染的细胞 <b>绝大多数是 NeuN 阳性（神经元）</b>。</p>
+        <p>这是<b>神经元特异性干扰</b> 的视觉铁证——而不是泛指"在脑里"。</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p class="k">习惯培养 · 细胞特异性 3 问</p>
+      <p>① 我的干预目标 <b>在哪种细胞</b> 起作用？② 我用什么<b>标志物</b> 验证？③ 我用什么<b>特异性启动子</b> 干预？</p>
+      <p>三个 yes = 细胞特异性扎实。一个 no → 干预可能打偏。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 思维 12 ============ -->
+<section id="m12">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">12</div>
+      <div class="titles">
+        <span class="en">Mind 12 · Purpose-driven tech selection</span>
+        <h2>技术选择的目的导向思维</h2>
+        <p class="note">不是"用什么技术就做什么"，是"为了回答什么问题选什么技术"。</p>
+      </div>
+    </div>
+
+    <div class="core">
+      <div class="k">一句话核心</div>
+      <div class="v">技术是手段，<b>问题</b>才是目的——选技术的标准是"能不能回答我的科学问题"。</div>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>circRNA 研究的 5 类问题与对应技术</h3>
+      <ul>
+        <li><b>"表达多少"</b> → RT-PCR（定量）；<b>"在哪里"</b> → FISH（定位）；<b>"是不是真的环状"</b> → Northern blot（结构验证）</li>
+        <li><b>"跟谁结合"</b> → circRIP（物理结合）；<b>"功能"</b> → 敲低 / 过表达（细胞或动物）</li>
+        <li>每个问题都有"金标准技术"——不是最新最炫就好</li>
+      </ul>
+    </div>
+
+    <div class="compare">
+      <div class="row"><div class="cell k">问题导向（正确）</div><div class="cell">"我要验证 circTLK1 和 miR-335-3p 是否共定位" → 选 <b>双 FISH</b></div></div>
+      <div class="row"><div class="cell k">技术导向（错误）</div><div class="cell">"我们刚买了 FISH 设备" → 找问题来填 → 强行设计实验</div></div>
+    </div>
+
+    <div class="step">
+      <h3><span class="dot"></span>circRNA 研究技术全景对照</h3>
+      <ul>
+        <li><b>检测 / 鉴定</b>：RNA-seq（CIRI / CIRCexplorer / find_circ）、RT-PCR（divergent primers）、Northern blot、RNase R 抗性、Sanger</li>
+        <li><b>功能研究</b>：siRNA / shRNA、过表达载体（两侧 intron）、CRISPR / Cas13、ASO、AAV</li>
+        <li><b>机制研究</b>：FISH（单分子 / 双 FISH）、RIP、RNA pull-down、双荧光素酶、AGO2 CLIP</li>
+        <li><b>临床转化</b>：外泌体 circRNA、数字 PCR、原位杂交</li>
+      </ul>
+    </div>
+
+    <div class="case">
+      <p class="lbl">circTLK1 案例映射（目的导向的技术组合）</p>
+      <div class="body">
+        <p>① <b>问题 1：circTLK1 在 MCAO 后是否升高？</b> → RT-PCR（血浆 + 缺血皮层）</p>
+        <p>② <b>问题 2：敲低后是否有功能？</b> → 慢病毒 shRNA + 脑立体定位注射 + TTC 染色梗死体积</p>
+        <p>③ <b>问题 3：circTLK1 是否结合 miR-335-3p？</b> → 双荧光素酶 + RNA pull-down</p>
+        <p>④ <b>问题 4：circTLK1 与 miR-335-3p 是否共定位？</b> → 双 FISH（另一篇论文用 N2a 细胞）</p>
+        <p>⑤ <b>问题 5：临床样本是否也升高？</b> → 急性缺血性卒中患者血浆 RT-PCR（71 例）</p>
+        <p><b>每个技术都回答一个具体问题</b>——而不是堆技术。</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p class="k">习惯培养 · 技术选型 checklist</p>
+      <p>① 我的科学问题是什么？② 这个技术的<b>能力边界</b>是什么？③ 它是<b>金标准</b> 还是<b>辅助</b>？</p>
+      <p>三问 yes = 技术选型合理。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 案例论文 ============ -->
+<section id="case">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">案</div>
+      <div class="titles">
+        <span class="en">Case paper · The 5-point article</span>
+        <h2>circTLK1 案例论文 · 全信息卡</h2>
+        <p class="note">本讲义所有思维习惯的真实落地案例——姚红红课题组，J Neurosci 2019，IF ~ 5.6。</p>
+      </div>
+    </div>
+
+    <div class="case">
+      <p class="lbl">一句话总结</p>
+      <div class="body">
+        <p>circTLK1 通过 miR-335-3p/TIPARP 轴加重缺血性脑卒中后的神经元损伤和神经功能缺损——这是 circRNA 在 stroke 领域的第一篇"机制 + 临床转化"完整证据链研究。</p>
+      </div>
+    </div>
+
+    <div class="idtable">
+      <div class="idrow">
+        <div class="idn">1</div>
+        <div class="idk">论文标题</div>
+        <div class="idv">Circular RNA TLK1 Aggravates Neuronal Injury and Neurological Deficits after Ischemic Stroke via miR-335-3p/TIPARP</div>
+      </div>
+      <div class="idrow">
+        <div class="idn">2</div>
+        <div class="idk">期刊 · 影响因子</div>
+        <div class="idv"><span class="code">Journal of Neuroscience</span>（神经科学领域顶级老牌）· <span class="code">IF ~ 5.6（2019）</span><span class="ann">这就是你说的"5 分文章"——IF 与当时吻合</span></div>
+      </div>
+      <div class="idrow">
+        <div class="idn">3</div>
+        <div class="idk">作者 / 通讯</div>
+        <div class="idv">第一作者：<b>吴芳芳</b>（东南大学医学院博士生） · 通讯作者：<b>姚红红</b>（东南大学医学院教授）</div>
+      </div>
+      <div class="idrow">
+        <div class="idn">4</div>
+        <div class="idk">机构</div>
+        <div class="idv">东南大学医学院药理学系（主） · 中大医院神经内科 · 南京大学鼓楼医院神经内科</div>
+      </div>
+      <div class="idrow">
+        <div class="idn">5</div>
+        <div class="idk">DOI</div>
+        <div class="idv"><span class="code">10.1523/JNEUROSCI.0299-19.2019</span></div>
+      </div>
+      <div class="idrow">
+        <div class="idn">6</div>
+        <div class="idk">PMID</div>
+        <div class="idv"><span class="code">31311824</span><span class="ann">PubMed 唯一标识</span></div>
+      </div>
+      <div class="idrow">
+        <div class="idn">7</div>
+        <div class="idk">PMCID</div>
+        <div class="idv"><span class="code">PMC6759031</span><span class="ann">开放获取全文</span></div>
+      </div>
+      <div class="idrow">
+        <div class="idn">8</div>
+        <div class="idk">正式链接</div>
+        <div class="idv">
+          <span class="code">https://www.jneurosci.org/content/39/37/7369</span>
+          <span class="ann">期刊全文（J Neurosci）</span>
+        </div>
+      </div>
+      <div class="idrow">
+        <div class="idn">9</div>
+        <div class="idk">PubMed</div>
+        <div class="idv">
+          <span class="code">https://pubmed.ncbi.nlm.nih.gov/31311824/</span>
+          <span class="ann">PubMed 索引页</span>
+        </div>
+      </div>
+      <div class="idrow">
+        <div class="idn">10</div>
+        <div class="idk">PMC</div>
+        <div class="idv">
+          <span class="code">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6759031</span>
+          <span class="ann">PMC 全文（开放）</span>
+        </div>
+      </div>
+      <div class="idrow">
+        <div class="idn">11</div>
+        <div class="idk">发表时间</div>
+        <div class="idv">2019 年 7 月 16 日在线发表（<span class="code">J Neurosci 39(37): 7369-7393</span>）</div>
+      </div>
+      <div class="idrow">
+        <div class="idn">12</div>
+        <div class="idk">资助</div>
+        <div class="idv">国家自然科学基金、江苏特聘教授、国家重点基础研究发展计划（973 计划）</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p class="k">一句话定位</p>
+      <p>这是 <b>circRNA × 缺血性脑卒中</b> 领域第一篇"机制 + 临床转化"完整证据链的研究——也是本讲义 12 个思维习惯的真实落地案例。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 临床医生常见坑 ============ -->
+<section id="pitfalls" class="acc">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">坑</div>
+      <div class="titles">
+        <span class="en">Pitfalls · Common traps</span>
+        <h2>临床医生做基础研究的 5 类常见坑</h2>
+        <p class="note">每条坑都对应一个思维习惯的反面——把这些坑当成"反向 checklist"。</p>
+      </div>
+    </div>
+
+    <div class="pitfall">
+      <div class="card">
+        <div class="x">1</div>
+        <div>
+          <h4>坑 1：研究 = 经验总结</h4>
+          <p>把临床经验写成"我们做了 X 例治疗，效果良好"。这不是机制研究，是回顾性总结。对应思维 09：必须从机制走到临床落点，而不是反向。</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="x">2</div>
+        <div>
+          <h4>坑 2：只做机制不做临床相关性</h4>
+          <p>纯基础研究模式：细胞里看到分子变化 → 发表 → 审稿人批"临床意义不明"。对应思维 07：必须从临床终点倒推机制。</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="x">3</div>
+        <div>
+          <h4>坑 3：零新也要立项</h4>
+          <p>重复别人的研究 + 换了个基因 / 细胞 → 发出来也没价值。对应思维 08：三新必须占至少一个。</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="x">4</div>
+        <div>
+          <h4>坑 4：相关性 ≠ 因果</h4>
+          <p>"A 升高、B 升高"就声称"A 通过 B 调控"——这是相关，不是因果。对应思维 04：必须过反向 rescue 才算机制铁证。</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="x">5</div>
+        <div>
+          <h4>坑 5：堆技术不回答问题</h4>
+          <p>"我们用了 FISH + ChIP + RIP + WB + ..."→ 但每个技术都没回答一个具体的科学问题。对应思维 12：技术是手段，问题才是目的。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <p class="k">反向 checklist</p>
+      <p>写完一篇论文，问自己：</p>
+      <p>① 我有没有踩"经验总结"的坑？② 有没有"只做机制不接临床"？③ 有没有"零新"？④ 机制是相关还是因果？⑤ 每个技术都回答了具体问题吗？</p>
+      <p>5 个全 no = 一篇好论文。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 参考文献 ============ -->
+<section id="refs">
+  <div class="wrap">
+    <div class="head">
+      <div class="numeral">参</div>
+      <div class="titles">
+        <span class="en">References · Guidelines + Papers</span>
+        <h2>参考文献 · 最前沿指南 + 关键论文</h2>
+        <p class="note">circRNA 研究的"母方法论"——比任何单篇论文都重要。</p>
+      </div>
+    </div>
+
+    <div class="ref">
+
+      <div class="item">
+        <div class="n">核心论文</div>
+        <div class="body">
+          <b>Wu F, Han B, Wu S, et al.</b> Circular RNA TLK1 Aggravates Neuronal Injury and Neurological Deficits after Ischemic Stroke via miR-335-3p/TIPARP. <i>J Neurosci</i>. 2019;39(37):7369-7393.<br>
+          DOI: <a href="https://doi.org/10.1523/JNEUROSCI.0299-19.2019">10.1523/JNEUROSCI.0299-19.2019</a> · PMID: <a href="https://pubmed.ncbi.nlm.nih.gov/31311824/">31311824</a> · PMC: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6759031">PMC6759031</a><br>
+          全文：<a href="https://www.jneurosci.org/content/39/37/7369">https://www.jneurosci.org/content/39/37/7369</a>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="n">关联研究</div>
+        <div class="body">
+          <b>Knockdown of circular RNA tousled-like kinase 1 relieves ischemic stroke via miR-26a-5p/PTEN/IGF-1R/GLUT1 axis.</b> <i>Bioengineered</i>. 2022.<br>
+          PMC: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8973970/">PMC8973970</a><br>
+          <span style="color:var(--muted);">另一篇 circTLK1 在 stroke 中的研究，机制是 miR-26a-5p/PTEN 轴——证明 circTLK1 是 stroke 的多机制核心节点。</span>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="n">指南 1</div>
+        <div class="body">
+          <b>Best practices in circRNA research</b>（circRNA 研究最佳实践指南）<br>
+          Nature 子刊系列综述：<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9759028/">PMC9759028</a><br>
+          <span style="color:var(--muted);">circRNA 研究的"母方法论"——从纯化、检测、定量、验证、功能研究全流程最佳实践。任何 circRNA 课题立项前必读。</span>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="n">指南 2</div>
+        <div class="body">
+          <b>Nature 2024: Circular logic - understanding RNA's strangest form yet</b>（"猎环人"如何应对 circRNA 研究挑战）<br>
+          原文链接：<a href="https://www.nature.com/articles/d41586-024-03683-w">https://www.nature.com/articles/d41586-024-03683-w</a><br>
+          中文解读：<a href="http://www.circrna.com.cn/?p=11547">http://www.circrna.com.cn/?p=11547</a><br>
+          <span style="color:var(--muted);">当前最权威的 circRNA 研究综述——盘点数据库选择、测序方法、分析工具、功能验证等所有挑战。Rajewsky 评论：circRNA 是"crazy 的分子"，必须用多种技术验证。</span>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="n">指南 3</div>
+        <div class="body">
+          <b>Wet Lab Techniques for the Functional Analysis of Circular RNA</b>（circRNA 功能分析的实验技术综述）<br>
+          PMC: <a href="https://tomesphere.com/paper/PMC12691094">PMC12691094</a><br>
+          <span style="color:var(--muted);">circRNA 功能研究的"工具箱"——从 RNA 提取到检测、定位、功能验证的完整实验流程。</span>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="n">指南 4</div>
+        <div class="body">
+          <b>Past, present, and future strategies for detecting and quantifying circular RNA variants.</b> <i>FEBS Open Bio</i>.<br>
+          链接：<a href="https://febs.onlinelibrary.wiley.com/doi/abs/10.1111/febs.70012">https://febs.onlinelibrary.wiley.com/doi/abs/10.1111/febs.70012</a><br>
+          <span style="color:var(--muted);">circRNA 检测与定量策略的最新综述——RNase R 富集、RPAD、SplintQuant、SynCRS 等新方法盘点。</span>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="n">指南 5</div>
+        <div class="body">
+          <b>Circular RNAs in Cardiovascular Disease: Mechanisms, Biomarkers, and Therapeutic Frontiers.</b> <i>Biomolecules</i>. 2025;15(10):1455.<br>
+          链接：<a href="https://www.mdpi.com/2218-273X/15/10/1455">https://www.mdpi.com/2218-273X/15/10/1455</a><br>
+          <span style="color:var(--muted);">circRNA 在心血管疾病中的机制、生物标志物、治疗前沿——对 circTLK1 这类卒中研究有直接参考价值。</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip">
+      <p class="k">阅读顺序建议</p>
+      <p>① <b>先读 Nature 2024 综述</b>（建立全景视野） ③ <b>再读 circRNA 最佳实践指南</b>（建立方法论） ③ <b>然后读 circTLK1 案例论文</b>（看怎么落地） ④ <b>最后读其他专题综述</b>（按需深入）</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="rule"></div>
+    circRNA × 神经系统疾病 · 科研思维习惯培养 &nbsp;|&nbsp; 12 个思维习惯 + 案例分析 + 常见坑 + 参考文献 &nbsp;|&nbsp; 可离线打开 · 可打印
+  </div>
+</footer>
+
+<script>
+  // scroll-spy: highlight current section in nav
+  (function(){
+    const links = Array.from(document.querySelectorAll('nav.phases a'));
+    const map = {};
+    links.forEach(a => map[a.getAttribute('href').slice(1)] = a);
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          links.forEach(l=>l.classList.remove('active'));
+          if(map[e.target.id]) map[e.target.id].classList.add('active');
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+    document.querySelectorAll('section').forEach(s=>obs.observe(s));
+  })();
+</script>
+</body>
+</html>
