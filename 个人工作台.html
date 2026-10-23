@@ -1,0 +1,493 @@
+<!doctype html>
+<!-- 结构：左侧导航 + 右侧主区 -->
+<!-- 样式：css/style.css（外链引入） -->
+<!-- 脚本：js/ 目录，底部按 storage.js → 各业务模块 → app.js（最后统一 init）顺序引入 -->
+<html lang="zh-CN" data-page-node-id="ch6O03aIiIGIBB8Zbegdqv">
+<head data-page-node-id="xJSsDWFeX70KR0oxkXIKyA">
+  <meta charset="utf-8" data-page-node-id="JxddHCIXtRMZt7f8LkhUq3">
+  <meta name="viewport" content="width=1200" data-page-node-id="DAHFYASjjTdV5y1Fq9mnlR">
+  <title>个人工作台</title>
+  <link rel="stylesheet" href="css/style.css" data-page-node-id="qkB4Bnrk9qLOGQYZ1dfCjB">
+</head>
+<body data-page-node-id="Yc96BNvV462H7XHS6mG8a8">
+  <div class="app" data-page-node-id="1CPFYqD73KWDHYKSNPLwD1">
+
+    <!-- 左侧导航 -->
+    <aside class="sidebar" data-page-node-id="olyjHanzzNSp75iT89kIt9">
+      <div class="brand" data-page-node-id="hLiETFtxAyueRb3BCOhw9t">个人工作台</div>
+      <nav data-page-node-id="0kfmtO1D4NDhHGcePDVy7c">
+        <ul data-page-node-id="RiOES26N966MuvRmMDErgV">
+          <li data-page="dashboard" data-module="dashboard" class="active" data-page-node-id="mE6ccTSGf3cMuJHg4b7oox">今日看板</li>
+          <li data-page="todo" data-module="todo" data-page-node-id="fY6DENv5SnhpuPl6MnbFHl">待办</li>
+          <li data-page="note" data-module="notes" data-page-node-id="jzjHDmBVWBAb3X9YdbcKaz">快速笔记</li>
+          <li data-page="finance" data-module="ledger" data-page-node-id="CkRDzjQ2Y8OHwGE9WoAf8i">记账</li>
+          <li data-page="shortcut" data-module="links" data-page-node-id="BAFFKjh6CJKbCdnvcfULKe">快捷入口</li>
+          <li data-page="checkin" data-module="habits" data-page-node-id="8HEDS7JFEXWFYeZHvCoXeP">打卡</li>
+        </ul>
+      </nav>
+      <div class="sidebar-foot" data-page-node-id="KOzvQBrOPkTE7lAFNWebbg">v0.1 · 本地</div>
+    </aside>
+
+    <!-- 右侧主区 -->
+    <main class="main" data-page-node-id="v1poqCdodSAO15w2fBkIc5">
+
+      <!-- ================== 今日看板（默认显示） ================== -->
+      <section class="page active" data-page="dashboard" data-page-node-id="KSb7HrO5ADPl40K7TGr8NP">
+        <header class="page-head" data-page-node-id="J7fUY7tUlMyGrc1sleRbpX">
+          <div class="date-block" data-page-node-id="bnJQgkNR3o2y6fjUdcTtJ6">
+            <div class="date-big" id="dateBig"></div>
+            <div class="date-meta" data-page-node-id="AIkvApCFkjfHL9Hhqb9bB2">
+              <div class="date-month" id="dateMonth"></div>
+              <div class="date-week" id="dateWeek"></div>
+            </div>
+          </div>
+          <div class="greeting" id="greeting" data-page-node-id="wClw54i2ONSDNFOERls9Bo"></div>
+        </header>
+
+        <!-- 三张汇总卡：数值由 js/app.js 的 refreshDashboard() 统一填充 -->
+        <div class="summary-row" data-page-node-id="Z9Hhi6DcQbC6yqSkP1Evjl">
+          <div class="summary-card" data-page-node-id="iyRaLnVm0T4o7UioZxBLVn">
+            <div class="summary-label" data-page-node-id="K4gV4c22zFyZEE1HZmElCT">待办进度</div>
+            <div class="summary-value" id="sumTodoValue">0 / 0</div>
+            <div class="summary-sub" id="sumTodoSub">本日已完成 0 项</div>
+          </div>
+          <div class="summary-card" data-page-node-id="93c7UgYf8fLauWuj9CbBq2">
+            <div class="summary-label" data-page-node-id="RhYtnKFtqOvAScMePh0g8j">今日收支</div>
+            <div class="summary-value mono" id="sumMoneyValue">¥0.00 / ¥0.00</div>
+            <div class="summary-sub">净结余 <span class="mono" id="sumMoneyNet">¥0.00</span></div>
+            <div class="summary-sub">本周净 <span class="mono" id="sumMoneyWeek">¥0.00</span> · 本月净 <span class="mono" id="sumMoneyMonth">¥0.00</span></div>
+          </div>
+          <div class="summary-card" data-page-node-id="xcElSOsviD52rySboxsrEF">
+            <div class="summary-label" data-page-node-id="gZksGUAKWAhhZ8rBXITR8f">打卡达标</div>
+            <div class="summary-value" id="sumHabitValue">0 / 0</div>
+            <div class="summary-sub" id="sumHabitSub">本日还没开始</div>
+          </div>
+        </div>
+
+        <!-- 两块面板：同宽同高（CSS 网格 1fr 1fr + panel 统一最小高度） -->
+        <div class="two-col" data-page-node-id="EHDxDORlxovm8tfFnAzVEy">
+          <div class="panel" data-page-node-id="gv0yZekqxzf0mTPSxDFZKm">
+            <div class="panel-head" data-page-node-id="Wo13g4sFlNR1flrfFuGLDt">本日待办</div>
+            <ul class="todo-list" id="dashTodoList" hidden data-page-node-id="ByqrTxu7rEaBwgiX57WDM1"></ul>
+            <div class="panel-empty" id="dashTodoEmpty">暂无记录</div>
+          </div>
+
+          <div class="panel" data-page-node-id="a5kI0KV3CCfK6tKExFMzzD">
+            <div class="panel-head" id="dashHabitHead">打卡一览</div>
+            <ul class="checkin-list" id="dashHabitList" hidden data-page-node-id="WDeK0bHqVd5Ew081oPTqmr"></ul>
+            <div class="panel-empty" id="dashHabitEmpty">暂无记录</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================== 待办 ================== -->
+      <section class="page" data-page="todo" data-page-node-id="zsVfGqGuDyVoZVEjve7XJk">
+        <header class="page-head simple" data-page-node-id="2EFlQsQv5Elvsrg1SDbYYI">
+          <h2 class="page-title" data-page-node-id="0Pi8aA35ck1Ciub8jTBx9h">待办</h2>
+        </header>
+
+        <!-- 三个分组：用户自己放，不按日期自动分 -->
+        <div class="tab-bar" id="todoTabs">
+          <button type="button" class="tab active" data-bucket="today">本日</button>
+          <button type="button" class="tab" data-bucket="week">本周</button>
+          <button type="button" class="tab" data-bucket="month">本月</button>
+        </div>
+
+        <!-- 添加：输入框回车，或点「添加」 -->
+        <div class="todo-form">
+          <input type="text" id="todoInput" class="input" placeholder="写一条待办，回车或点「添加」" autocomplete="off">
+          <button type="button" id="todoAdd" class="btn">添加</button>
+        </div>
+        <div class="form-hint" id="todoHint"></div>
+
+        <!-- 左：列表　右：详情编辑，两块同宽同高 -->
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head">列表</div>
+            <ul class="todo-rows" id="todoRows" hidden></ul>
+            <div class="panel-empty" id="todoEmpty">还没有待办，点击添加第一条</div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">详情</div>
+
+            <div class="detail" id="todoDetail" hidden>
+              <label class="field" for="todoEditText">
+                <span class="field-label">内容</span>
+                <input type="text" id="todoEditText" class="input">
+              </label>
+
+              <label class="field" for="todoEditBucket">
+                <span class="field-label">分组</span>
+                <select id="todoEditBucket" class="input">
+                  <option value="today">本日</option>
+                  <option value="week">本周</option>
+                  <option value="month">本月</option>
+                </select>
+              </label>
+
+              <label class="field" for="todoEditDeadline">
+                <span class="field-label">截止日期（选填）</span>
+                <input type="date" id="todoEditDeadline" class="input">
+                <span class="field-note" id="todoEditDeadlineText">未填截止日期</span>
+              </label>
+
+              <div class="field">
+                <span class="field-label">关联笔记（选填）</span>
+                <select id="todoEditNote" class="input"></select>
+                <div class="field-row">
+                  <span class="field-note" id="todoEditNoteText">未关联笔记</span>
+                  <button type="button" id="todoNoteJump" class="btn btn-small">查看笔记</button>
+                </div>
+              </div>
+
+              <div class="field">
+                <span class="field-label">创建时间（不可修改）</span>
+                <div class="field-static" id="todoEditCreated">—</div>
+              </div>
+
+              <div class="detail-actions">
+                <button type="button" id="todoSave" class="btn">保存</button>
+                <button type="button" id="todoDelete" class="btn btn-danger">删除</button>
+              </div>
+            </div>
+
+            <div class="panel-empty" id="todoDetailEmpty">从左侧选一条待办</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================== 快速笔记 ================== -->
+      <section class="page" data-page="note" data-page-node-id="QvjQvOQDdt7eO1k4RgqBzM">
+        <header class="page-head simple" data-page-node-id="oZiPFMUUZyE6dhLgE572en">
+          <h2 class="page-title" data-page-node-id="je1keL596uzPt1MAzCSKvv">快速笔记</h2>
+        </header>
+
+        <!-- 提交制：输入过程只在内存里，点「提交」才写入 -->
+        <div class="note-form">
+          <input type="text" id="noteCause" class="input" placeholder="起因（选填）" autocomplete="off">
+          <textarea id="noteBody" class="input note-body" placeholder="内容（必填），写完点「提交」"></textarea>
+          <div class="note-form-foot">
+            <span class="form-hint" id="noteHint"></span>
+            <button type="button" id="noteSubmit" class="btn">提交</button>
+          </div>
+        </div>
+
+        <!-- 左：列表　右：详情，两块同宽同高 -->
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head">笔记列表</div>
+            <ul class="note-rows" id="noteRows" hidden></ul>
+            <div class="panel-empty" id="noteEmpty">还没有笔记</div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">详情</div>
+
+            <div class="detail" id="noteDetail" hidden>
+              <label class="field" for="noteEditCause">
+                <span class="field-label">起因（选填）</span>
+                <input type="text" id="noteEditCause" class="input">
+              </label>
+
+              <label class="field" for="noteEditBody">
+                <span class="field-label">内容</span>
+                <textarea id="noteEditBody" class="input note-body"></textarea>
+              </label>
+
+              <div class="field">
+                <span class="field-label">提交时间（不可修改）</span>
+                <div class="field-static" id="noteEditCreated">—</div>
+              </div>
+
+              <div class="field" id="noteEditUpdatedField" hidden>
+                <span class="field-label">最后编辑（不可修改）</span>
+                <div class="field-static" id="noteEditUpdated">—</div>
+              </div>
+
+              <div class="detail-actions">
+                <button type="button" id="noteSave" class="btn">保存修改</button>
+                <button type="button" id="noteDelete" class="btn btn-danger">删除</button>
+              </div>
+            </div>
+
+            <div class="panel-empty" id="noteDetailEmpty">从左侧选一条笔记</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================== 记账 ================== -->
+      <section class="page" data-page="finance" data-page-node-id="L1UGlzrkXaHBaLJwD4Z47o">
+        <header class="page-head simple" data-page-node-id="Q7oBO9GB18fdXG7FuQptIP">
+          <h2 class="page-title" data-page-node-id="9lkkhLj3umbINuUNVtpliC">记账</h2>
+        </header>
+
+        <!-- 汇总三卡：今日 / 本周 / 本月，数值由 js/ledger.js 的 render() 填充 -->
+        <div class="summary-row">
+          <div class="summary-card">
+            <div class="summary-label">今日</div>
+            <div class="lg-sum-row">
+              <span class="lg-sum-key">收入</span>
+              <span class="lg-sum-val mono lg-in" id="lgTodayIn">¥0.00</span>
+            </div>
+            <div class="lg-sum-row">
+              <span class="lg-sum-key">支出</span>
+              <span class="lg-sum-val mono lg-out" id="lgTodayOut">¥0.00</span>
+            </div>
+            <div class="summary-sub">净 <span class="mono" id="lgTodayNet">¥0.00</span></div>
+          </div>
+
+          <div class="summary-card">
+            <div class="summary-label">本周（周一起）</div>
+            <div class="lg-sum-row">
+              <span class="lg-sum-key">收入</span>
+              <span class="lg-sum-val mono lg-in" id="lgWeekIn">¥0.00</span>
+            </div>
+            <div class="lg-sum-row">
+              <span class="lg-sum-key">支出</span>
+              <span class="lg-sum-val mono lg-out" id="lgWeekOut">¥0.00</span>
+            </div>
+            <div class="summary-sub">净 <span class="mono" id="lgWeekNet">¥0.00</span></div>
+          </div>
+
+          <div class="summary-card">
+            <div class="summary-label">本月</div>
+            <div class="lg-sum-row">
+              <span class="lg-sum-key">收入</span>
+              <span class="lg-sum-val mono lg-in" id="lgMonthIn">¥0.00</span>
+            </div>
+            <div class="lg-sum-row">
+              <span class="lg-sum-key">支出</span>
+              <span class="lg-sum-val mono lg-out" id="lgMonthOut">¥0.00</span>
+            </div>
+            <div class="summary-sub">净 <span class="mono" id="lgMonthNet">¥0.00</span></div>
+          </div>
+        </div>
+
+        <!-- 记一笔：金额必须 > 0，分类必填，备注选填 -->
+        <div class="lg-form-panel">
+          <div class="panel-head">记一笔</div>
+
+          <div class="lg-form-grid">
+            <label class="field" for="lgType">
+              <span class="field-label">类型</span>
+              <select id="lgType" class="input">
+                <option value="out">支出</option>
+                <option value="in">收入</option>
+              </select>
+            </label>
+
+            <label class="field" for="lgAmount">
+              <span class="field-label">金额（必填，大于 0）</span>
+              <input type="text" id="lgAmount" class="input" inputmode="decimal" placeholder="0.00" autocomplete="off">
+            </label>
+
+            <label class="field" for="lgCategory">
+              <span class="field-label">分类（必填）</span>
+              <input type="text" id="lgCategory" class="input" placeholder="比如 餐饮 / 交通 / 工资" autocomplete="off">
+            </label>
+
+            <label class="field" for="lgNote">
+              <span class="field-label">备注（选填）</span>
+              <input type="text" id="lgNote" class="input" placeholder="比如 和朋友吃饭" autocomplete="off">
+            </label>
+          </div>
+
+          <div class="lg-form-foot">
+            <span class="form-hint" id="lgHint"></span>
+            <button type="button" id="lgSave" class="btn">保存</button>
+          </div>
+        </div>
+
+        <!-- 账单 OCR：选图或粘贴 → 识别 → 必须先过确认卡 → 才入账 -->
+        <div class="lg-form-panel ocr-panel">
+          <div class="panel-head">账单截图识别</div>
+          <div class="ocr-tip">
+            识别可能不准，以确认卡为准；识别模型需要从 CDN 下载，第一次会比较慢。
+          </div>
+
+          <div class="ocr-actions">
+            <input type="file" id="ocrFile" class="ocr-file" accept="image/png,image/jpeg,image/webp">
+            <label class="btn" for="ocrFile">选择图片</label>
+            <span class="ocr-alt">支持 png / jpg / webp，或先点一下本页，再按 Ctrl / Cmd + V 粘贴截图</span>
+          </div>
+          <div class="form-hint" id="ocrStatus"></div>
+
+          <div class="ocr-preview" id="ocrPreview" hidden>
+            <img id="ocrImg" class="ocr-img" alt="待识别的截图">
+            <button type="button" id="ocrRemove" class="btn btn-small">移除</button>
+          </div>
+
+          <!-- 确认卡：识别完一定出现；金额没读到就空着，由用户手填 -->
+          <div class="ocr-card" id="ocrCard" hidden>
+            <div class="ocr-card-head">
+              <span class="ocr-card-title">确认入账</span>
+              <span class="ocr-card-note">核对无误再入账，OCR 结果不会自动写入</span>
+            </div>
+
+            <div class="ocr-cands-tip" id="ocrCandsTip" hidden>识别到多个金额候选，点一个填进下面的金额框</div>
+            <div class="ocr-cands" id="ocrCands" hidden></div>
+
+            <div class="lg-form-grid">
+              <label class="field" for="ocrType">
+                <span class="field-label">类型</span>
+                <select id="ocrType" class="input">
+                  <option value="out">支出</option>
+                  <option value="in">收入</option>
+                </select>
+              </label>
+
+              <label class="field" for="ocrAmount">
+                <span class="field-label">金额（必填，大于 0）</span>
+                <input type="text" id="ocrAmount" class="input" inputmode="decimal" placeholder="0.00" autocomplete="off">
+              </label>
+
+              <label class="field" for="ocrCategory">
+                <span class="field-label">分类（必填）</span>
+                <input type="text" id="ocrCategory" class="input" placeholder="比如 餐饮 / 交通 / 工资" autocomplete="off">
+              </label>
+
+              <label class="field" for="ocrNote">
+                <span class="field-label">备注（选填）</span>
+                <input type="text" id="ocrNote" class="input" placeholder="比如 和朋友吃饭" autocomplete="off">
+              </label>
+            </div>
+
+            <details class="ocr-raw" id="ocrRaw" hidden>
+              <summary>识别原文</summary>
+              <pre class="ocr-raw-text" id="ocrRawText"></pre>
+            </details>
+
+            <div class="form-hint" id="ocrCardHint"></div>
+            <div class="detail-actions">
+              <button type="button" id="ocrConfirm" class="btn ocr-confirm">确认入账</button>
+              <button type="button" id="ocrCancel" class="btn">取消</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 账目列表：新记的排在上面 -->
+        <div class="panel">
+          <div class="panel-head" id="lgListHead">账目列表</div>
+          <ul class="lg-rows" id="lgRows" hidden></ul>
+          <div class="panel-empty" id="lgEmpty">暂无记录</div>
+        </div>
+      </section>
+
+      <!-- ================== 快捷入口 ================== -->
+      <section class="page" data-page="shortcut" data-page-node-id="C5DjQMFTov4Tl4h7kJ9c39">
+        <header class="page-head simple" data-page-node-id="KxbrEbK0dgpO14BN1r4Pbl">
+          <h2 class="page-title" data-page-node-id="n9yA0sepO4Un9pz4y8DBZj">快捷入口</h2>
+        </header>
+
+        <!-- 两个子看板：常用网站 / 常用文本，同宽同高 -->
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head">常用网站</div>
+
+            <div class="link-form">
+              <input type="text" id="siteName" class="input" placeholder="名称，比如 邮箱" autocomplete="off">
+              <input type="text" id="siteUrl" class="input" placeholder="网址，比如 mail.qq.com" autocomplete="off">
+              <div class="link-form-foot">
+                <span class="form-hint" id="linkHint"></span>
+                <button type="button" id="siteAdd" class="btn">添加</button>
+              </div>
+            </div>
+
+            <ul class="link-rows" id="siteRows" hidden></ul>
+            <div class="panel-empty" id="siteEmpty">还没有快捷入口</div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">常用文本</div>
+
+            <div class="link-form">
+              <input type="text" id="snippetName" class="input" placeholder="名称，比如 收货地址" autocomplete="off">
+              <textarea id="snippetText" class="input snip-input" placeholder="要一键复制的文本"></textarea>
+              <div class="link-form-foot">
+                <span class="form-hint" id="snippetHint"></span>
+                <button type="button" id="snippetAdd" class="btn">添加</button>
+              </div>
+            </div>
+
+            <ul class="link-rows" id="snippetRows" hidden></ul>
+            <div class="panel-empty" id="snippetEmpty">还没有常用文本</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================== 打卡 ================== -->
+      <section class="page" data-page="checkin" data-page-node-id="wUauKTq5A2hxXbY2M3ypsE">
+        <header class="page-head simple" data-page-node-id="kkGtA3DTsOZGeIT9QY451z">
+          <h2 class="page-title" data-page-node-id="Vzk0SMWg3CDyPuD6Qi2llF">打卡</h2>
+        </header>
+
+        <!-- 当前周期达标汇总，数值由 js/habits.js 的 render() 填充 -->
+        <div class="habit-summary">
+          <span class="habit-summary-label">当前周期达标</span>
+          <span class="habit-summary-value mono" id="habitSummaryValue">0 / 4</span>
+          <span class="habit-summary-note" id="habitSummaryNote">本日 / 本周还没开始</span>
+        </div>
+
+        <div class="form-hint" id="habitHint"></div>
+
+        <!-- 四张卡（喝水 / 运动 / 学习 / 工作）：骨架由 js/habits.js 首次渲染时生成，
+             之后只更新数字与状态，不重建 DOM，避免打断正在输入的设置 -->
+        <div class="habit-grid" id="habitGrid"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- 页脚：说明文字 + 数据管理（导出 / 导入 / 清空） -->
+  <footer class="footer">
+    <div class="footer-note">
+      <div>个人工作台 · 数据仅保存在本机浏览器</div>
+      <div>今天我们在看前端：你看到的这一页，就是浏览器在跑 HTML/CSS/JS</div>
+    </div>
+
+    <div class="data-bar">
+      <span class="data-bar-label">数据管理</span>
+      <button type="button" id="dataExport" class="btn btn-small">导出 JSON</button>
+      <button type="button" id="dataImport" class="btn btn-small">导入 JSON</button>
+      <button type="button" id="dataClear" class="btn btn-small btn-danger">清空全部数据</button>
+      <!-- 真正的文件框藏起来，点「导入 JSON」再弹出来 -->
+      <input type="file" id="dataFile" class="data-file" accept="application/json,.json">
+    </div>
+
+    <div class="form-hint" id="dataHint"></div>
+
+    <!-- 导入摘要：先看清楚，再点「确认覆盖导入」 -->
+    <div class="data-panel" id="dataImportPanel" hidden>
+      <div class="data-panel-head">备份摘要</div>
+      <ul class="data-summary" id="dataSummary"></ul>
+      <div class="data-panel-note">导入会覆盖当前全部数据，请先导出备份。</div>
+      <div class="data-panel-actions">
+        <button type="button" id="dataImportConfirm" class="btn btn-small">确认覆盖导入</button>
+        <button type="button" id="dataImportCancel" class="btn btn-small">取消</button>
+      </div>
+    </div>
+
+    <!-- 清空的二次确认 -->
+    <div class="data-panel data-panel-danger" id="dataClearPanel" hidden>
+      <div class="data-panel-head">确认清空全部数据？</div>
+      <div class="data-panel-note" id="dataClearNote"></div>
+      <div class="data-panel-actions">
+        <button type="button" id="dataClearConfirm" class="btn btn-small btn-danger">确认清空</button>
+        <button type="button" id="dataClearCancel" class="btn btn-small">我再想想</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 脚本加载顺序：storage.js → 各业务模块 → app.js（最后，负责统一 init） -->
+  <script src="js/storage.js"></script>
+  <script src="js/todo.js"></script>
+  <script src="js/notes.js"></script>
+  <script src="js/links.js"></script>
+  <script src="js/habits.js"></script>
+  <script src="js/ledger.js"></script>
+  <script src="js/ocr.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

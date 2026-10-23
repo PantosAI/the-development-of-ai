@@ -838,19 +838,19 @@
     </section>
 
 
-    <!-- ============ 9. 工具与工作台 ============ -->
+    <!-- ============ 工具与工作台 ============ -->
     <section class="section" data-domain="tools">
       <h2 class="section-title">工具与工作台 <span class="n" data-count>1</span></h2>
-      <p class="section-desc">自用工具：待办、笔记、记账、打卡与快捷入口，数据只存本机。</p>
+      <p class="section-desc">在当前索引页内直接打开个人工作台，无需跳转到另一张 HTML 页面。</p>
       <ul class="items">
         <li data-search="个人工作台 待办 笔记 记账 打卡 快捷入口 工具 本地 存储 localstorage 看板">
-          <a class="item" href="个人工作台.html">
+          <a class="item" href="#personal-workbench" id="openWorkbenchCard" aria-haspopup="dialog" aria-controls="workbenchModal">
             <div class="item-left">
               <span class="item-title">个人工作台</span>
-              <span class="meta">待办 · 快速笔记 · 记账 · 打卡 · 快捷入口 · 6 个模块 · 数据存本机</span>
-              <span class="tag">New</span>
+              <span class="meta">今日看板 · 待办 · 快速笔记 · 记账 · 快捷入口 · 打卡</span>
+              <span class="tag">打开</span>
             </div>
-            <span class="arrow" aria-hidden="true">→</span>
+            <span class="arrow" aria-hidden="true">↗</span>
           </a>
         </li>
       </ul>
@@ -1248,5 +1248,536 @@
   ]
 }
 </script>
+
+<!-- ============ 内嵌个人工作台（由个人工作台.html 完整写入） ============ -->
+<div id="workbenchModal" hidden role="dialog" aria-modal="true" aria-labelledby="workbenchTitle"
+  style="position:fixed;inset:0;z-index:9999;background:rgba(12,14,20,.68);padding:clamp(8px,2vw,24px);box-sizing:border-box;">
+  <div style="height:100%;max-width:1600px;margin:0 auto;background:#fff;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.35);">
+    <div style="height:48px;flex:0 0 48px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid #e8e8e8;box-sizing:border-box;">
+      <strong id="workbenchTitle" style="font-size:14px;font-weight:600;">个人工作台</strong>
+      <button type="button" id="closeWorkbench" aria-label="关闭个人工作台" style="border:1px solid #ddd;background:#fff;border-radius:7px;padding:6px 12px;cursor:pointer;font:inherit;">关闭 ✕</button>
+    </div>
+    <iframe title="个人工作台" id="workbenchFrame" style="display:block;flex:1;width:100%;height:100%;border:0;background:#fff;" loading="eager" srcdoc="&lt;!doctype html&gt;
+&lt;!-- 结构：左侧导航 + 右侧主区 --&gt;
+&lt;!-- 样式：css/style.css（外链引入） --&gt;
+&lt;!-- 脚本：js/ 目录，底部按 storage.js → 各业务模块 → app.js（最后统一 init）顺序引入 --&gt;
+&lt;html lang=&quot;zh-CN&quot; data-page-node-id=&quot;ch6O03aIiIGIBB8Zbegdqv&quot;&gt;
+&lt;head data-page-node-id=&quot;xJSsDWFeX70KR0oxkXIKyA&quot;&gt;
+  &lt;base href=&quot;./&quot;&gt;
+  &lt;meta charset=&quot;utf-8&quot; data-page-node-id=&quot;JxddHCIXtRMZt7f8LkhUq3&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=1200&quot; data-page-node-id=&quot;DAHFYASjjTdV5y1Fq9mnlR&quot;&gt;
+  &lt;title&gt;个人工作台&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;css/style.css&quot; data-page-node-id=&quot;qkB4Bnrk9qLOGQYZ1dfCjB&quot;&gt;
+&lt;/head&gt;
+&lt;body data-page-node-id=&quot;Yc96BNvV462H7XHS6mG8a8&quot;&gt;
+  &lt;div class=&quot;app&quot; data-page-node-id=&quot;1CPFYqD73KWDHYKSNPLwD1&quot;&gt;
+
+    &lt;!-- 左侧导航 --&gt;
+    &lt;aside class=&quot;sidebar&quot; data-page-node-id=&quot;olyjHanzzNSp75iT89kIt9&quot;&gt;
+      &lt;div class=&quot;brand&quot; data-page-node-id=&quot;hLiETFtxAyueRb3BCOhw9t&quot;&gt;个人工作台&lt;/div&gt;
+      &lt;nav data-page-node-id=&quot;0kfmtO1D4NDhHGcePDVy7c&quot;&gt;
+        &lt;ul data-page-node-id=&quot;RiOES26N966MuvRmMDErgV&quot;&gt;
+          &lt;li data-page=&quot;dashboard&quot; data-module=&quot;dashboard&quot; class=&quot;active&quot; data-page-node-id=&quot;mE6ccTSGf3cMuJHg4b7oox&quot;&gt;今日看板&lt;/li&gt;
+          &lt;li data-page=&quot;todo&quot; data-module=&quot;todo&quot; data-page-node-id=&quot;fY6DENv5SnhpuPl6MnbFHl&quot;&gt;待办&lt;/li&gt;
+          &lt;li data-page=&quot;note&quot; data-module=&quot;notes&quot; data-page-node-id=&quot;jzjHDmBVWBAb3X9YdbcKaz&quot;&gt;快速笔记&lt;/li&gt;
+          &lt;li data-page=&quot;finance&quot; data-module=&quot;ledger&quot; data-page-node-id=&quot;CkRDzjQ2Y8OHwGE9WoAf8i&quot;&gt;记账&lt;/li&gt;
+          &lt;li data-page=&quot;shortcut&quot; data-module=&quot;links&quot; data-page-node-id=&quot;BAFFKjh6CJKbCdnvcfULKe&quot;&gt;快捷入口&lt;/li&gt;
+          &lt;li data-page=&quot;checkin&quot; data-module=&quot;habits&quot; data-page-node-id=&quot;8HEDS7JFEXWFYeZHvCoXeP&quot;&gt;打卡&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/nav&gt;
+      &lt;div class=&quot;sidebar-foot&quot; data-page-node-id=&quot;KOzvQBrOPkTE7lAFNWebbg&quot;&gt;v0.1 · 本地&lt;/div&gt;
+    &lt;/aside&gt;
+
+    &lt;!-- 右侧主区 --&gt;
+    &lt;main class=&quot;main&quot; data-page-node-id=&quot;v1poqCdodSAO15w2fBkIc5&quot;&gt;
+
+      &lt;!-- ================== 今日看板（默认显示） ================== --&gt;
+      &lt;section class=&quot;page active&quot; data-page=&quot;dashboard&quot; data-page-node-id=&quot;KSb7HrO5ADPl40K7TGr8NP&quot;&gt;
+        &lt;header class=&quot;page-head&quot; data-page-node-id=&quot;J7fUY7tUlMyGrc1sleRbpX&quot;&gt;
+          &lt;div class=&quot;date-block&quot; data-page-node-id=&quot;bnJQgkNR3o2y6fjUdcTtJ6&quot;&gt;
+            &lt;div class=&quot;date-big&quot; id=&quot;dateBig&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;date-meta&quot; data-page-node-id=&quot;AIkvApCFkjfHL9Hhqb9bB2&quot;&gt;
+              &lt;div class=&quot;date-month&quot; id=&quot;dateMonth&quot;&gt;&lt;/div&gt;
+              &lt;div class=&quot;date-week&quot; id=&quot;dateWeek&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;greeting&quot; id=&quot;greeting&quot; data-page-node-id=&quot;wClw54i2ONSDNFOERls9Bo&quot;&gt;&lt;/div&gt;
+        &lt;/header&gt;
+
+        &lt;!-- 三张汇总卡：数值由 js/app.js 的 refreshDashboard() 统一填充 --&gt;
+        &lt;div class=&quot;summary-row&quot; data-page-node-id=&quot;Z9Hhi6DcQbC6yqSkP1Evjl&quot;&gt;
+          &lt;div class=&quot;summary-card&quot; data-page-node-id=&quot;iyRaLnVm0T4o7UioZxBLVn&quot;&gt;
+            &lt;div class=&quot;summary-label&quot; data-page-node-id=&quot;K4gV4c22zFyZEE1HZmElCT&quot;&gt;待办进度&lt;/div&gt;
+            &lt;div class=&quot;summary-value&quot; id=&quot;sumTodoValue&quot;&gt;0 / 0&lt;/div&gt;
+            &lt;div class=&quot;summary-sub&quot; id=&quot;sumTodoSub&quot;&gt;本日已完成 0 项&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;summary-card&quot; data-page-node-id=&quot;93c7UgYf8fLauWuj9CbBq2&quot;&gt;
+            &lt;div class=&quot;summary-label&quot; data-page-node-id=&quot;RhYtnKFtqOvAScMePh0g8j&quot;&gt;今日收支&lt;/div&gt;
+            &lt;div class=&quot;summary-value mono&quot; id=&quot;sumMoneyValue&quot;&gt;¥0.00 / ¥0.00&lt;/div&gt;
+            &lt;div class=&quot;summary-sub&quot;&gt;净结余 &lt;span class=&quot;mono&quot; id=&quot;sumMoneyNet&quot;&gt;¥0.00&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;summary-sub&quot;&gt;本周净 &lt;span class=&quot;mono&quot; id=&quot;sumMoneyWeek&quot;&gt;¥0.00&lt;/span&gt; · 本月净 &lt;span class=&quot;mono&quot; id=&quot;sumMoneyMonth&quot;&gt;¥0.00&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;summary-card&quot; data-page-node-id=&quot;xcElSOsviD52rySboxsrEF&quot;&gt;
+            &lt;div class=&quot;summary-label&quot; data-page-node-id=&quot;gZksGUAKWAhhZ8rBXITR8f&quot;&gt;打卡达标&lt;/div&gt;
+            &lt;div class=&quot;summary-value&quot; id=&quot;sumHabitValue&quot;&gt;0 / 0&lt;/div&gt;
+            &lt;div class=&quot;summary-sub&quot; id=&quot;sumHabitSub&quot;&gt;本日还没开始&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- 两块面板：同宽同高（CSS 网格 1fr 1fr + panel 统一最小高度） --&gt;
+        &lt;div class=&quot;two-col&quot; data-page-node-id=&quot;EHDxDORlxovm8tfFnAzVEy&quot;&gt;
+          &lt;div class=&quot;panel&quot; data-page-node-id=&quot;gv0yZekqxzf0mTPSxDFZKm&quot;&gt;
+            &lt;div class=&quot;panel-head&quot; data-page-node-id=&quot;Wo13g4sFlNR1flrfFuGLDt&quot;&gt;本日待办&lt;/div&gt;
+            &lt;ul class=&quot;todo-list&quot; id=&quot;dashTodoList&quot; hidden data-page-node-id=&quot;ByqrTxu7rEaBwgiX57WDM1&quot;&gt;&lt;/ul&gt;
+            &lt;div class=&quot;panel-empty&quot; id=&quot;dashTodoEmpty&quot;&gt;暂无记录&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;panel&quot; data-page-node-id=&quot;a5kI0KV3CCfK6tKExFMzzD&quot;&gt;
+            &lt;div class=&quot;panel-head&quot; id=&quot;dashHabitHead&quot;&gt;打卡一览&lt;/div&gt;
+            &lt;ul class=&quot;checkin-list&quot; id=&quot;dashHabitList&quot; hidden data-page-node-id=&quot;WDeK0bHqVd5Ew081oPTqmr&quot;&gt;&lt;/ul&gt;
+            &lt;div class=&quot;panel-empty&quot; id=&quot;dashHabitEmpty&quot;&gt;暂无记录&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+
+      &lt;!-- ================== 待办 ================== --&gt;
+      &lt;section class=&quot;page&quot; data-page=&quot;todo&quot; data-page-node-id=&quot;zsVfGqGuDyVoZVEjve7XJk&quot;&gt;
+        &lt;header class=&quot;page-head simple&quot; data-page-node-id=&quot;2EFlQsQv5Elvsrg1SDbYYI&quot;&gt;
+          &lt;h2 class=&quot;page-title&quot; data-page-node-id=&quot;0Pi8aA35ck1Ciub8jTBx9h&quot;&gt;待办&lt;/h2&gt;
+        &lt;/header&gt;
+
+        &lt;!-- 三个分组：用户自己放，不按日期自动分 --&gt;
+        &lt;div class=&quot;tab-bar&quot; id=&quot;todoTabs&quot;&gt;
+          &lt;button type=&quot;button&quot; class=&quot;tab active&quot; data-bucket=&quot;today&quot;&gt;本日&lt;/button&gt;
+          &lt;button type=&quot;button&quot; class=&quot;tab&quot; data-bucket=&quot;week&quot;&gt;本周&lt;/button&gt;
+          &lt;button type=&quot;button&quot; class=&quot;tab&quot; data-bucket=&quot;month&quot;&gt;本月&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;!-- 添加：输入框回车，或点「添加」 --&gt;
+        &lt;div class=&quot;todo-form&quot;&gt;
+          &lt;input type=&quot;text&quot; id=&quot;todoInput&quot; class=&quot;input&quot; placeholder=&quot;写一条待办，回车或点「添加」&quot; autocomplete=&quot;off&quot;&gt;
+          &lt;button type=&quot;button&quot; id=&quot;todoAdd&quot; class=&quot;btn&quot;&gt;添加&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-hint&quot; id=&quot;todoHint&quot;&gt;&lt;/div&gt;
+
+        &lt;!-- 左：列表　右：详情编辑，两块同宽同高 --&gt;
+        &lt;div class=&quot;two-col&quot;&gt;
+          &lt;div class=&quot;panel&quot;&gt;
+            &lt;div class=&quot;panel-head&quot;&gt;列表&lt;/div&gt;
+            &lt;ul class=&quot;todo-rows&quot; id=&quot;todoRows&quot; hidden&gt;&lt;/ul&gt;
+            &lt;div class=&quot;panel-empty&quot; id=&quot;todoEmpty&quot;&gt;还没有待办，点击添加第一条&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;panel&quot;&gt;
+            &lt;div class=&quot;panel-head&quot;&gt;详情&lt;/div&gt;
+
+            &lt;div class=&quot;detail&quot; id=&quot;todoDetail&quot; hidden&gt;
+              &lt;label class=&quot;field&quot; for=&quot;todoEditText&quot;&gt;
+                &lt;span class=&quot;field-label&quot;&gt;内容&lt;/span&gt;
+                &lt;input type=&quot;text&quot; id=&quot;todoEditText&quot; class=&quot;input&quot;&gt;
+              &lt;/label&gt;
+
+              &lt;label class=&quot;field&quot; for=&quot;todoEditBucket&quot;&gt;
+                &lt;span class=&quot;field-label&quot;&gt;分组&lt;/span&gt;
+                &lt;select id=&quot;todoEditBucket&quot; class=&quot;input&quot;&gt;
+                  &lt;option value=&quot;today&quot;&gt;本日&lt;/option&gt;
+                  &lt;option value=&quot;week&quot;&gt;本周&lt;/option&gt;
+                  &lt;option value=&quot;month&quot;&gt;本月&lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/label&gt;
+
+              &lt;label class=&quot;field&quot; for=&quot;todoEditDeadline&quot;&gt;
+                &lt;span class=&quot;field-label&quot;&gt;截止日期（选填）&lt;/span&gt;
+                &lt;input type=&quot;date&quot; id=&quot;todoEditDeadline&quot; class=&quot;input&quot;&gt;
+                &lt;span class=&quot;field-note&quot; id=&quot;todoEditDeadlineText&quot;&gt;未填截止日期&lt;/span&gt;
+              &lt;/label&gt;
+
+              &lt;div class=&quot;field&quot;&gt;
+                &lt;span class=&quot;field-label&quot;&gt;关联笔记（选填）&lt;/span&gt;
+                &lt;select id=&quot;todoEditNote&quot; class=&quot;input&quot;&gt;&lt;/select&gt;
+                &lt;div class=&quot;field-row&quot;&gt;
+                  &lt;span class=&quot;field-note&quot; id=&quot;todoEditNoteText&quot;&gt;未关联笔记&lt;/span&gt;
+                  &lt;button type=&quot;button&quot; id=&quot;todoNoteJump&quot; class=&quot;btn btn-small&quot;&gt;查看笔记&lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+
+              &lt;div class=&quot;field&quot;&gt;
+                &lt;span class=&quot;field-label&quot;&gt;创建时间（不可修改）&lt;/span&gt;
+                &lt;div class=&quot;field-static&quot; id=&quot;todoEditCreated&quot;&gt;—&lt;/div&gt;
+              &lt;/div&gt;
+
+              &lt;div class=&quot;detail-actions&quot;&gt;
+                &lt;button type=&quot;button&quot; id=&quot;todoSave&quot; class=&quot;btn&quot;&gt;保存&lt;/button&gt;
+                &lt;button type=&quot;button&quot; id=&quot;todoDelete&quot; class=&quot;btn btn-danger&quot;&gt;删除&lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;panel-empty&quot; id=&quot;todoDetailEmpty&quot;&gt;从左侧选一条待办&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+
+      &lt;!-- ================== 快速笔记 ================== --&gt;
+      &lt;section class=&quot;page&quot; data-page=&quot;note&quot; data-page-node-id=&quot;QvjQvOQDdt7eO1k4RgqBzM&quot;&gt;
+        &lt;header class=&quot;page-head simple&quot; data-page-node-id=&quot;oZiPFMUUZyE6dhLgE572en&quot;&gt;
+          &lt;h2 class=&quot;page-title&quot; data-page-node-id=&quot;je1keL596uzPt1MAzCSKvv&quot;&gt;快速笔记&lt;/h2&gt;
+        &lt;/header&gt;
+
+        &lt;!-- 提交制：输入过程只在内存里，点「提交」才写入 --&gt;
+        &lt;div class=&quot;note-form&quot;&gt;
+          &lt;input type=&quot;text&quot; id=&quot;noteCause&quot; class=&quot;input&quot; placeholder=&quot;起因（选填）&quot; autocomplete=&quot;off&quot;&gt;
+          &lt;textarea id=&quot;noteBody&quot; class=&quot;input note-body&quot; placeholder=&quot;内容（必填），写完点「提交」&quot;&gt;&lt;/textarea&gt;
+          &lt;div class=&quot;note-form-foot&quot;&gt;
+            &lt;span class=&quot;form-hint&quot; id=&quot;noteHint&quot;&gt;&lt;/span&gt;
+            &lt;button type=&quot;button&quot; id=&quot;noteSubmit&quot; class=&quot;btn&quot;&gt;提交&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- 左：列表　右：详情，两块同宽同高 --&gt;
+        &lt;div class=&quot;two-col&quot;&gt;
+          &lt;div class=&quot;panel&quot;&gt;
+            &lt;div class=&quot;panel-head&quot;&gt;笔记列表&lt;/div&gt;
+            &lt;ul class=&quot;note-rows&quot; id=&quot;noteRows&quot; hidden&gt;&lt;/ul&gt;
+            &lt;div class=&quot;panel-empty&quot; id=&quot;noteEmpty&quot;&gt;还没有笔记&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;panel&quot;&gt;
+            &lt;div class=&quot;panel-head&quot;&gt;详情&lt;/div&gt;
+
+            &lt;div class=&quot;detail&quot; id=&quot;noteDetail&quot; hidden&gt;
+              &lt;label class=&quot;field&quot; for=&quot;noteEditCause&quot;&gt;
+                &lt;span class=&quot;field-label&quot;&gt;起因（选填）&lt;/span&gt;
+                &lt;input type=&quot;text&quot; id=&quot;noteEditCause&quot; class=&quot;input&quot;&gt;
+              &lt;/label&gt;
+
+              &lt;label class=&quot;field&quot; for=&quot;noteEditBody&quot;&gt;
+                &lt;span class=&quot;field-label&quot;&gt;内容&lt;/span&gt;
+                &lt;textarea id=&quot;noteEditBody&quot; class=&quot;input note-body&quot;&gt;&lt;/textarea&gt;
+              &lt;/label&gt;
+
+              &lt;div class=&quot;field&quot;&gt;
+                &lt;span class=&quot;field-label&quot;&gt;提交时间（不可修改）&lt;/span&gt;
+                &lt;div class=&quot;field-static&quot; id=&quot;noteEditCreated&quot;&gt;—&lt;/div&gt;
+              &lt;/div&gt;
+
+              &lt;div class=&quot;field&quot; id=&quot;noteEditUpdatedField&quot; hidden&gt;
+                &lt;span class=&quot;field-label&quot;&gt;最后编辑（不可修改）&lt;/span&gt;
+                &lt;div class=&quot;field-static&quot; id=&quot;noteEditUpdated&quot;&gt;—&lt;/div&gt;
+              &lt;/div&gt;
+
+              &lt;div class=&quot;detail-actions&quot;&gt;
+                &lt;button type=&quot;button&quot; id=&quot;noteSave&quot; class=&quot;btn&quot;&gt;保存修改&lt;/button&gt;
+                &lt;button type=&quot;button&quot; id=&quot;noteDelete&quot; class=&quot;btn btn-danger&quot;&gt;删除&lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;panel-empty&quot; id=&quot;noteDetailEmpty&quot;&gt;从左侧选一条笔记&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+
+      &lt;!-- ================== 记账 ================== --&gt;
+      &lt;section class=&quot;page&quot; data-page=&quot;finance&quot; data-page-node-id=&quot;L1UGlzrkXaHBaLJwD4Z47o&quot;&gt;
+        &lt;header class=&quot;page-head simple&quot; data-page-node-id=&quot;Q7oBO9GB18fdXG7FuQptIP&quot;&gt;
+          &lt;h2 class=&quot;page-title&quot; data-page-node-id=&quot;9lkkhLj3umbINuUNVtpliC&quot;&gt;记账&lt;/h2&gt;
+        &lt;/header&gt;
+
+        &lt;!-- 汇总三卡：今日 / 本周 / 本月，数值由 js/ledger.js 的 render() 填充 --&gt;
+        &lt;div class=&quot;summary-row&quot;&gt;
+          &lt;div class=&quot;summary-card&quot;&gt;
+            &lt;div class=&quot;summary-label&quot;&gt;今日&lt;/div&gt;
+            &lt;div class=&quot;lg-sum-row&quot;&gt;
+              &lt;span class=&quot;lg-sum-key&quot;&gt;收入&lt;/span&gt;
+              &lt;span class=&quot;lg-sum-val mono lg-in&quot; id=&quot;lgTodayIn&quot;&gt;¥0.00&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;lg-sum-row&quot;&gt;
+              &lt;span class=&quot;lg-sum-key&quot;&gt;支出&lt;/span&gt;
+              &lt;span class=&quot;lg-sum-val mono lg-out&quot; id=&quot;lgTodayOut&quot;&gt;¥0.00&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;summary-sub&quot;&gt;净 &lt;span class=&quot;mono&quot; id=&quot;lgTodayNet&quot;&gt;¥0.00&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;summary-card&quot;&gt;
+            &lt;div class=&quot;summary-label&quot;&gt;本周（周一起）&lt;/div&gt;
+            &lt;div class=&quot;lg-sum-row&quot;&gt;
+              &lt;span class=&quot;lg-sum-key&quot;&gt;收入&lt;/span&gt;
+              &lt;span class=&quot;lg-sum-val mono lg-in&quot; id=&quot;lgWeekIn&quot;&gt;¥0.00&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;lg-sum-row&quot;&gt;
+              &lt;span class=&quot;lg-sum-key&quot;&gt;支出&lt;/span&gt;
+              &lt;span class=&quot;lg-sum-val mono lg-out&quot; id=&quot;lgWeekOut&quot;&gt;¥0.00&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;summary-sub&quot;&gt;净 &lt;span class=&quot;mono&quot; id=&quot;lgWeekNet&quot;&gt;¥0.00&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;summary-card&quot;&gt;
+            &lt;div class=&quot;summary-label&quot;&gt;本月&lt;/div&gt;
+            &lt;div class=&quot;lg-sum-row&quot;&gt;
+              &lt;span class=&quot;lg-sum-key&quot;&gt;收入&lt;/span&gt;
+              &lt;span class=&quot;lg-sum-val mono lg-in&quot; id=&quot;lgMonthIn&quot;&gt;¥0.00&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;lg-sum-row&quot;&gt;
+              &lt;span class=&quot;lg-sum-key&quot;&gt;支出&lt;/span&gt;
+              &lt;span class=&quot;lg-sum-val mono lg-out&quot; id=&quot;lgMonthOut&quot;&gt;¥0.00&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;summary-sub&quot;&gt;净 &lt;span class=&quot;mono&quot; id=&quot;lgMonthNet&quot;&gt;¥0.00&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- 记一笔：金额必须 &gt; 0，分类必填，备注选填 --&gt;
+        &lt;div class=&quot;lg-form-panel&quot;&gt;
+          &lt;div class=&quot;panel-head&quot;&gt;记一笔&lt;/div&gt;
+
+          &lt;div class=&quot;lg-form-grid&quot;&gt;
+            &lt;label class=&quot;field&quot; for=&quot;lgType&quot;&gt;
+              &lt;span class=&quot;field-label&quot;&gt;类型&lt;/span&gt;
+              &lt;select id=&quot;lgType&quot; class=&quot;input&quot;&gt;
+                &lt;option value=&quot;out&quot;&gt;支出&lt;/option&gt;
+                &lt;option value=&quot;in&quot;&gt;收入&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/label&gt;
+
+            &lt;label class=&quot;field&quot; for=&quot;lgAmount&quot;&gt;
+              &lt;span class=&quot;field-label&quot;&gt;金额（必填，大于 0）&lt;/span&gt;
+              &lt;input type=&quot;text&quot; id=&quot;lgAmount&quot; class=&quot;input&quot; inputmode=&quot;decimal&quot; placeholder=&quot;0.00&quot; autocomplete=&quot;off&quot;&gt;
+            &lt;/label&gt;
+
+            &lt;label class=&quot;field&quot; for=&quot;lgCategory&quot;&gt;
+              &lt;span class=&quot;field-label&quot;&gt;分类（必填）&lt;/span&gt;
+              &lt;input type=&quot;text&quot; id=&quot;lgCategory&quot; class=&quot;input&quot; placeholder=&quot;比如 餐饮 / 交通 / 工资&quot; autocomplete=&quot;off&quot;&gt;
+            &lt;/label&gt;
+
+            &lt;label class=&quot;field&quot; for=&quot;lgNote&quot;&gt;
+              &lt;span class=&quot;field-label&quot;&gt;备注（选填）&lt;/span&gt;
+              &lt;input type=&quot;text&quot; id=&quot;lgNote&quot; class=&quot;input&quot; placeholder=&quot;比如 和朋友吃饭&quot; autocomplete=&quot;off&quot;&gt;
+            &lt;/label&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;lg-form-foot&quot;&gt;
+            &lt;span class=&quot;form-hint&quot; id=&quot;lgHint&quot;&gt;&lt;/span&gt;
+            &lt;button type=&quot;button&quot; id=&quot;lgSave&quot; class=&quot;btn&quot;&gt;保存&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- 账单 OCR：选图或粘贴 → 识别 → 必须先过确认卡 → 才入账 --&gt;
+        &lt;div class=&quot;lg-form-panel ocr-panel&quot;&gt;
+          &lt;div class=&quot;panel-head&quot;&gt;账单截图识别&lt;/div&gt;
+          &lt;div class=&quot;ocr-tip&quot;&gt;
+            识别可能不准，以确认卡为准；识别模型需要从 CDN 下载，第一次会比较慢。
+          &lt;/div&gt;
+
+          &lt;div class=&quot;ocr-actions&quot;&gt;
+            &lt;input type=&quot;file&quot; id=&quot;ocrFile&quot; class=&quot;ocr-file&quot; accept=&quot;image/png,image/jpeg,image/webp&quot;&gt;
+            &lt;label class=&quot;btn&quot; for=&quot;ocrFile&quot;&gt;选择图片&lt;/label&gt;
+            &lt;span class=&quot;ocr-alt&quot;&gt;支持 png / jpg / webp，或先点一下本页，再按 Ctrl / Cmd + V 粘贴截图&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;form-hint&quot; id=&quot;ocrStatus&quot;&gt;&lt;/div&gt;
+
+          &lt;div class=&quot;ocr-preview&quot; id=&quot;ocrPreview&quot; hidden&gt;
+            &lt;img id=&quot;ocrImg&quot; class=&quot;ocr-img&quot; alt=&quot;待识别的截图&quot;&gt;
+            &lt;button type=&quot;button&quot; id=&quot;ocrRemove&quot; class=&quot;btn btn-small&quot;&gt;移除&lt;/button&gt;
+          &lt;/div&gt;
+
+          &lt;!-- 确认卡：识别完一定出现；金额没读到就空着，由用户手填 --&gt;
+          &lt;div class=&quot;ocr-card&quot; id=&quot;ocrCard&quot; hidden&gt;
+            &lt;div class=&quot;ocr-card-head&quot;&gt;
+              &lt;span class=&quot;ocr-card-title&quot;&gt;确认入账&lt;/span&gt;
+              &lt;span class=&quot;ocr-card-note&quot;&gt;核对无误再入账，OCR 结果不会自动写入&lt;/span&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;ocr-cands-tip&quot; id=&quot;ocrCandsTip&quot; hidden&gt;识别到多个金额候选，点一个填进下面的金额框&lt;/div&gt;
+            &lt;div class=&quot;ocr-cands&quot; id=&quot;ocrCands&quot; hidden&gt;&lt;/div&gt;
+
+            &lt;div class=&quot;lg-form-grid&quot;&gt;
+              &lt;label class=&quot;field&quot; for=&quot;ocrType&quot;&gt;
+                &lt;span class=&quot;field-label&quot;&gt;类型&lt;/span&gt;
+                &lt;select id=&quot;ocrType&quot; class=&quot;input&quot;&gt;
+                  &lt;option value=&quot;out&quot;&gt;支出&lt;/option&gt;
+                  &lt;option value=&quot;in&quot;&gt;收入&lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/label&gt;
+
+              &lt;label class=&quot;field&quot; for=&quot;ocrAmount&quot;&gt;
+                &lt;span class=&quot;field-label&quot;&gt;金额（必填，大于 0）&lt;/span&gt;
+                &lt;input type=&quot;text&quot; id=&quot;ocrAmount&quot; class=&quot;input&quot; inputmode=&quot;decimal&quot; placeholder=&quot;0.00&quot; autocomplete=&quot;off&quot;&gt;
+              &lt;/label&gt;
+
+              &lt;label class=&quot;field&quot; for=&quot;ocrCategory&quot;&gt;
+                &lt;span class=&quot;field-label&quot;&gt;分类（必填）&lt;/span&gt;
+                &lt;input type=&quot;text&quot; id=&quot;ocrCategory&quot; class=&quot;input&quot; placeholder=&quot;比如 餐饮 / 交通 / 工资&quot; autocomplete=&quot;off&quot;&gt;
+              &lt;/label&gt;
+
+              &lt;label class=&quot;field&quot; for=&quot;ocrNote&quot;&gt;
+                &lt;span class=&quot;field-label&quot;&gt;备注（选填）&lt;/span&gt;
+                &lt;input type=&quot;text&quot; id=&quot;ocrNote&quot; class=&quot;input&quot; placeholder=&quot;比如 和朋友吃饭&quot; autocomplete=&quot;off&quot;&gt;
+              &lt;/label&gt;
+            &lt;/div&gt;
+
+            &lt;details class=&quot;ocr-raw&quot; id=&quot;ocrRaw&quot; hidden&gt;
+              &lt;summary&gt;识别原文&lt;/summary&gt;
+              &lt;pre class=&quot;ocr-raw-text&quot; id=&quot;ocrRawText&quot;&gt;&lt;/pre&gt;
+            &lt;/details&gt;
+
+            &lt;div class=&quot;form-hint&quot; id=&quot;ocrCardHint&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;detail-actions&quot;&gt;
+              &lt;button type=&quot;button&quot; id=&quot;ocrConfirm&quot; class=&quot;btn ocr-confirm&quot;&gt;确认入账&lt;/button&gt;
+              &lt;button type=&quot;button&quot; id=&quot;ocrCancel&quot; class=&quot;btn&quot;&gt;取消&lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- 账目列表：新记的排在上面 --&gt;
+        &lt;div class=&quot;panel&quot;&gt;
+          &lt;div class=&quot;panel-head&quot; id=&quot;lgListHead&quot;&gt;账目列表&lt;/div&gt;
+          &lt;ul class=&quot;lg-rows&quot; id=&quot;lgRows&quot; hidden&gt;&lt;/ul&gt;
+          &lt;div class=&quot;panel-empty&quot; id=&quot;lgEmpty&quot;&gt;暂无记录&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+
+      &lt;!-- ================== 快捷入口 ================== --&gt;
+      &lt;section class=&quot;page&quot; data-page=&quot;shortcut&quot; data-page-node-id=&quot;C5DjQMFTov4Tl4h7kJ9c39&quot;&gt;
+        &lt;header class=&quot;page-head simple&quot; data-page-node-id=&quot;KxbrEbK0dgpO14BN1r4Pbl&quot;&gt;
+          &lt;h2 class=&quot;page-title&quot; data-page-node-id=&quot;n9yA0sepO4Un9pz4y8DBZj&quot;&gt;快捷入口&lt;/h2&gt;
+        &lt;/header&gt;
+
+        &lt;!-- 两个子看板：常用网站 / 常用文本，同宽同高 --&gt;
+        &lt;div class=&quot;two-col&quot;&gt;
+          &lt;div class=&quot;panel&quot;&gt;
+            &lt;div class=&quot;panel-head&quot;&gt;常用网站&lt;/div&gt;
+
+            &lt;div class=&quot;link-form&quot;&gt;
+              &lt;input type=&quot;text&quot; id=&quot;siteName&quot; class=&quot;input&quot; placeholder=&quot;名称，比如 邮箱&quot; autocomplete=&quot;off&quot;&gt;
+              &lt;input type=&quot;text&quot; id=&quot;siteUrl&quot; class=&quot;input&quot; placeholder=&quot;网址，比如 mail.qq.com&quot; autocomplete=&quot;off&quot;&gt;
+              &lt;div class=&quot;link-form-foot&quot;&gt;
+                &lt;span class=&quot;form-hint&quot; id=&quot;linkHint&quot;&gt;&lt;/span&gt;
+                &lt;button type=&quot;button&quot; id=&quot;siteAdd&quot; class=&quot;btn&quot;&gt;添加&lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;ul class=&quot;link-rows&quot; id=&quot;siteRows&quot; hidden&gt;&lt;/ul&gt;
+            &lt;div class=&quot;panel-empty&quot; id=&quot;siteEmpty&quot;&gt;还没有快捷入口&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;panel&quot;&gt;
+            &lt;div class=&quot;panel-head&quot;&gt;常用文本&lt;/div&gt;
+
+            &lt;div class=&quot;link-form&quot;&gt;
+              &lt;input type=&quot;text&quot; id=&quot;snippetName&quot; class=&quot;input&quot; placeholder=&quot;名称，比如 收货地址&quot; autocomplete=&quot;off&quot;&gt;
+              &lt;textarea id=&quot;snippetText&quot; class=&quot;input snip-input&quot; placeholder=&quot;要一键复制的文本&quot;&gt;&lt;/textarea&gt;
+              &lt;div class=&quot;link-form-foot&quot;&gt;
+                &lt;span class=&quot;form-hint&quot; id=&quot;snippetHint&quot;&gt;&lt;/span&gt;
+                &lt;button type=&quot;button&quot; id=&quot;snippetAdd&quot; class=&quot;btn&quot;&gt;添加&lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;ul class=&quot;link-rows&quot; id=&quot;snippetRows&quot; hidden&gt;&lt;/ul&gt;
+            &lt;div class=&quot;panel-empty&quot; id=&quot;snippetEmpty&quot;&gt;还没有常用文本&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+
+      &lt;!-- ================== 打卡 ================== --&gt;
+      &lt;section class=&quot;page&quot; data-page=&quot;checkin&quot; data-page-node-id=&quot;wUauKTq5A2hxXbY2M3ypsE&quot;&gt;
+        &lt;header class=&quot;page-head simple&quot; data-page-node-id=&quot;kkGtA3DTsOZGeIT9QY451z&quot;&gt;
+          &lt;h2 class=&quot;page-title&quot; data-page-node-id=&quot;Vzk0SMWg3CDyPuD6Qi2llF&quot;&gt;打卡&lt;/h2&gt;
+        &lt;/header&gt;
+
+        &lt;!-- 当前周期达标汇总，数值由 js/habits.js 的 render() 填充 --&gt;
+        &lt;div class=&quot;habit-summary&quot;&gt;
+          &lt;span class=&quot;habit-summary-label&quot;&gt;当前周期达标&lt;/span&gt;
+          &lt;span class=&quot;habit-summary-value mono&quot; id=&quot;habitSummaryValue&quot;&gt;0 / 4&lt;/span&gt;
+          &lt;span class=&quot;habit-summary-note&quot; id=&quot;habitSummaryNote&quot;&gt;本日 / 本周还没开始&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;form-hint&quot; id=&quot;habitHint&quot;&gt;&lt;/div&gt;
+
+        &lt;!-- 四张卡（喝水 / 运动 / 学习 / 工作）：骨架由 js/habits.js 首次渲染时生成，
+             之后只更新数字与状态，不重建 DOM，避免打断正在输入的设置 --&gt;
+        &lt;div class=&quot;habit-grid&quot; id=&quot;habitGrid&quot;&gt;&lt;/div&gt;
+      &lt;/section&gt;
+
+    &lt;/main&gt;
+  &lt;/div&gt;
+
+  &lt;!-- 页脚：说明文字 + 数据管理（导出 / 导入 / 清空） --&gt;
+  &lt;footer class=&quot;footer&quot;&gt;
+    &lt;div class=&quot;footer-note&quot;&gt;
+      &lt;div&gt;个人工作台 · 数据仅保存在本机浏览器&lt;/div&gt;
+      &lt;div&gt;今天我们在看前端：你看到的这一页，就是浏览器在跑 HTML/CSS/JS&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;data-bar&quot;&gt;
+      &lt;span class=&quot;data-bar-label&quot;&gt;数据管理&lt;/span&gt;
+      &lt;button type=&quot;button&quot; id=&quot;dataExport&quot; class=&quot;btn btn-small&quot;&gt;导出 JSON&lt;/button&gt;
+      &lt;button type=&quot;button&quot; id=&quot;dataImport&quot; class=&quot;btn btn-small&quot;&gt;导入 JSON&lt;/button&gt;
+      &lt;button type=&quot;button&quot; id=&quot;dataClear&quot; class=&quot;btn btn-small btn-danger&quot;&gt;清空全部数据&lt;/button&gt;
+      &lt;!-- 真正的文件框藏起来，点「导入 JSON」再弹出来 --&gt;
+      &lt;input type=&quot;file&quot; id=&quot;dataFile&quot; class=&quot;data-file&quot; accept=&quot;application/json,.json&quot;&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;form-hint&quot; id=&quot;dataHint&quot;&gt;&lt;/div&gt;
+
+    &lt;!-- 导入摘要：先看清楚，再点「确认覆盖导入」 --&gt;
+    &lt;div class=&quot;data-panel&quot; id=&quot;dataImportPanel&quot; hidden&gt;
+      &lt;div class=&quot;data-panel-head&quot;&gt;备份摘要&lt;/div&gt;
+      &lt;ul class=&quot;data-summary&quot; id=&quot;dataSummary&quot;&gt;&lt;/ul&gt;
+      &lt;div class=&quot;data-panel-note&quot;&gt;导入会覆盖当前全部数据，请先导出备份。&lt;/div&gt;
+      &lt;div class=&quot;data-panel-actions&quot;&gt;
+        &lt;button type=&quot;button&quot; id=&quot;dataImportConfirm&quot; class=&quot;btn btn-small&quot;&gt;确认覆盖导入&lt;/button&gt;
+        &lt;button type=&quot;button&quot; id=&quot;dataImportCancel&quot; class=&quot;btn btn-small&quot;&gt;取消&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- 清空的二次确认 --&gt;
+    &lt;div class=&quot;data-panel data-panel-danger&quot; id=&quot;dataClearPanel&quot; hidden&gt;
+      &lt;div class=&quot;data-panel-head&quot;&gt;确认清空全部数据？&lt;/div&gt;
+      &lt;div class=&quot;data-panel-note&quot; id=&quot;dataClearNote&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;data-panel-actions&quot;&gt;
+        &lt;button type=&quot;button&quot; id=&quot;dataClearConfirm&quot; class=&quot;btn btn-small btn-danger&quot;&gt;确认清空&lt;/button&gt;
+        &lt;button type=&quot;button&quot; id=&quot;dataClearCancel&quot; class=&quot;btn btn-small&quot;&gt;我再想想&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/footer&gt;
+
+  &lt;!-- 脚本加载顺序：storage.js → 各业务模块 → app.js（最后，负责统一 init） --&gt;
+  &lt;script src=&quot;js/storage.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;js/todo.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;js/notes.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;js/links.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;js/habits.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;js/ledger.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;js/ocr.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;js/data.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;js/app.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+  </div>
+</div>
+<script>
+(function () {
+  var modal = document.getElementById('workbenchModal');
+  var openLink = document.getElementById('openWorkbenchCard');
+  var closeButton = document.getElementById('closeWorkbench');
+  var previousFocus = null;
+  function show(event) {
+    if (event) event.preventDefault();
+    previousFocus = document.activeElement;
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    closeButton.focus();
+  }
+  function hide() {
+    modal.hidden = true;
+    document.body.style.overflow = '';
+    if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
+  }
+  openLink.addEventListener('click', show);
+  closeButton.addEventListener('click', hide);
+  modal.addEventListener('click', function (event) { if (event.target === modal) hide(); });
+  document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && !modal.hidden) hide(); });
+}());
+</script>
+
 </body>
 </html>
