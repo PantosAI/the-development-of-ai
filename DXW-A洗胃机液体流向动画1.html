@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DXW-A 自动洗胃机｜液体流向动态示意</title>
+<style>
+:root{--blue:#2796e8;--orange:#e9a23b;--red:#d94c4c;--ink:#203044;--muted:#65758a;--line:#b8c5d2}
+*{box-sizing:border-box}body{margin:0;background:#f2f6fa;color:var(--ink);font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1200px;margin:auto;padding:22px}
+h1{font-size:clamp(22px,3vw,34px);margin:0 0 6px}.sub{color:var(--muted);margin:0 0 16px}
+.toolbar{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:14px 0}
+button{border:1px solid #c7d2de;background:white;color:#26384c;padding:10px 16px;border-radius:10px;font-size:14px;cursor:pointer}
+button.active{background:#1e344b;color:white;border-color:#1e344b}
+.legend{display:flex;flex-wrap:wrap;gap:18px;margin:10px 0 14px;font-size:14px}
+.key{display:flex;gap:7px;align-items:center}.dot{width:12px;height:12px;border-radius:50%}
+.panel{background:white;border:1px solid #dce5ee;border-radius:16px;padding:12px;box-shadow:0 5px 20px #2030440b}
+svg{width:100%;height:auto;display:block}
+.node{fill:#f8fbfe;stroke:#9aabba;stroke-width:2}.machine{fill:#e9eef3;stroke:#64788c;stroke-width:2}
+.label{font-size:16px;fill:#24384d;font-weight:650}.small{font-size:12px;fill:#62758a}
+.pipe{fill:none;stroke:#a8b6c4;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}
+.flow{fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:12 14;animation:move 1s linear infinite;opacity:.95}
+.blue{stroke:var(--blue)}.orange{stroke:var(--orange)}.red{stroke:var(--red)}
+@keyframes move{to{stroke-dashoffset:-52}}
+.pulse{animation:pulse 1.4s ease-in-out infinite}@keyframes pulse{50%{opacity:.45}}
+.phase-off .flow{opacity:0}
+.phase-flush .orange,.phase-flush .red{opacity:0}
+.phase-suction .blue{opacity:0}
+.phase-suction .orange,.phase-suction .red{opacity:1}
+.phase-auto .flow{opacity:1}
+.note{font-size:13px;line-height:1.65;color:#526579;margin:12px 4px 2px}
+.status{font-weight:700;margin-left:auto;color:#35516c}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.step{background:white;border:1px solid #dce5ee;border-radius:12px;padding:12px;font-size:13px;line-height:1.55}
+.step b{display:block;margin-bottom:4px}
+@media(max-width:700px){main{padding:12px}.steps{grid-template-columns:1fr}.status{width:100%;margin:2px 0}}
+</style></head>
+<body><main>
+<h1>DXW-A 自动洗胃机｜液体流向动画</h1>
+<p class="sub">结构化原理示意 · 可切换吸液、冲液与自动循环</p>
+<div class="toolbar">
+<button id="off">暂停</button><button id="suction">① 吸液（胃内回流）</button><button id="flush">② 冲液（清洁液进入）</button><button id="auto" class="active">③ 自动循环</button>
+<span class="status" id="status">当前：自动循环</span>
+</div>
+<div class="legend">
+<span class="key"><i class="dot" style="background:var(--blue)"></i>清洁冲洗液</span>
+<span class="key"><i class="dot" style="background:var(--orange)"></i>胃内混合回流液</span>
+<span class="key"><i class="dot" style="background:var(--red)"></i>过滤后排出的污液</span>
+</div>
+<div class="panel">
+<svg id="diagram" viewBox="0 0 1100 700" role="img" aria-label="DXW-A洗胃机液体流向和人体胃管位置示意">
+<defs>
+ <marker id="ab" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#2796e8"/></marker>
+ <marker id="ao" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#e9a23b"/></marker>
+ <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#d94c4c"/></marker>
+</defs>
+<!-- human -->
+<g transform="translate(45,65)">
+ <text x="130" y="0" text-anchor="middle" class="label">人体示意｜胃管位置</text>
+ <circle cx="130" cy="72" r="38" fill="#f2d6c5" stroke="#9d887c" stroke-width="2"/>
+ <path d="M110 110 L110 135 Q55 145 48 210 L42 360 Q80 390 130 390 Q180 390 218 360 L212 210 Q205 145 150 135 L150 110" fill="#f2d6c5" stroke="#9d887c" stroke-width="2"/>
+ <path d="M130 111 L130 165 Q130 190 145 212 L150 260" fill="none" stroke="#bd8e78" stroke-width="8" stroke-linecap="round"/>
+ <path d="M150 260 Q188 238 202 274 Q210 316 170 327 Q128 335 124 300 Q120 278 150 260Z" fill="#efb2a0" stroke="#b66d62" stroke-width="3"/>
+ <path d="M125 76 Q130 91 142 88" fill="none" stroke="#9d5f56" stroke-width="3"/>
+ <!-- gastric tube -->
+ <path d="M145 87 Q162 112 143 144 Q128 168 145 205 Q159 232 153 275" fill="none" stroke="#2796e8" stroke-width="5" stroke-linecap="round"/>
+ <path d="M145 87 Q162 112 143 144 Q128 168 145 205 Q159 232 153 275" fill="none" stroke="#e9a23b" stroke-width="3" stroke-dasharray="5 10" class="pulse"/>
+ <path d="M153 275 Q170 288 185 286" fill="none" stroke="#e9a23b" stroke-width="4"/>
+ <text x="190" y="80" class="small">口腔 / 鼻腔入口</text><path d="M180 84L153 90" stroke="#8fa0af" fill="none"/>
+ <text x="190" y="173" class="small">食管</text><path d="M181 177L145 190" stroke="#8fa0af" fill="none"/>
+ <text x="220" y="300" class="small">胃</text><path d="M210 297L186 297" stroke="#8fa0af" fill="none"/>
+ <text x="190" y="350" class="small" fill="#2796e8">胃管末端位于胃内</text>
+</g>
+<!-- clean liquid source -->
+<g transform="translate(380,70)">
+ <path class="node" d="M10 20h130l-10 150H20Z"/><path d="M20 92H130L122 165H28Z" fill="#b9e1fa" opacity=".8"/>
+ <text x="75" y="12" text-anchor="middle" class="label">洗胃液桶</text><text x="75" y="115" text-anchor="middle" class="small">清洁冲洗液</text>
+</g>
+<!-- machine -->
+<g transform="translate(620,75)">
+ <rect x="0" y="0" width="250" height="340" rx="22" class="machine"/>
+ <rect x="18" y="18" width="214" height="64" rx="8" fill="#dce4ec" stroke="#8394a5"/>
+ <text x="125" y="45" text-anchor="middle" class="label">DXW-A 主机</text><text x="125" y="66" text-anchor="middle" class="small">冲吸转换 / 泵 / 控制</text>
+ <rect x="25" y="115" width="88" height="155" rx="12" fill="#fff" stroke="#8093a5" stroke-width="2"/>
+ <rect x="137" y="115" width="88" height="155" rx="12" fill="#fff" stroke="#8093a5" stroke-width="2"/>
+ <rect x="32" y="180" width="74" height="78" rx="7" fill="#f4c47b" opacity=".55"/>
+ <rect x="144" y="180" width="74" height="78" rx="7" fill="#f4c47b" opacity=".35"/>
+ <text x="69" y="145" text-anchor="middle" class="small">过滤瓶 A</text><text x="181" y="145" text-anchor="middle" class="small">过滤瓶 B</text>
+ <text x="125" y="300" text-anchor="middle" class="small">吸液过滤组件（示意）</text>
+ <text x="125" y="322" text-anchor="middle" class="small">冲液与吸液通路受控切换</text>
+</g>
+<!-- waste bucket -->
+<g transform="translate(920,490)">
+ <path d="M10 35h130l-12 130H22Z" fill="#f9e4e4" stroke="#bd7777" stroke-width="2"/>
+ <path d="M18 95H132L126 158H24Z" fill="#e9a0a0" opacity=".75"/>
+ <text x="75" y="20" text-anchor="middle" class="label">污液桶</text><text x="75" y="125" text-anchor="middle" class="small">收集排出液</text>
+</g>
+<!-- external pipes -->
+<path class="pipe" d="M520 155 H610"/>
+<path class="flow blue" marker-end="url(#ab)" d="M520 155 H610"/>
+<text x="558" y="135" text-anchor="middle" class="small">进液</text>
+<!-- machine to gastric tube clean -->
+<path class="pipe" d="M745 75 V35 H300 V150 H225"/>
+<path class="flow blue" marker-end="url(#ab)" d="M745 75 V35 H300 V150 H225"/>
+<text x="490" y="24" text-anchor="middle" class="small">冲液通路 → 胃管 → 胃内</text>
+<!-- stomach return to filters -->
+<path class="pipe" d="M225 365 H575 V330 H685 V345"/>
+<path class="flow orange" marker-end="url(#ao)" d="M225 365 H575 V330 H685 V345"/>
+<text x="420" y="390" text-anchor="middle" class="small">胃内混合液回流 → 吸液过滤通路</text>
+<!-- filters to waste -->
+<path class="pipe" d="M870 345 H895 V570 H930"/>
+<path class="flow red" marker-end="url(#ar)" d="M870 345 H895 V570 H930"/>
+<text x="910" y="440" text-anchor="middle" class="small" transform="rotate(90 910 440)">排污</text>
+<!-- labels / caution -->
+<g transform="translate(370,485)">
+ <rect x="0" y="0" width="500" height="112" rx="12" fill="#f7f9fc" stroke="#d5e0ea"/>
+ <text x="18" y="28" class="label">循环逻辑</text>
+ <text x="18" y="54" class="small">① 吸液：胃内液体经胃管回流，进入吸液过滤组件。</text>
+ <text x="18" y="77" class="small">② 冲液：洗胃液桶中的清洁液经冲液通路进入胃内。</text>
+ <text x="18" y="100" class="small">③ 排污：回收液经设备排污管排入污液桶，循环交替进行。</text>
+</g>
+<text x="550" y="660" text-anchor="middle" class="small">动画为工作原理示意，不用于判断实机接口、接管顺序或临床操作。</text>
+</svg>
+<p class="note"><b>颜色说明：</b>橙色代表从胃内抽出的“冲洗液＋胃内容物”混合回流液；红色代表经过设备回收/过滤后排入污液桶的排出液，并不表示设备会把混合液化学分离成纯污物。实际过滤瓶内部流经顺序、各接头对应关系，需以该台设备说明书及机身接口标识核实。</p>
+</div>
+<div class="steps">
+ <div class="step"><b style="color:var(--blue)">清洁液｜进入方向</b>洗胃液桶 → 进液管 → 冲液泵/冲液阀 → 胃管 → 胃内。</div>
+ <div class="step"><b style="color:var(--orange)">混合液｜回流方向</b>胃内液体与冲洗液混合 → 胃管 → 吸液通路 → 过滤瓶组件。</div>
+ <div class="step"><b style="color:var(--red)">排出液｜废液方向</b>过滤/回收通路 → 排污管 → 污液桶。</div>
+</div>
+<p class="note">安全提示：本图仅用于理解流向。洗胃属于医疗操作，不能依据动画连接管路或启动设备；必须由受训医护人员按对应型号说明书核对接口、滤瓶连接和压力报警要求。</p>
+</main>
+<script>
+const d=document.getElementById('diagram'),s=document.getElementById('status');
+const buttons=['off','suction','flush','auto'];let timer=null,phase=false;
+function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
+function setMode(m){
+ d.classList.remove('phase-off','phase-suction','phase-flush','phase-auto');
+ d.classList.add('phase-'+m);
+ buttons.forEach(x=>document.getElementById(x).classList.toggle('active',x===m));
+ s.textContent={off:'当前：动画暂停',suction:'当前：吸液阶段（胃内混合液回流）',flush:'当前：冲液阶段（清洁液进入胃内）',auto:'当前：自动循环（吸液 ⇄ 冲液）'}[m];
+ stopTimer();
+ if(m==='auto'){
+   phase=false;
+   timer=setInterval(()=>{phase=!phase;d.classList.toggle('phase-flush',phase);},2200);
+ }
+}
+buttons.forEach(x=>document.getElementById(x).addEventListener('click',()=>setMode(x)));
+setMode('auto');
+</script></body></html>
