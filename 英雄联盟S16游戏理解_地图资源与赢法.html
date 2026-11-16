@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>英雄联盟：地图、资源与赢法 — 以 S16 决赛为样本的对线、BP、视野与团战决策手册</title>
+<meta name="description" content="基于 S16 全球总决赛决赛实战数据拆解《英雄联盟》的资源账、兵线模型、BP 赢法模板、视野开团权、团战五问与后期结算方法。">
+<style>
+:root{
+  --ink:#1b2733; --sub:#5b6b7c; --line:#dce3ea; --soft:#f5f8fa;
+  --accent:#1f6feb; --warm:#d9480f; --teal:#0b7285; --violet:#5f3dc4;
+  --ok:#2b8a3e; --warn:#c2255c;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:#fff; color:var(--ink);
+  font-family:"Noto Sans CJK SC","Source Han Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  font-size:15.5px; line-height:1.78; letter-spacing:.01em;
+}
+.layout{display:grid;grid-template-columns:248px minmax(0,1fr);gap:30px;max-width:1340px;margin:0 auto;padding:0 24px}
+main{min-width:0;padding-bottom:60px}
+
+/* 目录 */
+aside.toc-wrap{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:26px 4px 30px 0;font-size:13.5px}
+.toc-h{font-size:12px;letter-spacing:.22em;color:var(--sub);font-weight:700;padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.toc ol{list-style:none;margin:0;padding:0;counter-reset:t}
+.toc li{counter-increment:t;margin:0 0 1px}
+.toc a{display:block;padding:5px 8px 5px 26px;color:var(--sub);text-decoration:none;border-radius:5px;position:relative;line-height:1.5}
+.toc a::before{content:counter(t);position:absolute;left:4px;top:5px;font-size:11px;color:#9fb0c0;font-variant-numeric:tabular-nums}
+.toc a:hover{background:var(--soft);color:var(--ink)}
+
+/* 封面 */
+header.cover{padding:56px 0 26px;border-bottom:2px solid var(--ink);margin-bottom:26px}
+.eyebrow{font-size:12px;letter-spacing:.24em;color:var(--warm);font-weight:700;margin-bottom:14px}
+header.cover h1{font-size:40px;line-height:1.18;margin:0 0 10px;letter-spacing:-.01em}
+.lead{font-size:17px;color:var(--sub);margin:0 0 24px;max-width:820px}
+.stats{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:22px}
+.stat{border:1px solid var(--line);border-radius:8px;padding:10px 16px;min-width:132px;background:var(--soft)}
+.stat b{display:block;font-size:25px;line-height:1.2;font-variant-numeric:tabular-nums}
+.stat span{font-size:12.5px;color:var(--sub)}
+.use{font-size:13.5px;color:var(--sub);background:var(--soft);border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 6px 6px 0;max-width:900px}
+.use b{color:var(--ink)}
+
+/* 章节 */
+section.card{margin:0 0 30px;padding:24px 26px;border:1px solid var(--line);border-radius:10px;background:#fff}
+section.card h2{font-size:24px;margin:0 0 14px;padding-bottom:10px;border-bottom:2px solid var(--ink);letter-spacing:.01em}
+section.card h3{font-size:18.5px;margin:26px 0 10px;padding-left:10px;border-left:4px solid var(--accent);line-height:1.45}
+section.card h4{font-size:15.5px;margin:20px 0 8px;color:var(--teal)}
+section.card>p:first-of-type{margin-top:0}
+section.card p.lede{font-size:16px;color:var(--sub);margin-bottom:16px}
+p.bigquote{background:var(--soft);border-left:4px solid var(--warm);padding:14px 18px;border-radius:0 6px 6px 0;font-size:16.5px;margin:14px 0}
+p.formula{font-family:"Noto Sans Mono CJK SC",ui-monospace,Menlo,Consolas,monospace;background:#10161d;color:#e8f0f7;padding:12px 16px;border-radius:6px;font-size:14.5px;overflow-x:auto}
+p.note{font-size:13.5px;color:var(--sub);background:var(--soft);padding:11px 14px;border-radius:6px;margin:14px 0}
+p.warn{font-size:14.5px;background:#fff5f7;border-left:4px solid var(--warn);padding:11px 15px;border-radius:0 6px 6px 0}
+ul,ol{padding-left:24px;margin:12px 0}
+li{margin:5px 0}
+b{font-weight:700}
+
+/* 表格 */
+.tbl-wrap{overflow-x:auto;margin:14px 0 16px;border-radius:8px;border:1px solid var(--line)}
+table.tbl{width:100%;border-collapse:collapse;font-size:13.8px;min-width:560px}
+table.tbl.wide{min-width:940px}
+table.tbl th,table.tbl td{border-bottom:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;line-height:1.62}
+table.tbl thead th{background:#eef3f7;font-weight:700;font-size:13px;color:#33465a;border-bottom:2px solid #cfd9e2;position:sticky;top:0}
+table.tbl tbody tr:nth-child(even){background:#fbfcfd}
+table.tbl tbody tr:hover{background:#f2f7fc}
+table.tbl td:first-child{font-weight:600}
+
+/* 图表 */
+.chart-box{overflow-x:auto;padding:6px 0 2px}
+svg.chart{display:block;margin:0 auto;height:auto;max-width:100%}
+svg.chart.wide{max-width:100%}
+.chart-box svg{min-width:340px}
+.two-col{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:14px 0 18px}
+.radar-card{border:1px solid var(--line);border-radius:8px;padding:12px 10px 10px;background:#fff}
+.radar-card .chart-box{padding:2px 0}
+@media(max-width:900px){.two-col{grid-template-columns:1fr}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margin:2px 0 6px}
+.lg{font-size:12.5px;color:var(--sub);display:inline-flex;align-items:center;gap:6px}
+.lg i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.cap{font-size:12.8px;color:var(--sub);text-align:center;margin:4px 0 6px;line-height:1.6}
+.cap b{display:block;color:var(--ink);font-size:13.4px}
+.cap span{display:block;margin-top:2px}
+svg .ax{font-size:12.5px;fill:#33465a}
+svg .tick{font-size:10.5px;fill:#9fb0c0}
+svg .blab{font-size:12.5px;fill:#33465a}
+svg .bval{font-size:12.5px;fill:#1b2733;font-weight:700}
+svg .bnote{font-size:10.8px;fill:#8b9bab}
+svg .fgrp{font-size:12.5px;fill:#d9480f;font-weight:700;letter-spacing:.08em}
+svg .fkey{font-size:13.5px;fill:#1b2733;font-weight:700}
+svg .fdesc{font-size:12.2px;fill:#5b6b7c}
+
+/* 工具条 */
+.tools{position:fixed;right:18px;bottom:18px;display:flex;gap:8px;z-index:40}
+.tools button{font:inherit;font-size:13px;padding:9px 15px;border-radius:999px;border:1px solid var(--line);
+  background:#fff;color:var(--ink);cursor:pointer;box-shadow:0 2px 10px rgba(20,40,70,.10)}
+.tools button:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.narrow-txt{display:none}
+footer.doc{padding:26px 0 40px;border-top:1px solid var(--line);font-size:12.8px;color:var(--sub)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(31,111,235,.28)}
+a:hover{border-bottom-color:var(--accent)}
+
+/* 响应式 */
+@media (max-width:1080px){
+  .layout{grid-template-columns:1fr;padding:0 18px}
+  aside.toc-wrap{position:static;max-height:none;border-bottom:1px solid var(--line);padding:16px 0}
+  .toc ol{columns:2;column-gap:24px}
+  header.cover h1{font-size:32px}
+}
+@media (max-width:620px){
+  body{font-size:15px}
+  .layout{padding:0 13px}
+  section.card{padding:18px 15px;border-radius:8px}
+  section.card h2{font-size:20.5px}
+  section.card h3{font-size:17px}
+  header.cover{padding:34px 0 20px}
+  header.cover h1{font-size:26px}
+  .lead{font-size:15.5px}
+  .stat{min-width:104px;padding:8px 12px}
+  .stat b{font-size:20px}
+  .toc ol{columns:1}
+  table.tbl{font-size:13.2px;min-width:520px}
+  .tools{right:10px;bottom:10px;gap:6px}
+  .tools button{padding:7px 11px;font-size:12px}
+  .wide-txt{display:none}
+  .narrow-txt{display:inline}
+}
+
+/* 打印 */
+@media print{
+  @page{size:A4;margin:13mm 11mm}
+  body{font-size:10.5pt;line-height:1.6}
+  .layout{display:block;max-width:none;padding:0}
+  aside.toc-wrap{position:static;max-height:none;page-break-after:always;border-bottom:none}
+  .toc ol{columns:2}
+  .tools{display:none}
+  section.card{border:none;border-radius:0;padding:0 0 14px;page-break-inside:auto;margin-bottom:16px}
+  section.card h2{page-break-after:avoid;page-break-before:auto}
+  section.card h3,h4{page-break-after:avoid}
+  .tbl-wrap{overflow:visible;border:none}
+  table.tbl{font-size:8.6pt;min-width:0}
+  table.tbl.wide{min-width:0}
+  table.tbl thead th{position:static}
+  table.tbl tr{page-break-inside:avoid}
+  .chart-box{overflow:visible}
+  .chart-box svg{min-width:0;max-width:100%}
+  p.note,p.warn,p.bigquote,table.tbl{page-break-inside:avoid}
+  a{color:#1b2733;border-bottom:none}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="toc-wrap"><nav class="toc"><div class="toc-h">目录</div><ol><li><a href="#ch0">阅读地图与三种读法</a></li><li><a href="#ch1">底层结构：信息与时间</a></li><li><a href="#ch1-1">1.1 一个动作的两面</a></li><li><a href="#ch1-2">1.2 资源账本</a></li><li><a href="#ch1-3">1.3 峡谷时钟</a></li><li><a href="#ch2">视野：开团权的分配</a></li><li><a href="#ch2-1">2.1 视野的机制</a></li><li><a href="#ch2-2">2.2 视野工具账</a></li><li><a href="#ch2-3">2.3 2026 赛季的视野改动</a></li><li><a href="#ch2-4">2.4 眼位的三个判据</a></li><li><a href="#ch3">对线：兵线的三位置与两决策</a></li><li><a href="#ch3-1">3.1 兵线三位置</a></li><li><a href="#ch3-2">3.2 推、控、放</a></li><li><a href="#ch3-3">3.3 推线与打野的联动</a></li><li><a href="#ch3-4">3.4 伤害计算四步法</a></li><li><a href="#ch4">BP：赢法模板</a></li><li><a href="#ch4-1">4.1 零件清单为什么失效</a></li><li><a href="#ch4-2">4.2 三种赢法模板</a></li><li><a href="#ch4-3">4.3 S16 决赛四局拆解</a></li><li><a href="#ch4-4">4.4 无畏征召</a></li><li><a href="#ch4-5">4.5 官方与职业圈的公开方法论</a></li><li><a href="#ch5">中期：CD 回合</a></li><li><a href="#ch5-2">5.2 接团前的五问</a></li><li><a href="#ch5-3">5.3 先杀谁</a></li><li><a href="#ch5-5">5.5 回家时机</a></li><li><a href="#ch5-6">5.6 转化率</a></li><li><a href="#ch6">后期：数值与结算</a></li><li><a href="#ch6-2">6.2 终局是两段式</a></li><li><a href="#ch6-4">6.4 五个机制的计算</a></li><li><a href="#ch6-5">6.5 决赛第四局逐波标注</a></li><li><a href="#ch7">训练与复盘</a></li><li><a href="#ch8">数据与出处</a></li><li><a href="#ch9">附录 术语表</a></li></ol></nav></aside>
+  <main>
+
+<header class="cover">
+  <div class="eyebrow">英雄联盟 · 游戏理解手册</div>
+  <h1>地图、资源与赢法</h1>
+  <p class="lead">以 S16 全球总决赛决赛（BLG 3:1 GEN）为样本的对线、BP、视野与团战决策手册</p>
+  <div class="stats">
+    <div class="stat"><b>19</b><span>支参赛队伍</span></div>
+    <div class="stat"><b>20</b><span>决赛四局不重复英雄</span></div>
+    <div class="stat"><b>41:03</b><span>决胜局最后一波团</span></div>
+    <div class="stat"><b>4</b><span>BLG 四种赢法</span></div>
+  </div>
+  <p class="use"><b>三种读法</b>：① 只读第 1 章与第 7 章，把资源账与练习装进日常；② 逐章通读，建立统一框架；③ 把第 6.5 节的逐波标注当作教材，练习用第 7 章的复盘模板自己标一遍。</p>
+</header>
+
+
+<section class="card" id="ch0">
+  <h2>0　阅读地图</h2>
+  <p class="lede">这份手册的组织方式，就是《英雄联盟》本身的组织方式：先给资源，再给位置，再给决策，最后给练习。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>章</th><th>解决什么问题</th><th>核心工具</th><th>可交付的产出</th></tr></thead>
+    <tbody>
+      <tr><td>1 底层结构</td><td>钱从哪来、什么时候来</td><td>资源账本、峡谷时钟</td><td>一张可查的资源表</td></tr>
+      <tr><td>2 视野</td><td>为什么“被看见”接近“被击杀”</td><td>开团权模型、工具账、眼位判据</td><td>一套自己的插眼流程</td></tr>
+      <tr><td>3 对线</td><td>推线还是控线、怎么算伤害</td><td>三位置模型、决策树、EHP 法</td><td>一套换血与推线的判据</td></tr>
+      <tr><td>4 BP</td><td>为什么“有肉有输出”没用</td><td>赢法模板、决赛四局、无畏征召</td><td>看懂一场 BP 的意图</td></tr>
+      <tr><td>5 中期</td><td>团战该不该打、先杀谁</td><td>五问清单、击杀顺序、信息经济学</td><td>一套接团前检查表</td></tr>
+      <tr><td>6 后期</td><td>怎么把优势兑现成结束比赛</td><td>结算清单、五个机制、逐波标注</td><td>一份自己的结算复盘</td></tr>
+      <tr><td>7 训练</td><td>怎么变成肌肉记忆</td><td>七个练习、观赛清单、复盘模板</td><td>每周可执行的训练计划</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+
+<section class="card" id="ch1">
+  <h2>1　底层结构：信息与时间</h2>
+  <p class="lede">把 LoL 说成“抢夺资源的回合制控兵线推塔游戏”是准确的，缺的一维是时间。更精确的表述只有一句：</p>
+  <p class="bigquote">每一个动作同时产生两样东西：<b>经济</b>和<b>信息</b>；而死亡会同时销毁这两样。</p>
+  <p>这句话能解释后面几乎所有事：为什么被抓一次等于亏两次（经济与信息同时归零）、为什么视野比补刀更值钱（视野直接是开团权）、为什么补刀是“唯一不需要暴露在对手风险下的赚钱方式”（CS 只产生经济，不产生信息，也不被反制）、以及为什么后期一次失误等于直接结束（你已经没有时间把损失赚回来）。</p>
+</section>
+
+<section class="card" id="ch1-1">
+  <h3>1.1　信息的两种形态：看得见，与有得选</h3>
+  <p>很多人把“视野”理解成“看得清楚”。在 LoL 里视野的实际功能更窄也更硬：</p>
+  <ul>
+    <li><b>被看见 ≈ 被击杀</b>。视野不提供模糊的先知，它只提供一次二元的选择权：<i>我能不能先动手</i>。对面看见你，你的血量、位置、CD 全部暴露，对面就有一次选择；你看不见对面，对面可以选择“不上”。</li>
+    <li><b>视野是零和的</b>。你在河边插一个眼，对面在河边插一个眼，就互相抵消。地图上的可见面积总量不变，谁在关键隘口点亮，谁就拿走那一片的主动权。</li>
+    <li><b>视野可以主动制造</b>。S16 决赛第四局 BLG 的梦魇大招关灯、卡牌全图支援，本质就是用技能当视野工具，人为制造信息差。</li>
+  </ul>
+  <p>所以“视野好”这句话在职业语境里真正指的是一件事：<b>开团权在谁手里</b>。谁先看到对方，谁就拥有“这一波打不打”的决定权；谁先看到对方并且能先动手，谁就拥有这一波的主动权。</p>
+</section>
+
+<section class="card" id="ch1-2">
+  <h3>1.2　资源账本</h3>
+  <p>下表把游戏里所有主要经济单位折算成金币，并再折算成“相当于多少个近战兵”。这张表是后面所有“该不该回城、该不该换血、该不该让资源”的换算底座。</p>
+
+<div class="chart-box"><svg class="chart wide" viewBox="0 0 760 354" role="img" aria-label="图 1-1　常规经济单位的相对量级（0–300）"><text x="0" y="29.0" class="blab">近战兵（补到最后一下）</text><rect x="222" y="13.0" width="420.0" height="19" rx="3" fill="#1f6feb" fill-opacity="0.16"/><rect x="222" y="13.0" width="28.0" height="19" rx="3" fill="#1f6feb"/><text x="258.0" y="28.0" class="bval">20 金</text><text x="222.0" y="41.0" class="bnote">单人线一波含 3 近战 + 3 远程 = 102 金</text><text x="0" y="69.0" class="blab">远程兵</text><rect x="222" y="53.0" width="420.0" height="19" rx="3" fill="#1f6feb" fill-opacity="0.16"/><rect x="222" y="53.0" width="19.6" height="19" rx="3" fill="#1f6feb"/><text x="249.6" y="68.0" class="bval">14 金</text><text x="222.0" y="81.0" class="bnote">远程兵血量低，塔下一炮容易被塔收走</text><text x="0" y="109.0" class="blab">炮车兵（前期）</text><rect x="222" y="93.0" width="420.0" height="19" rx="3" fill="#1f6feb" fill-opacity="0.16"/><rect x="222" y="93.0" width="70.0" height="19" rx="3" fill="#1f6feb"/><text x="300.0" y="108.0" class="bval">50 金</text><text x="222.0" y="121.0" class="bnote">第 3 波出现，14 分钟前每 3 波一个</text><text x="0" y="149.0" class="blab">炮车兵（25 分钟后）</text><rect x="222" y="133.0" width="420.0" height="19" rx="3" fill="#1f6feb" fill-opacity="0.16"/><rect x="222" y="133.0" width="92.4" height="19" rx="3" fill="#1f6feb"/><text x="322.4" y="148.0" class="bval">66 金</text><text x="222.0" y="161.0" class="bnote">25 分钟后每波都带炮车，是推塔的轴心</text><text x="0" y="189.0" class="blab">控制守卫</text><rect x="222" y="173.0" width="420.0" height="19" rx="3" fill="#1f6feb" fill-opacity="0.16"/><rect x="222" y="173.0" width="105.0" height="19" rx="3" fill="#1f6feb"/><text x="335.0" y="188.0" class="bval">75 金</text><text x="222.0" y="201.0" class="bnote">买它不产生经济，产生信息与威慑</text><text x="0" y="229.0" class="blab">防御塔镀层（每层）</text><rect x="222" y="213.0" width="420.0" height="19" rx="3" fill="#1f6feb" fill-opacity="0.16"/><rect x="222" y="213.0" width="224.0" height="19" rx="3" fill="#1f6feb"/><text x="454.0" y="228.0" class="bval">160 金</text><text x="222.0" y="241.0" class="bnote">共 5 层，每打掉 1000 塔血掉一层，最后一层 210</text><text x="0" y="269.0" class="blab">防御塔本体</text><rect x="222" y="253.0" width="420.0" height="19" rx="3" fill="#1f6feb" fill-opacity="0.16"/><rect x="222" y="253.0" width="350.0" height="19" rx="3" fill="#1f6feb"/><text x="580.0" y="268.0" class="bval">250 金</text><text x="222.0" y="281.0" class="bnote">一血塔 400</text><text x="0" y="309.0" class="blab">英雄基础赏金</text><rect x="222" y="293.0" width="420.0" height="19" rx="3" fill="#1f6feb" fill-opacity="0.16"/><rect x="222" y="293.0" width="420.0" height="19" rx="3" fill="#1f6feb"/><text x="650.0" y="308.0" class="bval">300 金</text><text x="222.0" y="321.0" class="bnote">实际按等级差与连杀连死浮动，300–500+</text></svg></div><div class="cap"><b>图 1-1　常规经济单位的相对量级（0–300）</b><span>金币数取自 LoL Sensei 的 16.10 版本整理与中文攻略时间轴；炮车与镀层数值随版本微调，以客户端为准。</span></div>
+<div class="chart-box"><svg class="chart wide" viewBox="0 0 760 194" role="img" aria-label="图 1-2　大额单位的量级对比（0–900）"><text x="0" y="29.0" class="blab">惩戒（16 级）</text><rect x="222" y="13.0" width="420.0" height="19" rx="3" fill="#d9480f" fill-opacity="0.16"/><rect x="222" y="13.0" width="420.0" height="19" rx="3" fill="#d9480f"/><text x="650.0" y="28.0" class="bval">900 金</text><text x="222.0" y="41.0" class="bnote">真实伤害，无视护甲魔抗；充能 90 秒</text><text x="0" y="69.0" class="blab">峡谷先锋撞满 5 层塔皮</text><rect x="222" y="53.0" width="420.0" height="19" rx="3" fill="#c2255c" fill-opacity="0.16"/><rect x="222" y="53.0" width="373.3" height="19" rx="3" fill="#c2255c"/><text x="603.3" y="68.0" class="bval">800 金</text><text x="222.0" y="81.0" class="bnote">等于 5 波兵，也是边线体系的价值</text><text x="0" y="109.0" class="blab">小龙（元素龙）</text><rect x="222" y="93.0" width="420.0" height="19" rx="3" fill="#0b7285" fill-opacity="0.16"/><rect x="222" y="93.0" width="140.0" height="19" rx="3" fill="#0b7285"/><text x="370.0" y="108.0" class="bval">300 金</text><text x="222.0" y="121.0" class="bnote">团队永久增益，非个人经济</text><text x="0" y="149.0" class="blab">英雄人头</text><rect x="222" y="133.0" width="420.0" height="19" rx="3" fill="#1f6feb" fill-opacity="0.16"/><rect x="222" y="133.0" width="140.0" height="19" rx="3" fill="#1f6feb"/><text x="370.0" y="148.0" class="bval">300 金</text><text x="222.0" y="161.0" class="bnote">高方差，需要暴露自己，附带信息风险</text></svg></div><div class="cap"><b>图 1-2　大额单位的量级对比（0–900）</b><span>16 级一发惩戒 900 点真实伤害，约等于 45 个近战兵、一个人头加半件装备。</span></div>
+
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>资源</th><th>金币</th><th>折合近战兵</th><th>性质</th></tr></thead>
+    <tbody>
+      <tr><td>近战兵</td><td>20</td><td>1.0</td><td>纯经济，无风险，线性回报</td></tr>
+      <tr><td>远程兵</td><td>14</td><td>0.7</td><td>同上，但塔下容易被塔收走</td></tr>
+      <tr><td>炮车兵</td><td>50 → 66</td><td>2.5 → 3.3</td><td>同上，但改变塔的伤害与推塔节奏</td></tr>
+      <tr><td>塔皮镀层</td><td>160 / 层</td><td>8.0</td><td>半经济、半空间（挤走对方）</td></tr>
+      <tr><td>防御塔本体</td><td>250（一血塔 400）</td><td>12.5</td><td>同上</td></tr>
+      <tr><td>英雄人头</td><td>300 起</td><td>15.0</td><td>高方差，需要暴露自己，附带信息风险</td></tr>
+      <tr><td>控制守卫</td><td>75</td><td>3.75</td><td>买它不产生经济，产生信息与威慑</td></tr>
+      <tr><td>被动金币</td><td>10.2 / 5 秒</td><td>约 0.26 / 秒</td><td>与操作无关的保底收入，12 分钟后落后方两人额外加成</td></tr>
+      <tr><td>惩戒（16 级）</td><td>900</td><td>45.0</td><td>真实伤害，用于资源团阈值竞争</td></tr>
+    </tbody>
+  </table></div>
+  <p>三个可以直接用进实战的结论：</p>
+  <ol>
+    <li><b>四个近战兵 = 一个控制守卫（75 金币）。</b>这个比值是判断“该不该买眼”的心理锚点：买眼不是额外支出，是一次低成本的保险。</li>
+    <li><b>一个人头（300）= 15 个近战兵 = 1.5 波线。</b>所以“为了一血交闪”通常划算，“为了一个普攻交闪”通常不划算。</li>
+    <li><b>漏 30 个兵（600 金币）= 两个人头。</b>这就是为什么对线期的补刀是整个中期最被低估的变量：它不产生高光，但它是后期装备差的起点。</li>
+  </ol>
+</section>
+
+<section class="card" id="ch1-3">
+  <h3>1.3　峡谷时钟</h3>
+<div class="chart-box"><svg class="chart wide" viewBox="0 0 880 296" role="img" aria-label="S16 版本下的资源刷新节奏（分钟）"><line x1="168.0" y1="8" x2="168.0" y2="266.0" stroke="#e8edf2" stroke-width="1"/><text x="168.0" y="282.0" class="tick" text-anchor="middle">0</text><line x1="243.8" y1="8" x2="243.8" y2="266.0" stroke="#e8edf2" stroke-width="1"/><text x="243.8" y="282.0" class="tick" text-anchor="middle">5</text><line x1="319.6" y1="8" x2="319.6" y2="266.0" stroke="#e8edf2" stroke-width="1"/><text x="319.6" y="282.0" class="tick" text-anchor="middle">10</text><line x1="395.3" y1="8" x2="395.3" y2="266.0" stroke="#e8edf2" stroke-width="1"/><text x="395.3" y="282.0" class="tick" text-anchor="middle">15</text><line x1="471.1" y1="8" x2="471.1" y2="266.0" stroke="#e8edf2" stroke-width="1"/><text x="471.1" y="282.0" class="tick" text-anchor="middle">20</text><line x1="546.9" y1="8" x2="546.9" y2="266.0" stroke="#e8edf2" stroke-width="1"/><text x="546.9" y="282.0" class="tick" text-anchor="middle">25</text><line x1="622.7" y1="8" x2="622.7" y2="266.0" stroke="#e8edf2" stroke-width="1"/><text x="622.7" y="282.0" class="tick" text-anchor="middle">30</text><line x1="698.4" y1="8" x2="698.4" y2="266.0" stroke="#e8edf2" stroke-width="1"/><text x="698.4" y="282.0" class="tick" text-anchor="middle">35</text><line x1="774.2" y1="8" x2="774.2" y2="266.0" stroke="#e8edf2" stroke-width="1"/><text x="774.2" y="282.0" class="tick" text-anchor="middle">40</text><line x1="850.0" y1="8" x2="850.0" y2="266.0" stroke="#e8edf2" stroke-width="1"/><text x="850.0" y="282.0" class="tick" text-anchor="middle">45</text><text x="0" y="32.0" class="blab">兵线（每 30 秒一波）</text><rect x="175.6" y="19.0" width="204.6" height="20" rx="3" fill="#1f6feb" fill-opacity="0.20" stroke="#1f6feb" stroke-width="1"/><text x="277.9" y="33.0" class="blab" text-anchor="middle">每 3 波一个炮车</text><rect x="380.2" y="19.0" width="166.7" height="20" rx="3" fill="#1f6feb" fill-opacity="0.20" stroke="#1f6feb" stroke-width="1"/><text x="463.5" y="33.0" class="blab" text-anchor="middle">每 2 波一个炮车</text><rect x="546.9" y="19.0" width="303.1" height="20" rx="3" fill="#1f6feb" fill-opacity="0.20" stroke="#1f6feb" stroke-width="1"/><text x="698.4" y="33.0" class="blab" text-anchor="middle">每波带炮车</text><text x="0" y="72.0" class="blab">小龙（元素龙）</text><rect x="243.8" y="59.0" width="75.8" height="20" rx="3" fill="#0b7285" fill-opacity="0.20" stroke="#0b7285" stroke-width="1"/><rect x="319.6" y="59.0" width="75.8" height="20" rx="3" fill="#0b7285" fill-opacity="0.20" stroke="#0b7285" stroke-width="1"/><rect x="395.3" y="59.0" width="75.8" height="20" rx="3" fill="#0b7285" fill-opacity="0.20" stroke="#0b7285" stroke-width="1"/><rect x="471.1" y="59.0" width="75.8" height="20" rx="3" fill="#0b7285" fill-opacity="0.20" stroke="#0b7285" stroke-width="1"/><rect x="546.9" y="59.0" width="75.8" height="20" rx="3" fill="#0b7285" fill-opacity="0.20" stroke="#0b7285" stroke-width="1"/><rect x="622.7" y="59.0" width="75.8" height="20" rx="3" fill="#0b7285" fill-opacity="0.20" stroke="#0b7285" stroke-width="1"/><rect x="698.4" y="59.0" width="75.8" height="20" rx="3" fill="#0b7285" fill-opacity="0.20" stroke="#0b7285" stroke-width="1"/><text x="0" y="112.0" class="blab">虚空巢虫</text><rect x="289.2" y="99.0" width="90.9" height="20" rx="3" fill="#2b8a3e" fill-opacity="0.20" stroke="#2b8a3e" stroke-width="1"/><text x="334.7" y="113.0" class="blab" text-anchor="middle">开局集中出现</text><text x="0" y="152.0" class="blab">峡谷先锋</text><rect x="380.2" y="139.0" width="90.9" height="20" rx="3" fill="#c2255c" fill-opacity="0.20" stroke="#c2255c" stroke-width="1"/><rect x="471.1" y="139.0" width="90.9" height="20" rx="3" fill="#c2255c" fill-opacity="0.20" stroke="#c2255c" stroke-width="1"/><rect x="562.0" y="139.0" width="90.9" height="20" rx="3" fill="#c2255c" fill-opacity="0.20" stroke="#c2255c" stroke-width="1"/><rect x="653.0" y="139.0" width="90.9" height="20" rx="3" fill="#c2255c" fill-opacity="0.20" stroke="#c2255c" stroke-width="1"/><text x="0" y="192.0" class="blab">纳什男爵（大龙）</text><rect x="471.1" y="179.0" width="90.9" height="20" rx="3" fill="#d9480f" fill-opacity="0.20" stroke="#d9480f" stroke-width="1"/><rect x="562.0" y="179.0" width="90.9" height="20" rx="3" fill="#d9480f" fill-opacity="0.20" stroke="#d9480f" stroke-width="1"/><rect x="653.0" y="179.0" width="90.9" height="20" rx="3" fill="#d9480f" fill-opacity="0.20" stroke="#d9480f" stroke-width="1"/><rect x="743.9" y="179.0" width="106.1" height="20" rx="3" fill="#d9480f" fill-opacity="0.20" stroke="#d9480f" stroke-width="1"/><text x="0" y="232.0" class="blab">远古龙</text><rect x="592.4" y="219.0" width="90.9" height="20" rx="3" fill="#5f3dc4" fill-opacity="0.20" stroke="#5f3dc4" stroke-width="1"/><rect x="683.3" y="219.0" width="90.9" height="20" rx="3" fill="#5f3dc4" fill-opacity="0.20" stroke="#5f3dc4" stroke-width="1"/></svg></div><div class="cap"><b>S16 版本下的资源刷新节奏（分钟）</b><span>小龙 5:00 首刷、之后 5 分钟一次；巢虫 8:00 起、集中在开局 14 分钟内；峡谷先锋 14:00 起、6 分钟一次；大龙 20:00 起、6 分钟一次；远古龙 30 分钟后必出，6 分钟一次。中文攻略对峡谷先锋的首刷时间另有“8:00 起”的说法，以客户端计时器为准。</span></div>
+
+  <p class="note">这张图有一个容易被忽略的用法：<b>把“要打的仗”和“要守的分钟”对上</b>。每 5 分钟一次的小龙、每 6 分钟一次的大龙，意味着后 20 分钟里几乎每 5–6 分钟就有一次“全体必须做决定”的时刻。职业比赛的后半段之所以节奏快，不是因为选手更爱打架，而是因为资源的刷新把决策点压得极密。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>时间</th><th>事件</th><th>该发生的事</th></tr></thead>
+    <tbody>
+      <tr><td>1:05 / 1:30</td><td>兵线出发 / 中路交汇</td><td>首次插眼位置确定：河道与三角草丛</td></tr>
+      <tr><td>1:30 / 1:40</td><td>红蓝 buff / 小野怪刷新</td><td>打野第一轮节奏起点</td></tr>
+      <tr><td>3:00 前后</td><td>首次 gank 高发窗口</td><td>对线方第一次必须确认“对方打野在哪”</td></tr>
+      <tr><td>3:15</td><td>河蟹刷新</td><td>河道视野第一次可以由河道本身提供</td></tr>
+      <tr><td>5:00</td><td>小龙刷新</td><td>第一波资源团；此时经济差通常在 1000–2000</td></tr>
+      <tr><td>8:00</td><td>巢虫 / 先锋</td><td>边线体系开始成型，“上路影响力”的转折点</td></tr>
+      <tr><td>14:00</td><td>外塔镀层消失、炮车频率翻倍</td><td>推塔收益陡增，中期节奏分水岭</td></tr>
+      <tr><td>20:00</td><td>大龙刷新</td><td>从这一分钟起，任何一次团战都可能是终局</td></tr>
+      <tr><td>25:00 后</td><td>每波带炮车</td><td>塔的推进速度超过大多数阵容的拆塔能力</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+
+<section class="card" id="ch2">
+  <h2>2　视野：开团权的分配</h2>
+  <p class="lede">这一章要建立一个反直觉的结论：在 LoL 里，视野不是“信息优势”，它是<b>开团权</b>。谁控制视野，谁决定这一波打不打；谁控制视野并且先动手，谁决定这一波谁赢。</p>
+</section>
+
+<section class="card" id="ch2-1">
+  <h3>2.1　为什么“全局像开了透视”的队伍那么难打</h3>
+  <p>因为你面对的不是“知道你在哪”，而是“随时可以选择打你，而你可以选择不打”。对方拥有选择权时，你的每一个动作都要为最坏情况付费：推线要假定对方打野在、进场要假定对方视野在、甚至走位要假定对方在等你的 CD。</p>
+  <p>这套压力是复合的。它同时降低你的三个效率：补刀时间被压缩（不敢在塔下停留）、回城节奏被拖慢（回线路上不安全）、以及最关键的——<b>你失去了“以多打少”的可能性</b>。视野差的一方永远只能接团，永远不能主动。</p>
+  <p>S16 决赛第四局是最好的验证：BLG 靠梦魇关灯加卡牌全图支援反复制造信息真空，GEN 拿到炼金龙魂却始终找不到一波终结比赛的机会。GEN 不是输在伤害，是输在<b>它那一局的赢法需要一个开团权，而这个开团权在 BLG 手里</b>。</p>
+</section>
+
+<section class="card" id="ch2-2">
+  <h3>2.2　视野工具账</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>工具</th><th>价格</th><th>作用</th><th>关键限制</th></tr></thead>
+    <tbody>
+      <tr><td>侦查守卫（黄色饰品）</td><td>免费</td><td>隐形假眼，视野 900，3 点生命，存 2 层，地图上最多 3 个</td><td>充能 210→90 秒（随平均等级）；每局只放 3 个，第四个会顶掉最旧的</td></tr>
+      <tr><td>控制守卫（真眼）</td><td>75 金币</td><td>可见，但会让敌方假眼失效并显形隐形单位</td><td>每人地图上只能同时存在 1 个；被击杀者得 30 金币 + 40 经验</td></tr>
+      <tr><td>神谕透镜（红色饰品）</td><td>免费</td><td>持续 8 秒扫出半径内敌方眼与陷阱</td><td>不提供视野；盲扫等于提前宣告自己的位置</td></tr>
+      <tr><td>远见守卫（蓝色饰品）</td><td>免费（9 级解锁）</td><td>4000 距离外放眼，安全侦察</td><td>眼只有 1 点生命且可见，容易被秒</td></tr>
+      <tr><td>精灵视界（2026 新增）</td><td>—</td><td>蘑菇圈上插的眼升级为超级眼：视野半径 +25%，额外揭示一片专属区域 45 秒</td><td>额外区域只有己方可见；敌方须靠扫眼或直接 ping 你的眼才知道</td></tr>
+      <tr><td>占卜花朵</td><td>—</td><td>丢出后落地成眼，可用于排眼或做一次性视野</td><td>26.1 起重生 200–260 秒随机，15:00 后新位置 90–120 秒</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">2026 赛季起辅助开局自带一个控制守卫在“分路任务”栏位，完成任务后单价降到 40 金币，最多持有 2 个；其他位置仍需 75 金币自购，但都有黄色饰品与精灵视界可用。控制守卫的作用被官方明确为“辅助的独特强项”，同时 Riot 也强调所有位置都要做视野。</p>
+  <p><b>购买顺序建议</b>：每次回城第一个买控制守卫，其次才是补组件。理由是控制守卫的收益率取决于位置，而不是取决于你有多少钱——同一棵草丛边上的那个眼，75 金币能挡一次 gank，而 300 金币买来的劣势不会。</p>
+</section>
+
+<section class="card" id="ch2-3">
+  <h3>2.3　2026 赛季的视野与地图改动</h3>
+  <p>这一届比赛发生在一次大改之后，下面这些改动直接解释了 S16 的版本性格（部分随后的补丁已调整）：</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>改动</th><th>内容</th><th>对玩法的影响</th></tr></thead>
+    <tbody>
+      <tr><td>精灵视界（Faelights）</td><td>26.1 引入；开局 8 处蘑菇圈，元素峡谷变形后边路再出现 4 处；插眼后视野 +25%，额外区域 45 秒</td><td>视野从“人肉插眼”变成“占点”，河道与边路草丛的插眼效率大幅提高</td></tr>
+      <tr><td>饰品眼充能加快</td><td>26.1 充能降至 170→90 秒，26.3 调回 210→90 秒</td><td>前期假眼寿命约 90–120 秒，仍需要“到了就放、过期就换”的节奏</td></tr>
+      <tr><td>神谕透镜时长</td><td>26.1 起由 6 秒增至 8 秒</td><td>扫眼的容错提高，盲扫的代价相应变高</td></tr>
+      <tr><td>兵线提前</td><td>2026 赛季一，兵线刷新提前到 30 秒，首次野怪更早出现</td><td>对线期节奏压缩，“不打野怪慢速发育”的默认节奏不再成立</td></tr>
+      <tr><td>史诗资源更肉、收益更强</td><td>金币奖励下降、效果提升；落后方偷到资源的翻盘空间变大</td><td>资源团从“必争”变成“可赌”，落后的队伍有了主动抢资源的动机</td></tr>
+      <tr><td>防御塔晶化增生</td><td>塔随时间积累层数，被攻击时一次性消耗并造成额外伤害；镀层永久存在，内塔与高地塔也纳入</td><td>推塔收益不再有时间窗口，后期拆塔的性价比持续上升</td></tr>
+      <tr><td>分路任务系统</td><td>上路完成后获得免费长 CD 传送（或强化传送）与经验等级；中路获得免费 3 阶鞋与强化回城；下路获得大量金币并解锁鞋子专槽</td><td>这正是 26.19 把上路传送 CD 从 420 压到 390 的配套改动，“上路影响力”被制度性地拉回</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="card" id="ch2-4">
+  <h3>2.4　眼位：三个可迁移的判据</h3>
+  <p>职业辅助公开讲过的眼位方法论，比“插哪几个固定点位”有用得多，因为点位会随版本变，判据不会。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>来源</th><th>原话或主张</th><th>可迁移的判据</th></tr></thead>
+    <tbody>
+      <tr><td>Keria（T1 辅助，2025 瑞士轮赛后外媒采访）</td><td>“如果想深入地做视野，利用好回合很重要；创造回合的下路对线和线上选手的对线又很重要，首先要依赖线上选手们的对线来做视野。”</td><td><b>视野由对线创造</b>。你没有把兵线推进对方塔下，就没有把对方逼出河道，也就没有安全的插眼窗口。先有线权，再有视野；不是反过来。</td></tr>
+      <tr><td>Rekkles（前职业 ADC，2026 年 1 月谈辅助）</td><td>“我最好的辅助总是那些为我创造空间的”；娜美的强度“通过我的 ADC 传递”，对方辅助一游走他就跟不上，于是“对面占据了全部压力、全部视野，我们一直在送空间”。</td><td><b>辅助的 KPI 不是插眼数，是“我的 C 现在能安全站在哪”</b>。护盾型辅助靠保护创造空间，开团型辅助靠威胁创造空间；用错方式等于没创造。</td></tr>
+      <tr><td>Varry（教学作者，视野教学）</td><td>“vision bombing”：回城前把手里所有眼插在下一场要打的那一侧；只在你将要 play 的那一侧做视野。</td><td><b>视野是资源调度，不是随手插</b>。回城是免费的插眼窗口，因为你在泉水时眼也在工作。</td></tr>
+      <tr><td>前职业选手与教练圈共识</td><td>强队的辅助往往被形容为“知道什么时候不该开团”，其视野布控被评价为“读视野领先一个版本”</td><td><b>读对手打野的路径，比覆盖面积更重要</b>。你两分钟前在红区看到人，他现在大概率在蓝区；把眼插在他要去的路上，而不是他刚离开的地方。</td></tr>
+    </tbody>
+  </table></div>
+  <p>把这四条合成一张可执行的清单：</p>
+  <ol>
+    <li><b>窗口</b>：这个眼插下去的时候，你的队友是否正在做别的事？对方是否刚回城、刚进野区？</li>
+    <li><b>通路</b>：这个眼覆盖的是对方“必须经过”的路，还是“可能经过”的路？必须经过的路口值 75 金币，可能经过的草丛不值。</li>
+    <li><b>产出</b>：插下去之后，你能多做什么？能不能因此敢推线、敢进野、敢在龙坑停留？不能，就换一个点。</li>
+  </ol>
+</section>
+
+
+<section class="card" id="ch3">
+  <h2>3　对线：兵线的三位置与两决策</h2>
+  <p class="lede">“推线还是控线”这个问题之所以绕，是因为它把两件不同的事混成了一件：<b>兵线在哪里</b>（位置）和<b>我拿这条线换什么</b>（意图）。分开之后，决策就干净了。</p>
+</section>
+
+<section class="card" id="ch3-1">
+  <h3>3.1　兵线三位置</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>位置</th><th>你得到</th><th>你承担</th><th>适合什么时候</th></tr></thead>
+    <tbody>
+      <tr><td>深线（推到对方塔下）</td><td>塔皮；压制对方 C 的发育（他必须上线补刀或冒险）；可以进对方野区插眼；为队友换资源创造人数差</td><td>回线路上可能被埋伏；对方打野可以绕后；你在塔前是最深的位置</td><td>你有线权、有视野（河道或已推过的兵线做眼）、血量健康</td></tr>
+      <tr><td>中线（无线权）</td><td>双方都压不死对方；河道必然遭遇</td><td>被动，河道资源与视野都拿不到</td><td>双方对线期结束、开始游走与控资源</td></tr>
+      <tr><td>浅线（贴自家塔前）</td><td>最安全，对方打野进塔要穿兵线还要越塔；逼对方 C 亏刀（你也吃不到更多）</td><td>你被锁在线上，时间被兵线吃掉；对方 C 也饿，形成僵持</td><td>你劣势需要安全；或者你正在等一个更好的窗口再动</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="card" id="ch3-2">
+  <h3>3.2　推、控、放：三个问题定一个动作</h3>
+
+<div class="chart-box"><svg class="chart wide" viewBox="0 0 720 452" role="img" aria-label="兵线决策树"><text x="0" y="28.0" class="fgrp">决策起点</text><rect x="0" y="42.0" width="706" height="54" rx="6" fill="#1f6feb" fill-opacity="0.08" stroke="#1f6feb" stroke-width="1.4"/><text x="16" y="66.0" class="fkey">问题一：我看得见对方打野吗？</text><text x="16" y="84.0" class="fdesc">看不见 → 任何深推线都是在赌。改成浅线或放线，先把视野补上</text><path d="M360.0,96.0 l0,10 m-5,-4 l5,4 l5,-4" stroke="#1f6feb" stroke-width="1.4" fill="none"/><rect x="0" y="106.0" width="706" height="54" rx="6" fill="#1f6feb" fill-opacity="0.08" stroke="#1f6feb" stroke-width="1.4"/><text x="16" y="130.0" class="fkey">问题二：我的血量、技能、装备允许吗？</text><text x="16" y="148.0" class="fdesc">血不满 / 技能交了 / 装备没成型 → 深推等于送。放线止损</text><path d="M360.0,160.0 l0,10 m-5,-4 l5,4 l5,-4" stroke="#1f6feb" stroke-width="1.4" fill="none"/><rect x="0" y="170.0" width="706" height="54" rx="6" fill="#1f6feb" fill-opacity="0.08" stroke="#1f6feb" stroke-width="1.4"/><text x="16" y="194.0" class="fkey">问题三：我这段时间有别的用途吗？</text><text x="16" y="212.0" class="fdesc">要支援、要回城买装、要跟着打野做资源 → 放线，把时间换成别的东西</text><path d="M360.0,224.0 l0,10 m-5,-4 l5,4 l5,-4" stroke="#1f6feb" stroke-width="1.4" fill="none"/><text x="0" y="252.0" class="fgrp">结论</text><rect x="0" y="266.0" width="706" height="54" rx="6" fill="#1f6feb" fill-opacity="0.08" stroke="#1f6feb" stroke-width="1.4"/><text x="16" y="290.0" class="fkey">三个都是 → 推线</text><text x="16" y="308.0" class="fdesc">赚塔皮、压对方 C、同时给视野推进提供掩护</text><path d="M360.0,320.0 l0,10 m-5,-4 l5,4 l5,-4" stroke="#1f6feb" stroke-width="1.4" fill="none"/><rect x="0" y="330.0" width="706" height="54" rx="6" fill="#1f6feb" fill-opacity="0.08" stroke="#1f6feb" stroke-width="1.4"/><text x="16" y="354.0" class="fkey">部分为否 → 浅线</text><text x="16" y="372.0" class="fdesc">保住安全与亏刀僵持，等窗口</text><path d="M360.0,384.0 l0,10 m-5,-4 l5,4 l5,-4" stroke="#1f6feb" stroke-width="1.4" fill="none"/><rect x="0" y="394.0" width="706" height="54" rx="6" fill="#1f6feb" fill-opacity="0.08" stroke="#1f6feb" stroke-width="1.4"/><text x="16" y="418.0" class="fkey">第三问为是 → 放线</text><text x="16" y="436.0" class="fdesc">把兵线送掉，换回时间去做别的事</text></svg></div><div class="cap"><b>兵线决策树</b><span>浅线与放线的差别在于：浅线你仍在吃刀，放线你已放弃这波刀。</span></div>
+
+</section>
+
+<section class="card" id="ch3-3">
+  <h3>3.3　推线与打野的联动：你推线的目的取决于你的打野是哪种英雄</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>打野类型</th><th>代表英雄</th><th>你推线的意义</th><th>你要提供的条件</th></tr></thead>
+    <tbody>
+      <tr><td>主动先手型</td><td>蔚、盲僧、皇子</td><td><b>给他创造抓人窗口</b>：把对方 C 逼到必须上线补刀或守塔的位置，兵线同时提供前进的视野与掩护</td><td>线要推到对方塔下；你要有撤退路径（河道有眼或兵线已推过）</td></tr>
+      <tr><td>发育与资源型</td><td>千珏、男枪、佛耶戈</td><td><b>给他换资源空间</b>：对方 C 被迫回城，等于少一个人守视野与龙坑，他可以安心控龙或做入侵</td><td>线要推得足够深，让对方 C 觉得“必须上线”；你自己要有线权不被反推</td></tr>
+      <tr><td>功能与抓单型</td><td>梦魇、豹女、佛耶戈</td><td><b>缩小他的抓人面</b>：你能被抓的点就那么两三个，他只需要在一个点上出现</td><td>你的视野要好；线不要推太深，免得成为他唯一确定的目标</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">实战样本：S16 决赛第二局第 3 分钟，Xun 的纳亚菲利抓上路击杀 Kiin 的薇恩拿下第一滴血。这不是随机的抓单——纳尔把 Kiin 的薇恩压在塔下与线上，Xun 从河道直接进场。推线在这里的作用是“把对方 C 钉在一个确定位置”，而不是单纯为了塔皮。</p>
+</section>
+
+<section class="card" id="ch3-4">
+  <h3>3.4　伤害计算：四步法</h3>
+  <p>不需要精确计算，需要的是速判。高手算的是四件事，顺序不能乱。</p>
+  <h4>第一步　目标的有效生命值（EHP）</h4>
+  <p>护甲与魔抗是百分比减伤：<b>100 护甲 = 减伤 50%，200 护甲 = 减伤 67%</b>。把两者合并成一个可以比较的数：</p>
+  <p class="formula">目标 EHP =（生命值 + 护盾）÷（1 − 减伤率）</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>目标</th><th>生命值</th><th>护甲</th><th>减伤</th><th>EHP</th><th>你一套 2500 伤害的结果</th></tr></thead>
+    <tbody>
+      <tr><td>脆皮 C</td><td>1500</td><td>0</td><td>0%</td><td>1500</td><td>可击杀</td></tr>
+      <tr><td>常规发育</td><td>2800</td><td>60</td><td>37.5%</td><td>4480</td><td>打不穿，需要两套或配合控制</td></tr>
+      <tr><td>前排坦克</td><td>4000</td><td>150</td><td>60%</td><td>10000</td><td>完全打不动，别在这上面浪费技能</td></tr>
+      <tr><td>脆皮但有护盾</td><td>1200</td><td>0</td><td>0%</td><td>1200 + 护盾 800 = 2000</td><td>先破盾，破盾前不算秒</td></tr>
+    </tbody>
+  </table></div>
+  <h4>第二步　我这一套的总伤害</h4>
+  <p>把连招每个技能伤害相加，再按命中率打折。职业比赛的技能命中率大致在 70%–90%，一个 1200 伤害的技能，70% 与 90% 之间差 240 伤害——这在实战里常常就是“能不能秒”的差别。</p>
+  <h4>第三步　输出窗口 vs 他的反应窗口</h4>
+  <p>你的连招从起手到打完要几秒？他从被打到到能反应（交闪、拉开、开风墙、金身）有几秒？<b>如果他能在你打完前交闪脱战，这套伤害再高也白搭。</b>这一步决定“怎么打”，比第一步的“要不要打”更容易被忽略。</p>
+  <h4>第四步　换血账（秒不掉时）</h4>
+  <p class="formula">换血账：我打掉他 X% 血，他能打掉我 Y% 血。X &gt; Y 才值得换</p>
+  <p>这一步的核心不是数学，是“我这套能不能换赢”。低分段最常见的亏法是“为了补一个兵硬换一套技能”，结果亏掉两波线的钱——按前面的账本，两波线约 204 金币，一次换血失败的代价可能远超这个数。</p>
+  <p class="note">另外一个常被忽略的收益是“打掉对方的牌”。金身、闪现、护盾、净化都是一次性的。G4 第 22 分钟，Chovy 的阿卡丽进场封烟并交出金身——金身用掉了就没有了，那一波 BLG 的预期收益直接被清零。开团的第一目标通常不是“杀人”，而是“打掉关键技能和装备”。</p>
+</section>
+
+
+<section class="card" id="ch4">
+  <h2>4　BP：赢法模板</h2>
+  <p class="lede">“有肉、有前排、有输出、有 AP 有 AD、有控、能打团”——这套清单在职业赛场没有区分度：每一套能上场的阵容都能通过它，它筛不掉任何真正重要的东西。</p>
+</section>
+
+<section class="card" id="ch4-1">
+  <h3>4.1　零件清单为什么失效</h3>
+  <p>用 S16 决赛四局直接反证。BLG 四局四套阵容，两套连传统前排都没有：</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>局</th><th>BLG 阵容</th><th>GEN 阵容</th><th>BLG 有坦克前排</th><th>结果</th></tr></thead>
+    <tbody>
+      <tr><td>G1</td><td>奎桑提、皇子、拉克丝、卡莉丝塔、蕾欧娜</td><td>奥拉夫、盲僧、辛德拉、库奇、娜美</td><td>有（奎桑提 + 蕾欧娜）</td><td>GEN 胜</td></tr>
+      <tr><td>G2</td><td>纳尔、纳亚菲利、蛇女、吉格斯、卡蜜尔</td><td>薇恩、科加斯、发条、伊泽瑞尔、卡尔玛</td><td>无</td><td>BLG 胜</td></tr>
+      <tr><td>G3</td><td>贾克斯、蔚、维克托、岩雀、牛头</td><td>安蓓萨、悟空、安妮、烬、洛</td><td>无（牛头与蔚是开团工具）</td><td>BLG 胜</td></tr>
+      <tr><td>G4</td><td>格温、梦魇、卡牌、芸阿娜、妮蔻</td><td>阿萝拉、潘森、阿卡丽、霞、璐璐</td><td>无</td><td>BLG 胜</td></tr>
+    </tbody>
+  </table></div>
+  <p>BLG <b>唯一带传统坦克前排的那一局输了</b>，另外三局没有前排的反而全赢。而 GEN 四局每一局都老老实实带了前排（奥拉夫+娜美、科加斯+卡尔玛、悟空+洛、潘森+璐璐），结果输了三局。</p>
+  <p>原因在于前排的真实功能：<b>前排不是用来扛伤害的（扛不扛得住取决于对方的输出与装备差），前排是用来“为输出创造接触时间”的</b>——对面要打到你后排，必须先穿过他。这是“如果我们必须打正面团”这个前提下的保险。</p>
+  <p>而 BLG 后三局的赢法里<b>根本没有“正面团”这一项</b>。所以它们不需要前排，甚至前排是负担：集结慢、被先手开。清单把“前排”当成通用需求，是因为它默认了“我们靠接团赢”，而这套假设在 S16 版本里已经不是唯一解。</p>
+</section>
+
+<section class="card" id="ch4-2">
+  <h3>4.2　三种赢法模板</h3>
+
+<div class="chart-box"><svg class="chart" viewBox="0 0 470 470" role="img" aria-label="三种赢法模板的六维适配"><path d="M235.0,201.2 L264.3,218.1 L264.3,251.9 L235.0,268.8 L205.7,251.9 L205.7,218.1Z" fill="none" stroke="#e8edf2" stroke-width="1"/><path d="M235.0,167.4 L293.5,201.2 L293.5,268.8 L235.0,302.6 L176.5,268.8 L176.5,201.2Z" fill="none" stroke="#e8edf2" stroke-width="1"/><path d="M235.0,133.6 L322.8,184.3 L322.8,285.7 L235.0,336.4 L147.2,285.7 L147.2,184.3Z" fill="none" stroke="#e8edf2" stroke-width="1"/><path d="M235.0,99.8 L352.1,167.4 L352.1,302.6 L235.0,370.2 L117.9,302.6 L117.9,167.4Z" fill="none" stroke="#e8edf2" stroke-width="1"/><path d="M235.0,66.0 L381.4,150.5 L381.4,319.5 L235.0,404.0 L88.6,319.5 L88.6,150.5Z" fill="none" stroke="#d7dee6" stroke-width="1"/><line x1="235.0" y1="235.0" x2="235.0" y2="66.0" stroke="#e8edf2" stroke-width="1"/><text x="235.0" y="44.0" class="ax" text-anchor="middle">前期强度</text><line x1="235.0" y1="235.0" x2="381.4" y2="150.5" stroke="#e8edf2" stroke-width="1"/><text x="403.9" y="141.5" class="ax" text-anchor="middle">中期强度（15–25 分）</text><line x1="235.0" y1="235.0" x2="381.4" y2="319.5" stroke="#e8edf2" stroke-width="1"/><text x="403.9" y="336.5" class="ax" text-anchor="middle">后期强度（30 分后）</text><line x1="235.0" y1="235.0" x2="235.0" y2="404.0" stroke="#e8edf2" stroke-width="1"/><text x="235.0" y="434.0" class="ax" text-anchor="middle">视野依赖度</text><line x1="235.0" y1="235.0" x2="88.6" y2="319.5" stroke="#e8edf2" stroke-width="1"/><text x="66.1" y="336.5" class="ax" text-anchor="middle">操作要求</text><line x1="235.0" y1="235.0" x2="88.6" y2="150.5" stroke="#e8edf2" stroke-width="1"/><text x="66.1" y="141.5" class="ax" text-anchor="middle">默契要求</text><text x="239.0" y="64.0" class="tick">10</text><text x="239.0" y="131.6" class="tick">6</text><text x="239.0" y="199.2" class="tick">2</text><path d="M235.0,133.6 L352.1,167.4 L366.7,311.0 L235.0,353.3 L161.8,277.2 L117.9,167.4Z" fill="#1f6feb" fill-opacity="0.10" stroke="#1f6feb" stroke-width="2" stroke-linejoin="round"/><circle cx="235.0" cy="133.6" r="3.2" fill="#1f6feb"/><circle cx="352.1" cy="167.4" r="3.2" fill="#1f6feb"/><circle cx="366.7" cy="311.0" r="3.2" fill="#1f6feb"/><circle cx="235.0" cy="353.3" r="3.2" fill="#1f6feb"/><circle cx="161.8" cy="277.2" r="3.2" fill="#1f6feb"/><circle cx="117.9" cy="167.4" r="3.2" fill="#1f6feb"/><path d="M235.0,167.4 L337.5,175.8 L352.1,302.6 L235.0,336.4 L103.3,311.1 L132.5,175.8Z" fill="#d9480f" fill-opacity="0.10" stroke="#d9480f" stroke-width="2" stroke-linejoin="round"/><circle cx="235.0" cy="167.4" r="3.2" fill="#d9480f"/><circle cx="337.5" cy="175.8" r="3.2" fill="#d9480f"/><circle cx="352.1" cy="302.6" r="3.2" fill="#d9480f"/><circle cx="235.0" cy="336.4" r="3.2" fill="#d9480f"/><circle cx="103.3" cy="311.1" r="3.2" fill="#d9480f"/><circle cx="132.5" cy="175.8" r="3.2" fill="#d9480f"/><path d="M235.0,150.5 L366.7,158.9 L337.5,294.1 L235.0,387.1 L117.9,302.6 L103.3,158.9Z" fill="#0b7285" fill-opacity="0.10" stroke="#0b7285" stroke-width="2" stroke-linejoin="round"/><circle cx="235.0" cy="150.5" r="3.2" fill="#0b7285"/><circle cx="366.7" cy="158.9" r="3.2" fill="#0b7285"/><circle cx="337.5" cy="294.1" r="3.2" fill="#0b7285"/><circle cx="235.0" cy="387.1" r="3.2" fill="#0b7285"/><circle cx="117.9" cy="302.6" r="3.2" fill="#0b7285"/><circle cx="103.3" cy="158.9" r="3.2" fill="#0b7285"/></svg></div><div class="legend"><span class="lg"><i style="background:#1f6feb"></i>接团型</span><span class="lg"><i style="background:#d9480f"></i>反打型（三 C 无前排）</span><span class="lg"><i style="background:#0b7285"></i>分流型（全球支援 / 绕后）</span></div><div class="cap"><b>三种赢法模板的六维适配</b><span>0–10 分为本手册的分析评分，依据是各模板在 LoL 现行规则下的结构性特征，非官方数据。</span></div>
+
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>模板</th><th>结构</th><th>赢的条件</th><th>怕什么</th><th>代表</th></tr></thead>
+    <tbody>
+      <tr><td>接团型</td><td>坦克前排 + 控制链 + 成型的 C</td><td>把团战打赢，然后用伤害差换资源</td><td>怕被拉扯、怕对方不打、怕经济被拖到对方强势期</td><td>GEN 四局全部</td></tr>
+      <tr><td>反打型</td><td>三 C、无前排、对方先手我方反打</td><td>经济不落后 + 伤害在团战开始时就到位</td><td>怕被偷经济、怕被抓单（三 C 同时崩）、怕接了不该接的团</td><td>BLG 第三局</td></tr>
+      <tr><td>分流型</td><td>全球支援 / 单带 / 绕后分割，不给正面团的机会</td><td>用信息差与调动制造多打少，始终不进入对方的节奏</td><td>怕对方也玩分流、怕被抓单、怕打不出终结的一波</td><td>BLG 第四局（梦魇 + 卡牌 + 妮蔻）</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>BP 真正在做的三件事</b>，用这套模板语言重述：</p>
+  <ol>
+    <li><b>选赢法</b>——不是凑零件，是决定“我这局打算怎么赢”。</li>
+    <li><b>匹配时间</b>——阵容的成长曲线要和这局的实际时长对得上。一个 25 分钟就能结束的对局，配一套需要 30 分钟才成型的 C，BP 阶段就已经输了。</li>
+    <li><b>分配对方的失败方式</b>——ban 的目的是断掉对手的胜利条件，不是 ban 掉你不喜欢的英雄。26.20 削弱安蓓萨、卡西奥佩娅、芸阿娜、韦鲁斯、艾希，设计师公开说的是“把赛场常客的强度拉回正常水平”，实际同时拆掉了“上中稳线控资源 + 下路大核兜底”这套公式。</li>
+  </ol>
+</section>
+
+<section class="card" id="ch4-3">
+  <h3>4.3　S16 决赛四局拆解</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>局</th><th>时长</th><th>BLG 赢法</th><th>GEN 赢法</th><th>决定性的一手</th></tr></thead>
+    <tbody>
+      <tr><td>G1</td><td>约 38 分</td><td>前期强开（皇子 + 蕾欧娜）</td><td>双 C 成型后反打</td><td>BLG 手握龙魂却两次被反打（22 分 0 换 3、28 分 0 换 4），38 分被库奇三杀推平</td></tr>
+      <tr><td>G2</td><td>53:16</td><td>超长发育拉扯</td><td>龟壳运营</td><td>Viper 吉格斯单场 94618 伤害、47% 队伍伤害、415.5% 伤害转化率</td></tr>
+      <tr><td>G3</td><td>约 36 分</td><td>野辅联动 + 强开终结</td><td>正面反打</td><td>牛头先手控住悟空、Viktor 跟上，一换三；36 分 Bin 贾克斯进场 0 换 4</td></tr>
+      <tr><td>G4</td><td>约 42 分</td><td>全球流 + 绕后</td><td>双 C 后期接管</td><td>妮蔻绕后开三人、梦魇关灯切断视野；GEN 拿到炼金龙魂仍找不到终结</td></tr>
+    </tbody>
+  </table></div>
+
+<div class="two-col">
+<div class="radar-card"><div class="chart-box"><svg class="chart" viewBox="0 0 430 430" role="img" aria-label="图 4-1　BLG 四局的赢法结构"><path d="M215.0,185.2 L240.8,200.1 L240.8,229.9 L215.0,244.8 L189.2,229.9 L189.2,200.1Z" fill="none" stroke="#e8edf2" stroke-width="1"/><path d="M215.0,155.4 L266.6,185.2 L266.6,244.8 L215.0,274.6 L163.4,244.8 L163.4,185.2Z" fill="none" stroke="#e8edf2" stroke-width="1"/><path d="M215.0,125.6 L292.4,170.3 L292.4,259.7 L215.0,304.4 L137.6,259.7 L137.6,170.3Z" fill="none" stroke="#e8edf2" stroke-width="1"/><path d="M215.0,95.8 L318.2,155.4 L318.2,274.6 L215.0,334.2 L111.8,274.6 L111.8,155.4Z" fill="none" stroke="#e8edf2" stroke-width="1"/><path d="M215.0,66.0 L344.0,140.5 L344.0,289.5 L215.0,364.0 L86.0,289.5 L86.0,140.5Z" fill="none" stroke="#d7dee6" stroke-width="1"/><line x1="215.0" y1="215.0" x2="215.0" y2="66.0" stroke="#e8edf2" stroke-width="1"/><text x="215.0" y="44.0" class="ax" text-anchor="middle">接团型</text><line x1="215.0" y1="215.0" x2="344.0" y2="140.5" stroke="#e8edf2" stroke-width="1"/><text x="366.6" y="131.5" class="ax" text-anchor="middle">反打型</text><line x1="215.0" y1="215.0" x2="344.0" y2="289.5" stroke="#e8edf2" stroke-width="1"/><text x="366.6" y="306.5" class="ax" text-anchor="middle">分流型</text><line x1="215.0" y1="215.0" x2="215.0" y2="364.0" stroke="#e8edf2" stroke-width="1"/><text x="215.0" y="394.0" class="ax" text-anchor="middle">资源转化率</text><line x1="215.0" y1="215.0" x2="86.0" y2="289.5" stroke="#e8edf2" stroke-width="1"/><text x="63.4" y="306.5" class="ax" text-anchor="middle">视野控制</text><line x1="215.0" y1="215.0" x2="86.0" y2="140.5" stroke="#e8edf2" stroke-width="1"/><text x="63.4" y="131.5" class="ax" text-anchor="middle">时长压力</text><text x="219.0" y="64.0" class="tick">10</text><text x="219.0" y="123.6" class="tick">6</text><text x="219.0" y="183.2" class="tick">2</text><path d="M215.0,95.8 L253.7,192.7 L240.8,229.9 L215.0,259.7 L163.4,244.8 L111.8,155.4Z" fill="#5f3dc4" fill-opacity="0.10" stroke="#5f3dc4" stroke-width="2" stroke-linejoin="round"/><circle cx="215.0" cy="95.8" r="3.2" fill="#5f3dc4"/><circle cx="253.7" cy="192.7" r="3.2" fill="#5f3dc4"/><circle cx="240.8" cy="229.9" r="3.2" fill="#5f3dc4"/><circle cx="215.0" cy="259.7" r="3.2" fill="#5f3dc4"/><circle cx="163.4" cy="244.8" r="3.2" fill="#5f3dc4"/><circle cx="111.8" cy="155.4" r="3.2" fill="#5f3dc4"/><path d="M215.0,185.2 L279.5,177.8 L318.2,274.6 L215.0,319.3 L124.7,267.2 L176.3,192.7Z" fill="#d9480f" fill-opacity="0.10" stroke="#d9480f" stroke-width="2" stroke-linejoin="round"/><circle cx="215.0" cy="185.2" r="3.2" fill="#d9480f"/><circle cx="279.5" cy="177.8" r="3.2" fill="#d9480f"/><circle cx="318.2" cy="274.6" r="3.2" fill="#d9480f"/><circle cx="215.0" cy="319.3" r="3.2" fill="#d9480f"/><circle cx="124.7" cy="267.2" r="3.2" fill="#d9480f"/><circle cx="176.3" cy="192.7" r="3.2" fill="#d9480f"/><path d="M215.0,110.7 L318.2,155.4 L266.6,244.8 L215.0,349.1 L111.8,274.6 L98.9,147.9Z" fill="#2b8a3e" fill-opacity="0.10" stroke="#2b8a3e" stroke-width="2" stroke-linejoin="round"/><circle cx="215.0" cy="110.7" r="3.2" fill="#2b8a3e"/><circle cx="318.2" cy="155.4" r="3.2" fill="#2b8a3e"/><circle cx="266.6" cy="244.8" r="3.2" fill="#2b8a3e"/><circle cx="215.0" cy="349.1" r="3.2" fill="#2b8a3e"/><circle cx="111.8" cy="274.6" r="3.2" fill="#2b8a3e"/><circle cx="98.9" cy="147.9" r="3.2" fill="#2b8a3e"/><path d="M215.0,200.1 L292.4,170.3 L344.0,289.5 L215.0,349.1 L98.9,282.1 L137.6,170.3Z" fill="#c2255c" fill-opacity="0.10" stroke="#c2255c" stroke-width="2" stroke-linejoin="round"/><circle cx="215.0" cy="200.1" r="3.2" fill="#c2255c"/><circle cx="292.4" cy="170.3" r="3.2" fill="#c2255c"/><circle cx="344.0" cy="289.5" r="3.2" fill="#c2255c"/><circle cx="215.0" cy="349.1" r="3.2" fill="#c2255c"/><circle cx="98.9" cy="282.1" r="3.2" fill="#c2255c"/><circle cx="137.6" cy="170.3" r="3.2" fill="#c2255c"/></svg></div><div class="legend"><span class="lg"><i style="background:#5f3dc4"></i>G1 BLG</span><span class="lg"><i style="background:#d9480f"></i>G2 BLG</span><span class="lg"><i style="background:#2b8a3e"></i>G3 BLG</span><span class="lg"><i style="background:#c2255c"></i>G4 BLG</span></div><div class="cap"><b>图 4-1　BLG 四局的赢法结构</b><span>同一颜色代表同一局；BLG 四条线彼此不重合，说明四局用的是不同赢法。</span></div></div>
+<div class="radar-card"><div class="chart-box"><svg class="chart" viewBox="0 0 430 430" role="img" aria-label="图 4-2　GEN 四局的赢法结构"><path d="M215.0,185.2 L240.8,200.1 L240.8,229.9 L215.0,244.8 L189.2,229.9 L189.2,200.1Z" fill="none" stroke="#e8edf2" stroke-width="1"/><path d="M215.0,155.4 L266.6,185.2 L266.6,244.8 L215.0,274.6 L163.4,244.8 L163.4,185.2Z" fill="none" stroke="#e8edf2" stroke-width="1"/><path d="M215.0,125.6 L292.4,170.3 L292.4,259.7 L215.0,304.4 L137.6,259.7 L137.6,170.3Z" fill="none" stroke="#e8edf2" stroke-width="1"/><path d="M215.0,95.8 L318.2,155.4 L318.2,274.6 L215.0,334.2 L111.8,274.6 L111.8,155.4Z" fill="none" stroke="#e8edf2" stroke-width="1"/><path d="M215.0,66.0 L344.0,140.5 L344.0,289.5 L215.0,364.0 L86.0,289.5 L86.0,140.5Z" fill="none" stroke="#d7dee6" stroke-width="1"/><line x1="215.0" y1="215.0" x2="215.0" y2="66.0" stroke="#e8edf2" stroke-width="1"/><text x="215.0" y="44.0" class="ax" text-anchor="middle">接团型</text><line x1="215.0" y1="215.0" x2="344.0" y2="140.5" stroke="#e8edf2" stroke-width="1"/><text x="366.6" y="131.5" class="ax" text-anchor="middle">反打型</text><line x1="215.0" y1="215.0" x2="344.0" y2="289.5" stroke="#e8edf2" stroke-width="1"/><text x="366.6" y="306.5" class="ax" text-anchor="middle">分流型</text><line x1="215.0" y1="215.0" x2="215.0" y2="364.0" stroke="#e8edf2" stroke-width="1"/><text x="215.0" y="394.0" class="ax" text-anchor="middle">资源转化率</text><line x1="215.0" y1="215.0" x2="86.0" y2="289.5" stroke="#e8edf2" stroke-width="1"/><text x="63.4" y="306.5" class="ax" text-anchor="middle">视野控制</text><line x1="215.0" y1="215.0" x2="86.0" y2="140.5" stroke="#e8edf2" stroke-width="1"/><text x="63.4" y="131.5" class="ax" text-anchor="middle">时长压力</text><text x="219.0" y="64.0" class="tick">10</text><text x="219.0" y="123.6" class="tick">6</text><text x="219.0" y="183.2" class="tick">2</text><path d="M215.0,95.8 L253.7,192.7 L266.6,244.8 L215.0,349.1 L124.7,267.2 L150.5,177.8Z" fill="#5f3dc4" fill-opacity="0.10" stroke="#5f3dc4" stroke-width="2" stroke-linejoin="round"/><circle cx="215.0" cy="95.8" r="3.2" fill="#5f3dc4"/><circle cx="253.7" cy="192.7" r="3.2" fill="#5f3dc4"/><circle cx="266.6" cy="244.8" r="3.2" fill="#5f3dc4"/><circle cx="215.0" cy="349.1" r="3.2" fill="#5f3dc4"/><circle cx="124.7" cy="267.2" r="3.2" fill="#5f3dc4"/><circle cx="150.5" cy="177.8" r="3.2" fill="#5f3dc4"/><path d="M215.0,125.6 L266.6,185.2 L279.5,252.2 L215.0,274.6 L150.5,252.3 L163.4,185.2Z" fill="#d9480f" fill-opacity="0.10" stroke="#d9480f" stroke-width="2" stroke-linejoin="round"/><circle cx="215.0" cy="125.6" r="3.2" fill="#d9480f"/><circle cx="266.6" cy="185.2" r="3.2" fill="#d9480f"/><circle cx="279.5" cy="252.2" r="3.2" fill="#d9480f"/><circle cx="215.0" cy="274.6" r="3.2" fill="#d9480f"/><circle cx="150.5" cy="252.3" r="3.2" fill="#d9480f"/><circle cx="163.4" cy="185.2" r="3.2" fill="#d9480f"/><path d="M215.0,125.6 L253.7,192.7 L253.7,237.3 L215.0,259.7 L163.4,244.8 L150.5,177.8Z" fill="#2b8a3e" fill-opacity="0.10" stroke="#2b8a3e" stroke-width="2" stroke-linejoin="round"/><circle cx="215.0" cy="125.6" r="3.2" fill="#2b8a3e"/><circle cx="253.7" cy="192.7" r="3.2" fill="#2b8a3e"/><circle cx="253.7" cy="237.3" r="3.2" fill="#2b8a3e"/><circle cx="215.0" cy="259.7" r="3.2" fill="#2b8a3e"/><circle cx="163.4" cy="244.8" r="3.2" fill="#2b8a3e"/><circle cx="150.5" cy="177.8" r="3.2" fill="#2b8a3e"/><path d="M215.0,140.5 L266.6,185.2 L279.5,252.2 L215.0,274.6 L163.4,244.8 L176.3,192.7Z" fill="#c2255c" fill-opacity="0.10" stroke="#c2255c" stroke-width="2" stroke-linejoin="round"/><circle cx="215.0" cy="140.5" r="3.2" fill="#c2255c"/><circle cx="266.6" cy="185.2" r="3.2" fill="#c2255c"/><circle cx="279.5" cy="252.2" r="3.2" fill="#c2255c"/><circle cx="215.0" cy="274.6" r="3.2" fill="#c2255c"/><circle cx="163.4" cy="244.8" r="3.2" fill="#c2255c"/><circle cx="176.3" cy="192.7" r="3.2" fill="#c2255c"/></svg></div><div class="legend"><span class="lg"><i style="background:#5f3dc4"></i>G1 GEN</span><span class="lg"><i style="background:#d9480f"></i>G2 GEN</span><span class="lg"><i style="background:#2b8a3e"></i>G3 GEN</span><span class="lg"><i style="background:#c2255c"></i>G4 GEN</span></div><div class="cap"><b>图 4-2　GEN 四局的赢法结构</b><span>四条线高度重合，说明四局用的是同一套赢法。</span></div></div>
+</div>
+
+  <p>这两张图要读出来的只有一件事：<b>BLG 四局的结构完全不同，GEN 四局是同一套。</b>BLG 赢下的三局分别落在反打、分流与两者混合；GEN 无论输赢，赢法都是“接团 + 双 C 接管”。这就是“BLG 五个人四局拿出二十套互不重复英雄”的真正含义——不只是英雄不重复，是<b>赢法不重复</b>。</p>
+  <p>GEN 的失败因此不是操作失误，而是<b>赢法结构单一</b>。它的第三局有一把安蓓萨做前排、第二局有科加斯，第四局有潘森和璐璐，但它的伤害来源始终是 Ruler 与 Chovy，团战发起方式始终是正面推进。而 BLG 在第四局做的恰恰相反：<b>用“不给正面团”的方式，让 GEN 唯一的赢法无法启动</b>。GEN 拿到炼金龙魂却找不到一波终结，正是因为它的赢法需要一个开团权，而这个开团权被 BLG 用梦魇关灯和卡牌全图支援拿走了。</p>
+</section>
+
+<section class="card" id="ch4-4">
+  <h3>4.4　无畏征召（全局 BP）</h3>
+  <p>这是本届比赛最大的规则变化，也是决赛 BP 博弈的底层原因。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>项目</th><th>普通赛事 BP</th><th>无畏征召（全局 BP）</th></tr></thead>
+    <tbody>
+      <tr><td>适用比赛</td><td>单场 BO1（S16 瑞士轮前两轮）</td><td>所有 BO3、BO5 系列赛（瑞士轮 BO3、八强至决赛）</td></tr>
+      <tr><td>禁用</td><td>每场 10 个（每队 5 个）</td><td>同样是每场 10 个，每场重新禁，不累积</td></tr>
+      <tr><td>前几局选过的英雄</td><td>下一局还能选</td><td><b>系列赛结束前双方都不能再选</b></td></tr>
+      <tr><td>第二局不可用英雄数</td><td>10</td><td>20（10 禁 + 10 选）</td></tr>
+      <tr><td>第五局不可用英雄数</td><td>10</td><td>50（10 禁 + 40 选）</td></tr>
+      <tr><td>系列赛结束后</td><td>—</td><td>清零，下一个对手从头开始</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>它为什么重要</b>：</p>
+  <ul>
+    <li><b>它把“版本最强英雄”变成了一次性资源。</b>第一局就用掉，对方也就拿不到——“先用”本身就是删除对手的选项，于是第一局要不要直接掏出版本答案，成了新的博弈。</li>
+    <li><b>它把胜负手从“熟练度”移到“预案数量”。</b>打满五局，同一位置需要五个不同英雄；第四、五局还能拿出来的，才是真的英雄池深度。决赛四局 BLG 二十个英雄不重复，正是这套规则下的产物。</li>
+    <li><b>它对强队更友好，但也会制造意外。</b>规则本身是双方对称的，强队赢在预案储备而不是规则；瑞士轮里 MKOI 爆冷赢下 BLG 一轮，说明被逼出舒适区的弱队同样能靠意外制造结果。</li>
+  </ul>
+
+<div class="chart-box"><svg class="chart wide" viewBox="0 0 760 314" role="img" aria-label="S16 瑞士轮高存在率英雄（存在率 = 选用 + 禁用）"><text x="0" y="29.0" class="blab">永恩 Yone</text><rect x="182" y="13.0" width="460.0" height="19" rx="3" fill="#1f6feb" fill-opacity="0.16"/><rect x="182" y="13.0" width="460.0" height="19" rx="3" fill="#1f6feb"/><text x="650.0" y="28.0" class="bval">96.4%</text><text x="182.0" y="41.0" class="bnote">中单/上路，混合伤害且无法阻挡</text><text x="0" y="69.0" class="blab">斯卡纳 Skarner</text><rect x="182" y="53.0" width="460.0" height="19" rx="3" fill="#0b7285" fill-opacity="0.16"/><rect x="182" y="53.0" width="442.8" height="19" rx="3" fill="#0b7285"/><text x="632.8" y="68.0" class="bval">92.8%</text><text x="182.0" y="81.0" class="bnote">打野，大招锁定，是资源团核心</text><text x="0" y="109.0" class="blab">阿萝拉 Aurora</text><rect x="182" y="93.0" width="460.0" height="19" rx="3" fill="#d9480f" fill-opacity="0.16"/><rect x="182" y="93.0" width="426.1" height="19" rx="3" fill="#d9480f"/><text x="616.1" y="108.0" class="bval">89.3%</text><text x="182.0" y="121.0" class="bnote">中单/上路，清线加游走加远距爆发</text><text x="0" y="149.0" class="blab">艾希 Ashe</text><rect x="182" y="133.0" width="460.0" height="19" rx="3" fill="#2b8a3e" fill-opacity="0.16"/><rect x="182" y="133.0" width="408.9" height="19" rx="3" fill="#2b8a3e"/><text x="598.9" y="148.0" class="bval">85.7%</text><text x="182.0" y="161.0" class="bnote">下路，功能型射手自带开团与视野</text><text x="0" y="189.0" class="blab">芮尔 Rell</text><rect x="182" y="173.0" width="460.0" height="19" rx="3" fill="#5f3dc4" fill-opacity="0.16"/><rect x="182" y="173.0" width="391.8" height="19" rx="3" fill="#5f3dc4"/><text x="581.8" y="188.0" class="bval">82.1%</text><text x="182.0" y="201.0" class="bnote">辅助，重开团，河道小规模团强势</text><text x="0" y="229.0" class="blab">贾克斯 Jax</text><rect x="182" y="213.0" width="460.0" height="19" rx="3" fill="#c2255c" fill-opacity="0.16"/><rect x="182" y="213.0" width="375.1" height="19" rx="3" fill="#c2255c"/><text x="565.1" y="228.0" class="bval">78.6%</text><text x="182.0" y="241.0" class="bnote">上路，单带与团战两栖</text><text x="0" y="269.0" class="blab">卡莎 Kai'Sa</text><rect x="182" y="253.0" width="460.0" height="19" rx="3" fill="#a15c07" fill-opacity="0.16"/><rect x="182" y="253.0" width="349.3" height="19" rx="3" fill="#a15c07"/><text x="539.3" y="268.0" class="bval">73.2%</text><text x="182.0" y="281.0" class="bnote">下路，后期大核</text></svg></div><div class="cap"><b>S16 瑞士轮高存在率英雄（存在率 = 选用 + 禁用）</b><span>第三方统计口径，采集于 2026 年 10 月下旬瑞士轮阶段，与官方统计可能存在差异，仅用于观察版本重心。</span></div>
+
+  <p>这张图解释了 26.20 的版本性格：<b>上路与中期团战型英雄集体高存在率，而下路大核的优先级被压低</b>。永恩 96.4%、斯卡纳 92.8%、阿萝拉 89.3%——这三个人分别代表“上路影响力”“资源团开团”“中路游走爆发”三种方向，与 26.20 把传送 CD 从 420 压到 390、削弱安蓓萨/芸阿娜/韦鲁斯/艾希、加强千珏/皎月/卢锡安的改动方向完全一致。</p>
+  <p>顺带说清一件事：网传“S16 是给 BLG 定制的版本”（千珏、皎月、卢锡安加强对应 Xun 与 Viper，奎桑提、安蓓萨削弱对应 T1），这个说法站不住。设计师公开的 26.20 定位是“以微调平衡为主的收官更新”，改动方式是<b>调整位置间的收益差</b>而不是针对某支队伍。真正起作用的因果是反过来的：BLG 早在 26.19（下路版本）就在练上中野多核，版本只是给他们打开了本来就会的选项。</p>
+</section>
+
+<section class="card" id="ch4-5">
+  <h3>4.5　官方与职业圈的公开方法论</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>来源</th><th>身份</th><th>公开表态</th><th>可提取的原则</th></tr></thead>
+    <tbody>
+      <tr><td>Paul Bellezza</td><td>《英雄联盟》执行制作人</td><td>2025 年成都采访：玩家喜欢“未知的惊喜”，喜欢更多非主流英雄登场，“让比赛更像英雄联盟早期时代”；无畏征召带来更多策略空间</td><td>规则的目的不是削弱队伍，而是提高“信息不确定性”；看不懂 BP 的观众只会增加</td></tr>
+      <tr><td>Matt</td><td>拳头首席游戏玩法设计师</td><td>无畏征召的设计原则由其负责</td><td>规则设计权在玩法组，平衡组是另一套评估口径</td></tr>
+      <tr><td>Phroxzon</td><td>拳头设计师</td><td>26.20 是 S16 世界赛最后一个版本，之后不再有影响比赛环境的改动</td><td>整个世界赛是一个版本，决赛的版本理解可以一路回溯到 26.16</td></tr>
+      <tr><td>Daeny</td><td>BLG 主教练</td><td>赛后谈 Bin：说他“内心太过柔软，反而更会用强硬的方式来表达自己”；人和阵容的磨合，才是 BLG 敢于每一局推翻上一局答案的底气</td><td>BP 的可塑性来自队内关系，不只是英雄池</td></tr>
+      <tr><td>Knight</td><td>BLG 中单</td><td>“我比他强，我们 BLG 就是最强的”；成为首位拿下世界赛冠军的国产中单</td><td>—</td></tr>
+      <tr><td>贡子哥（前职业选手）</td><td>复盘者</td><td>逐局复盘决赛的结论：GEN 就只有 Ruler 有优势，但 BLG 的团队执行更完整</td><td>当一支队伍只能靠一个人时，它的容错率由那个人决定</td></tr>
+      <tr><td>韩网复盘媒体</td><td>赛后分析</td><td>把 GEN 的失利归因于难以应对的 BP，认为 Xun 是整支队伍的节奏中枢</td><td>版本理解之外，节奏中枢是谁，是比 BP 更深的一层</td></tr>
+      <tr><td>Tabe</td><td>解说 / 战术分析者</td><td>赛后专门讨论全局 BP 的影响</td><td>规则改变的是训练方式：预案数量取代英雄熟练度成为硬指标</td></tr>
+      <tr><td>Rekkles</td><td>前 T1 成员 / 现解说</td><td>爆料 T1 的核心 BP 是 Keria 做的：包括临时换人和掏出前所未见的辅助；T1 选手复盘时会花四到五小时讨论 BP 方案，教练负责查漏补缺</td><td>BP 是集体讨论制而非教练单点决策；辅助可以是 BP 的中心</td></tr>
+      <tr><td>Keria</td><td>T1 辅助</td><td>“中路永远是最重要的位置”；视野依赖对线创造回合</td><td>中路控河道、英雄池最广，版本再怎么变，中路都是决策中枢</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+
+<section class="card" id="ch5">
+  <h2>5　中期：CD 回合</h2>
+  <p class="lede">你把中期理解为“抢夺资源的回合制控兵线推塔”，并且给出了理由：技能 CD 决定了回合的边界。这条推理是对的，而且比“回合制”这个比喻本身更准。</p>
+</section>
+
+<section class="card" id="ch5-1">
+  <h3>5.1　为什么是回合制，以及它和棋类差在哪</h3>
+  <p>回合制的前提是双方同步行动、回合对齐。LoL 不是这样——<b>每个人的 CD 不同步</b>。所以更准确的结构是：</p>
+  <p class="bigquote">你和对方各自手里有一手牌，但你们<b>各自在数不同的冷却时间</b>。</p>
+  <p>这带来一个反直觉的推论：所谓“打 CD 回合”，本质是<b>错位打击</b>。不是“我等我的 CD 转好然后开团”，而是“我先打你的空窗期，等你的 CD 转好时，你的输出点已经被我处理掉了”。</p>
+  <p>若要给一个更贴切的类比，LoL 的团战更像<b>格斗游戏</b>而不是象棋：双方有血条（HP）、有能量条（CD）、有破防硬直（被控时的僵直）、有帧数（技能前摇与后摇）、有“骗招”（骗技能）、有“确认”（打完确认能不能接）。你上一轮提到的骗技能、打 CD 回合、先杀谁、绕后，在这套语言里是同一件事的两种说法。</p>
+  <p>还有一点需要单独拎出来：<b>资源刷新时间是唯一真正同步的“回合钟”</b>。小龙 5 分钟、大龙 6 分钟，这些时刻给所有人同时重置一次机会——装备在涨、等级在涨、CD 都在这三十分钟里转好了。所以资源团天然是“打架点”，不是因为大家喜欢在那里打，而是因为那是最容易打赢的一刻。这也解释了为什么“卡资源时间”比“卡人头”重要。</p>
+</section>
+
+<section class="card" id="ch5-2">
+  <h3>5.2　接团前的五问</h3>
+
+<div class="chart-box"><svg class="chart wide" viewBox="0 0 700 484" role="img" aria-label="团战五问清单"><text x="0" y="28.0" class="fgrp">第一问：位置</text><rect x="0" y="42.0" width="686" height="54" rx="6" fill="#1f6feb" fill-opacity="0.08" stroke="#1f6feb" stroke-width="1.4"/><text x="16" y="66.0" class="fkey">我们在哪条线、哪个位置比他们多？</text><text x="16" y="84.0" class="fdesc">注意是位置差不是人数差。多的人在龙坑、少的人在泉水，位置差比人数差更重要</text><path d="M350.0,96.0 l0,10 m-5,-4 l5,4 l5,-4" stroke="#1f6feb" stroke-width="1.4" fill="none"/><text x="0" y="124.0" class="fgrp">第二问：视野</text><rect x="0" y="138.0" width="686" height="54" rx="6" fill="#1f6feb" fill-opacity="0.08" stroke="#1f6feb" stroke-width="1.4"/><text x="16" y="162.0" class="fkey">我们看得见他们吗？他们看得见我们吗？</text><text x="16" y="180.0" class="fdesc">看不见就不要主动接。视野决定这一波有没有开团权</text><path d="M350.0,192.0 l0,10 m-5,-4 l5,4 l5,-4" stroke="#1f6feb" stroke-width="1.4" fill="none"/><text x="0" y="220.0" class="fgrp">第三问：CD</text><rect x="0" y="234.0" width="686" height="54" rx="6" fill="#1f6feb" fill-opacity="0.08" stroke="#1f6feb" stroke-width="1.4"/><text x="16" y="258.0" class="fkey">我们的关键 CD 转好了吗？他们的关键 CD 在不在？</text><text x="16" y="276.0" class="fdesc">闪现、金身、大招、净化——在手和不在手是两种局面</text><path d="M350.0,288.0 l0,10 m-5,-4 l5,4 l5,-4" stroke="#1f6feb" stroke-width="1.4" fill="none"/><text x="0" y="316.0" class="fgrp">第四问：兑现</text><rect x="0" y="330.0" width="686" height="54" rx="6" fill="#1f6feb" fill-opacity="0.08" stroke="#1f6feb" stroke-width="1.4"/><text x="16" y="354.0" class="fkey">这个团赢完能换回什么？</text><text x="16" y="372.0" class="fdesc">龙、塔、人头、地图空间。换不回来就别打。这一问决定转化率</text><path d="M350.0,384.0 l0,10 m-5,-4 l5,4 l5,-4" stroke="#1f6feb" stroke-width="1.4" fill="none"/><text x="0" y="412.0" class="fgrp">第五问：推</text><rect x="0" y="426.0" width="686" height="54" rx="6" fill="#1f6feb" fill-opacity="0.08" stroke="#1f6feb" stroke-width="1.4"/><text x="16" y="450.0" class="fkey">打完我们还剩几个人、多少血、兵线在哪？</text><text x="16" y="468.0" class="fdesc">没有兵线的团战胜利，赢不回结束比赛</text></svg></div><div class="cap"><b>团战五问清单</b><span>五问全部为否的团，99% 不该打。第 4 问是最常被忽略的一问。</span></div>
+
+</section>
+
+<section class="card" id="ch5-3">
+  <h3>5.3　先杀谁：收益与成本之比</h3>
+  <p>“先杀谁”不是“打最脆的”，是<b>击杀收益 ÷ 击杀成本</b>最高的那个。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>判定项</th><th>怎么算</th><th>作用</th></tr></thead>
+    <tbody>
+      <tr><td>击杀成本</td><td>目标 EHP ÷ 我方能打出的伤害窗口</td><td>决定“能不能在 3 秒内打死”</td></tr>
+      <tr><td>击杀收益</td><td>他死后对方损失的功能 + 我方这次投入能换回的东西</td><td>决定“值不值得把技能交在他身上”</td></tr>
+    </tbody>
+  </table></div>
+  <p>常见的优先级：</p>
+  <ol>
+    <li><b>对方的主要输出点</b>——输出断了团就散，这是第一顺位。</li>
+    <li><b>对方的关键功能位</b>（开团手、保护型辅助）——不处理他们会反复开团。</li>
+    <li><b>对方的前排</b>——但只在“我打得到他、且打他能破开阵型”的时候。</li>
+  </ol>
+  <p class="warn"><b>绝对不要在能打团的时候去打一个你打不死的人</b>（高护甲 + 护盾 + 治疗）。这是职业与路人局最本质的差距：路人打不死的目标会一直打，职业直接换目标或者干脆不打。</p>
+  <p>还有一层常被忽略：<b>开团的第一目标通常不是“杀人”，而是“打掉对方的牌”</b>。金身、闪现、护盾、净化都是一次性资源，用掉了这一波就没了，而杀掉一个人只是让他晚 30 秒复活。</p>
+</section>
+
+<section class="card" id="ch5-4">
+  <h3>5.4　骗技能、绕后、蹲伏、反蹲：本质是注意力的争夺</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>动作</th><th>本质</th><th>要点</th><th>方差</th></tr></thead>
+    <tbody>
+      <tr><td>骗技能</td><td>用一次廉价的动作（走位、一个平 A、一次假开团）换取对方的闪现或大招交出去</td><td>骗到的不是伤害，是<b>输出窗口</b>。骗到闪现就等于凭空多出几秒</td><td>低</td></tr>
+      <tr><td>找绕后人</td><td>改变对方的选择集</td><td>绕后者的伤害不重要，重要的是迫使对方分出注意力防侧翼，这是<b>注意力成本</b>。他站着不动，阵型就已经变形</td><td>低</td></tr>
+      <tr><td>蹲人</td><td>用信息差换取击杀</td><td>前提是对方必须来。对方有别的选择时，蹲人是浪费</td><td>中</td></tr>
+      <tr><td>反蹲</td><td>预判对方的预判</td><td>反蹲一旦错判，你位置在自家野区靠前，会被对方反手开团</td><td>高</td></tr>
+    </tbody>
+  </table></div>
+  <p>这一节要接回第 2 章：<b>视野是消除绕后收益的手段</b>。当对方野区被点亮、河道口被眼封住，绕后就变成送死，所以对面不敢绕。<b>防守视野比抓绕后者更根本</b>——抓绕后是止损，防守视野是让对方根本不敢来。这也是为什么职业队伍越来越倾向于“用视野把绕后路径封死”，而不是“用反蹲赌对手来”。</p>
+</section>
+
+<section class="card" id="ch5-5">
+  <h3>5.5　回家时机：最被低估的一项技能</h3>
+  <p>回城不是“血少了就回”，而是<b>交出地图存在</b>。你回城的那 20 秒（买装 + 从泉水走到线上），你在地图上的存在为零：没有威慑、没有视野、没有接团能力。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th></th><th>回城</th><th>不回城</th></tr></thead>
+    <tbody>
+      <tr><td>收益</td><td>买装备（= 战斗力）、回血（= 承接下一波）、赶路时间本身</td><td>多在地图上 20 秒；可以补一个眼、可以做一次骚扰</td></tr>
+      <tr><td>代价</td><td>你不在的这段时间，地图上少一个人参与任何事情；回线路上可能被蹲</td><td>带着半血和旧装备继续，风险随时间累积</td></tr>
+    </tbody>
+  </table></div>
+  <p>高手用它的方式更精细——<b>用回城时间卡时间差</b>：回城、买完、从泉水走出来的路线与时间被精确计算，目的可能是“对方以为你还在线上会先开团，我正好从侧后到”，或者反过来“我故意晚到，让他以为我不在，逼他先动”。</p>
+  <p>S16 决赛第四局 39:08 到 41:03 之间就是这种操作的标本。龙魂团输掉后 BLG 全员回城补状态，然后卡着 GEN 必然要开大龙的时间点从泉水走到龙坑外侧——41:03 GEN 开大龙时，BLG 五人全部在位。反过来看 32:41 GEN 搏命开大龙时，BLG 也是全员在位，所以被妮蔻开了四个。</p>
+</section>
+
+<section class="card" id="ch5-6">
+  <h3>5.6　转化率：把“赢了团”和“拿到东西”分开</h3>
+  <p class="formula">团战的净收益 = 团战结果 × 转化率</p>
+  <p>转化率由赢团那一瞬间的状态决定：血量、状态（技能交了没有）、兵线位置、塔的位置，以及对面复活要多久。</p>
+  <p>看决赛第四局的三波关键团，三波都在 BLG 手上，但结果完全不同：</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>时间</th><th>发生了什么</th><th>转化结果</th></tr></thead>
+    <tbody>
+      <tr><td>26:08</td><td>大龙团，妮蔻开三人，Viper 与 Bin 收掉，Canyon 被融化，BLG 1 换 3 拿下大龙</td><td>领先 5k，但兵线没推、塔没拆、状态不干净——<b>这一波只有交换，没有兑现</b></td></tr>
+      <tr><td>32:41</td><td>GEN 搏命开大龙，妮蔻开四人但被 Canyon 抢下大龙</td><td>BLG 掉了一波，2 换 3，经济仍领先 6k——赢的回合被对手用资源抢回</td></tr>
+      <tr><td>39:08</td><td>终极龙魂团，BLG 先开小龙却被打成 2 换 2，GEN 拿到炼金龙魂</td><td><b>输了团，却因为前面积累的 6k 优势仍在领先 5k</b>——输团不等于输</td></tr>
+      <tr><td>41:03</td><td>GEN 开大龙，BLG 接团拉扯，Xun 拿下大龙，Bin 融化 Canyon，阿卡丽被妮蔻击飞</td><td>0 换 2，一波推平——<b>这次交换被完整兑现</b></td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">这就是为什么“赢团”和“赢下这一局”之间必须插入一个转化率：<b>赢团时的血量、兵线、塔位置，决定了你能不能把这一波换成结束比赛。</b>41:03 那波与 26:08 那波，BLG 的交换能力一样强，差别只在兑现条件是否齐备。</p>
+</section>
+
+
+<section class="card" id="ch6">
+  <h2>6　后期：数值与结算</h2>
+  <p class="lede">后期不是“英雄属性开始显现”这么简单，它有一条更锋利的规律。</p>
+</section>
+
+<section class="card" id="ch6-1">
+  <h3>6.1　前期是机制决定胜负，后期是数值决定胜负</h3>
+  <p>后期有三个条件同时成立：技能等级全满、CD 全部转好、装备四件套以上。这时候版本强势期英雄（前期一打三、后期一碰就碎）的优势被完全压缩，只剩下面板值和成长曲线。所以后期确实是“版本答案”最真实的时刻。</p>
+  <p>BP 优劣在后期显现的方式也不是“选到了强英雄”，而是<b>阵容的成长曲线与这局实际时长是否匹配</b>。一个 25 分钟就能结束的对局，你的 C 是需要 30 分钟才成型的（薇恩、吉格斯这类），BP 阶段就已经输了。</p>
+</section>
+
+<section class="card" id="ch6-2">
+  <h3>6.2　终局是两段式，不是一波团</h3>
+  <p class="formula">终局 = 一次交换（团战） + 一次推进（兵线与塔）</p>
+  <p>后半段的兑现要四个条件齐备，缺一不可：</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>条件</th><th>含义</th><th>不满足的后果</th></tr></thead>
+    <tbody>
+      <tr><td>血量与状态</td><td>赢团时是否残血、关键技能是否交了、是否有人没复活</td><td>后期死一个人意味着 30–45 秒复活，这段时间足够拆一座塔，人数差的价值比前期大得多</td></tr>
+      <tr><td>兵线</td><td>有没有足够多的兵进塔</td><td>团赢了也拆不动塔</td></tr>
+      <tr><td>塔的选择</td><td>拆哪座塔能结束比赛</td><td>拆镀层最多的那座是赚小钱，拆高地塔才是赢</td></tr>
+      <tr><td>时间窗口</td><td>大龙 buff 是否还在</td><td>拿了大龙却没在 buff 内推进，等于白打一轮</td></tr>
+    </tbody>
+  </table></div>
+  <p>还要记住一个后期特有的选项：<b>后期存在“不打团”的正解</b>。如果你的赢法不依赖接团，而对方的赢法必须接团，那你就是有选择权的一方。决赛第四局 GEN 输在这里——它没有“不打团”的选项，BLG 有。</p>
+</section>
+
+<section class="card" id="ch6-3">
+  <h3>6.3　后期结算清单</h3>
+  <ol>
+    <li><b>我们打得死他要多久？他能不能先打死我们？</b>（EHP ÷ 我方 DPS vs 他的 DPS ÷ 我的 EHP）</li>
+    <li><b>打完我们剩几个人、什么状态？还能不能推？</b>（转化率）</li>
+    <li><b>兵线在哪？推哪座塔能结束？</b>（终结路径）</li>
+    <li><b>对面复活要多久？我们能拆几座？</b>（绝对人数差）</li>
+    <li><b>这波不打会怎样？</b>（后期最优解有时是“直接推”而不是“接团”）</li>
+  </ol>
+</section>
+
+<section class="card" id="ch6-4">
+  <h3>6.4　五个具体机制的计算</h3>
+
+  <h4>拼惩戒：这是可以精确算的阈值问题</h4>
+  <p>惩戒对大型与史诗野怪造成<b>真实伤害</b>（无视护甲魔抗），数值随等级从 390 涨到 1000，<b>16 级为 900</b>；冷却 15 秒，约 90 秒充能一次，最多两层。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>环节</th><th>做法</th><th>常见错误</th></tr></thead>
+    <tbody>
+      <tr><td>留伤害</td><td>惩戒手与队伍预留输出，不提前把龙打死</td><td>队友的技能先收掉龙，惩戒手瞬间空大</td></tr>
+      <tr><td>掐阈值</td><td>龙血量降到 ≤ 你这一发惩戒的伤害时再按</td><td>提前按惩戒，龙还剩一大截血，惩戒打不出那 900 的实际效果</td></tr>
+      <tr><td>有视野</td><td>必须先有龙坑视野，否则不知道对方惩戒手在哪、自己还差多少血</td><td>在没视野的坑里赌时间</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">所以拼惩戒不是“谁手快”，是“谁先算到那个阈值”。反过来，16 级一发惩戒 900 点真实伤害约等于 45 个近战兵、一个人头加半件装备——这就是为什么这一波值得专门练。</p>
+
+  <h4>卡莉斯塔拔毛：按最大生命值计算的机制收益</h4>
+  <p>“拔毛”通常指卡莉斯塔 W 被动「灵魂烙印」：当卡莉斯塔与她的誓约者（一般是辅助）在很短时间内<b>共同攻击同一目标</b>，触发一次<b>按目标最大生命值百分比计算</b>的魔法伤害（各版本约 12%–20% 随等级递增，同一目标有 8–10 秒内不可重复触发的冷却，具体以客户端为准）。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>特性</th><th>含义</th><th>实战结论</th></tr></thead>
+    <tbody>
+      <tr><td>按最大生命值算，不按当前血量</td><td>对方血剩一半也照样吃满</td><td>打坦克极其疼：4000 血的坦克，一次就是 500+ 魔法伤害</td></tr>
+      <tr><td>需要誓约者配合</td><td>辅助必须去 A 同一个目标</td><td>这把辅助从“挂件”变成“输出协作者”，选人时要注意</td></tr>
+      <tr><td>纯机制收益，不吃装备</td><td>版本改动不影响它</td><td>它<b>只在后期兑现</b>：前期大家血量都不高，后期坦克普遍 3500–4500 血，这一刀的价值完全不一样</td></tr>
+    </tbody>
+  </table></div>
+  <p>这就是“英雄属性后期显现”最干净的例子：<b>前期决定胜负的是机制能不能触发，后期决定胜负的是触发时那个百分比乘以的基数有多大。</b>（注：E 撕裂的拔矛层数是另一套机制——每根矛增加 AD 百分比伤害、击杀重置 CD，与 W 被动不是一回事，看比赛时最好分开说。）</p>
+
+  <h4>科加斯大招：持续伤害源而非爆发</h4>
+  <p>「吞噬」是一记短 CD、可反复施放的魔法伤害技能，并按所造成伤害回复生命（伤害构成为固定值 + AP 加成，旧版本曾使用过百分比最大生命值，<b>26.20 具体数值以客户端技能说明为准</b>）。</p>
+  <ul>
+    <li><b>可反复使用</b>：团战越长，总伤害越高，而且每用一次回一次血，自带续战能力。</li>
+    <li><b>需要贴身</b>：大招要靠近目标，所以它的价值取决于能不能接近，以及目标有没有护盾。</li>
+    <li><b>它给“打不死的前排”提供了解法</b>：你秒不掉一个 4000 血的坦克，但科加斯可以反复啃。</li>
+  </ul>
+  <p>所以科加斯在后期阵容里的位置很明确：<b>他不是用来秒 C 的，是用来在对方前排身上磨出缺口、同时维持自己输出的</b>。这也回答了“没有爆发怎么办”——后期真正的伤害来源往往是“能重复施放的伤害”，而不是一套爆发。</p>
+
+  <h4>闪现钩：用一次性保命牌换开团权</h4>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>要素</th><th>分析</th></tr></thead>
+    <tbody>
+      <tr><td>收益</td><td>钩子是硬先手，命中后对方 0.5 秒内没有操作空间</td></tr>
+      <tr><td>成本</td><td>闪现是唯一的机动保命牌；用掉之后这一波不打算活着撤</td></tr>
+      <tr><td>风险</td><td>钩子是二元的：<b>落空比不开团更糟</b>——技能交了、闪现交了、人还在对方阵型里，等于白送一个开团权</td></tr>
+      <tr><td>真正的计算</td><td>钩中谁 × 我方伤害能不能在对方反打前打完。钩中 C 位与钩中坦克收益差十倍；底座仍是 EHP——钩中 3500 血 150 护甲的前排（EHP 8750），你一套 2500 伤害根本打不动</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>发条大招：真正要算的不是伤害数字</h4>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>要算的项</th><th>怎么判断</th></tr></thead>
+    <tbody>
+      <tr><td>球在哪</td><td>球在己方英雄身上是把敌人拉向球，球在敌方身上是把敌人推开。球的位置决定了整套体系的方向</td></tr>
+      <tr><td>能覆盖几个人</td><td>对面五人聚在一起吃到 5 个，散开就只吃到 1–2 个。<b>发条大招最常见的空是因为对面散开了</b></td></tr>
+      <tr><td>覆盖到的是谁</td><td>覆盖到后排 C 位才值，覆盖到前排等于白打</td></tr>
+      <tr><td>对方能不能解</td><td>风墙、闪现、位移、金身，每一个都能让 AOE 少吃一到两个人</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">决赛第二局 Chovy 的发条搭配卡尔玛，是典型的“有球可挂”体系。GEN 那局的赢法是“拖到双 C 成型然后接团”，发条是后期 AOE 的核心；而 BLG 那套双 AP + 全球流根本不给 GEN 站进人堆的机会——大龙坑里 BLG 五人到位，GEN 是被妮蔻绕后抬起来的一方。</p>
+</section>
+
+<section class="card" id="ch6-5">
+  <h3>6.5　S16 决赛第四局逐波标注</h3>
+  <p class="lede">这一节是全手册最实战的部分：把第 5.2 节的五问清单，套在决赛第四局（BLG 获胜局）的每一个决策点上。战报时间线来自直播吧的官方战报。</p>
+
+
+  <div class="tbl-wrap"><table class="tbl wide">
+    <thead><tr><th>时间</th><th>事件</th><th>视野与位置</th><th>经济差</th><th>产出</th><th>决策评价</th></tr></thead>
+    <tbody>
+
+<tr><td>2:22</td><td>Ruler 霞下路单杀 Viper 芸阿娜拿下第一滴血，Viper 闪现交掉</td><td>BLG 无河道与三角草丛视野；GEN 潘森在下路形成人数优势</td><td>GEN 领先约 1.2k</td><td>人头 300</td><td>BLG 血亏：交掉闪现 + 一条命 + 战术布置位置</td></tr>
+<tr><td>3:21</td><td>Xun 梦魇去上路逼出 Kiin 阿萝拉闪现；随后 Ruler 霞再杀 Viper（0 换 2）</td><td>BLG 视野在下路缺失；梦魇关灯本身也是制造视野差</td><td>GEN 领先扩大</td><td>梦魇开大把上路变成 1 对 1</td><td>BLG 连续两波掉在同一位置：下路被针对而没有提前布防</td></tr>
+<tr><td>5:12</td><td>Bin 格温开大追击，Knight 卡牌全图支援上路，越塔强杀 Kiin；下路 Duro 扛塔送头给 ON，1 换 1</td><td>卡牌全图支援 = 分流型打法第一次生效；下路 Duro 被开团</td><td>GEN 领先收窄</td><td>1 换 1，双向交换</td><td>关键：BLG 用卡牌把上路变成支援点，GEN 却在下路送出人头</td></tr>
+<tr><td>8:56</td><td>GEN 拿到三条巢虫，双方继续发育</td><td>巢虫 = 上路体系的价值；BLG 此时没有塔皮领先</td><td>接近持平</td><td>三条巢虫 = 三条边线兵线</td><td>GEN 用边线资源换时间，BLG 换的是节奏，双方都在等中团</td></tr>
+<tr><td>11:42</td><td>Canyon 潘森来下，Ruler 霞与队友越塔再杀 Viper（Viper 0–3），GEN 领先 1.2k 并拿下两条小龙（炼金龙魂）</td><td>GEN 用野区优势兑换下路；BLG 下路连续三次被越塔</td><td>GEN 领先 1.2k</td><td>双小龙 + 人头</td><td>GEN 滚起了第一个雪球；BLG 此时唯一的 C 位被打到 0 换 3</td></tr>
+<tr><td>14:23</td><td>Xun 梦魇关灯飞下逼出闪现；GEN 开先锋，Xun 抢下先锋；正面团双方上单互换，ON 拿到先锋之眼，经济持平</td><td>梦魇关灯 = 主动制造信息差；双方都在赌对方看不见</td><td>扳平</td><td>抢下先锋（价值约 800 金币等值）</td><td>BLG 用同一套“关灯 + 抢资源”的手法，把经济追平，并拿到先锋之眼</td></tr>
+<tr><td>17:55</td><td>小龙团，ON 妮蔻开大击飞三人；Chovy 阿卡丽绕后斩掉 ON 并交出金身；Viper 轰掉潘森，Knight 卡牌黄牌留住 Chovy 并击杀，BLG 1 换 2</td><td>妮蔻绕后开团成功，但 ON 自己进场被斩</td><td>BLG 反超 1.7k</td><td>1 换 2 + 龙</td><td>赢法为“绕后 + 反打”，代价是辅助先死；换掉了阿卡丽的金身与闪现</td></tr>
+<tr><td>22:24</td><td>龙魂团，Xun 梦魇关灯，Chovy 阿卡丽进场封烟开金身，Xun 拿到小龙带队撤退</td><td>再次用关灯切断视野，让 GEN 无法形成开团</td><td>BLG 领先 2.4k</td><td>小龙</td><td>这不是团战胜利，是“不打团”的胜利——GEN 没有开团权</td></tr>
+<tr><td>26:08</td><td>大龙团，GEN 搏命开大龙，ON 妮蔻开三人，Knight 卡牌融化 Canyon，Bin 格温剪掉 Ruler 霞，BLG 1 换 3 拿下大龙</td><td>GEN 主动开大龙，BLG 恰好全员到位（回城时机计算的结果）</td><td>BLG 领先 5k</td><td>大龙 + 1 换 3</td><td><b>只有交换，没有兑现</b>：兵线没推、塔没拆、状态不干净</td></tr>
+<tr><td>27:44</td><td>BLG 下路推进，Canyon 复活再被杀，BLG 1 换 3，回头拿到小龙</td><td>有兵线、有塔可拆、有大龙 buff</td><td>BLG 领先 6k</td><td>推进 + 小龙</td><td><b>这一波才完成兑现</b>：26:08 的交换在这里被变现</td></tr>
+<tr><td>32:41</td><td>GEN 继续开大龙，Xun 带队进龙坑，ON 妮蔻开四人，GEN 被融化，但 Canyon 抢下大龙；BLG 2 换 3，经济仍领先 6k，双双听牌龙魂</td><td>开团成功但被对方反打，大龙被抢</td><td>BLG 仍领先 6k</td><td>大龙归 GEN，人头归 BLG</td><td>典型的“赢了团却没赢资源”：资源优先级高于人头</td></tr>
+<tr><td>34:40</td><td>Kiin 阿萝拉上路推线被 Xun 开大冲脸击杀，BLG 推掉 GEN 中路二塔并转上推进，经济领先 6.5k</td><td>BLG 用边线把 GEN 的上路逼死，同时推进中路</td><td>BLG 领先 6.5k</td><td>中路二塔 + 人头</td><td>直播吧快讯此处写有“推掉高地塔与水晶”，但与后续 39:08、41:03 仍在拉扯矛盾，本表以能相互印证的事件为准</td></tr>
+<tr><td>39:08</td><td>终极龙魂团，BLG 先开小龙，Xun 关灯开团，ON 妮蔻绕后开三人，Knight 卡牌被 Chovy 换掉，GEN 2 换 2 拿到炼金龙魂</td><td>BLG 开团被换掉核心输出，GEN 反打成功</td><td>GEN 追到只落后 5k</td><td>龙魂归 GEN</td><td><b>输了团却没输</b>：前面 6k 的积累让这次失败可承受——这正是转化的另一面</td></tr>
+<tr><td>41:03</td><td>GEN 开大龙，BLG 接团拉扯，Knight 卡牌黄牌给到 Kiin，Xun 拿到大龙，龙坑 Bin 融化 Canyon，Chovy 阿卡丽进场被妮蔻大招击飞，BLG 0 换 2，一波推平</td><td>BLG 全员到位；GEN 是被接的一方</td><td>终结</td><td>大龙 + 0 换 2 + 一波推平</td><td>交换与兑现同时完成：击杀发生在龙的争夺过程中，不是团的残局里</td></tr>
+
+    </tbody>
+  </table></div>
+  <p>把 14 个决策点连起来看，这局有三条主线：</p>
+  <ol>
+    <li><b>BLG 的赢法始终是“不给正面团”</b>：14:23 抢先锋、17:55 绕后、22:24 关灯拿龙、26:08 接大龙团、41:03 接大龙团。GEN 的赢法始终是“接团 + 双 C 接管”。前三次 BLG 用绕后与关灯拿到了主动权，GEN 唯一能赢的窗口在 38 分前后的团战——但那时它已经落后且龙魂未成。</li>
+    <li><b>BLG 在 26:08 赢的那一波没有兑现</b>，代价是让 GEN 拖到了 39:08；真正的兑现发生在 27:44（有兵线、有塔、有大龙 buff）和 41:03（击杀发生在龙的争夺过程中）。</li>
+    <li><b>视野是这一局的胜负手</b>：梦魇关灯两次、卡牌全图支援一次、妮蔻绕后两次，BLG 的每一次团战发起都建立在“对方看不见”之上；而 GEN 的每一次被动挨打，都源于自己看不见 BLG 的集结。</li>
+  </ol>
+</section>
+
+
+<section class="card" id="ch7">
+  <h2>7　训练与复盘</h2>
+  <p class="lede">前面六章是模型，这一章是把它变成习惯的部分。七个练习按收益排序，前三个一周内就能看到变化。</p>
+</section>
+
+<section class="card" id="ch7-1">
+  <h3>7.1　七个可执行练习</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>#</th><th>练习</th><th>怎么做</th><th>验收标准</th><th>对应章节</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>EHP 速判</td><td>每局看到对面阵容，先在心里估每个位置是脆皮/常规/坦克，并算出“我一套能不能秒”三个档位</td><td>不用算到个位数，能在 3 秒内给出“能秒/不能秒”</td><td>3.4</td></tr>
+      <tr><td>2</td><td>视野先行</td><td>每 30 秒问自己一次“我现在看得见对方打野吗”。看不见就先不推深线</td><td>连续 10 局没有因为“看不见对方打野”而暴毙</td><td>2.1 / 3.2</td></tr>
+      <tr><td>3</td><td>每次回城买一个控制守卫</td><td>回城第一件买眼，其次才是组件</td><td>一局下来买了 3 个以上真眼，且每个都放在“对方必须经过”的位置</td><td>2.2 / 2.4</td></tr>
+      <tr><td>4</td><td>补刀基线</td><td>训练模式同一英雄，10 分钟 100 CS；然后在排位里对线期做到 10 分钟 80 CS</td><td>排位 10 分钟 CS ≥ 80，且死亡后不崩（下一波补回 60 CS）</td><td>1.2 / 3.1</td></tr>
+      <tr><td>5</td><td>辅助视角复盘</td><td>看录像时只看一个辅助，问：他此刻在地图上能产生什么作用？在他离开下路的那 30 秒里，队伍少了一个什么？</td><td>能说出每次游走的具体收益（视野、控龙、人数差）与代价</td><td>2.4 / 5.5</td></tr>
+      <tr><td>6</td><td>接团五问</td><td>复盘时对每一波你参与的团战过一遍五问清单</td><td>能指出至少一次“其实不该接”的团，并说明第 4 问为什么不成立</td><td>5.2 / 5.6</td></tr>
+      <tr><td>7</td><td>自己标一波决赛</td><td>挑 S16 决赛任一局，用第 6.5 节的表格格式自己标一遍（时间 / 事件 / 视野与位置 / 经济差 / 产出 / 评价）</td><td>标出来的结论与本手册一致；若不一致，能说清分歧来自哪个事实</td><td>6.5</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="card" id="ch7-2">
+  <h3>7.2　观赛清单</h3>
+  <p>看比赛时按这张表打勾，比看解说能多拿走三倍信息量。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>看什么</th><th>具体问法</th></tr></thead>
+    <tbody>
+      <tr><td>赢法归属</td><td>这一局的阵容打算怎么赢？接团、反打、还是分流？</td></tr>
+      <tr><td>团战发起权</td><td>这一波团是谁先开的？开团方有视野吗？</td></tr>
+      <tr><td>转化率</td><td>赢下这波团之后，他们换回了什么？龙、塔、还是只有人头？</td></tr>
+      <tr><td>关键牌</td><td>这一波对方交了闪现吗？金身用了吗？治疗用了几次？</td></tr>
+      <tr><td>视野账</td><td>龙坑和河道是谁先亮的？假眼插在哪？排眼发生在什么时机？</td></tr>
+      <tr><td>兵线</td><td>推线发生在谁有线权的时候？深线、浅线还是放线？</td></tr>
+      <tr><td>回城时机</td><td>他们什么时候回城？回城之后卡的是哪个时间点？</td></tr>
+      <tr><td>资源与时间</td><td>这一波资源赢了之后，对手复活要多久？你们能拆几座塔？</td></tr>
+      <tr><td>全局 BP 账</td><td>这一局之前已经用掉了哪些英雄？谁还留着绝活？第四局会掏什么？</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="card" id="ch7-3">
+  <h3>7.3　复盘模板</h3>
+  <p class="note">每局只填一页，不要写长篇感受。空白表可直接打印。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>项目</th><th>记录</th></tr></thead>
+    <tbody>
+      <tr><td>阵容与赢法</td><td>我方五个位置：　　　　　　打算怎么赢：　　　　　　　</td></tr>
+      <tr><td>对手五个位置</td><td>　　　　　　　　　　　对手打算怎么赢：　　　　　　　</td></tr>
+      <tr><td>关键时间点</td><td>第一次死亡　　　分钟　｜　第一次小龙　　　分钟　｜　第一次大龙　　　分钟</td></tr>
+      <tr><td>对线结果</td><td>上：　　　中：　　　下：　　　（记线权与塔皮，不记人头）</td></tr>
+      <tr><td>补刀</td><td>10 分钟 CS：　　　　20 分钟 CS：　　　　（目标 80 / 160）</td></tr>
+      <tr><td>视野账</td><td>真眼买了　　　个　｜　被排　　　个　｜　对方的视野盲区在：</td></tr>
+      <tr><td>三次关键决策</td><td>①　　　　　　②　　　　　　③　　　（每次写：位置 / 视野 / 经济差 / 换回了什么）</td></tr>
+      <tr><td>一场不该接的团</td><td>时间　　　分钟　｜　第 4 问为什么不成立：</td></tr>
+      <tr><td>下一次只改一件事</td><td>　　　　　　　　　　　　　　　　　　　　　　　　　　　</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="card" id="ch7-4">
+  <h3>7.4　常见误区</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>误区</th><th>纠正</th></tr></thead>
+    <tbody>
+      <tr><td>BP 就是要凑齐肉、前排、输出、AP、AD、控</td><td>这套清单没有区分度。S16 决赛 BLG 三局没有坦克前排并全部取胜，前排的真实功能是“为输出创造接触时间”，只在接团型赢法里才需要</td></tr>
+      <tr><td>视野就是多插眼</td><td>视野是开团权。评价标准是“我的 C 现在能安全站在哪”，而不是插了几个眼。插在对方不必经过的位置没有价值</td></tr>
+      <tr><td>辅助要跟着对方辅助游走</td><td>要看你能不能到、你的英雄在那儿有没有用、以及对方 ADC 落单时你能不能压他。Rekkles 谈娜美时的教训是：跟不动的时候硬跟，等于送掉视野与空间</td></tr>
+      <tr><td>赢团就等于赚</td><td>还有转化率。26:08 那波 BLG 赢了团拿下大龙却什么也没推进，41:03 那波才完成兑现</td></tr>
+      <tr><td>后期拼数值，谁装备好谁赢</td><td>后期确实是数值决定胜负，但胜负仍然由“谁先打到对方的输出点”决定，而先手权来自视野与 CD，不是来自数值</td></tr>
+      <tr><td>版本是给某支队伍定制的</td><td>版本改动的是位置间的收益差。BLG 赢是因为它早在下路版本就在练上中野多核，版本只是打开了它本来就会的选项</td></tr>
+      <tr><td>支援游走越多越强</td><td>辅助离开下路，下路从 2 变 1；中单离开中路，河道主动权归对方。游走的收益必须超过你放弃的那条线的收益</td></tr>
+      <tr><td>反蹲能解决一切</td><td>反蹲是高方差操作，判断错就暴露在自家野区靠前的位置。更根本的做法是用视野把绕后路径封死</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+
+<section class="card" id="ch8">
+  <h2>8　数据与出处</h2>
+  <p class="lede">本手册的事实性内容按来源类型分组。每条给出可直接打开的链接，类型标注用于判断可信度。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>类型</th><th>来源</th><th>用到的内容</th></tr></thead>
+    <tbody>
+      <tr><td>赛事战报</td><td><a href="https://news.zhibo8.com/game/2026-11-15/match2299323vgnative.htm" target="_blank" rel="noopener">直播吧 S16 决赛战报（含第四局完整时间线）</a></td><td>四局关键事件、第四局 14 个时间点、双方选人</td></tr>
+      <tr><td>赛事战报</td><td><a href="https://www.18183.com/gonglue/202611/qoe2rohk.html" target="_blank" rel="noopener">18183 决赛四局阵容盘点</a></td><td>四局双方完整 pick 列表与阵容思路</td></tr>
+      <tr><td>赛事战报</td><td><a href="https://post.smzdm.com/p/awwddlop" target="_blank" rel="noopener">什么值得买：BLG 夺冠全程复盘</a></td><td>四局赢法对比、20 个不重复英雄、无畏征召的放大效应</td></tr>
+      <tr><td>赛事战报</td><td><a href="https://news.ynet.com/2026/11/15/4061579t70.html" target="_blank" rel="noopener">北青网：BLG 3:1 夺冠战报</a></td><td>决赛比分、MVP、四局关键团战</td></tr>
+      <tr><td>赛事资料</td><td><a href="https://movec.ru/wiki/%E8%8B%B1%E9%9B%84%E8%81%94%E7%9B%9F2026%E8%B5%9B%E5%AD%A3%E5%85%A8%E7%90%83%E6%80%BB%E5%86%B3%E8%B5%9B" target="_blank" rel="noopener">维基百科镜像：2026 赛季全球总决赛</a></td><td>赛制、赛程、19 队名单、场馆、主题</td></tr>
+      <tr><td>官方规则</td><td><a href="https://clip.dor.gg/zh-CN/blog/lol-fearless-draft" target="_blank" rel="noopener">无畏征召（全局 BP）规则整理，引用 LoL Esports 官方说明</a></td><td>全局 BP 规则表、2026 首选权改动、BO1 不适用</td></tr>
+      <tr><td>官方访谈</td><td><a href="https://view.inews.qq.com/k/20251202A084CA00" target="_blank" rel="noopener">游研社访谈：执行制作人 Paul Bellezza</a></td><td>对无畏征召的官方评价；2026 赛季改动方向</td></tr>
+      <tr><td>官方/版本</td><td><a href="https://3g.sina.com.cn/news/detail/5349027046752268.html" target="_blank" rel="noopener">26.20 版本改动与设计师 Phroxzon 表态</a></td><td>11 增强 5 削弱 1 调整、装备改动、最后版本定位</td></tr>
+      <tr><td>官方/版本</td><td><a href="https://news.sohu.com/a/1082430351_121124868" target="_blank" rel="noopener">设计师访谈：火箭腰带、卢锡安、塞拉斯、薇恩的改动理由</a></td><td>装备定位调整逻辑、先手与后手 pick 的设计意图</td></tr>
+      <tr><td>官方/版本</td><td><a href="https://news.qq.com/rain/a/20260924A0AXGP00" target="_blank" rel="noopener">S16 世界赛是谁的版本</a></td><td>26.19 起的改动趋势、传送与边线体系</td></tr>
+      <tr><td>官方/版本</td><td><a href="https://www.gamersky.com/news/202611/2246678.shtml" target="_blank" rel="noopener">游民星空：《英雄联盟：曙光》2027 大更新</a></td><td>决赛期间公布的下一版本方向</td></tr>
+      <tr><td>规则/机制</td><td><a href="https://gamerstogether.cz/?p=17027" target="_blank" rel="noopener">2026 赛季视野系统：精灵视界、饰品眼、控制守卫价格</a></td><td>视野工具数值、精灵视界机制、分路任务与辅助真眼折扣</td></tr>
+      <tr><td>规则/机制</td><td><a href="https://www.lolsensei.com/zh-hans/blog/cs-farming-guide-lol" target="_blank" rel="noopener">LoL Sensei：补刀与经济指南（16.10 口径）</a></td><td>兵线金币、炮车节奏、CS 与人头等价、分段基准</td></tr>
+      <tr><td>经验帖</td><td><a href="https://wufan123.github.io/2021/12/01/LOL%E8%8B%B1%E9%9B%84%E8%81%94%E7%9B%9F%E6%94%BB%E7%95%A5/" target="_blank" rel="noopener">中文攻略：兵线与地图资源时间轴</a></td><td>出兵与交汇时间、炮车频率、塔皮与野怪刷新</td></tr>
+      <tr><td>经验帖</td><td><a href="https://leaguefeed.net/lol-wards-and-warding-in-league-of-legends-complete-guide/" target="_blank" rel="noopener">LeagueFeed：视野与插眼完整指南</a></td><td>眼位点位、扫眼时机、视野分计算</td></tr>
+      <tr><td>经验帖</td><td><a href="https://eloboostleague.com/blog/lol-support-space-before-vision" target="_blank" rel="noopener">基于 Rekkles 2026 年 1 月采访的辅助与空间分析</a></td><td>“空间”定义、游走三问、辅助 KPI 指标</td></tr>
+      <tr><td>赛后发言</td><td><a href="https://m.zhibo8.com/news/web/other/2025-10-25/68fc973a2bf68native.htm" target="_blank" rel="noopener">Keria 赛后外媒采访（2025 瑞士轮）</a></td><td>视野依赖对线创造回合、中路的重要性</td></tr>
+      <tr><td>赛后发言</td><td><a href="https://esportpulse.com?p=7053/" target="_blank" rel="noopener">Esport Pulse：Rekkles 谈 T1 的 BP 核心是 Keria</a></td><td>选手主导 BP、复盘投入 4–5 小时讨论方案</td></tr>
+      <tr><td>第三方统计</td><td><a href="https://esportport.com/lol-worlds-2026-fearless-draft-meta-champion-tier-list/" target="_blank" rel="noopener">EsportPort：S16 瑞士轮英雄存在率统计</a></td><td>永恩 96.4%、斯卡纳 92.8% 等存在率数据（非官方口径）</td></tr>
+      <tr><td>第三方统计</td><td><a href="https://baike.baidu.com/item/%E9%87%91%E5%B8%81/22259420" target="_blank" rel="noopener">百科：金币与赏金系统</a></td><td>被动金币 10.2/5 秒、基础赏金 300、守卫奖励规则</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">两处口径差异已在正文标注：① 兵线金币在“近战 20 / 远程 14 / 炮车 50→66”与“近战 21 / 远程 14 / 炮车 64→90”之间存在版本差异，本手册采用 LoL Sensei 的 16.10 口径；② 决赛第四局 34:40 直播吧快讯写有“推掉高地塔与水晶”，与 39:08、41:03 仍在交战矛盾，第 6.5 节以能相互印证的事件为准。所有数值最终以客户端为准。</p>
+</section>
+
+<section class="card" id="ch9">
+  <h2>附录　术语表</h2>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th>术语</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td>CS</td><td>补刀数，用最后一击拿下的小兵与野怪总数。线性回报、无风险，是最稳定的收益来源</td></tr>
+      <tr><td>线权</td><td>对某条路的控制程度，本质是“谁能让对方按我的节奏补刀”</td></tr>
+      <tr><td>EHP</td><td>有效生命值，=（生命值 + 护盾）÷（1 − 减伤率）。衡量“要打多少伤害才算死”</td></tr>
+      <tr><td>转化率</td><td>团战结果能兑现为资源、塔与地图空间的比例。由赢团时的血量、状态、兵线与塔位置决定</td></tr>
+      <tr><td>开团权</td><td>看见对方并能先动手的能力。视野的直接产物</td></tr>
+      <tr><td>反打</td><td>对方先手我方后手，靠爆发与位置差反制</td></tr>
+      <tr><td>接团</td><td>正面 5 对 5 的团战，需要坦克前排与控制链</td></tr>
+      <tr><td>分流</td><td>不与对方打正面团，靠全球支援、单带、绕后与调动制造多打少</td></tr>
+      <tr><td>无畏征召</td><td>全局 BP。同一系列赛前几局选过的英雄双方都不能再选；禁用不累积</td></tr>
+      <tr><td>拔毛</td><td>卡莉斯塔 W 被动「灵魂烙印」：与誓约者共同攻击同一目标，按目标最大生命值百分比造成魔法伤害</td></tr>
+      <tr><td>无效开团</td><td>开团后接不上伤害，被对方反打。开团本身是投入，不是承诺</td></tr>
+      <tr><td>视野盲区</td><td>没有己方视野覆盖的区域。进入其中的代价是被先手</td></tr>
+      <tr><td>暗区</td><td>对方看不到、己方看得见的区域。可以用扫眼加控制守卫制造</td></tr>
+      <tr><td>精灵视界</td><td>2026 赛季新增。蘑菇圈上插的眼成为超级眼，视野半径 +25%，额外揭示一片专属区域 45 秒</td></tr>
+      <tr><td>分路任务</td><td>2026 赛季新增。每个位置有独立任务与成长奖励，与传送、鞋、金币与视野相关</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+    <footer class="doc">本文所有赛事数据取自 2026 年 11 月 14–15 日 S16 全球总决赛决赛官方战报；版本数值以 26.20 口径整理，游戏内最终以客户端技能说明为准。</footer>
+  </main>
+</div>
+<div class="tools">
+  <button id="btn-csv" type="button"><span class="wide-txt">导出全部表格 CSV</span><span class="narrow-txt">导出 CSV</span></button>
+  <button id="btn-print" type="button"><span class="wide-txt">打印 / 存为 PDF</span><span class="narrow-txt">打印</span></button>
+</div>
+<script>
+(function(){
+  var btnCsv=document.getElementById('btn-csv');
+  var btnPrint=document.getElementById('btn-print');
+  function cellText(td){
+    var s=(td.innerText||'').replace(/\s+/g,' ').trim();
+    return s;
+  }
+  function csvEscape(s){ return '"'+String(s).replace(/"/g,'""')+'"'; }
+  if(btnPrint){ btnPrint.addEventListener('click',function(){ window.print(); }); }
+  if(btnCsv){
+    btnCsv.addEventListener('click',function(){
+      var tables=document.querySelectorAll('table.tbl');
+      var parts=[];
+      for(var i=0;i<tables.length;i++){
+        var t=tables[i];
+        var cap=t.closest('.card');
+        var h=cap?cap.querySelector('h2,h3'):null;
+        var title=h?cellText(h):('表 '+(i+1));
+        parts.push(title);
+        var rows=t.querySelectorAll('tr');
+        var lines=[];
+        for(var r=0;r<rows.length;r++){
+          var cells=rows[r].querySelectorAll('th,td');
+          var vals=[];
+          for(var c=0;c<cells.length;c++){ vals.push(csvEscape(cellText(cells[c]))); }
+          if(vals.length){ lines.push(vals.join(',')); }
+        }
+        parts.push(lines.join('\n'));
+        parts.push('');
+      }
+      var csv='\ufeff'+parts.join('\n');
+      var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+      var a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download='英雄联盟S16游戏理解_全部表格.csv';
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },400);
+    });
+  }
+  // 目录高亮
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var map={};
+  links.forEach(function(a){ var el=document.querySelector(a.getAttribute('href')); if(el){ map[el.id]=a; } });
+  if('IntersectionObserver' in window && map){
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(l){ l.style.color=''; l.style.background=''; });
+          var a=map[e.target.id];
+          if(a){ a.style.color='#d9480f'; a.style.background='#f5f8fa'; }
+        }
+      });
+    },{rootMargin:'0px 0px -72% 0px',threshold:0});
+    Object.keys(map).forEach(function(id){ obs.observe(document.getElementById(id)); });
+  }
+})();
+</script>
+</body>
+</html>
