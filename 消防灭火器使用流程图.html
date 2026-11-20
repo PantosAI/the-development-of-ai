@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f4f7f5">
+<title>消防灭火器使用流程图</title>
+<style>
+:root{
+  --ink:#18312b;--muted:#64766f;--green:#16845b;--green2:#e7f5ed;
+  --red:#d94b3d;--orange:#f3a33b;--line:#d9e5de;--paper:#f4f7f5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:34px 20px 48px}
+header{text-align:center;margin-bottom:28px}
+.kicker{display:inline-block;padding:6px 12px;border-radius:99px;background:#e5f2eb;color:var(--green);font-size:13px;font-weight:700;letter-spacing:1px}
+h1{font-size:clamp(27px,5vw,42px);margin:14px 0 8px;letter-spacing:1px}
+.sub{color:var(--muted);font-size:15px}
+.banner{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 20px;margin:0 auto 24px;max-width:760px;box-shadow:0 6px 22px #173d2b0a}
+.gauge{width:66px;height:66px;flex:0 0 66px;border-radius:50%;background:conic-gradient(#24a66c 0 120deg,#e6ece8 120deg 360deg);display:grid;place-items:center;position:relative}
+.gauge:before{content:"";position:absolute;inset:7px;border-radius:50%;background:white}
+.gauge span{z-index:1;font-size:13px;font-weight:900;color:var(--green)}
+.banner strong{display:block;font-size:17px;margin-bottom:4px}
+.banner p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.flow{max-width:760px;margin:auto;display:grid;grid-template-columns:1fr;gap:0}
+.step{position:relative;display:grid;grid-template-columns:76px 1fr;gap:16px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px 20px;box-shadow:0 5px 18px #173d2b08}
+.num{width:54px;height:54px;border-radius:16px;background:var(--green2);color:var(--green);display:grid;place-items:center;font-size:23px;font-weight:900}
+.step h2{font-size:20px;margin:0 0 5px}
+.step p{margin:0;color:var(--muted);line-height:1.6;font-size:14px}
+.step .tag{display:inline-block;margin-left:8px;padding:3px 8px;border-radius:99px;background:#fff2df;color:#a65c08;font-size:11px;font-weight:800;vertical-align:3px}
+.arrow{height:30px;display:grid;place-items:center;color:#91a99c;font-size:24px;font-weight:700}
+.step.final{border-color:#f1c6bf;background:#fffafa}
+.step.final .num{background:#ffebe7;color:var(--red)}
+.step.final h2{color:#b7372b}
+.tipgrid{max-width:760px;margin:24px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tip{border-radius:15px;padding:15px 16px;background:#fff;border:1px solid var(--line)}
+.tip b{display:block;margin-bottom:5px;font-size:14px}
+.tip span{font-size:13px;color:var(--muted);line-height:1.55}
+.warning{max-width:760px;margin:18px auto 0;padding:16px 18px;border-radius:15px;background:#fff4e8;border:1px solid #f3d7b3;color:#744510;font-size:14px;line-height:1.65}
+.warning strong{color:#9b4e08}
+.mnemonic{max-width:760px;margin:24px auto 0;text-align:center;background:#183d32;color:#fff;border-radius:18px;padding:18px}
+.mnemonic small{display:block;color:#b9d9c9;font-size:12px;letter-spacing:2px;margin-bottom:8px}
+.mnemonic strong{font-size:clamp(20px,4vw,28px);letter-spacing:3px}
+.mnemonic em{font-style:normal;color:#ffd18a}
+footer{text-align:center;color:#87958f;font-size:12px;margin-top:24px}
+@media(max-width:560px){
+ .wrap{padding:25px 14px 35px}.banner{padding:14px}.step{grid-template-columns:58px 1fr;padding:15px 14px;gap:10px}
+ .num{width:48px;height:48px}.step h2{font-size:18px}.tipgrid{grid-template-columns:1fr}
+}
+@media print{body{background:white}.wrap{padding:12px}.step,.banner,.tip,.warning,.mnemonic{box-shadow:none;break-inside:avoid}}
+
+.scene{max-width:760px;margin:0 auto 24px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 6px 22px #173d2b08}
+.scene-head{text-align:center;margin-bottom:8px}
+.scene-label{display:inline-block;padding:4px 10px;border-radius:99px;background:#e7f5ed;color:var(--green);font-size:12px;font-weight:800;letter-spacing:1px}
+.scene-head h2{font-size:21px;margin:10px 0 5px}
+.scene-head p{font-size:13px;color:var(--muted);margin:0}
+.scene-svg{display:block;width:100%;height:auto;margin-top:8px}
+.scene-caption{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font-size:12px;color:var(--muted);padding-top:6px}
+@media(max-width:560px){.scene{padding:13px}.scene-head h2{font-size:18px}.scene-caption{gap:8px;flex-direction:column;align-items:center}}
+
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <span class="kicker">FIRE SAFETY · 使用指南</span>
+    <h1>干粉灭火器使用流程</h1>
+    <div class="sub">先判断安全，再按步骤操作 · 牢记“提、拔、握、压”</div>
+  </header>
+
+  <section class="banner" aria-label="检查压力表">
+    <div class="gauge"><span>绿色<br>正常</span></div>
+    <div>
+      <strong>① 先看压力表：指针在绿色区域</strong>
+      <p>绿色通常表示压力正常；指针在红色或黄色区域、器材损坏或过期时，不要勉强使用。</p>
+    </div>
+  </section>
+
+
+  <section class="scene" aria-label="人物示意：站在上风方向，喷嘴对准火焰根部">
+    <div class="scene-head">
+      <span class="scene-label">动作示意</span>
+      <h2>站在上风侧，瞄准火焰根部</h2>
+      <p>人与火源保持安全距离，身体侧向火源，喷管指向火焰底部。</p>
+    </div>
+    <svg class="scene-svg" viewBox="0 0 760 300" role="img" aria-label="人物手持灭火器，从上风侧向火焰根部喷射的示意图">
+      <defs>
+        <marker id="windArrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6" fill="none" stroke="#4c9bc1" stroke-width="1.5"/>
+        </marker>
+        <marker id="sprayArrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6" fill="none" stroke="#4b9a70" stroke-width="1.5"/>
+        </marker>
+      </defs>
+      <rect x="12" y="12" width="736" height="276" rx="18" fill="#f8fbf9"/>
+      <path d="M30 246 H730" stroke="#cbd9d1" stroke-width="3" stroke-linecap="round"/>
+      <!-- Wind direction -->
+      <g stroke="#4c9bc1" stroke-width="3" fill="none" stroke-linecap="round" marker-end="url(#windArrow)">
+        <path d="M55 48 H170"/><path d="M75 70 H190"/><path d="M45 92 H145"/>
+      </g>
+      <text x="48" y=" thirty" font-size="14" fill="#347b9c" font-weight="700">上风方向</text>
+      <!-- Person: head, body, limbs -->
+      <circle cx="268" cy="92" r="22" fill="#f2c7a5" stroke="#8b5d43" stroke-width="2"/>
+      <path d="M250 87 Q251 63 273 67 Q291 70 290 91 Q278 79 260 82 Z" fill="#344b43"/>
+      <path d="M246 122 Q267 111 289 124 L301 183 L239 183 Z" fill="#2c8b68" stroke="#176347" stroke-width="2"/>
+      <path d="M249 178 L246 229 L229 244" fill="none" stroke="#344b43" stroke-width="13" stroke-linecap="round"/>
+      <path d="M284 178 L294 225 L315 241" fill="none" stroke="#344b43" stroke-width="13" stroke-linecap="round"/>
+      <path d="M229 244 L210 244 M315 241 L334 241" stroke="#263b35" stroke-width="9" stroke-linecap="round"/>
+      <!-- Arms holding hose -->
+      <path d="M248 133 L218 159 L195 145" fill="none" stroke="#f2c7a5" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M286 134 L310 153 L329 143" fill="none" stroke="#f2c7a5" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- Extinguisher -->
+      <rect x="165" y="153" width="27" height="66" rx="8" fill="#d94b3d" stroke="#a52f27" stroke-width="2"/>
+      <path d="M171 151 V143 H185 V153" fill="none" stroke="#555" stroke-width="4"/>
+      <path d="M178 144 Q185 132 197 137" fill="none" stroke="#555" stroke-width="4" stroke-linecap="round"/>
+      <path d="M197 137 Q210 130 218 145 L224 151" fill="none" stroke="#333" stroke-width="4" stroke-linecap="round"/>
+      <path d="M224 151 Q231 156 239 157" fill="none" stroke="#4b9a70" stroke-width="3" stroke-linecap="round"/>
+      <text x="113" y="230" font-size="13" fill="#a53a31" font-weight="700">灭火器</text>
+      <path d="M151 222 L170 208" stroke="#a53a31" stroke-width="1.5"/>
+      <!-- Spray stream -->
+      <path d="M239 157 Q365 126 510 207" fill="none" stroke="#8fc8a4" stroke-width="12" stroke-linecap="round" opacity=".24"/>
+      <path d="M239 157 Q365 126 510 207" fill="none" stroke="#4b9a70" stroke-width="3" stroke-dasharray="7 7" marker-end="url(#sprayArrow)"/>
+      <!-- Fire -->
+      <path d="M535 244 Q514 214 540 188 Q540 211 556 216 Q554 186 579 160 Q581 196 600 207 Q621 226 605 244 Z" fill="#f3a33b"/>
+      <path d="M557 244 Q548 225 565 210 Q566 228 579 232 Q588 217 590 207 Q610 232 593 244 Z" fill="#df4f35"/>
+      <path d="M538 246 Q574 239 612 246" stroke="#b94b34" stroke-width="5" stroke-linecap="round"/>
+      <text x="556" y="275" font-size="14" fill="#b13b2e" font-weight="700">火焰根部</text>
+      <path d="M582 264 L582 249" stroke="#b13b2e" stroke-width="1.5"/>
+      <!-- Labels -->
+      <rect x="335" y="42" width="154" height="34" rx="17" fill="#e7f5ed"/>
+      <text x="412" y="64" text-anchor="middle" font-size="14" fill="#176b4b" font-weight="700">喷嘴对准火焰根部</text>
+      <path d="M412 78 L412 126" stroke="#8bb69d" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <text x="265" y="270" text-anchor="middle" font-size="13" fill="#52685e">操作者：侧身站稳，退路保持畅通</text>
+    </svg>
+    <div class="scene-caption">
+      <span>🔵 风向：从操作者背后吹向火源</span>
+      <span>🟢 喷射：瞄准燃烧物底部</span>
+    </div>
+  </section>
+
+  <section class="flow" aria-label="灭火器操作步骤">
+    <article class="step">
+      <div class="num">提</div>
+      <div><h2>提起灭火器</h2><p>一手提起灭火器，保持瓶身尽量直立，迅速带到安全位置。</p></div>
+    </article>
+    <div class="arrow">↓</div>
+    <article class="step">
+      <div class="num">拔</div>
+      <div><h2>拔掉保险销</h2><p>拔出保险销（或铅封），确认喷射机构可以正常操作。</p></div>
+    </article>
+    <div class="arrow">↓</div>
+    <article class="step">
+      <div class="num">握</div>
+      <div><h2>握住喷管 / 喷嘴</h2><p>握稳喷管前端，喷嘴对准火焰根部；不要把喷嘴对着自己或他人。</p></div>
+    </article>
+    <div class="arrow">↓</div>
+    <article class="step">
+      <div class="num">站</div>
+      <div><h2>选择上风方向</h2><p>尽量站在上风侧，与火源保持安全距离，并确保身后有畅通的撤离路线。</p></div>
+    </article>
+    <div class="arrow">↓</div>
+    <article class="step">
+      <div class="num">压</div>
+      <div><h2>压下压把，开始喷射</h2><p>确认喷嘴对准火焰根部后，再用力压下压把；左右扫射，覆盖燃烧区域。</p></div>
+    </article>
+    <div class="arrow">↓</div>
+    <article class="step final">
+      <div class="num">根</div>
+      <div><h2>对准火焰根部灭火</h2><p>不要只喷火焰上部。火势无法迅速控制、烟气增大或存在爆燃风险时，立即撤离并报警。</p></div>
+    </article>
+  </section>
+
+  <section class="tipgrid">
+    <div class="tip"><b>⚠️ “提”不是“压”</b><span>提起瓶体后，先拔销、握喷管、对准火焰根部；最后才压下压把。</span></div>
+    <div class="tip"><b>↔️ 喷射要扫射</b><span>从火焰根部由近及远、左右扫射；火势减弱后仍要留意复燃。</span></div>
+  </section>
+
+  <aside class="warning">
+    <strong>安全第一：</strong>仅在初起火灾、火势较小且退路明确时尝试扑救。不要让火和浓烟挡住出口；无法安全接近或一次操作未能控制火势，应立即撤离到安全区域并拨打当地消防急救电话（中国大陆拨打 119）。
+  </aside>
+
+  <div class="mnemonic">
+    <small>记忆口诀</small>
+    <strong><em>看</em>压力 · <em>提</em>起来 · <em>拔</em>插销 · <em>握</em>喷管 · <em>站</em>上风 · <em>压</em>把手 · 对准<em>根</em>部</strong>
+  </div>
+  <footer>本流程以常见手提式干粉灭火器为例；不同型号请以器材标识和现场培训要求为准。</footer>
+</main>
+</body>
+</html>
