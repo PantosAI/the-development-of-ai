@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>12 分钟讲清所有编程语言 · 图解提炼</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f5f0; --bg2:#fffdf8; --card:#ffffff; --ink:#1a1d21; --muted:#5b6470; --line:#e6e0d3;
+  --teal:#0f766e; --teal-bg:#e6f4f1; --amber:#b45309; --amber-bg:#fef3c7; --rose:#be3455; --rose-bg:#fdf2f4;
+  --blue:#1d4ed8; --blue-bg:#eff6ff; --green:#15803d; --green-bg:#f0fdf4;
+  --code-bg:#111827; --code-ink:#e5e7eb;
+  --radius:16px;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0f1115; --bg2:#15181e; --card:#1a1e26; --ink:#eceef1; --muted:#9aa3af; --line:#2a2f3a;
+  --teal:#2dd4bf; --teal-bg:#12312e; --amber:#fbbf24; --amber-bg:#2e2410; --rose:#fb7185; --rose-bg:#2e161d;
+  --blue:#60a5fa; --blue-bg:#16233d; --green:#4ade80; --green-bg:#14291c; --code-bg:#0b0f17; }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Noto Sans SC",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+a{color:var(--teal)}
+button{min-height:40px}
+.mono{font-family:"JetBrains Mono",monospace}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px 64px}
+
+/* Hero */
+.hero{padding:36px 0 8px}
+.hero-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.pill{font-size:12px;font-weight:700;letter-spacing:.04em;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--muted)}
+.pill strong{color:var(--ink)}
+h1{font-size:clamp(30px,6vw,52px);line-height:1.08;font-weight:900;letter-spacing:-.02em;margin:0 0 12px}
+h1 .hl{color:var(--teal);box-shadow:inset 0 -0.42em 0 var(--teal-bg)}
+.lede{font-size:17px;color:var(--muted);max-width:720px;margin:0 0 18px}
+.lede b{color:var(--ink)}
+.source-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.source-box p{margin:0;font-size:13.5px;color:var(--muted)}
+.source-box a{font-weight:700;word-break:break-all}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:var(--bg);text-decoration:none;font-weight:700;font-size:14px;padding:10px 16px;border-radius:999px;min-height:44px}
+@media(prefers-color-scheme:dark){.btn{background:#eceef1;color:#111}}
+
+/* Stats strip */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 12px;text-align:center}
+.stat b{display:block;font-size:24px;line-height:1}
+.stat span{font-size:12px;color:var(--muted)}
+@media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* Timeline */
+.section{margin-top:36px}
+.section h2{font-size:24px;font-weight:900;margin:0 0 6px;letter-spacing:-.01em}
+.section .sub{color:var(--muted);font-size:14.5px;margin:0 0 16px;max-width:700px}
+.timeline{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 16px 10px;overflow:hidden}
+.tl-track{position:relative;margin:8px 0 4px}
+.tl-line{position:absolute;left:8px;right:8px;top:9px;height:3px;background:var(--line);border-radius:99px}
+.tl-items{display:flex;justify-content:space-between;position:relative;gap:2px}
+.tl-item{flex:1;text-align:center;text-decoration:none;color:var(--ink);padding:0 1px 8px;min-width:0}
+.tl-dot{width:19px;height:19px;border-radius:50%;background:var(--card);border:3px solid var(--teal);margin:0 auto 6px}
+.tl-item:nth-child(3n) .tl-dot{border-color:var(--amber)}
+.tl-item:nth-child(4n) .tl-dot{border-color:var(--rose)}
+.tl-year{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;display:block}
+.tl-name{font-size:11px;color:var(--muted);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:720px){.tl-items{flex-wrap:wrap;justify-content:flex-start;gap:10px 0}.tl-item{flex:0 0 25%}.tl-line{display:none}}
+
+/* Filter */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:700;cursor:pointer;min-height:40px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+@media(prefers-color-scheme:dark){.chip[aria-pressed="true"]{background:#eceef1;color:#111}}
+
+/* Comparison table */
+.table-wrap{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{padding:10px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--bg2);font-size:12px;letter-spacing:.03em;color:var(--muted);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.lang{font-weight:900;white-space:nowrap}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;background:var(--teal-bg);color:var(--teal);white-space:nowrap}
+.tag.amber{background:var(--amber-bg);color:var(--amber)} .tag.rose{background:var(--rose-bg);color:var(--rose)} .tag.blue{background:var(--blue-bg);color:var(--blue)}
+.dots{font-family:"JetBrains Mono",monospace;letter-spacing:1px;color:var(--amber);white-space:nowrap}
+@media(max-width:760px){
+  .table-wrap{border:none;background:transparent;overflow:visible}
+  table,thead,tbody,tr,td{display:block;width:100%}
+  thead{display:none}
+  tr{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;padding:6px 4px}
+  td{border-bottom:none;padding:6px 12px}
+  td::before{content:attr(data-l);display:block;font-size:11px;color:var(--muted);font-weight:700;margin-bottom:1px}
+}
+
+/* Language cards */
+.lang-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;margin-top:18px;scroll-margin-top:16px}
+.lang-head{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;justify-content:space-between;border-bottom:1px dashed var(--line);padding-bottom:14px;margin-bottom:14px}
+.lang-title{display:flex;gap:14px;align-items:center}
+.lang-badge{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;font-family:"JetBrains Mono",monospace;font-weight:700;font-size:17px;color:#fff;flex:none}
+.lang-title h3{margin:0;font-size:23px;font-weight:900;line-height:1.15}
+.lang-title p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.year-big{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:22px;color:var(--muted);text-align:right;line-height:1}
+.year-big span{display:block;font-family:"Noto Sans SC",sans-serif;font-size:11px;font-weight:500;margin-top:4px}
+.essence{font-size:16.5px;font-weight:700;line-height:1.55;margin:0 0 6px}
+.desc{color:var(--muted);font-size:14.5px;margin:0 0 16px}
+.desc b{color:var(--ink)}
+.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.panel{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--bg2)}
+.panel h4{margin:0 0 10px;font-size:12.5px;letter-spacing:.05em;color:var(--muted)}
+.panel h4 em{font-style:normal;color:var(--teal)}
+
+/* Flowchart */
+.flow{display:flex;flex-direction:column;gap:0}
+.fstep{display:flex;gap:10px;align-items:flex-start}
+.fnode{flex:1;background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;font-size:13.5px}
+.fnode b{display:block;font-size:13.5px}
+.fnode span{color:var(--muted);font-size:12.5px}
+.fnode.key{border-color:var(--teal);background:var(--teal-bg)}
+.farrow{width:22px;text-align:center;color:var(--teal);font-weight:900;line-height:1.5;padding:3px 0 3px 11px;font-size:15px}
+.frow{display:flex;gap:8px;align-items:stretch}
+.frow .fnode{text-align:center}
+.frow .fnode b{font-size:13px}
+.fmid{align-self:center;color:var(--teal);font-weight:900;padding:0 2px}
+code.snip{display:block;background:var(--code-bg);color:var(--code-ink);border-radius:10px;padding:11px 12px;font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:1.6;overflow-x:auto;white-space:pre;margin-top:10px}
+.mini-table{width:100%;font-size:13px;border-collapse:collapse}
+.mini-table td,.mini-table th{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left}
+.mini-table tr:last-child td{border-bottom:none}
+.mini-table th{color:var(--muted);font-size:11.5px;background:transparent;white-space:normal}
+.bar-row{display:grid;grid-template-columns:64px 1fr 34px;gap:8px;align-items:center;font-size:12.5px;margin:7px 0}
+.bar{height:9px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--teal)}
+.bar.amber i{background:var(--amber)} .bar.rose i{background:var(--rose)} .bar.blue i{background:#3b82f6}
+.use-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.use-list li{font-size:12.5px;background:var(--bg);border:1px solid var(--line);padding:5px 9px;border-radius:999px}
+.verdict{margin-top:14px;display:flex;gap:10px;background:var(--amber-bg);border-radius:12px;padding:11px 13px;font-size:13.5px}
+.verdict b{color:var(--amber);white-space:nowrap}
+@media(prefers-color-scheme:dark){.verdict b{color:var(--amber)}}
+.hidden-card{display:none}
+
+/* Decision tool */
+.decision{background:var(--ink);color:var(--bg);border-radius:20px;padding:24px 20px;margin-top:18px}
+@media(prefers-color-scheme:dark){.decision{background:#eceef1;color:#14161a}}
+.decision h3{margin:0 0 4px;font-size:21px;font-weight:900}
+.decision p{opacity:.75;font-size:14px;margin:0 0 16px}
+.d-opts{display:flex;flex-wrap:wrap;gap:8px}
+.d-btn{border:1.5px solid currentColor;background:transparent;color:inherit;border-radius:999px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer;min-height:44px}
+.d-btn[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.d-result{margin-top:16px;background:rgba(127,127,127,.14);border-radius:14px;padding:16px;display:none}
+.d-result.show{display:block}
+.d-result b{font-size:18px}
+.d-result p{opacity:.85;margin:6px 0 0}
+
+footer{margin-top:44px;border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:13px}
+footer a{word-break:break-all}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero-top">
+      <span class="pill">来源视频 · <strong>Tech Learning Zone</strong></span>
+      <span class="pill">原题 · <strong>Every Programming Language Explained</strong></span>
+      <span class="pill">时长约 <strong>12 分钟</strong> · 按年份讲完 53 年</span>
+    </div>
+    <h1>12 分钟讲清<br><span class="hl">所有主流编程语言</span></h1>
+    <p class="lede">视频的核心观点只有一句：<b>没有最好的语言，只有最适合某个问题的语言。</b>它大体沿着年份推进，把 12 个语言 / 概念串成一条线——从直接操控硬件的 C，到让 AI 帮你写代码的 Vibe Coding。下面每一种，都用<b>流程图 + 表格 / 图表</b>讲清三件事：它怎么运行、强在哪、到底干什么用。</p>
+    <div class="source-box">
+      <p>原视频（Facebook Reel）<br><a href="https://www.facebook.com/reel/28094908676869658" target="_blank" rel="noopener">facebook.com/reel/28094908676869658</a> · 38,729 赞</p>
+      <a class="btn" href="https://www.facebook.com/reel/28094908676869658" target="_blank" rel="noopener">▶ 看原视频</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>12</b><span>个语言 / 概念</span></div>
+      <div class="stat"><b>1972 → 2025</b><span>横跨 53 年</span></div>
+      <div class="stat"><b>3 类</b><span>底层 · Web · 现代</span></div>
+      <div class="stat"><b>1 条</b><span>选语言决策线（文末）</span></div>
+    </div>
+  </header>
+
+  <!-- Timeline -->
+  <section class="section">
+    <h2>先看全景：一条 53 年的时间线</h2>
+    <p class="sub">大趋势很清楚：越早的语言越贴近硬件、越快也越难；越新的语言越贴近人的想法、越易用。节点按视频的讲解顺序排列。点任意节点跳到对应语言。</p>
+    <div class="timeline"><div class="tl-track"><div class="tl-line"></div><div class="tl-items" id="tlItems"></div></div></div>
+  </section>
+
+  <!-- Master table -->
+  <section class="section">
+    <h2>总览对照表：一张表看完 12 个</h2>
+    <p class="sub">难度 ● 越多越难上手；“运行方式”决定了它的速度和跨平台能力，这是视频反复强调的区分维度。</p>
+    <div class="filters" role="group" aria-label="按类别筛选">
+      <button class="chip" data-filter="all" aria-pressed="true">全部 12</button>
+      <button class="chip" data-filter="sys" aria-pressed="false">系统底层</button>
+      <button class="chip" data-filter="web" aria-pressed="false">Web 开发</button>
+      <button class="chip" data-filter="data" aria-pressed="false">数据与 AI</button>
+      <button class="chip" data-filter="modern" aria-pressed="false">现代语言</button>
+    </div>
+    <div class="table-wrap">
+      <table id="masterTable">
+        <thead><tr><th>语言</th><th>年份 / 作者</th><th>类别</th><th>运行方式</th><th>上手难度</th><th>视频给它的定位</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Language cards injected by JS -->
+  <section class="section">
+    <h2>逐个拆解：每种语言一张图解卡</h2>
+    <p class="sub">每张卡固定包含：① 一句话本质 ② 运行流程图 ③ 对照表或条形图 ④ 视频原话式的结论。</p>
+    <div id="cards"></div>
+  </section>
+
+  <!-- Decision -->
+  <section class="section">
+    <h2>视频的落点：我到底该学哪一门？</h2>
+    <p class="sub">视频最后没有钦定赢家，而是按“你想做什么”分流。点你的目标，看它推荐的路线：</p>
+    <div class="decision">
+      <h3>你想做什么？</h3>
+      <p>选一个目标，下面给出视频逻辑对应的起点语言和进阶路线。</p>
+      <div class="d-opts" id="dOpts"></div>
+      <div class="d-result" id="dResult"></div>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>内容来源与说明</strong> · 本文是对 Facebook 账号 Tech Learning Zone（@zakiinfodz）发布的视频《Every Programming Language Explained in 12 Minutes》的提炼整理，原视频：<a href="https://www.facebook.com/reel/28094908676869658" target="_blank" rel="noopener">https://www.facebook.com/reel/28094908676869658</a>。年份、作者与定位均按视频叙述整理；流程图为对视频讲解的图解转述，帮助理解运行原理。视频结尾的提醒值得记住：工具一直在变，理解逻辑比追逐工具更重要——哪怕到了 AI 写代码的时代也一样。</p>
+  </footer>
+</div>
+
+<script>
+var LANGS = [
+{ id:"c", name:"C", badge:"C", color:"#334155", year:1972, author:"Dennis Ritchie · 贝尔实验室", cat:"sys", catLabel:"系统底层", run:"编译 → 机器码", diff:4,
+  essence:"所有现代语言的“祖父”：让你直接摸到硬件本身。",
+  desc:"视频开场就定调：C 诞生于 1972 年，是<b>地基型语言</b>。它不替你做任何多余的事——内存要自己申请、自己释放，换来的是极致的速度和控制力。今天的 <b>Windows、macOS、Linux 内核</b>都建立在 C 之上，后来的 C++、Java、C#、Go 全都带着 C 的基因。",
+  flowTitle:"C 是怎么跑起来的（编译型流程图）",
+  flow:[["写源码 .c","你写的文本代码"],["编译器一次翻译","全部翻成机器码 .exe"],["CPU 直接执行","没有中间层，最快"],["手动管内存","malloc 申请 / free 释放，忘了就泄漏或崩溃"]],
+  barsTitle:"能力画像（定性示意）", bars:[["速度",4,""],["硬件控制",4,""],["易学程度",1,"amber"],["生态规模",3,"blue"]],
+  uses:["操作系统内核","嵌入式 / 单片机","驱动程序","其他语言的解释器"],
+  verdict:"学它不是为了赶时髦，而是为了真正理解计算机。代价：一切都要自己管。" },
+
+{ id:"cpp", name:"C++", badge:"C+", color:"#2563eb", year:1983, author:"Bjarne Stroustrup", cat:"sys", catLabel:"系统底层", run:"编译 → 机器码", diff:5,
+  essence:"C 加上一整套“造大工程”的工具：又快，又能盖高楼。",
+  desc:"1983 年，Stroustrup 在 C 上加入了<b>类与对象</b>等机制。视频的比喻是：C 是一把锤子，C++ 是一个完整的工具箱——速度几乎不减，却能组织起百万行级别的复杂软件。所以<b>游戏引擎、浏览器、高频交易系统</b>这类“既要快、又要大”的场景，至今仍是 C++ 的地盘。",
+  flowTitle:"C++ = C 的底盘 + 三层升级（结构图）",
+  flow:[["C 的底盘","指针、内存、极速"],["＋ 面向对象","类 / 继承 / 多态，组织大工程"],["＋ 模板与 STL","现成的数据结构与算法库"],["＝ 大型高性能软件","游戏引擎 · Chrome · 交易系统"]],
+  tableTitle:"C vs C++ 对照表", table:[["对比项","C","C++"],["抽象层级","贴近硬件的过程式","可面向对象、可泛型"],["典型规模","系统、小工具","百万行级大型软件"],["代表作品","Linux 内核","Unreal 引擎 / Chrome"]],
+  uses:["3A 游戏与游戏引擎","浏览器 / 数据库引擎","高频交易","机器人与实时系统"],
+  verdict:"性能怪兽的默认选项，也是公认最难精通的语言之一。" },
+
+{ id:"python", name:"Python", badge:"Py", color:"#b45309", year:1991, author:"Guido van Rossum", cat:"data", catLabel:"数据与 AI", run:"解释执行", diff:1,
+  essence:"写起来像英语的语言：牺牲一点速度，换十倍的开发效率。",
+  desc:"1991 年诞生的 Python 把“可读性”放在第一位——没有满屏的花括号和分号，缩进即结构。视频强调它真正的护城河是<b>海量现成库</b>：数据分析、机器学习、自动化脚本，几乎每个领域都有人替你写好了轮子。这也是它成为 <b>AI 时代头号语言</b>的原因。代价同样明确：运行速度比 C 慢一截。",
+  flowTitle:"Python 是怎么跑起来的（解释型流程图）",
+  flow:[["写源码 .py","几乎像写英语句子"],["解释器逐行翻译","边译边跑，不预先编译"],["调用现成库","NumPy / PyTorch 等"],["快速出结果","开发快，运行相对慢"]],
+  barsTitle:"为什么 AI 选它（定性示意）", bars:[["AI / 机器学习库",4,""],["数据科学",4,""],["自动化脚本",4,"blue"],["运行速度",2,"rose"]],
+  uses:["人工智能 / 机器学习","数据分析","自动化脚本","后端服务 / 爬虫"],
+  verdict:"新手第一门语言的头号推荐；要极致性能的场景再交给 C / Rust。" },
+
+{ id:"htmlcss", name:"HTML + CSS", badge:"</>", color:"#be3455", year:1993, author:"Tim Berners-Lee 等 · W3C", cat:"web", catLabel:"Web 开发", run:"浏览器渲染", diff:1,
+  essence:"严格说不是编程语言：HTML 是网页的骨架，CSS 是皮肤。",
+  desc:"视频特意澄清：HTML 和 CSS <b>没有逻辑运算能力，不是编程语言</b>，但没有它们就没有网页。HTML 用标签搭出结构（标题、段落、按钮），CSS 决定长什么样（颜色、布局、字体）。它们和 JavaScript 合称 Web 三件套，是所有网站共同的起点。",
+  flowTitle:"一个网页的三层结构（分层图）",
+  flow:[["HTML · 骨架","标题、段落、图片、按钮在哪"],["CSS · 皮肤","颜色、大小、排版、动画效果"],["JavaScript · 肌肉","点击、交互、动态变化（下一张卡）"],["浏览器渲染","三层叠加 → 你看到的网页"]],
+  tableTitle:"三件套分工表", table:[["层","负责什么","类比"],["HTML","内容与结构","骨架"],["CSS","样式与布局","皮肤与衣服"],["JavaScript","行为与交互","肌肉与神经"]],
+  uses:["所有网页的页面结构","落地页 / 博客","邮件模板","小程序界面基础"],
+  verdict:"想做网站，这是绕不开的第一步——而且是三件套里最容易上手的。" },
+
+{ id:"php", name:"PHP", badge:"php", color:"#6d28d9", year:1994, author:"Rasmus Lerdorf", cat:"web", catLabel:"Web 开发", run:"服务器端解释", diff:2,
+  essence:"藏在服务器背后的老将：你天天用的网站，很多是它在撑。",
+  desc:"1994 年的 PHP 专为 Web 后端而生：用户在浏览器点一下，服务器上的 PHP 处理逻辑、查数据库，再把生成好的 HTML 发回去。视频给出一个惊人的数字：它一度支撑了<b>全网约 77% 的网站</b>服务端，包括 WordPress 背后的庞大生态。它语法不算优雅，但便宜、好部署、招人易，至今仍是中小网站的主力。",
+  flowTitle:"一次网页请求里 PHP 干了什么（请求流程图）",
+  flow:[["浏览器发请求","用户打开一个页面"],["服务器跑 PHP","处理表单、登录、权限逻辑"],["查询数据库","取出文章 / 商品 / 用户数据"],["生成 HTML 发回","浏览器只看到最终页面"]],
+  barsTitle:"PHP 的现实地位（定性示意）", bars:[["现存网站中的存量",4,""],["部署成本低",4,""],["语言口碑",2,"amber"],["大型新项目选用",2,"rose"]],
+  uses:["WordPress 等 CMS","中小企业官网","电商与论坛后端","快速上线 MVP"],
+  verdict:"约 77% 为视频引用的量级。不时髦，但整个互联网的存量世界离不开它。" },
+
+{ id:"java", name:"Java", badge:"Ja", color:"#c2410c", year:1995, author:"James Gosling · Sun 公司", cat:"web", catLabel:"企业后端", run:"字节码 → JVM", diff:3,
+  essence:"“一次编写，到处运行”：靠虚拟机横行企业级世界三十年。",
+  desc:"Java 的名字来自咖啡，它的杀手锏是 <b>JVM 虚拟机</b>：代码先编译成字节码，再由各平台上的 JVM 翻译执行——同一份程序能在 Windows、Linux、服务器上原样跑。视频指出，大型银行、电商、企业系统和 <b>Android 应用</b>的传统地盘，都是靠这种稳定与跨平台换来的。",
+  flowTitle:"Java 跨平台原理（JVM 流程图）",
+  flow:[["写源码 .java","一次编写"],["编译成字节码 .class","与平台无关的中间形态"],["JVM 翻译执行","每个系统装自己的 JVM"],["到处运行","Windows / Linux / 安卓通用"]],
+  tableTitle:"Java 为什么受大企业信任（对照表）", table:[["企业看重的点","Java 的答案"],["跨平台","JVM 屏蔽系统差异"],["稳定性","强类型 + 严格规范"],["人才与生态","三十年积累的库与框架"]],
+  uses:["银行 / 电商等大型后端","企业级系统","Android 传统开发","大数据生态（Hadoop 系）"],
+  verdict:"啰嗦但可靠。大公司用它，图的就是十年后还能稳稳运行。" },
+
+{ id:"js", name:"JavaScript", badge:"JS", color:"#a16207", year:1995, author:"Brendan Eich · 仅用 10 天原型", cat:"web", catLabel:"Web 开发", run:"浏览器 / Node 解释", diff:2,
+  essence:"让网页“活”起来的语言，如今从浏览器一路打到服务器。",
+  desc:"视频里最有戏剧性的故事：JavaScript 在 1995 年<b>只用 10 天</b>就被造了出来，本意只是给网页加点小交互。结果它成了浏览器唯一原生语言——点击、动画、实时更新全靠它。后来 Node.js 把它带进服务器，React 等框架又让它统治了前端：<b>学一门语言，前后端通吃</b>。",
+  flowTitle:"JavaScript 在页面里的工作流（流程图）",
+  flow:[["用户操作","点击按钮 / 输入文字"],["事件触发 JS","监听到动作"],["修改页面 DOM","内容、样式实时变化"],["或请求服务器数据","不用刷新，页面局部更新"]],
+  barsTitle:"JS 的统治范围（定性示意）", bars:[["网页前端普及度",4,""],["全栈覆盖",4,""],["学习资料丰富度",4,"blue"],["类型严谨度",2,"rose"]],
+  uses:["网页交互与前端框架","Node.js 后端","跨平台桌面应用","小程序 / 混合 App"],
+  verdict:"Web 世界的通用语。要做网站，它不是选项之一，而是必修课。" },
+
+{ id:"csharp", name:"C#", badge:"C#", color:"#7c3aed", year:2000, author:"微软 · Anders Hejlsberg", cat:"modern", catLabel:"应用与游戏", run:"IL → .NET CLR", diff:3,
+  essence:"微软的“精装版 Java”：Windows 应用和游戏开发的双料主力。",
+  desc:"2000 年微软推出 C#，语法与 Java 相近，但和 Windows 生态、.NET 框架深度绑定。视频点出它今天最响亮的身份：<b>Unity 游戏引擎的官方语言</b>——市面上大量手游和独立游戏是用 C# 写的。同时它也是企业级 Windows 软件和后端服务的常见选择。",
+  flowTitle:"C# 的运行链路（.NET 流程图）",
+  flow:[["写源码 .cs","语法现代、工具链强"],["编译成 IL 中间语言","与平台无关"],["CLR 运行时翻译",".NET 负责内存与安全"],["跑在 Windows / 游戏引擎","桌面软件 · Unity 游戏"]],
+  tableTitle:"C# 的两个主场（对照表）", table:[["主场","靠什么","代表"],["游戏开发","Unity 引擎","大量手游 / 独立游戏"],["企业软件",".NET + Windows 生态","办公与行业系统"]],
+  uses:["Unity 游戏开发","Windows 桌面应用","企业后端服务","VR / AR 应用"],
+  verdict:"想用 Unity 做游戏，C# 就是入场券；做 Windows 软件同样顺手。" },
+
+{ id:"go", name:"Go", badge:"Go", color:"#0284c7", year:2009, author:"Google · Robert Griesemer 等", cat:"modern", catLabel:"云与后端", run:"编译 → 机器码", diff:2,
+  essence:"为云计算而生的极简语言：像 C 一样快，像脚本一样好写。",
+  desc:"2009 年 Google 的工程师受够了 C++ 的复杂和编译慢，造出了 Go：语法刻意做减法，天生擅长<b>并发</b>——同时处理成千上万个请求毫不费力。视频给出最有说服力的证据：云计算的两大基石 <b>Docker 和 Kubernetes 本身就是用 Go 写的</b>。今天的云服务后端，Go 是增长最快的选择之一。",
+  flowTitle:"Go 处理高并发的方式（流程图）",
+  flow:[["成千上万请求涌入","云服务的日常"],["拆成 goroutine","每个请求一个轻量协程"],["channel 协调通信","不抢锁、少出错"],["单文件快速部署","编译出一个二进制直接跑"]],
+  barsTitle:"Go 的设计取舍（定性示意）", bars:[["并发能力",4,""],["编译速度",4,""],["语法简单度",4,"blue"],["语言特性丰富度",2,"amber"]],
+  uses:["云服务与微服务后端","Docker / K8s 等基础设施","高并发 API","命令行工具"],
+  verdict:"云时代的后端新贵：公司上云，Go 工程师就吃香。" },
+
+{ id:"rust", name:"Rust", badge:"Rs", color:"#9a3412", year:2010, author:"Mozilla · Graydon Hoare 发起", cat:"sys", catLabel:"系统底层", run:"编译 → 机器码", diff:5,
+  essence:"想根治 C/C++ 的内存事故：用编译器当“门卫”的安全快语言。",
+  desc:"C 和 C++ 最大的坑是内存错误——大量安全漏洞源于此。Rust 的解法很硬核：在<b>编译阶段</b>用“所有权 + 借用检查”规则拦下所有内存问题，写错了根本编译不过，运行时却不需要垃圾回收拖慢速度。视频提到它常年是开发者调查中<b>最受喜爱的语言</b>，Netflix、Uber 等公司都在核心系统里采用，Linux 内核也已接纳它。",
+  flowTitle:"Rust 如何在运行前消灭内存 Bug（流程图）",
+  flow:[["写源码","带所有权标注的代码"],["借用检查器审查","编译期逐条核对内存规则"],["有问题 → 编译失败","Bug 死在上线之前"],["通过 → 极速运行","无垃圾回收，媲美 C++"]],
+  tableTitle:"三大系统语言对照表", table:[["","C / C++","Rust"],["内存安全","靠程序员自觉","编译器强制保证"],["运行速度","极快","极快"],["学习曲线","陡峭","最陡峭（先苦后甜）"]],
+  uses:["操作系统与内核模块","浏览器引擎组件","区块链 / 高性能服务","替代 C++ 的新系统项目"],
+  verdict:"门槛最高、回报也最高：写系统软件的未来头号候选。" },
+
+{ id:"ts", name:"TypeScript", badge:"TS", color:"#1d4ed8", year:2012, author:"微软", cat:"web", catLabel:"Web 开发", run:"编译 → JavaScript", diff:2,
+  essence:"给 JavaScript 加上“类型安检”：大项目不再靠猜。",
+  desc:"JavaScript 太自由，小项目爽，大项目就容易因为类型错误翻车。2012 年微软推出 TypeScript：在 JS 上加一层<b>静态类型</b>，写错参数类型，编辑器当场标红，编译时再统一转回普通 JavaScript 运行。视频的结论很直接：如今<b>大型前端项目几乎默认用 TypeScript</b>，它本质上是 JS 的“严谨模式完全体”。",
+  flowTitle:"TypeScript 的工作流（流程图）",
+  flow:[["写 TS 代码","给变量标注类型"],["编辑器实时检查","类型不对立刻标红"],["编译转成 JS","浏览器只认 JavaScript"],["放心上线","一类常见 Bug 提前清零"]],
+  tableTitle:"JS vs TS 对照表", table:[["对比项","JavaScript","TypeScript"],["类型检查","运行时才发现","写代码时就发现"],["适合规模","小到中型","中到大型团队项目"],["运行方式","直接运行","先编译成 JS"]],
+  uses:["大型前端项目（React/Vue）","Node.js 后端","跨端应用","团队协作型产品"],
+  verdict:"会 JS 之后的最自然升级：多写几个类型标注，少熬很多个夜。" },
+
+{ id:"vibe", name:"Vibe Coding", badge:"AI", color:"#0f766e", year:2025, author:"AI 辅助编程范式", cat:"modern", catLabel:"AI 范式", run:"人提需求 → AI 生成", diff:1,
+  essence:"视频的终章：不再逐行敲代码，而是“说想法，AI 写代码”。",
+  desc:"2025 年的新范式：开发者用自然语言描述想要什么，AI 生成代码，人负责审查、调试和把关。视频没有渲染“程序员要失业了”，而是给出冷静的收尾——<b>前面 11 种语言的逻辑依然是地基</b>：看不懂代码，就没法判断 AI 写得对不对。工具变了，理解力反而更值钱了。",
+  flowTitle:"Vibe Coding 的工作流（人机协作流程图）",
+  flow:[["人描述需求","用自然语言说清想法"],["AI 生成代码","几秒给出完整初稿"],["人审查与调试","看懂逻辑、改错、把关"],["迭代上线","人定方向，AI 提速"]],
+  tableTitle:"传统写代码 vs Vibe Coding（对照表）", table:[["环节","传统方式","Vibe Coding"],["代码来源","逐行手写","AI 生成初稿"],["人的核心工作","写实现","提需求 + 审查"],["最怕缺失的能力","打字速度","读懂与判断代码"]],
+  uses:["快速原型验证","重复样板代码","学习新语言时的脚手架","个人小工具"],
+  verdict:"视频的最终观点：AI 是放大器——放大的是你本来就有的理解力。" }
+];
+
+var DECISIONS = {
+  "做网站 / 网页应用": { lang:"JavaScript → TypeScript", text:"路线：先 HTML + CSS 搭页面，再学 JavaScript 做交互，项目变大后升级 TypeScript。这是视频里 Web 三件套的完整路径，前后端都能覆盖。" },
+  "做 AI / 数据分析": { lang:"Python", text:"路线：Python 入门（语法最像英语）。AI 的库生态几乎都在 Python 里。" },
+  "做游戏": { lang:"C# 或 C++", text:"路线：用 Unity 引擎选 C#（手游、独立游戏主流）；冲着 3A 大作和 Unreal 引擎去，就啃 C++，难但天花板最高。" },
+  "做手机 App": { lang:"Java 系 / Web 系", text:"视频语境下：Android 传统路线是 Java；想一套代码多端跑，可走 JavaScript / TypeScript 的跨端方案。先定平台，再选语言。" },
+  "搞系统 / 云基础设施": { lang:"Go / Rust / C", text:"路线：理解原理从 C 开始；做云服务后端选 Go（Docker、K8s 的母语）；追求极致安全与性能的新系统，挑战 Rust。" },
+  "纯新手，只想入门": { lang:"Python", text:"视频和几乎所有同类盘点的一致推荐：Python 读起来像英语、反馈快、资料多。先建立编程思维，第二门语言再按方向选。" }
+};
+
+/* Timeline */
+document.getElementById('tlItems').innerHTML = LANGS.map(function(l){
+  return '<a class="tl-item" href="#'+l.id+'"><span class="tl-dot"></span><span class="tl-year">'+l.year+'</span><span class="tl-name">'+l.name+'</span></a>';
+}).join('');
+
+/* Master table */
+function dots(n){ var s=''; for(var i=0;i<5;i++) s += i<n ? '●':'○'; return s; }
+var tbody = document.querySelector('#masterTable tbody');
+tbody.innerHTML = LANGS.map(function(l){
+  return '<tr data-cat="'+l.cat+'"><td class="lang" data-l="语言">'+l.name+'</td><td data-l="年份 / 作者">'+l.year+' · '+l.author.split('·')[0]+'</td><td data-l="类别"><span class="tag'+(l.cat==='sys'?' rose':l.cat==='web'?' blue':l.cat==='data'?' amber':'')+'">'+l.catLabel+'</span></td><td data-l="运行方式">'+l.run+'</td><td data-l="上手难度"><span class="dots">'+dots(l.diff)+'</span></td><td data-l="定位">'+l.essence+'</td></tr>';
+}).join('');
+
+/* Filter */
+var chips = document.querySelectorAll('.chip');
+chips.forEach(function(ch){
+  ch.addEventListener('click', function(){
+    chips.forEach(function(c){ c.setAttribute('aria-pressed','false'); });
+    ch.setAttribute('aria-pressed','true');
+    var f = ch.getAttribute('data-filter');
+    document.querySelectorAll('#masterTable tbody tr').forEach(function(tr){
+      tr.style.display = (f==='all' || tr.getAttribute('data-cat')===f) ? '' : 'none';
+    });
+    document.querySelectorAll('.lang-card').forEach(function(card){
+      card.classList.toggle('hidden-card', !(f==='all' || card.getAttribute('data-cat')===f));
+    });
+  });
+});
+
+/* Cards */
+function flowHTML(l){
+  var steps = l.flow.map(function(s,i){
+    var arrow = i < l.flow.length-1 ? '<div class="farrow">↓</div>' : '';
+    return '<div class="fstep"><div class="fnode'+(i===l.flow.length-1?' key':'')+'"><b>'+s[0]+'</b><span>'+s[1]+'</span></div></div>'+arrow;
+  }).join('');
+  return '<div class="panel"><h4>流程图 · <em>'+l.flowTitle+'</em></h4><div class="flow">'+steps+'</div></div>';
+}
+function sideHTML(l){
+  var inner = '';
+  if(l.bars){
+    var WORDS = ["","弱","中","强","极强"];
+    inner = '<h4>图表 · '+l.barsTitle+'</h4>' + l.bars.map(function(b){
+      return '<div class="bar-row"><span>'+b[0]+'</span><div class="bar '+(b[2]||'')+'"><i style="width:'+(b[1]*25)+'%"></i></div><span>'+WORDS[b[1]]+'</span></div>';
+    }).join('') + '<p style="font-size:11.5px;color:var(--muted);margin:8px 0 0">条形长短为编者按视频口径做的定性示意（弱 / 中 / 强 / 极强），不是视频给出的评分数据。</p>';
+  } else if(l.table){
+    var rows = l.table.slice(1).map(function(r){ return '<tr>'+r.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>'; }).join('');
+    inner = '<h4>表格 · '+l.tableTitle+'</h4><table class="mini-table"><tr>'+l.table[0].map(function(c){return '<th>'+c+'</th>';}).join('')+'</tr>'+rows+'</table>';
+  }
+  inner += '<h4 style="margin-top:14px">主要用途</h4><ul class="use-list">'+l.uses.map(function(u){return '<li>'+u+'</li>';}).join('')+'</ul>';
+  return '<div class="panel">'+inner+'</div>';
+}
+document.getElementById('cards').innerHTML = LANGS.map(function(l,idx){
+  return '<article class="lang-card" id="'+l.id+'" data-cat="'+l.cat+'">'
+    + '<div class="lang-head"><div class="lang-title"><div class="lang-badge" style="background:'+l.color+'">'+l.badge+'</div>'
+    + '<div><h3>'+(idx+1)+'. '+l.name+'</h3><p>'+l.author+' · <span class="tag">'+l.catLabel+'</span> · '+l.run+'</p></div></div>'
+    + '<div class="year-big">'+l.year+'<span>诞生年份</span></div></div>'
+    + '<p class="essence">“'+l.essence+'”</p><p class="desc">'+l.desc+'</p>'
+    + '<div class="grid2">'+flowHTML(l)+sideHTML(l)+'</div>'
+    + '<div class="verdict"><b>一句话结论</b><span>'+l.verdict+'</span></div></article>';
+}).join('');
+
+/* Decision */
+var dOpts = document.getElementById('dOpts'), dRes = document.getElementById('dResult');
+dOpts.innerHTML = Object.keys(DECISIONS).map(function(k){ return '<button class="d-btn" aria-pressed="false">'+k+'</button>'; }).join('');
+dOpts.querySelectorAll('.d-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    dOpts.querySelectorAll('.d-btn').forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+    btn.setAttribute('aria-pressed','true');
+    var d = DECISIONS[btn.textContent];
+    dRes.innerHTML = '<b>推荐：'+d.lang+'</b><p>'+d.text+'</p>';
+    dRes.classList.add('show');
+  });
+});
+</script>
+</body>
+</html>
