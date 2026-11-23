@@ -1,0 +1,958 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>AI Agent 前沿研究指南</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --bg2:#f4f6f5; --bg3:#eef2f0; --card:#ffffff;
+  --ink:#18211d; --ink2:#3d4a44; --muted:#6b7a72;
+  --line:#dde3df; --line2:#cbd5cf;
+  --teal:#0f766e; --teal-bg:#e6f4f1; --teal-dark:#0b4f4a;
+  --amber:#b45309; --amber-bg:#fdf3e3;
+  --red:#b42318; --red-bg:#fef0ee;
+  --blue:#1d4e6b; --blue-bg:#eaf2f7;
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#111613; --bg2:#171d1a; --bg3:#1e2622; --card:#171d1a;
+    --ink:#e8edea; --ink2:#c2cec7; --muted:#93a69c;
+    --line:#2a352f; --line2:#3a4740;
+    --teal:#2dd4bf; --teal-bg:#12302c; --teal-dark:#5eead4;
+    --amber:#fbbf24; --amber-bg:#33270f;
+    --red:#fda29b; --red-bg:#3a1a17;
+    --blue:#7dd3fc; --blue-bg:#162a38;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans SC",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--teal);text-decoration:none;word-break:break-all}
+a:hover{text-decoration:underline}
+h1,h2,h3,h4{font-family:"Noto Serif SC",serif;line-height:1.35;margin:0}
+p{margin:.6em 0}
+small{color:var(--muted)}
+code,pre{font-family:"JetBrains Mono",ui-monospace,monospace}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px 80px}
+button,[role="button"],summary,select,input{min-height:36px}
+/* top nav */
+.topnav{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}
+.topnav-in{max-width:1060px;margin:0 auto;padding:0 20px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.topnav-in::-webkit-scrollbar{display:none}
+.topnav a{flex:0 0 auto;padding:12px 12px;font-size:13.5px;font-weight:500;color:var(--ink2);border-bottom:2px solid transparent}
+.topnav a.active{color:var(--teal);border-bottom-color:var(--teal)}
+.topnav a:hover{text-decoration:none;color:var(--teal)}
+/* hero */
+.hero{padding:44px 0 8px}
+.hero-kicker{font-size:13px;letter-spacing:.14em;font-weight:700;color:var(--teal);text-transform:uppercase}
+.hero h1{font-size:clamp(30px,5.2vw,46px);font-weight:900;letter-spacing:-.01em;margin:10px 0 12px}
+.hero-sub{font-size:17px;color:var(--ink2);max-width:760px}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
+.meta-chip{font-size:12.5px;padding:5px 11px;border:1px solid var(--line2);border-radius:999px;color:var(--ink2);background:var(--bg2)}
+.verdict{margin:26px 0 6px;border:1px solid var(--teal);background:var(--teal-bg);border-radius:var(--radius);padding:20px 22px}
+.verdict h3{font-size:16px;color:var(--teal-dark);margin-bottom:6px}
+.verdict p{margin:0;font-size:15.5px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0 6px}
+.stat{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px}
+.stat b{display:block;font-family:"Noto Serif SC",serif;font-size:24px;line-height:1.15}
+.stat span{font-size:12.5px;color:var(--muted);line-height:1.5;display:block;margin-top:4px}
+@media(max-width:720px){.stats{grid-template-columns:1fr 1fr}}
+/* sections */
+section.chapter{padding:38px 0 6px;border-top:1px solid var(--line);margin-top:38px}
+.ch-head{display:flex;gap:16px;align-items:flex-start;margin-bottom:8px}
+.ch-num{flex:0 0 auto;width:46px;height:46px;border-radius:12px;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;font-family:"Noto Serif SC",serif;font-weight:900;font-size:20px}
+.ch-head h2{font-size:clamp(23px,3.6vw,30px);font-weight:900}
+.ch-head p{color:var(--muted);font-size:14.5px;margin:2px 0 0}
+h3.sub{font-size:20px;font-weight:700;margin:30px 0 8px;padding-top:6px}
+h4.sub2{font-size:16.5px;font-weight:700;margin:20px 0 6px;font-family:"Noto Sans SC",sans-serif}
+.note{border-radius:10px;padding:14px 16px;font-size:14.5px;margin:14px 0}
+.note-teal{background:var(--teal-bg);border:1px solid var(--line2)}
+.note-amber{background:var(--amber-bg);border:1px solid var(--line2)}
+.note-red{background:var(--red-bg);border:1px solid var(--line2)}
+.note b{font-weight:700}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;padding:1px 7px;border-radius:999px;vertical-align:middle;margin-left:4px;white-space:nowrap}
+.tag-v{background:var(--teal);color:#fff}
+.tag-i{background:var(--bg3);color:var(--ink2);border:1px solid var(--line2)}
+.tag-w{background:var(--amber);color:#fff}
+@media(prefers-color-scheme:dark){.tag-v{color:#06231f}}
+/* tables */
+.tbl-wrap{margin:14px 0 20px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.6}
+th{background:var(--bg2);text-align:left;font-weight:700;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td b{font-weight:700}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+@media(max-width:680px){
+  table,thead,tbody,tr,td,th{display:block;width:100%}
+  thead{display:none}
+  tr{border-bottom:2px solid var(--line2);padding:6px 0}
+  tr:last-child{border-bottom:none}
+  td{border-bottom:1px dashed var(--line);padding:7px 12px}
+  td:last-child{border-bottom:none}
+  td::before{content:attr(data-l);display:block;font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+}
+/* timeline */
+.tl{position:relative;margin:18px 0 10px;padding-left:26px}
+.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line2)}
+.tl-item{position:relative;padding:0 0 18px}
+.tl-item::before{content:"";position:absolute;left:-25px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:3px solid var(--teal)}
+.tl-item.era::before{border-color:var(--amber)}
+.tl-date{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:600;color:var(--teal)}
+.tl-item h4{font-size:16px;font-family:"Noto Sans SC",sans-serif;font-weight:700;margin:1px 0 2px}
+.tl-item p{font-size:14.5px;color:var(--ink2);margin:0;max-width:820px}
+/* flow / diagrams */
+.fig{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:16px 0 20px}
+.fig-cap{font-size:13px;color:var(--muted);text-align:center;margin-top:12px}
+.fig svg{width:100%;height:auto;display:block}
+.loop-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:stretch}
+.loop-step{background:var(--card);border:1.5px solid var(--teal);border-radius:12px;padding:12px 10px;text-align:center;position:relative}
+.loop-step b{display:block;font-size:15px}
+.loop-step span{font-size:12.5px;color:var(--muted);line-height:1.5;display:block}
+.loop-arrow{display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:18px;font-weight:700}
+.loop-flow{display:flex;flex-direction:column;gap:8px}
+.loop-row{display:flex;gap:8px;align-items:stretch}
+.loop-row .loop-step{flex:1}
+@media(max-width:680px){.loop-row{flex-wrap:wrap}.loop-row .loop-step{flex:1 1 42%}.loop-arrow{display:none}}
+.stack{display:flex;flex-direction:column;gap:8px}
+.stack-layer{border-radius:10px;padding:12px 16px;border:1px solid var(--line2);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.stack-layer b{font-size:15px;min-width:110px}
+.stack-layer span{font-size:14px;color:var(--ink2)}
+pre.code{background:#101613;color:#d7e8dd;border-radius:12px;padding:16px 18px;overflow-x:auto;font-size:13.5px;line-height:1.7;margin:12px 0}
+@media(prefers-color-scheme:dark){pre.code{background:#0a0e0b;border:1px solid var(--line)}}
+/* bars */
+.bar-row{display:grid;grid-template-columns:190px 1fr 74px;gap:12px;align-items:center;padding:7px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.bar-row:last-child{border-bottom:none}
+.bar-track{height:16px;background:var(--bg3);border-radius:999px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:999px;background:var(--teal)}
+.bar-fill.amber{background:var(--amber)}
+.bar-fill.red{background:var(--red)}
+.bar-val{font-family:"JetBrains Mono",monospace;font-weight:600;text-align:right}
+.bar-name b{display:block;font-size:14px}
+.bar-name span{font-size:12px;color:var(--muted)}
+@media(max-width:600px){.bar-row{grid-template-columns:1fr 64px}.bar-track{grid-column:1/-1;order:3}}
+/* cards grid */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0}
+@media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--card)}
+.card h4{font-size:15.5px;font-family:"Noto Sans SC",sans-serif;margin-bottom:4px}
+.card p,.card li{font-size:14px;color:var(--ink2)}
+.card ul{margin:6px 0;padding-left:18px}
+ul.tight{margin:8px 0;padding-left:20px}
+ul.tight li{margin:5px 0;font-size:15px}
+ol.tight{margin:8px 0;padding-left:22px}
+ol.tight li{margin:6px 0;font-size:15px}
+/* learning path */
+.path{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+@media(max-width:860px){.path{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.path{grid-template-columns:1fr}}
+.path-step{border-top:4px solid var(--teal);background:var(--bg2);border-radius:0 0 12px 12px;padding:14px 16px;border-left:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.path-step .ph{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:600;color:var(--teal)}
+.path-step h4{font-family:"Noto Sans SC",sans-serif;font-size:15.5px;margin:4px 0}
+.path-step p,.path-step li{font-size:13.5px;color:var(--ink2)}
+.path-step ul{padding-left:17px;margin:6px 0}
+/* sources */
+.src-tools{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.src-tools input{flex:1;min-width:220px;padding:10px 14px;border:1px solid var(--line2);border-radius:10px;background:var(--card);color:var(--ink);font-size:15px;font-family:inherit}
+.src-group h4{font-family:"Noto Sans SC",sans-serif;font-size:15px;margin:18px 0 4px}
+.src-group ul{list-style:none;margin:0;padding:0}
+.src-group li{padding:7px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.src-group li:last-child{border-bottom:none}
+.src-group .sname{font-weight:500;color:var(--ink)}
+details{border:1px solid var(--line);border-radius:12px;padding:4px 18px;margin:10px 0;background:var(--card)}
+summary{cursor:pointer;font-weight:700;padding:10px 0;font-size:15px}
+.footer{margin-top:50px;border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:var(--muted)}
+.totop{position:fixed;right:16px;bottom:16px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line2);background:var(--card);color:var(--ink);font-size:18px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.12);display:none;align-items:center;justify-content:center;z-index:60}
+</style>
+</head>
+<body>
+
+<nav class="topnav" aria-label="章节导航">
+  <div class="topnav-in" id="topnav">
+    <a href="#ch1">1 · 发展史</a>
+    <a href="#ch2">2 · 核心架构</a>
+    <a href="#ch3">3 · 2025–2026 前沿</a>
+    <a href="#ch4">4 · 工程与学习路径</a>
+    <a href="#ch5">5 · 未核实事项</a>
+    <a href="#ch6">6 · 来源总表</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero-kicker">Study Guide · 截至 2026 年 11 月 22 日</div>
+  <h1>AI Agent 前沿研究指南</h1>
+  <p class="hero-sub">从 1970 年代的 SHRDLU 与专家系统，到 2026 年带沙箱、权限、持久状态与协议标准的生产级 Agent 系统——一页读完发展史、核心架构、最新协议与框架、真实基准分数，以及一条可以照着走的 4–8 周学习路径。</p>
+  <div class="meta-row">
+    <span class="meta-chip">调研日期：2026-11-22（CST）</span>
+    <span class="meta-chip">标注：<b>[已实时验证]</b> 本次打开官方原文核实</span>
+    <span class="meta-chip"><b>[索引]</b> 经搜索索引核实</span>
+    <span class="meta-chip"><b>[二手/未核实]</b> 仅二手汇总，引用前须复核</span>
+  </div>
+  <div class="verdict">
+    <h3>先说结论：2026 年的 Agent 变成了什么</h3>
+    <p>Agent 已从 2023 年的「提示词循环演示」变成「带沙箱、权限、持久状态、可观测性和协议标准的生产系统」。决定成败的不再主要是模型本身，而是 <b>harness</b>（循环、工具接口、上下文与记忆管理）、评估与治理。编码 Agent 是最先跑通商业闭环的形态；浏览器 / 计算机操作 Agent 在长流程任务上仍远未解决（OSWorld 2.0 最佳成绩在不同版本 / 日期口径下仅约 20%–31%）；协议层在 2024–2026 年快速收敛到 <b>MCP（Agent→工具）+ A2A（Agent→Agent）+ AG-UI（Agent→界面）+ Agent Skills / AGENTS.md（指令载体）</b>，并在 2025 年 12 月统一进入 Linux 基金会 Agentic AI Foundation 治理。</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>2024-11-25</b><span>MCP 发布。此后工具连接从 N×M 集成矩阵收敛为标准协议</span></div>
+    <div class="stat"><b>61.5%</b><span>SWE-bench Pro 2026-10 最高分（Muse Spark 1.1）<span class="tag tag-i">索引·二手榜单</span></span></div>
+    <div class="stat"><b>20.6%–31.4%</b><span>OSWorld 2.0 长流程桌面任务最佳成绩，两个口径版本 / 日期不同，不可混比</span></div>
+    <div class="stat"><b>2026-07-28</b><span>MCP 最大一次规范修订：无状态化<span class="tag tag-v">已实时验证</span></span></div>
+  </div>
+</header>
+
+<!-- ================= CH 1 ================= -->
+<section class="chapter" id="ch1">
+  <div class="ch-head"><div class="ch-num">1</div><div><h2>发展史：从早期 AI 到 LLM Agent</h2><p>七十年里，「感知—规划—行动—反思」这个闭环的每一支箭，是在不同年代被逐一接通的。</p></div></div>
+
+  <h3 class="sub">1.1 什么是 Agent？一个跨越 70 年的定义</h3>
+  <p>Agent 的经典定义早于 LLM 几十年：一个能<strong>感知环境、自主决策、采取行动、并根据结果再次决策</strong>的系统。Wooldridge 与 Jennings 在 1995 年《Intelligent Agents: Theory and Practice》中将其形式化<span class="tag tag-i">索引</span>。理解这段历史的关键线索是「循环的哪一支箭在何时被真正接通」：1971 年的 Shakey 机器人就已跑通机械版闭环；真正难的是用自然语言理解、通用推理和开放环境把这个循环做通用。</p>
+
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>时期</th><th>范式</th><th>能力来源</th><th>代表系统</th></tr></thead>
+    <tbody>
+      <tr><td data-l="时期">1950s–1980s</td><td data-l="范式"><b>符号 AI / 专家系统</b></td><td data-l="能力来源">人工书写的逻辑规则</td><td data-l="代表系统">SHRDLU、MYCIN、STRIPS</td></tr>
+      <tr><td data-l="时期">1980s–1990s</td><td data-l="范式"><b>分布式智能 / 多智能体</b></td><td data-l="能力来源">涌现式协作、信念-欲望-意图建模</td><td data-l="代表系统">BDI 架构、《心智社会》</td></tr>
+      <tr><td data-l="时期">1990s–2020s</td><td data-l="范式"><b>连接主义 / 强化学习</b></td><td data-l="能力来源">数据驱动的统计学习</td><td data-l="代表系统">TD-Gammon、DQN、AlphaGo</td></tr>
+      <tr><td data-l="时期">2020–2022</td><td data-l="范式"><b>预训练大模型 + 提示方法</b></td><td data-l="能力来源">语言先验 + 链式思考 + 工具调用萌芽</td><td data-l="代表系统">GPT-3、WebGPT、CoT、ReAct</td></tr>
+      <tr><td data-l="时期">2023–至今</td><td data-l="范式"><b>LLM Agent</b></td><td data-l="能力来源">预训练知识 + 自然语言推理 + 工具循环</td><td data-l="代表系统">AutoGPT、函数调用、Claude Code、Codex</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sub">1.2 早期：SHRDLU、专家系统、STRIPS 与 Shakey</h3>
+  <ul class="tight">
+    <li><b>1966 年，ELIZA</b>（Weizenbaum，MIT）：用模式匹配进行对话，常被视为最早的软件 Agent 雏形之一。</li>
+    <li><b>1965 年起，Dendral</b>：第一个专家系统之一，做化学分析；<b>1976 年，MYCIN</b>（斯坦福）：约 600 条规则诊断细菌感染并推荐抗生素，是规则式专家系统的标杆。</li>
+    <li><b>1970–1972 年，SHRDLU</b>（Terry Winograd，MIT）：在「积木世界」中理解英语指令、移动物体、回答关于自身过去行为的问题，并能发起澄清对话；专著《Understanding Natural Language》1972 年由 Academic Press 出版。它的意义在于<strong>语言、记忆与行动首次在同一系统中协同</strong>，而非某一单项技术。</li>
+    <li><b>1971 年，STRIPS 规划器</b>（SRI International，技术报告 TN-43R）与 <b>Shakey 机器人</b>：把目标分解为有序动作序列，机器人感知房间、规划路径、推动物体——第一台端到端的「感知—规划—行动」机器人。</li>
+    <li><b>1986 年，包容式架构 Subsumption</b>（Rodney Brooks）：拒绝中央世界模型，主张行为优先、反应式分层；同年 Marvin Minsky《The Society of Mind》提出「心智由大量本身不智能的小 Agent 组成」，是子 Agent / 编排思想的早期表述。</li>
+    <li><b>1987 年 BDI 理论</b>（Michael Bratman《Intention, Plans, and Practical Reason》）区分信念（Belief）、欲望（Desire）、意图（Intention）；<b>1995 年 Rao &amp; Georgeff《BDI Agents: From Theory to Practice》（ICMAS）</b>将其变为理性 Agent 的标准理论框架，至今仍是理解「意图承诺与重规划」的概念源头。</li>
+  </ul>
+  <div class="note note-amber"><b>教学要点：</b>专家系统的瓶颈不是规则不够多，而是<strong>知识获取瓶颈</strong>——每个新领域都要人工编码规则，且无法处理开放世界的不确定性。这正是 MCP 在 2024 年要解决的同一类问题在新形态下的重现：N×M 的集成矩阵。</div>
+
+  <h3 class="sub">1.3 强化学习 Agent：从棋盘到通用决策</h3>
+  <ul class="tight">
+    <li><b>1959 年</b> Samuel 跳棋程序；<b>1980 年代</b>时序差分学习；<b>1989 年</b> Watkins 在博士论文中提出 Q-learning。</li>
+    <li><b>1992 年，TD-Gammon</b>（Gerald Tesauro，IBM）：第一个达到世界级水平的复杂博弈 RL 系统。</li>
+    <li><b>2013 年 12 月，DQN</b>（Mnih 等，DeepMind，arXiv:1312.5602）：仅用屏幕像素和分数学会玩 7 个 Atari 游戏；<b>2015 年 2 月《Nature》版</b>扩展到 49 个游戏，加入经验回放与目标网络，多数游戏达到或超过人类水平。</li>
+    <li><b>2016 年 3 月，AlphaGo 4–1 战胜李世石</b>：蒙特卡洛树搜索 + 深度策略 / 价值网络；<b>2017 年 AlphaGo Zero</b> 完全自博弈、零人类棋谱；<b>2018 年 AlphaZero</b> 同一算法通吃围棋、国际象棋、日本将棋；<b>2019 年 MuZero</b> 不被告知规则也能学会规划模型；<b>2019 年 AlphaStar</b> 在星际争霸 II 达到宗师级——多智能体、部分可观测、实时决策。</li>
+    <li><b>2017 年 PPO</b>（OpenAI）成为默认策略梯度算法；<b>2022 年 RLHF</b> 让 ChatGPT「好用」，RL 从游戏走向语言模型对齐；<b>2024–2026 年</b> GRPO 等 RL 方法成为推理模型与 agentic RL（Search-R1、Kimi-Researcher 等）post-training 的核心。</li>
+  </ul>
+  <div class="note note-teal"><b>承前启后：</b>RL Agent 的遗产不是某个算法，而是<strong>环境—奖励—探索</strong>的思维：现代 LLM Agent 的评估（benchmark 即环境）、RL 训练（用工具轨迹做奖励）与「从失败中反思」（Reflexion 的语言版强化学习）都直接继承了它。</div>
+
+  <h3 class="sub">1.4 奠基论文（2020–2023）：RAG、CoT、ReAct、工具学习</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>日期</th><th>论文 / 系统</th><th>贡献</th><th>链接</th></tr></thead>
+    <tbody>
+      <tr><td data-l="日期" class="num">2020-05</td><td data-l="论文"><b>RAG</b>（Lewis 等，Meta/FAIR）</td><td data-l="贡献">参数化生成器 + 非参数化稠密检索，知识可外部更新而不重训</td><td data-l="链接"><a href="https://arxiv.org/abs/2005.11401">arXiv:2005.11401</a></td></tr>
+      <tr><td data-l="日期" class="num">2021 年末</td><td data-l="论文"><b>WebGPT</b>（OpenAI）</td><td data-l="贡献">训练模型用文本浏览器回答带引用问题，早期 LLM 工具使用范例</td><td data-l="链接">—</td></tr>
+      <tr><td data-l="日期" class="num">2022-01</td><td data-l="论文"><b>Chain-of-Thought</b>（Wei 等，Google）</td><td data-l="贡献">「逐步思考」示例激发多步推理</td><td data-l="链接"><a href="https://arxiv.org/abs/2201.11903">arXiv:2201.11903</a></td></tr>
+      <tr><td data-l="日期" class="num">2022-03</td><td data-l="论文"><b>Self-Consistency</b>（Wang 等，Google）</td><td data-l="贡献">采样多条推理链、多数投票</td><td data-l="链接"><a href="https://arxiv.org/abs/2203.11171">arXiv:2203.11171</a></td></tr>
+      <tr><td data-l="日期" class="num">2022-05</td><td data-l="论文"><b>MRKL</b>（Karpas 等，AI21）</td><td data-l="贡献">模块化「语言模型 + 专家工具」架构宣言</td><td data-l="链接"><a href="https://arxiv.org/abs/2205.00445">arXiv:2205.00445</a></td></tr>
+      <tr><td data-l="日期" class="num">2022-10-06</td><td data-l="论文"><b>ReAct</b>（Yao 等，普林斯顿 / Google，ICLR 2023）</td><td data-l="贡献">Thought / Action / Observation 交错：推理帮助规划与异常处理，行动从外部获取信息；在 HotpotQA / FEVER 上缓解幻觉，在 ALFWorld 上比模仿 / RL 方法高 34 个百分点、WebShop 高 10 个百分点<span class="tag tag-v">已实时验证 arXiv 摘要</span></td><td data-l="链接"><a href="https://arxiv.org/abs/2210.03629v1">arXiv:2210.03629</a></td></tr>
+      <tr><td data-l="日期" class="num">2023-02</td><td data-l="论文"><b>Toolformer</b>（Schick 等，Meta）</td><td data-l="贡献">模型自监督学会何时调用计算器、搜索等 API</td><td data-l="链接"><a href="https://arxiv.org/abs/2302.04761">arXiv:2302.04761</a></td></tr>
+      <tr><td data-l="日期" class="num">2023-03-20</td><td data-l="论文"><b>Reflexion</b>（Shinn 等，NYU / 普林斯顿，NeurIPS 2023）</td><td data-l="贡献">失败后用自然语言自我批评并存入记忆，<b>不更新权重</b>的「语言强化学习」</td><td data-l="链接"><a href="https://arxiv.org/abs/2303.11366">arXiv:2303.11366</a></td></tr>
+      <tr><td data-l="日期" class="num">2023-04</td><td data-l="论文"><b>Generative Agents</b>（Park 等，斯坦福 / Google，UIST 2023）</td><td data-l="贡献">25 个 Agent 的模拟小镇：记忆流 + 反思 + 规划，自发组织活动；记忆架构的奠基演示</td><td data-l="链接"><a href="https://arxiv.org/abs/2304.03442">arXiv:2304.03442</a></td></tr>
+      <tr><td data-l="日期" class="num">2023-05-17</td><td data-l="论文"><b>Tree-of-Thoughts</b>（Yao 等，NeurIPS 2023）</td><td data-l="贡献">推理变树搜索：生成多候选、评估、回溯</td><td data-l="链接"><a href="https://arxiv.org/abs/2305.10601">arXiv:2305.10601</a></td></tr>
+      <tr><td data-l="日期" class="num">2023-05</td><td data-l="论文"><b>Voyager</b>（Wang 等，英伟达 / 加州理工）</td><td data-l="贡献">GPT-4 在 Minecraft 中写代码技能、自动课程、技能库复用，独特物品数达此前 SOTA 的 3.3 倍</td><td data-l="链接"><a href="https://arxiv.org/abs/2305.16291">arXiv:2305.16291</a></td></tr>
+      <tr><td data-l="日期" class="num">2023-10</td><td data-l="论文"><b>MemGPT</b>（Packer 等，UC Berkeley）</td><td data-l="贡献">把上下文窗口当作 OS 虚拟内存管理：主存 / 归档记忆、函数调用换页</td><td data-l="链接"><a href="https://arxiv.org/abs/2310.08560">arXiv:2310.08560</a></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sub">1.5 2023 年：自主 Agent 寒武纪大爆发与函数调用</h3>
+  <ul class="tight">
+    <li><b>2023-03-30，AutoGPT</b>（Toran Bruce Richards / Significant Gravitas）：给 GPT-4 一个目标，自动分解任务、联网搜索、读写文件、循环直至完成；三周内超 7 万 GitHub star，一度成为 GitHub 史上增长最快的项目之一。</li>
+    <li><b>2023 年 4 月初，BabyAGI</b>（Yohei Nakajima）：约 140 行 Python，任务队列 + 执行循环 + 向量库上下文，展示了最小闭环。</li>
+    <li><b>2023-06-13，OpenAI 函数调用（function calling）</b>：开发者用 JSON Schema 描述函数，模型返回结构化的函数名与参数，外部代码执行后把结果喂回。这是<strong>自由文本 → 结构化调用</strong>的关键一跃，ReAct 的文本解析式循环从此有了可靠的机器接口。</li>
+    <li><b>2023 年 10 月，SWE-bench</b>（普林斯顿）：2,294 个真实 GitHub issue、12 个 Python 仓库；最初最佳模型 Claude 2 仅解决 <b>1.96%</b>——一个「当时不可解」的基准，从此成为编码 Agent 的主标尺。</li>
+    <li><b>2023 年 10 月，LangChain</b>（2022 年 10 月首发）已内置 ReAct / MRKL Agent；同年 AutoGen（微软研究院，2023 年 9 月）、CrewAI 等多智能体框架相继出现。</li>
+  </ul>
+  <div class="note note-red"><b>必须讲清的教训：</b>AutoGPT / BabyAGI 很快暴露了无界循环、自我批评不可靠、错误累积、成本失控等问题——2024 年后的全部工程化工作（步数上限、审批、沙箱、评估、检查点）几乎都是对这些失败的逐项修复。</div>
+
+  <h3 class="sub">1.6 2024 年：从演示到产品的工程整合</h3>
+  <ul class="tight">
+    <li><b>2024-03-12，Devin</b>（Cognition）：演示视频宣称「首位 AI 软件工程师」，端到端解决 SWE-bench 任务，引发巨大争议与复现讨论。</li>
+    <li><b>2024-04-02，SWE-agent</b>（普林斯顿，NeurIPS 2024）：提出 Agent-Computer Interface（ACI）论点——<strong>模型与计算机之间的接口设计本身就能把成绩从 3.8% 抬到 12.5%</strong>（GPT-4 Turbo，pass@1）；「harness 即产品」这一 2026 年的共识，源头在此。论文：<a href="https://arxiv.org/html/2405.15793">arxiv.org/html/2405.15793</a></li>
+    <li><b>2024 年 6 月，Claude 3.5 Sonnet</b> 发布；<b>2024-10-22，Anthropic 计算机操作（computer use）公开 beta</b>（升级版 Claude 3.5 Sonnet）：模型看截图、动鼠标键盘，Anthropic 自己也承认「有时笨拙且易错」。</li>
+    <li><b>2024-11-25，MCP 发布</b>（见第 3 章）；<b>2024 年 12 月，Google Project Mariner</b> 浏览器 Agent 研究预览；<b>2024-12-11，Google Gemini Deep Research</b> 上线（Gemini Advanced）。</li>
+    <li><b>2024 年 12 月，Anthropic《Building effective agents》</b>：提出「工作流（workflow）优先于完全自主 Agent」、路由 / 并行 / 编排器-工作者 / 评估者-优化者等模式，至今仍是架构教学的起点文。<span class="tag tag-w">二手提及，未核实原文 URL</span></li>
+  </ul>
+
+  <h3 class="sub">1.7 七十年时间线总览</h3>
+  <p><small>金色节点 = LLM 之前的奠基时代；青色节点 = LLM Agent 时代。2026 年 9 月之后的模型发布条目为二手汇总，未对照厂商页面核实，见第 5 章。</small></p>
+  <div class="tl">
+    <div class="tl-item era"><div class="tl-date">1966 — 1972</div><h4>ELIZA 与 SHRDLU</h4><p>ELIZA 用模式匹配对话；SHRDLU 在积木世界中把语言、记忆与行动合为一体，专著 1972 年出版。</p></div>
+    <div class="tl-item era"><div class="tl-date">1971</div><h4>STRIPS + Shakey</h4><p>第一台端到端「感知—规划—行动」机器人：目标分解、路径规划、推动物体。</p></div>
+    <div class="tl-item era"><div class="tl-date">1987 / 1995</div><h4>BDI 理论与实践化</h4><p>Bratman 提出信念-欲望-意图；Rao &amp; Georgeff 将其变为理性 Agent 的标准框架。</p></div>
+    <div class="tl-item era"><div class="tl-date">2013-12 / 2015-02</div><h4>DQN 论文与《Nature》版</h4><p>深度强化学习元年：仅用像素与分数，从 Atari 游戏学到通用策略。</p></div>
+    <div class="tl-item era"><div class="tl-date">2016-03</div><h4>AlphaGo 胜李世石</h4><p>蒙特卡洛树搜索 + 深度策略 / 价值网络，搜索与 RL 的里程碑。</p></div>
+    <div class="tl-item era"><div class="tl-date">2017</div><h4>Transformer</h4><p>《Attention Is All You Need》——一切 LLM Agent 的底座。</p></div>
+    <div class="tl-item"><div class="tl-date">2020-05</div><h4>RAG 论文</h4><p>外部知识层与推理分离，知识可更新而不必重训模型。</p></div>
+    <div class="tl-item"><div class="tl-date">2022-10-06</div><h4>ReAct 论文</h4><p>Thought / Action / Observation 交错，Agent 循环的范式定型。</p></div>
+    <div class="tl-item"><div class="tl-date">2022-11-30</div><h4>ChatGPT 发布</h4><p>LLM 普及，Agent 构想获得通用引擎。</p></div>
+    <div class="tl-item"><div class="tl-date">2023-03-30</div><h4>AutoGPT 开源</h4><p>自主循环病毒式传播，三周超 7 万 star；同时暴露无界循环等系统性失败。</p></div>
+    <div class="tl-item"><div class="tl-date">2023-06-13</div><h4>OpenAI 函数调用</h4><p>结构化工具调用成为 API 标配。</p></div>
+    <div class="tl-item"><div class="tl-date">2023-10</div><h4>SWE-bench 发布</h4><p>编码 Agent 有了硬基准；当时最佳成绩仅 1.96%。</p></div>
+    <div class="tl-item"><div class="tl-date">2024-03 / 04-02</div><h4>Devin 演示 · SWE-agent 开源</h4><p>「AI 软件工程师」产品化叙事开启；ACI / harness 论点确立。</p></div>
+    <div class="tl-item"><div class="tl-date">2024-10-22</div><h4>Claude 计算机操作 beta</h4><p>GUI 操作进入 API：看截图、动鼠标键盘。</p></div>
+    <div class="tl-item"><div class="tl-date">2024-11-25</div><h4>MCP 发布</h4><p>工具连接标准化，N×M 集成矩阵开始坍缩。</p></div>
+    <div class="tl-item"><div class="tl-date">2024-12</div><h4>Mariner / Gemini Deep Research</h4><p>浏览器 Agent 与深度研究产品化。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-01-23</div><h4>OpenAI Operator</h4><p>消费者浏览器 Agent（CUA 模型），OSWorld 38.1%。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-02-02</div><h4>OpenAI Deep Research（o3 版）</h4><p>深度研究 Agent：BrowseComp 51.5%。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-02-24</div><h4>Claude Code 研究预览 + Claude 3.7 Sonnet</h4><p>终端编码 Agent 成为主战场。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-03</div><h4>OpenAI Agents SDK</h4><p>Swarm 的继任者，一线厂商的轻量 Agent SDK。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-04-09</div><h4>Google A2A + ADK 同日发布</h4><p>Agent 间互操作协议 + Gemini 框架。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-05-22</div><h4>Claude 4（Opus 4 / Sonnet 4），Claude Code GA</h4><p>面向长时 agentic 工作负载。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-05 / 06</div><h4>OpenAI Codex 云端 Agent；Gemini CLI 开源</h4><p>编码 Agent 全面铺开。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-07-17</div><h4>ChatGPT agent（Operator 并入）</h4><p>浏览器 + 终端 + 深度研究合一。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-09-29</div><h4>Claude Sonnet 4.5 + Claude Agent SDK 更名</h4><p>SDK 从编码扩展到通用 Agent。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-10-06</div><h4>OpenAI DevDay：Codex GA、AgentKit、GPT-5-Codex</h4><p>编码 Agent 企业化。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-10</div><h4>Anthropic Agent Skills 发布</h4><p>技能包成为指令载体标准。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-12-09</div><h4>Agentic AI Foundation 成立</h4><p>MCP / goose / AGENTS.md 进入 Linux 基金会中立治理。</p></div>
+    <div class="tl-item"><div class="tl-date">2026-03-16</div><h4>NVIDIA GR00T N2 预览<span class="tag tag-w">二手</span></h4><p>世界动作模型路线。</p></div>
+    <div class="tl-item"><div class="tl-date">2026-04-03</div><h4>Microsoft Agent Framework 1.0 GA</h4><p>AutoGen + Semantic Kernel 合并完成。</p></div>
+    <div class="tl-item"><div class="tl-date">2026-05-19</div><h4>Google ADK 2.0 GA（Python）</h4><p>图工作流进入一线框架。</p></div>
+    <div class="tl-item"><div class="tl-date">2026-07-28</div><h4>MCP 2026-07-28 规范（无状态化）<span class="tag tag-v">已实时验证</span></h4><p>协议发布以来最大一次修订，详见 §3.1。</p></div>
+    <div class="tl-item"><div class="tl-date">2026-09</div><h4>GPT-6 Astra / Claude Opus 5.5 / Gemini 3.8 Flash 密集发布<span class="tag tag-w">二手/未核实</span></h4><p>1M 上下文成为旗舰标配（据二手汇总）。</p></div>
+    <div class="tl-item"><div class="tl-date">2026-10-22</div><h4>Agent Skills 等 4 项目加入 AAIF</h4><p>基金会达 10 个项目<span class="tag tag-i">索引</span>。</p></div>
+    <div class="tl-item"><div class="tl-date">2026-10-27</div><h4>Genie 4 研究预览<span class="tag tag-i">索引</span></h4><p>世界模型继续迭代。</p></div>
+    <div class="tl-item"><div class="tl-date">2026-11</div><h4>OpenAI Agents API 公开 beta、Codex harness 并入 Agents SDK alpha<span class="tag tag-w">二手/未核实，极新</span></h4><p>厂商 harness 收敛。</p></div>
+  </div>
+</section>
+
+<!-- ================= CH 2 ================= -->
+<section class="chapter" id="ch2">
+  <div class="ch-head"><div class="ch-num">2</div><div><h2>核心架构：循环、推理、工具、记忆、编排与评估</h2><p>今天任何一个框架的内核，拆开都是同一个循环；差别在 harness、记忆与评估怎么做。</p></div></div>
+
+  <h3 class="sub">2.1 标准 Agent 循环：感知—规划—行动—反思</h3>
+  <div class="fig" role="img" aria-label="Agent 循环流程图：目标进入感知，依次经过规划推理、行动调用工具、观测结果、反思评估，再回到感知，直到完成">
+    <div class="loop-flow">
+      <div class="loop-row">
+        <div class="loop-step"><b>目标 / 指令</b><span>用户任务与约束进入系统</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step"><b>感知 Perceive</b><span>读取环境状态、上下文与记忆</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step"><b>规划 / 推理 Plan</b><span>分解任务、选择下一步动作</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step"><b>行动 Act</b><span>调用工具 / 代码 / 浏览器</span></div>
+      </div>
+      <div class="loop-row">
+        <div class="loop-step"><b>反思 Reflect</b><span>评估结果、更新记忆与计划，决定继续或停止</span></div>
+        <div class="loop-arrow">←</div>
+        <div class="loop-step"><b>观测 Observe</b><span>工具返回、环境新状态、报错信息</span></div>
+        <div class="loop-arrow" style="visibility:hidden">→</div>
+        <div class="loop-step" style="border-style:dashed"><b>完成 / 交付</b><span>满足停止条件后输出结果与轨迹</span></div>
+      </div>
+    </div>
+    <div class="fig-cap">图 1 · Canonical Agent Loop。反思不通过则回到感知，进入下一轮；护栏（步数、预算、超时、审批点）由 harness 强制执行。</div>
+  </div>
+  <p><b>Harness（支架）</b>是循环的代码实现：它持有状态、管理上下文窗口、解析工具调用、执行工具、处理错误与重试、强制步数 / 预算上限、记录轨迹（trace）。2026 年的共识是：<strong>模型是引擎，harness 是车</strong>——同一模型换 harness，可在 SWE-bench Pro 上从 23% 变到 52%（二手独立测量，见第 5 章）<span class="tag tag-i">索引</span>。</p>
+  <p>最小可运行循环（教学用伪代码，任何框架的内核都是它）：</p>
+  <pre class="code">while steps &lt; MAX_STEPS and not done:
+    action      = model(messages + tools_schema)   # Thought + Action
+    observation = execute(action)                  # 工具 / 代码 / 浏览器
+    messages   += [action, observation]            # 轨迹即短期记忆
+    done, summary = check(action, observation)     # 评估器 / 停止条件</pre>
+  <div class="note note-red"><b>停止条件与护栏必须写在 harness 里，不能只靠模型自觉：</b>最大步数、最大 token / 费用、超时、重复动作检测、审批点。这正是 AutoGPT 时代无界循环的教训（§1.5）。</div>
+
+  <h3 class="sub">2.2 推理与规划</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>方法</th><th>日期 / 出处</th><th>机制</th><th>成本与适用</th></tr></thead>
+    <tbody>
+      <tr><td data-l="方法"><b>Chain-of-Thought</b></td><td data-l="出处" class="num">2022-01</td><td data-l="机制">生成中间推理步骤再作答</td><td data-l="成本">便宜；单链，易错传播</td></tr>
+      <tr><td data-l="方法"><b>Self-Consistency</b></td><td data-l="出处" class="num">2022-03</td><td data-l="机制">多采样 + 多数投票</td><td data-l="成本">成本 ×N；适合有唯一答案的任务</td></tr>
+      <tr><td data-l="方法"><b>ReAct</b></td><td data-l="出处" class="num">2022-10</td><td data-l="机制">推理与行动交错，观测 grounded 推理</td><td data-l="成本">默认循环；需可靠工具接口</td></tr>
+      <tr><td data-l="方法"><b>Reflexion</b></td><td data-l="出处" class="num">2023-03</td><td data-l="机制">失败 → 语言批评 → 存入记忆 → 重试</td><td data-l="成本">重试成本高；适合可验证任务（测试、编译）</td></tr>
+      <tr><td data-l="方法"><b>Tree-of-Thoughts</b></td><td data-l="出处" class="num">2023-05</td><td data-l="机制">树搜索 + 节点评估 + 回溯 / 剪枝</td><td data-l="成本">搜索成本高；适合规划类难题，生产中少用全量 ToT</td></tr>
+      <tr><td data-l="方法"><b>Plan-and-Execute / 任务分解</b></td><td data-l="出处">2023 起的工程模式</td><td data-l="机制">先分解为子任务清单，再逐项执行与复核</td><td data-l="成本">编码 / 研究 Agent 的主流折中</td></tr>
+      <tr><td data-l="方法"><b>推理模型 + 工具训练</b></td><td data-l="出处">2024–2026</td><td data-l="机制">o1（2024-09）→ o3、Claude 扩展思考、Gemini 思考模式；RL（GRPO 等）用工具轨迹奖励训练，推理能力内化进权重</td><td data-l="成本">推理预算（effort）成为显式成本旋钮</td></tr>
+    </tbody>
+  </table></div>
+  <ol class="tight">
+    <li><b>推理 ≠ 规划。</b>CoT / ToT 解决「想清楚」，ReAct / plan-and-execute 解决「在环境中推进并纠错」。生产 Agent 两者都要，且后者更决定成败。</li>
+    <li><b>验证器（verifier）比推理链更重要。</b>能用测试、类型检查、数据库状态、计算器复核的结果，就不要只用模型自评。Reflexion 的有效性高度依赖外部评估器质量。</li>
+    <li><b>2025–2026 年的转向：</b>从「提示词技巧」转向「训练出来的 agentic 能力」——深度研究 Agent（o3 版）明确用「端到端 RL 训练于困难浏览与推理任务」；Kimi-Researcher（Moonshot，2025-06）用端到端 agentic RL 使 HLE 从 8.6% 升至 26.9%<span class="tag tag-i">索引，二手</span>。提示工程仍重要，但上限由训练决定。</li>
+  </ol>
+
+  <h3 class="sub">2.3 工具使用（Tool Use）</h3>
+  <div class="grid3">
+    <div class="card"><h4>(a) 结构化函数调用</h4><p>JSON Schema 描述函数，模型返回结构化参数。OpenAI 2023-06 普及，现为各家 API 标配。</p></div>
+    <div class="card"><h4>(b) 代码执行型</h4><p>如 smolagents CodeAgent：模型直接写 Python 代码调用工具，表达力最强，沙箱要求最高。</p></div>
+    <div class="card"><h4>(c) 协议化工具</h4><p>MCP 服务器（见 §3.1）：工具一次实现、到处可用，治理与审计走网关。</p></div>
+  </div>
+  <ul class="tight">
+    <li><b>工具设计原则（ACI 论点，SWE-agent 2024）：</b>粒度要匹配模型能力——太细（裸 shell）则模型迷失，太粗则失去控制；返回信息要「可行动」（错误信息应指明如何修复，而非仅报错码）；工具描述本身就是提示词的一部分，写得差等于模型能力打折。</li>
+    <li><b>并行调用与批量：</b>多个独立工具可并行；2026 年的计算机操作工具集已支持批量动作（batch）以减少往返。有依赖的调用必须串行。</li>
+    <li><b>工具选择失败是常见故障：</b>几十个 MCP 工具全量塞入上下文会稀释注意力、抬高成本；实践是用检索 / 分组 / 按需加载（MCP 的 <code>tools/list</code> + 动态发现、Agent Skills 的渐进披露），只给当前步骤相关的工具。</li>
+  </ul>
+
+  <h3 class="sub">2.4 记忆（Memory）：区分「记住什么」与「存在哪」</h3>
+  <h4 class="sub2">按功能分（认知科学三分法，2025–2026 年行业趋同）</h4>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>类型</th><th>存什么</th><th>典型实现</th></tr></thead>
+    <tbody>
+      <tr><td data-l="类型"><b>情景记忆 Episodic</b></td><td data-l="存什么">具体事件：何时、何事、何上下文</td><td data-l="实现">对话 / 轨迹日志、Zep Graphiti 的双时态子图（事件时间 + 摄入时间）</td></tr>
+      <tr><td data-l="类型"><b>语义记忆 Semantic</b></td><td data-l="存什么">事实与关系：用户偏好、实体属性、领域知识</td><td data-l="实现">Mem0 的事实抽取、知识图谱、向量库</td></tr>
+      <tr><td data-l="类型"><b>程序记忆 Procedural</b></td><td data-l="存什么">怎么做：技能、流程、代码片段</td><td data-l="实现">Voyager 技能库、Agent Skills（SKILL.md + 脚本）、Claude Code 的 subagent / 命令</td></tr>
+    </tbody>
+  </table></div>
+  <h4 class="sub2">按位置 / 机制分</h4>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>层</th><th>说明</th><th>代表</th></tr></thead>
+    <tbody>
+      <tr><td data-l="层"><b>上下文内（短期 / 工作记忆）</b></td><td data-l="说明">当前窗口内的消息、摘要、检查点</td><td data-l="代表">LangGraph checkpointer、会话状态</td></tr>
+      <tr><td data-l="层"><b>检索增强存储</b></td><td data-l="说明">向量相似度召回 + 图关系召回</td><td data-l="代表">向量库（pgvector 等）+ 知识图谱混合存储</td></tr>
+      <tr><td data-l="层"><b>分层虚拟内存</b></td><td data-l="说明">像 OS 管理内存一样换页：核心记忆常驻、归档记忆按需调入</td><td data-l="代表">MemGPT（2023）→ Letta</td></tr>
+      <tr><td data-l="层"><b>参数记忆</b></td><td data-l="说明">写进权重（微调 / RL）</td><td data-l="代表">长期偏好蒸馏；昂贵、难遗忘、慎用</td></tr>
+      <tr><td data-l="层"><b>外部结构化状态</b></td><td data-l="说明">数据库 / 文件系统即记忆：任务清单、工单状态</td><td data-l="代表">几乎所有生产 Agent 的真正「记忆」</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>关键系统：</b>Generative Agents（2023，记忆流 + 重要性 / recency 评分 + 反思）、MemGPT / Letta（arXiv:2310.08560）、Zep / Graphiti（arXiv:2501.13956，时序知识图谱）、Mem0（2024–2025，面向 Agent 的记忆层，2025 年获 $24M A 轮融资——二手）、A-MEM（NeurIPS 2025，Zettelkasten 式动态链接笔记，arXiv:2502.12110）、MIRIX（2025-07，六组件记忆，arXiv:2507.07957）<span class="tag tag-i">索引</span>。</p>
+  <div class="note note-amber"><b>评估与陷阱：</b>LoCoMo（Snap，arXiv:2402.17753）与 LongMemEval（arXiv:2410.10813）是主流长程记忆基准，但 2025 年 12 月的审计发现 LoCoMo 答案键约 6.4% 错误、LLM 裁判接受 63% 的故意错误答案，且不同厂商自报分数可相差 25 个百分点——<strong>记忆基准分数不可直接比较</strong><span class="tag tag-i">索引，二手审计</span>。记忆投毒（memory poisoning）是 OWASP Agentic Top 10 的正式风险类别（§3.9）：写入记忆的内容必须像对待工具返回一样视为不可信输入。</div>
+
+  <h3 class="sub">2.5 检索（Retrieval）与 Agentic RAG</h3>
+  <ul class="tight">
+    <li><b>经典 RAG（2020）：</b>查询 → 检索 top-k 文档块 → 拼入提示词 → 生成。适用于知识更新快、私有知识多的场景。</li>
+    <li><b>Agentic RAG（2024–2026）：</b>检索本身变成 Agent 循环中一个可多次调用、可自我纠错的工具：模型决定搜什么、搜几次、是否换查询、是否深入某源；深度研究 Agent 是其极致形态。失败模式：块切分不当、召回不相关、长上下文「迷失中间」（Lost in the Middle，Liu 等 2023）、引用与原文不符。</li>
+    <li><b>GraphRAG / 混合检索：</b>向量召回（语义模糊匹配）+ 图 / 关键词召回（关系与精确实体）+ 重排（rerank）组合，是 2025–2026 年企业 RAG 的默认配方；但图谱需要本体维护成本，小规模场景向量 + 良好分块往往已够。</li>
+  </ul>
+
+  <h3 class="sub">2.6 编排模式（Orchestration Patterns）</h3>
+  <div class="fig" role="img" aria-label="监督者编排模式示意：用户请求进入编排器，编排器并行派发给研究、编码、审查三个子 Agent，再综合结果并经人工审批后交付">
+    <div class="loop-flow">
+      <div class="loop-row">
+        <div class="loop-step" style="border-style:dashed"><b>用户请求</b><span>目标 + 约束</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step"><b>编排器 Supervisor</b><span>分解任务 · 派发 · 综合</span></div>
+      </div>
+      <div class="loop-row">
+        <div class="loop-step"><b>子 Agent · 研究</b><span>独立上下文</span></div>
+        <div class="loop-step"><b>子 Agent · 编码</b><span>独立上下文</span></div>
+        <div class="loop-step"><b>子 Agent · 审查</b><span>独立上下文</span></div>
+      </div>
+      <div class="loop-row">
+        <div class="loop-step"><b>综合结果</b><span>编排器合并子结果（此步易丢信息）</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step" style="border-color:var(--amber)"><b>人工审批 HITL</b><span>高风险动作前中断等待批准</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step" style="border-style:dashed"><b>交付</b><span>结果 + 完整轨迹</span></div>
+      </div>
+    </div>
+    <div class="fig-cap">图 2 · 监督者 / 编排器-工作者模式：2026 年研究、代码审查、多源调研的主流多 Agent 结构。</div>
+  </div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>模式</th><th>结构</th><th>优点</th><th>风险 / 成本</th><th>适用</th></tr></thead>
+    <tbody>
+      <tr><td data-l="模式"><b>单 Agent</b></td><td data-l="结构">一个循环 + 一组工具</td><td data-l="优点">最简单、最易调试</td><td data-l="风险">长任务上下文爆炸、工具过多</td><td data-l="适用">绝大多数任务的起点</td></tr>
+      <tr><td data-l="模式"><b>路由 Router</b></td><td data-l="结构">分类器 / 小模型按意图分发</td><td data-l="优点">便宜、可控</td><td data-l="风险">路由错误级联</td><td data-l="适用">客服、意图明确的分流</td></tr>
+      <tr><td data-l="模式"><b>监督者 / 编排器-工作者</b></td><td data-l="结构">中央 Agent 分解、派发并行子 Agent、综合</td><td data-l="优点">并行加速、职责清晰</td><td data-l="风险">编排器成瓶颈与单点；综合易丢信息</td><td data-l="适用">研究、代码审查、多源调研</td></tr>
+      <tr><td data-l="模式"><b>层级 Hierarchical</b></td><td data-l="结构">树状委托：高层规划、低层执行</td><td data-l="优点">可扩展（有文档化模式扇出至 1,000 子 Agent）</td><td data-l="风险">状态同步与成本管理复杂</td><td data-l="适用">大规模代码迁移、批量任务</td></tr>
+      <tr><td data-l="模式"><b>群体 / 蜂群 Swarm</b></td><td data-l="结构">对等 Agent 对话协作，无中央控制</td><td data-l="优点">灵活、涌现式分工</td><td data-l="风险">难审计、易发散、成本难控</td><td data-l="适用">探索性研究、头脑风暴</td></tr>
+      <tr><td data-l="模式"><b>顺序流水线 Pipeline</b></td><td data-l="结构">固定步骤链：研究→写作→审校</td><td data-l="优点">确定性最高、最易测试</td><td data-l="风险">不适应需要回退的任务</td><td data-l="适用">内容生产、ETL 式流程</td></tr>
+      <tr><td data-l="模式"><b>人在回路 HITL</b></td><td data-l="结构">高风险 / 不可逆动作前中断等待批准</td><td data-l="优点">安全与信任的基石</td><td data-l="风险">延迟、打断体验</td><td data-l="适用">支付、删除、发布、外部通信</td></tr>
+      <tr><td data-l="模式"><b>交接 Handoff</b></td><td data-l="结构">一个 Agent 把完整上下文移交给专长 Agent</td><td data-l="优点">OpenAI Agents SDK 的一等原语</td><td data-l="风险">上下文传递需过滤 / 摘要</td><td data-l="适用">客服升级、专业分工</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note note-teal"><b>选择原则（Anthropic 2024 建议的工程化表述）：</b>先用最简单的模式跑通并建立评估；只有当评估证明单 Agent 在某类任务上系统性失败时，才引入多 Agent——<strong>多 Agent 首先是为了解决上下文与职责过载，而不是为了「更像 AGI」</strong>。LangGraph 的检查点 + 中断机制使 HITL 与长时运行成为一等公民，这是它在生产选型中胜出的主因之一。</div>
+
+  <h3 class="sub">2.7 评估（Evaluation）：基准、测量内容与限度</h3>
+  <h4 class="sub2">图 3 · 2026 年主要基准的当前最高分（口径各异，不可跨基准比较）</h4>
+  <div class="fig" role="img" aria-label="基准分数条形图：GAIA 94.0%，OSWorld-Verified 90.19%，τ-bench 文本版 87.9%，BFCL V4 77.47%，WebArena 74.3%，Terminal-Bench 4.0 64.85%，SWE-bench Pro 61.5%，τ3-Banking 55.2%，OSWorld 2.0 部分分 54.8%，OSWorld 2.0 二值分 20.6%">
+    <div class="bar-row"><div class="bar-name"><b>GAIA</b><span>通用助手 · 已超人类基线，不再区分前沿</span></div><div class="bar-track"><div class="bar-fill" style="width:94%"></div></div><div class="bar-val">94.0%</div></div>
+    <div class="bar-row"><div class="bar-name"><b>OSWorld-Verified</b><span>桌面操作 · 已超人类基线 90.19%</span></div><div class="bar-track"><div class="bar-fill" style="width:90.2%"></div></div><div class="bar-val">90.19%</div></div>
+    <div class="bar-row"><div class="bar-name"><b>τ-bench（文本版）</b><span>客服政策遵循 · 近天花板</span></div><div class="bar-track"><div class="bar-fill" style="width:87.9%"></div></div><div class="bar-val">87.9%</div></div>
+    <div class="bar-row"><div class="bar-name"><b>BFCL V4</b><span>函数调用正确性 · Opus 4.5 FC，2026-04</span></div><div class="bar-track"><div class="bar-fill" style="width:77.5%"></div></div><div class="bar-val">77.47%</div></div>
+    <div class="bar-row"><div class="bar-name"><b>WebArena</b><span>浏览器任务 · 人类基线 78.24%</span></div><div class="bar-track"><div class="bar-fill" style="width:74.3%"></div></div><div class="bar-val">74.3%</div></div>
+    <div class="bar-row"><div class="bar-name"><b>Terminal-Bench 4.0</b><span>终端端到端工作 · 2026-09-22</span></div><div class="bar-track"><div class="bar-fill amber" style="width:64.9%"></div></div><div class="bar-val">64.85%</div></div>
+    <div class="bar-row"><div class="bar-name"><b>SWE-bench Pro</b><span>真实仓库编码 · 2026-10</span></div><div class="bar-track"><div class="bar-fill amber" style="width:61.5%"></div></div><div class="bar-val">61.5%</div></div>
+    <div class="bar-row"><div class="bar-name"><b>τ³-Banking</b><span>银行客服 · 仍活跃</span></div><div class="bar-track"><div class="bar-fill amber" style="width:55.2%"></div></div><div class="bar-val">55.2%</div></div>
+    <div class="bar-row"><div class="bar-name"><b>OSWorld 2.0（部分分）</b><span>长流程桌面 · Opus 4.8，500 步，2026-06</span></div><div class="bar-track"><div class="bar-fill amber" style="width:54.8%"></div></div><div class="bar-val">54.8%</div></div>
+    <div class="bar-row"><div class="bar-name"><b>OSWorld 2.0（二值分）</b><span>同一论文口径 · 另一口径 31.4%（2026-08）</span></div><div class="bar-track"><div class="bar-fill red" style="width:20.6%"></div></div><div class="bar-val">20.6%</div></div>
+    <div class="fig-cap">数据来自调研报告 §2.7（索引 / 二手榜单）。颜色只表示「是否仍有区分度」：青 = 已饱和或近天花板；黄 = 仍有区分度；红 = 远未解决。分数 = 模型 × harness × 提示词 × 工具，跨厂商不可直接比较。</div>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>基准</th><th>发布</th><th>测什么</th><th>规模 / 环境</th><th>2026 年状态</th></tr></thead>
+    <tbody>
+      <tr><td data-l="基准"><b>SWE-bench</b>（Verified 500 / Lite 300）</td><td data-l="发布" class="num">2023-10</td><td data-l="测什么">真实 GitHub issue → 补丁</td><td data-l="规模">2,294 任务，12 个 Python 仓，Docker；FAIL_TO_PASS + PASS_TO_PASS</td><td data-l="状态"><b>已饱和 / 受污染</b>：OpenAI 2026-02 停报 Verified（测试缺陷与污染）<span class="tag tag-i">索引</span>；继任者 SWE-bench Pro</td></tr>
+      <tr><td data-l="基准"><b>SWE-bench Pro</b></td><td data-l="发布" class="num">2025–2026</td><td data-l="测什么">更难 / 更新的真实仓任务</td><td data-l="规模">公开集 731 任务（约 30% 曾被标记）</td><td data-l="状态">2026-10 最高 <b>61.5% ±3.1</b>（Muse Spark 1.1）<span class="tag tag-i">索引，二手榜单</span></td></tr>
+      <tr><td data-l="基准"><b>Terminal-Bench</b></td><td data-l="发布">2024 起；4.0 于 2026-08</td><td data-l="测什么">终端内端到端工作：编码、调试、建服务、安全、科学任务</td><td data-l="规模">4.0 含 GPU 任务，8 小时超时，容器隔离；任务自带测试 + oracle</td><td data-l="状态">4.0 最高 <b>64.85% ±3.11</b>（Claude Code + Opus 5.5，2026-09-22）<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="基准"><b>GAIA</b></td><td data-l="发布" class="num">2023-11</td><td data-l="测什么">通用助手：推理 + 多模态 + 浏览 + 工具</td><td data-l="规模">466 题，300 题答案 withheld；短答案准精确匹配</td><td data-l="状态"><b>已超人类基线</b>：2026-10 最高 94.0%，不再区分前沿 Agent<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="基准"><b>WebArena</b></td><td data-l="发布" class="num">2023-07</td><td data-l="测什么">自托管网站上的浏览器任务</td><td data-l="规模">812 任务，4 个网站</td><td data-l="状态">接近人类 78.24%：2026 年 74.3%<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="基准"><b>OSWorld / Verified / 2.0</b></td><td data-l="发布">2024-04；Verified 2025-07-28；2.0 2026-06-26</td><td data-l="测什么">真实桌面应用中的计算机操作</td><td data-l="规模">369 任务；2.0 为长流程工作流</td><td data-l="状态">Verified 已超人类基线（90.19%）；<b>2.0 仍未解</b>：20.6% 二值 / 54.8% 部分分（Opus 4.8，500 步，2026-06 论文）——另一口径 2026-08 版 Opus 5 为 31.4%，<b>版本与日期不同，不可混比</b></td></tr>
+      <tr><td data-l="基准"><b>τ-bench / τ² / τ³</b></td><td data-l="发布" class="num">2024-06</td><td data-l="测什么">遵循领域政策的客服对话（模拟用户 + 工具）</td><td data-l="规模">航空 50 + 零售 115 对话，后扩电信、银行；pass^k 测一致性</td><td data-l="状态">文本版近天花板（87.9%）；τ³-Banking 55.2% 仍活跃<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="基准"><b>AgentBench</b></td><td data-l="发布" class="num">2023</td><td data-l="测什么">多环境 Agent 能力（OS、数据库、纸牌、知识图谱等）</td><td data-l="规模">8 个环境</td><td data-l="状态">较少用于 2025–2026 前沿发布</td></tr>
+      <tr><td data-l="基准"><b>MLE-bench</b></td><td data-l="发布" class="num">2024</td><td data-l="测什么">机器学习工程任务（Kaggle 式）</td><td data-l="规模">75 任务</td><td data-l="状态">工程 Agent 的补充基准</td></tr>
+      <tr><td data-l="基准"><b>BFCL</b>（Berkeley Function Calling）</td><td data-l="发布">2023 起；V4 2025–2026</td><td data-l="测什么">函数 / 工具调用正确性：单次、并行、多轮、多步</td><td data-l="规模">多语言、多模型；AST / 执行匹配</td><td data-l="状态">V4 最高 77.47%（Opus 4.5 FC，榜单 2026-04 更新）<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="基准"><b>BrowseComp</b></td><td data-l="发布" class="num">2025-04（OpenAI）</td><td data-l="测什么">难找的浏览问题</td><td data-l="规模">1,266 题</td><td data-l="状态">Deep Research 发布时 51.5%，GPT-4o 无浏览 0.6%<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="基准"><b>METR 时间跨度</b></td><td data-l="发布" class="num">2024–2025</td><td data-l="测什么">50% 成功率对应的任务时长</td><td data-l="规模">长任务套件</td><td data-l="状态">约 12 小时（Opus 4.6）；页面 2026-09 冻结<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="基准"><b>AgentDojo</b></td><td data-l="发布">NeurIPS 2024</td><td data-l="测什么"><b>安全</b>：不可信数据下的 Agent 任务</td><td data-l="规模">97 任务，629 安全用例</td><td data-l="状态">安全评估的事实标准之一</td></tr>
+    </tbody>
+  </table></div>
+  <p><small>基准官方入口（使用前复核）：SWE-bench 榜单见 swebench.com（搜索结果中以域名形式出现）<span class="tag tag-i">索引</span>；Terminal-Bench 见 tbench.ai；τ-bench 见 taubench.com；OSWorld 见 os-world.github.io；WebArena 见 webarena.dev；GAIA 数据集见 Hugging Face gated 数据集；BFCL 见 Berkeley Gorilla 页。完整榜单对比见第 6 章链接。</small></p>
+
+  <h4 class="sub2">基准的限度——必须同时学会的批判性内容</h4>
+  <ol class="tight">
+    <li><b>饱和（Saturation）：</b>GAIA、OSWorld-Verified、SWE-bench Verified 在 2026 年均已达到或超过其人类基线 / 历史高位，分数继续上涨不再证明能力进步。选基准要选「仍有区分度」的（SWE-bench Pro、Terminal-Bench 4.0、OSWorld 2.0）。</li>
+    <li><b>污染与记忆（Contamination）：</b>模型可能在训练中见过基准任务的解法。SWE-bench Verified 的教训：测试会通过错误补丁、拒绝正确补丁；2026 年 2 月 OpenAI 停报该基准<span class="tag tag-i">索引</span>。</li>
+    <li><b>任务有效性缺陷：</b>Agentic Benchmark Checklist（ABC）审计 10 个 Agent 基准，发现 7 个有任务有效性缺陷、7 个有结果有效性缺陷、10 个都有报告缺陷；τ-bench 航空任务中<strong>什么都不做的 Agent 得 38%</strong>；OSWorld 的损坏页面选择器曾使某 Agent 低估 28 分<span class="tag tag-i">索引，二手综述</span>。</li>
+    <li><b>Harness 混淆：</b>榜单分数 = 模型 × harness × 提示词 × 工具。不同厂商用各自 harness 发布数字，<strong>跨厂商数字不可直接比较</strong>；应看同一 harness 下的消融或官方榜单的同一口径。</li>
+    <li><b>基准 ≠ 生产：</b>基准测固定终态，生产关心成本、延迟、可恢复性、合规与长期稳定性。2025 年一项研究：某 Agent 在 18 个真实 issue 上平均成功率 38%，但 15 个经人工审查的 PR <strong>无一可直接合并</strong><span class="tag tag-i">索引，二手</span>。因此生产评估必须三层并行：离线基准 + 仿真 / 影子流量 + 在线人工抽检与 LLM-as-judge，并固定 harness 版本做回归。</li>
+  </ol>
+</section>
+
+<!-- ================= CH 3 ================= -->
+<section class="chapter" id="ch3">
+  <div class="ch-head"><div class="ch-num">3</div><div><h2>2025–2026 前沿：协议、框架与产品、新型 Agent 与安全治理</h2><p>这一章是「现在最前沿长什么样」的正面回答：协议收敛、harness 托管化、六种新型 Agent、安全成为一等公民。</p></div></div>
+
+  <h3 class="sub">3.1 协议与标准：分层理解，而非「五选一」</h3>
+  <div class="fig" role="img" aria-label="Agent 协议栈分层图：自上而下为用户界面层 AG-UI 与 A2UI、Agent 间层 A2A、工具数据层 MCP、指令载体层 AGENTS.md 与 Agent Skills、编辑器层 ACP、模型 API 层">
+    <div class="stack">
+      <div class="stack-layer" style="background:var(--blue-bg)"><b>用户界面层</b><span>AG-UI（事件流）/ A2UI（声明式 UI 描述）</span></div>
+      <div class="stack-layer" style="background:var(--teal-bg)"><b>Agent 间层</b><span>A2A（Agent Cards、任务生命周期）← IBM ACP 已并入</span></div>
+      <div class="stack-layer" style="background:var(--teal-bg)"><b>工具 / 数据层</b><span>MCP（tools / resources / prompts）</span></div>
+      <div class="stack-layer" style="background:var(--amber-bg)"><b>指令载体层</b><span>AGENTS.md（仓库指令）/ Agent Skills（SKILL.md）</span></div>
+      <div class="stack-layer" style="background:var(--bg3)"><b>编辑器层</b><span>ACP — Agent Client Protocol（Zed / JetBrains）</span></div>
+      <div class="stack-layer" style="background:var(--bg3)"><b>模型 API 层</b><span>Chat Completions（事实标准）/ Responses API</span></div>
+    </div>
+    <div class="fig-cap">图 4 · 2026 年的 Agent 协议栈。注意「ACP」有三个同名不同物：IBM 的 Agent Communication Protocol（已并入 A2A）、Zed 的 Agent Client Protocol（编辑器层）、OpenAI / Stripe 的 Agentic Commerce Protocol（电商）——引用时必须区分。</div>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>协议</th><th>发起 / 时间</th><th>解决什么</th><th>传输 / 核心概念</th><th>治理现状（2026-11）</th></tr></thead>
+    <tbody>
+      <tr><td data-l="协议"><b>MCP</b> Model Context Protocol</td><td data-l="发起">Anthropic，2024-11-25</td><td data-l="解决">Agent ↔ 工具 / 数据的标准连接：一次实现、到处可用（N×M 集成矩阵坍缩）</td><td data-l="概念">JSON-RPC 2.0；host / client / server；tools、resources、prompts；Streamable HTTP / stdio</td><td data-l="治理">2025-12-09 捐给 Agentic AI Foundation（Linux 基金会）；<b>2026-07-28 大修订：无状态化</b><span class="tag tag-v">已实时验证</span></td></tr>
+      <tr><td data-l="协议"><b>A2A</b> Agent2Agent</td><td data-l="发起">Google，2025-04-09，50+ 伙伴</td><td data-l="解决">Agent ↔ Agent：发现、委托、协作，跨框架 / 厂商</td><td data-l="概念">HTTP + JSON-RPC 2.0 + SSE；Agent Card（/.well-known/agent.json）、任务、消息、产物</td><td data-l="治理">2025-06 捐给 Linux 基金会；2025-08 IBM ACP 并入；v1.0 2026-03（二手）；2026-08 加入 AAIF<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="协议"><b>ACP（IBM）</b> Agent Communication Protocol</td><td data-l="发起">IBM / BeeAI，2025-04</td><td data-l="解决">轻量 REST 原生 Agent 通信、异步优先</td><td data-l="概念">HTTP REST；多方会话、共享状态</td><td data-l="治理"><b>已并入 A2A，不再是独立标准</b><span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="协议"><b>ACP（Zed）</b> Agent Client Protocol</td><td data-l="发起">Zed Industries + JetBrains，2025–2026</td><td data-l="解决">编辑器 / IDE ↔ 编码 Agent 的线协议</td><td data-l="概念">—</td><td data-l="治理">公开 beta；Agent Registry 2026-01-28；GitHub Copilot CLI、Claude Code、Gemini CLI、Codex CLI、OpenCode、goose 支持<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="协议"><b>AG-UI</b> Agent-User Interaction</td><td data-l="发起">CopilotKit，2025-05</td><td data-l="解决">Agent 后端 ↔ 前端应用的实时事件流：文本、工具调用、状态同步、HITL</td><td data-l="概念">HTTP / SSE、WebSocket；JSON 事件序列</td><td data-l="治理">开源；LangGraph、CrewAI、Google、AWS、微软采用<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="协议"><b>A2UI</b></td><td data-l="发起">Google 等</td><td data-l="解决">Agent 发送声明式 UI 描述，客户端原生渲染（「渲染什么」）；AG-UI 管「如何同步」</td><td data-l="概念">常承载于 AG-UI / A2A 流内</td><td data-l="治理">与 AG-UI 互补<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="协议"><b>ANP</b> Agent Network Protocol</td><td data-l="发起">社区工作组，2025</td><td data-l="解决">去中心化 Agent 网络的身份与发现（「DNS 层」）</td><td data-l="概念">Web 原生协议</td><td data-l="治理">开源社区治理；成熟度低于 MCP / A2A<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="协议"><b>Agent Skills</b></td><td data-l="发起">Anthropic，2025-10 发布；2025-12 开放标准</td><td data-l="解决">可复用能力包：文件夹 + SKILL.md（名称、描述、指令）+ 可选脚本，渐进披露、按需加载</td><td data-l="概念">文件格式</td><td data-l="治理">2026-10-22 加入 AAIF<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="协议"><b>AGENTS.md</b></td><td data-l="发起">OpenAI，2025-08</td><td data-l="解决">仓库根目录的 Markdown 指令文件：构建、测试、约定——「给 Agent 的 README」</td><td data-l="概念">Markdown</td><td data-l="治理">AAIF 创始项目之一<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="协议"><b>Agentic Commerce Protocol</b>（也缩写 ACP）</td><td data-l="发起">OpenAI / Stripe</td><td data-l="解决">买方 Agent ↔ 商家完成购买</td><td data-l="概念">—</td><td data-l="治理">第三个 ACP 含义，电商场景，勿与前两者混淆<span class="tag tag-i">索引</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h4 class="sub2">MCP 2026-07-28 修订详解（本次调研实时验证的核心事实）</h4>
+  <p>官方变更页（<a href="https://modelcontextprotocol.io/specification/2026-07-28/changelog">modelcontextprotocol.io/specification/2026-07-28/changelog</a>）列出：</p>
+  <ol class="tight">
+    <li>移除协议级会话与 <code>Mcp-Session-Id</code> 头；</li>
+    <li>移除 <code>initialize</code> / <code>notifications/initialized</code> 握手，每个请求在 <code>_meta</code> 中自带协议版本与客户端能力；</li>
+    <li>新增 <code>server/discover</code> RPC；</li>
+    <li><code>resources/subscribe</code> 改为 <code>subscriptions/listen</code>；</li>
+    <li>实验性 Tasks 移出核心、成为官方扩展（<code>io.modelcontextprotocol/tasks</code>，轮询 <code>tasks/get</code>）；</li>
+    <li>引入多往返请求（MRTR）替代服务器发起的 elicitation / sampling；</li>
+    <li>列表结果可缓存（<code>ttlMs</code> / <code>cacheScope</code>）；</li>
+    <li>授权加固（RFC 9207 issuer 校验、转向 CIMD）；</li>
+    <li><b>至少 12 个月的弃用窗口</b>的正式生命周期政策。</li>
+  </ol>
+  <p>SDK 同时区分 <code>legacy</code>（2024-10-07…2025-11-25）与 <code>modern</code>（2026-07-28）两个时代。<span class="tag tag-v">已实时验证</span></p>
+  <div class="note note-red"><b>MCP 安全（与 §3.9 联动）：</b>MCP 是「能力供应链」——恶意服务器可通过工具描述投毒（tool poisoning）植入隐藏指令；2025 年 Elastic 测试发现 43% 的 MCP 服务器实现含命令注入缺陷、30% 允许无限制 URL 获取<span class="tag tag-i">索引，二手</span>。因此：只从可信源安装服务器、校验工具描述、最小权限、沙箱执行。</div>
+
+  <h3 class="sub">3.2 框架与产品总览（2026 年 10–11 月快照，版本极易过期）</h3>
+  <div class="note note-teal"><b>选型第一原则：先定云 / 模型栈与语言栈，再选框架。</b>所有主流框架都消费 MCP，工具集成可迁移；真正难迁移的是状态、检查点与评估资产。</div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>框架 / 产品</th><th>背景方 / 语言</th><th>定位与心智模型</th><th>关键时间点</th><th>状态（2026-11）</th></tr></thead>
+    <tbody>
+      <tr><td data-l="框架"><b>LangChain + LangGraph</b></td><td data-l="背景">LangChain，Python / JS，MIT</td><td data-l="定位">LangChain = 最快建 Agent（<code>create_agent</code>，基于 LangGraph 运行时）；LangGraph = 显式状态图的低层编排：检查点、持久化、HITL、中断 / 恢复</td><td data-l="时间">1.0：2025-10-22；<code>create_react_agent</code> 被 <code>create_agent</code> 取代</td><td data-l="状态">活跃主流；LangGraph 1.2.x（2026-10 快照）<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="框架"><b>CrewAI</b></td><td data-l="背景">CrewAI Inc.，Python，MIT</td><td data-l="定位">角色制 Crew（researcher / writer / reviewer）+ Flows 事件驱动工作流；最快做出多 Agent 原型</td><td data-l="时间">Flows 随 1.x 演进</td><td data-l="状态">活跃；1.15.x（2026-10/11 快照）<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="框架"><b>AutoGen → Microsoft Agent Framework</b></td><td data-l="背景">微软研究院 → 微软，Python / .NET</td><td data-l="定位">AutoGen 的群聊式多 Agent + Semantic Kernel 的企业特性（会话状态、类型安全、遥测）合一</td><td data-l="时间">Agent Framework 发布 2025-10；<b>1.0 GA 2026-04-03</b>；AutoGen 进入维护模式 / 归档</td><td data-l="状态"><b>新项目勿从 AutoGen 起步</b>，迁往 Agent Framework<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="框架"><b>OpenAI Agents SDK</b></td><td data-l="背景">OpenAI，Python / TS，MIT</td><td data-l="定位">极简原语：Agent、Handoff、Guardrail + Runner；基于 Responses API；内置追踪</td><td data-l="时间">2025-03 发布（Swarm 继任者）；2026 年 Agents API 公开 beta，Codex harness 为其引擎</td><td data-l="状态">活跃；0.24.x alpha（2026-11，二手）<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="框架"><b>Claude Agent SDK</b>（原 Claude Code SDK）</td><td data-l="背景">Anthropic，Python / TS</td><td data-l="定位">把 Claude Code 的循环、内置工具、子 Agent、权限、hooks、会话、MCP 打包成库，在自己的进程里跑；另有托管的 Managed Agents（beta）</td><td data-l="时间"><b>2025-09-29 更名</b>（随 Sonnet 4.5）；包名 <code>claude-agent-sdk</code></td><td data-l="状态">活跃；0.2.x / 0.3.x（2026-10/11 快照）<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="框架"><b>Google ADK</b> Agent Development Kit</td><td data-l="背景">Google，Python / TS / Go / Java / Kotlin，Apache-2.0</td><td data-l="定位">代码优先、多 Agent 树、内置评估与一键部署到 Vertex AI / Gemini Enterprise；原生 MCP + A2A；Gemini Live 音视频</td><td data-l="时间">2025-04-09 发布；v1.0 2025-05-20；<b>ADK 2.0 GA（Python）2026-05-19</b>，图工作流</td><td data-l="状态">活跃；2.13.x（2026-10 快照）<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="框架"><b>Pydantic AI</b></td><td data-l="背景">Pydantic 团队，Python</td><td data-l="定位">类型安全 Agent：Pydantic 校验一切工具输入输出、结构化输出、依赖注入；Logfire 追踪</td><td data-l="时间">持续演进</td><td data-l="状态">活跃；2.64.x（2026-10 快照，二手）</td></tr>
+      <tr><td data-l="框架"><b>smolagents</b></td><td data-l="背景">Hugging Face，Python</td><td data-l="定位">极简（核心约千行）：CodeAgent 写代码执行动作，或 ToolCallingAgent 结构化调用；Hub 集成</td><td data-l="时间">2024–2025 持续演进</td><td data-l="状态">活跃；教学首选之一</td></tr>
+      <tr><td data-l="框架"><b>Strands Agents SDK</b></td><td data-l="背景">AWS，Python</td><td data-l="定位">模型无关、一等 OpenTelemetry 追踪、AWS 深度集成</td><td data-l="时间">2025-05 发布</td><td data-l="状态">新兴</td></tr>
+      <tr><td data-l="框架"><b>Mastra</b></td><td data-l="背景">Mastra，TypeScript</td><td data-l="定位">TS 原生 AI 应用与长时自主系统</td><td data-l="时间">持续演进</td><td data-l="状态">活跃</td></tr>
+      <tr><td data-l="框架"><b>Agno</b>（原 PhiData）</td><td data-l="背景">独立</td><td data-l="定位">全栈：记忆、知识库、推理、20+ 现成工具、Web UI</td><td data-l="时间">持续演进</td><td data-l="状态">增长中</td></tr>
+      <tr><td data-l="框架"><b>LlamaIndex</b></td><td data-l="背景">LlamaIndex，Python / TS</td><td data-l="定位">数据框架出身：RAG / 检索 + Agent 工作流</td><td data-l="时间">持续演进</td><td data-l="状态">RAG 重场景的首选之一</td></tr>
+      <tr><td data-l="框架"><b>Meta</b></td><td data-l="背景">Meta</td><td data-l="定位"><b>未核实到统一的官方 Agent 框架</b>；布局主要在开放权重模型（Llama 系）与开放生态。2026-10-15 有二手称 Meta 发布 Muse Spark Open（816B / 42B-active MoE），<b>未核实，勿引用为定论</b></td><td data-l="时间">—</td><td data-l="状态">见第 5 章</td></tr>
+      <tr><td data-l="框架"><b>goose</b></td><td data-l="背景">Block，开源</td><td data-l="定位">本地优先的通用 Agent，可接任意 LLM</td><td data-l="时间">2025 年初发布</td><td data-l="状态">AAIF 创始项目<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="框架"><b>OpenHands / SWE-agent / mini-SWE-agent</b></td><td data-l="背景">开源社区 / 普林斯顿</td><td data-l="定位">研究型编码 Agent harness，基准基线</td><td data-l="时间">见 §1.6</td><td data-l="状态">活跃（研究 / 基线用途）</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>厂商托管 Agent 服务（2026 年形态）：</b>OpenAI Agents API（Codex harness 托管版，公开 beta）、Anthropic Claude Managed Agents（beta）、Google Gemini Enterprise Agent Platform（原 Vertex AI Agent Engine / Agentspace）、AWS Bedrock AgentCore、Azure AI Foundry Agent Service。共同趋势：<strong>harness 托管化 + 可观测性 / 治理内置</strong>，自建 harness 与托管之间的边界在 2026 年大幅前移。</p>
+
+  <h4 class="sub2">前沿模型快照（2026 年 9–10 月）</h4>
+  <div class="note note-amber"><b>注意：</b>下表仅见于二手汇总与追踪器，<strong>未对照厂商定价 / 模型卡页面核实</strong>，仅作选型背景；价格与分数一律以官方页面为准（见第 5 章第 1 条）。</div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>模型（发布）</th><th>关键参数（据二手）</th><th>定位</th></tr></thead>
+    <tbody>
+      <tr><td data-l="模型"><b>GPT-6 Astra</b>（OpenAI，2026-09-03）</td><td data-l="参数">约 1.05M 上下文，$10 / $50 每百万 token</td><td data-l="定位">最难问题的旗舰，成本最高</td></tr>
+      <tr><td data-l="模型"><b>Claude Opus 5.5</b>（Anthropic，2026-09-22）</td><td data-l="参数">1M 上下文，$4 / $20；自适应思考</td><td data-l="定位">编码 / Agent 的主力工作马</td></tr>
+      <tr><td data-l="模型"><b>Claude Fable 5.1</b>（Anthropic，2026-09）</td><td data-l="参数">顶级档，网络安全 / 生物等高风险域有护栏</td><td data-l="定位">最强档；另有受限的 Mythos 变体（二手）</td></tr>
+      <tr><td data-l="模型"><b>Gemini 3.8 Flash</b>（Google，2026-09-02 GA）</td><td data-l="参数">长时软件工程与自主 Agent 取向</td><td data-l="定位">成本敏感 / 实时场景</td></tr>
+      <tr><td data-l="模型"><b>Gemini 4 Argon / Carbon</b>（Google，2026-09-30 / 10-28 宣布）</td><td data-l="参数">引入价 $2 / $10（至 2026-11-30，二手）</td><td data-l="定位">企业知识工作；Carbon 的可调用性受限（二手）</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sub">3.3 编码 Agent（Agentic Coding）——最先跑通的形态</h3>
+  <ul class="tight">
+    <li><b>产品线：</b>Claude Code（终端，2025-02-24 预览，2025-05-22 GA）、OpenAI Codex（CLI 2025-04、云端 2025-05、GA 2025-10-06，含 Slack 委托与 Codex SDK）、GitHub Copilot Agent 模式（2025-02 VS Code agent mode、5 月编码 Agent）、Google Jules（2025-05）、Gemini CLI（2025-06 开源）、Cursor（IDE Agent 化：后台 Agent、云任务）、Devin（Cognition）、Qwen Code（阿里，2025-08）、OpenHands / goose（开源）<span class="tag tag-i">索引</span>。</li>
+    <li><b>为什么编码最先跑通：</b>环境可沙箱化、反馈可验证（编译 / 测试）、任务天然可分解、人类审查界面成熟（diff / PR）。2026 年 10 月的行业报告称 Claude Code 年化收入已过 $25 亿（厂商自报，二手）——数字本身需谨慎，但「harness 成为产品」的趋势是实的。</li>
+    <li><b>工作方式（以 Claude Code / Codex 为代表）：</b>读仓库 → 规划多文件改动 → 执行 shell / 编辑 → 运行测试 → 迭代；长会话依赖上下文压缩（compaction）、子 Agent 并行探索、技能包（skills）与项目指令（CLAUDE.md / AGENTS.md）；审查面在 2026 年独立成产品（Codex app 2026-02-02 监督多项目 Agent，二手）。</li>
+    <li><b>教学要点：</b>编码 Agent 的评估必须看<strong>端到端 PR 可合并率</strong>，而不只是基准通过率（见 §2.7）。</li>
+  </ul>
+
+  <h3 class="sub">3.4 浏览器 / 计算机操作 Agent（Browser &amp; Computer Use）</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>系统</th><th>时间</th><th>形态</th></tr></thead>
+    <tbody>
+      <tr><td data-l="系统"><b>Claude 计算机操作</b></td><td data-l="时间">2024-10-22 beta；2026-08 API GA（工具集 + 批量动作 + 缩放）；2026-03 起 Cowork / Claude Code 内研究预览</td><td data-l="形态">全桌面：截图 → 推理 → 鼠标 / 键盘动作（17 个动作，<code>computer_toolset_20260801</code>，二手）</td></tr>
+      <tr><td data-l="系统"><b>OpenAI Operator → ChatGPT agent</b></td><td data-l="时间">2025-01-23 Operator（CUA 模型，OSWorld 38.1%）；2025-07-17 并入 ChatGPT agent；Atlas 浏览器 2025-10，2026-08 折回 ChatGPT / Codex（二手）</td><td data-l="形态">以浏览器为主：虚拟机 + 可视浏览器 + 文本浏览器 + 终端</td></tr>
+      <tr><td data-l="系统"><b>Google Project Mariner → Gemini 2.5 Computer Use</b></td><td data-l="时间">Mariner 2024-12；Gemini 2.5 Computer Use 模型 2025-10 公开预览；Gemini Agent 2025-11</td><td data-l="形态">浏览器 + Android UI；Project Mariner、Firebase Testing Agent、AI Mode in Search 背后同一能力</td></tr>
+      <tr><td data-l="系统"><b>Browser Use（开源）等</b></td><td data-l="时间">2024–2025</td><td data-l="形态">开源浏览器 Agent 库，DOM / 截图混合路线</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note note-amber"><b>核心难点（至今未解）：</b>长流程状态保持、页面动态变化与选择器失效、弹窗 / 登录 / 支付等不可逆操作、视觉 grounding 精度（小元素点击）、每步截图的 token 成本。OSWorld 2.0 的 20%–31% 正是这一难度的量化体现。<b>工程对策：</b>API 优先、GUI 兜底；关键步骤用确定性脚本而非纯视觉；每步截图裁剪 / 缩放；操作前快照以便回滚；高风险动作必经 HITL。</div>
+
+  <h3 class="sub">3.5 语音 Agent（Voice Agents）</h3>
+  <div class="grid2">
+    <div class="card"><h4>级联管线（旧）</h4><p>STT → LLM → TTS，延迟 <b>1.2–2.2 秒</b>。Anthropic 截至 2026-10 的文档：Claude 无原生语音到语音 API，语音场景走此管线<span class="tag tag-i">索引</span>。</p></div>
+    <div class="card"><h4>端到端语音到语音（2026 生产默认）</h4><p>单模型音频进、音频出，延迟 <b>280–600ms</b> 量级。OpenAI Realtime API（2024 年末发布，2025 年 GA；模型 <code>gpt-realtime-2.1</code>，2026-10 快照）；Google Gemini Live API（2025；<code>gemini-3.8-live</code>，2026-10 快照）<span class="tag tag-i">索引</span>。</p></div>
+  </div>
+  <p><b>编排层：</b>Pipecat（Daily.co 开源）、LiveKit Agents；电话接入 via SIP（OpenAI 原生 SIP；Twilio / Telnyx 等伙伴）。<strong>语音 Agent 的第一性约束是延迟预算（300ms 级）</strong>，推理深度必须让位于首音延迟：常见做法是「快模型先开口 + 后台慢模型做工具 / 推理」双轨。</p>
+
+  <h3 class="sub">3.6 具身 / 机器人 Agent（Embodied &amp; Robot Agents）</h3>
+  <p><b>VLA（视觉-语言-动作）模型</b>成为机器人 foundation model 的标准形态：图像 + 语言指令 → 直接输出电机命令。</p>
+  <ul class="tight">
+    <li><b>Google DeepMind Gemini Robotics</b>（2025-03-12，基于 Gemini 2.0）+ Gemini Robotics-ER（具身推理）；<b>1.5</b>（2025-09-25）加入 Agent 式推理透明化；2026 年进入 2.x 世代（ER 1.6 2026-04-14，二手）<span class="tag tag-i">索引</span>。</li>
+    <li><b>NVIDIA Isaac GR00T</b>：N1（2025-03-18，首个开放、可定制的通用人形基础模型）→ N1.5（2025-05，GR00T-Dreams 合成数据）→ N1.6（2025-12-15）→ N1.7（2026-04，3B 参数开放 VLA）→ N2 预览（2026-03-16，二手）。</li>
+    <li><b>Figure Helix</b>（2025-02-20）：双系统——S2（7B+ VLM，任务理解，7–9Hz）+ S1（快速运动控制，200Hz）。</li>
+    <li><b>Physical Intelligence π0</b>（2025-02 开源）→ π0.5（2025-04-22）→ π0.6（2025-11）；<b>AgiBot GO-1</b>（2025-03-10）→ GO-2 / GO-3（2026）；<b>LeRobot / SmolVLA</b>（Hugging Face 开源路线）。</li>
+  </ul>
+  <div class="note note-amber"><b>现实校准：</b>2026 年 10–11 月的核查类综述一致指出：人形机器人是「真实产品但仍是早期工业工具」，已验证的部署集中在结构化物流与汽车产线（BMW 零件排序、GXO 仓库 tote 处理等），家庭通用助手仍是受监督的早期采用者利基。<strong>视频演示 ≠ 付费部署</strong>，学习时必须区分。</div>
+
+  <h3 class="sub">3.7 自进化 / 自改进 Agent 与世界模型</h3>
+  <div class="grid3">
+    <div class="card"><h4>(a) 权重内改进</h4><p>RL / SFT 用自身轨迹与环境奖励训练（agentic RL、RLVR）。</p></div>
+    <div class="card"><h4>(b) 支架内改进</h4><p>不改权重，改提示词、记忆、工具与工作流——Reflexion、ADAS（Automated Design of Agentic Systems，2024）、「语言 Agent 作为可优化图」（2024）。</p></div>
+    <div class="card"><h4>(c) 递归自修改</h4><p>Agent 改写自己的代码，并用基准验证后代。</p></div>
+  </div>
+  <ul class="tight">
+    <li><b>Darwin Gödel Machine（DGM，Sakana AI，2025-05）</b>：Agent 改写自身工具与工作流、在编码基准上评估后代、从不断增长的档案中分支进化；据报道 SWE-bench 从 20.0% 升至 50.0%、Polyglot 从 14.2% 升至 30.7%<span class="tag tag-i">索引，二手报道，实验为有界基准 + 固定底层模型</span>。其理论先驱是 Schmidhuber 的 Gödel Machine（2007，形式化证明改进有益才修改）；DGM 用<strong>经验验证替代形式证明</strong>，这是关键的方法论让步，也是其风险所在（奖励 hack、沙箱监督限度）。</li>
+    <li><b>2026 年综述：</b>《Self-Improvements in Modern Agentic Systems》调查（2026 年调查页，312 篇分类文献）将机制分为基础模型改进、支架改进、评估与基准三大枝<span class="tag tag-i">索引</span>。资源：<a href="https://selfimproving-agent.github.io/">selfimproving-agent.github.io</a></li>
+    <li><b>世界模型（World Models）：</b>学习「给定状态 + 动作 → 下一状态」的神经模拟器，让 Agent 在脑中预演而非在真实世界试错。<b>Genie 3</b>（Google DeepMind，<b>2025-08-05</b>）：单文本提示生成可实时导航的 3D 环境，720p、24fps、数分钟内保持一致；用于训练 / 测试 SIMA Agent；2026-01-29 起通过 Project Genie 向美国 AI Ultra 订阅者开放，5 月扩展全球<span class="tag tag-i">索引</span>。官方：<a href="https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models">deepmind.google/blog/genie-3-a-new-frontier-for-world-models</a></li>
+    <li><b>Genie 4</b>（2026-10-27，研究预览）：更丰富的实时操控、更真实的物理与人体运动、原生音频、与 Gemini 协同的复杂事件<span class="tag tag-i">索引</span>。其他：NVIDIA Cosmos、World Labs Atlas、Runway GWM-1（2025-12-11）。<b>限度：</b>Genie 3 官方自述局限为动作空间有限、多 Agent 交互困难、交互仅维持数分钟；世界模型的漂移（drift）仍是瓶颈。</li>
+  </ul>
+
+  <h3 class="sub">3.8 Agentic 搜索与深度研究（Deep Research）</h3>
+  <div class="tl">
+    <div class="tl-item"><div class="tl-date">2024-12-11</div><h4>Google Gemini Deep Research</h4><p>首个主流深度研究产品（Gemini Advanced）。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-02-02</div><h4>OpenAI Deep Research</h4><p>o3 的专用版本，「端到端 RL 训练于困难浏览与推理任务」，HLE 26.6% 带工具、BrowseComp 51.5%。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-02-14</div><h4>Perplexity Deep Research</h4><p>搜索产品跟进。</p></div>
+    <div class="tl-item"><div class="tl-date">2025-05-07</div><h4>Anthropic Claude Research</h4><p>网络搜索 GA 配套上线。</p></div>
+  </div>
+  <p><b>工作方式：</b>规划多步调查 → 数十次搜索 / 阅读 → 交叉验证 → 带引用长报告；单次运行 5–60 分钟（Google 公布预算：多数 20 分钟内、上限 60 分钟，二手）。</p>
+  <p><b>基准：</b>BrowseComp（1,266 题，OpenAI 2025-04，arXiv:2504.12516）：人类训练员 2 小时内仅解出 29.2%；Deep Research 51.5% vs GPT-4o 无浏览 0.6%<span class="tag tag-i">索引</span>。Humanity's Last Exam（HLE）带工具分数是另一常用标尺。<b>注意：</b>厂商模型卡上 90%+ 的 BrowseComp 分数多为自有配置，与 Kaggle 独立榜（2026-03 最高 Gemini 3.1 Pro Preview 31.2%）口径不同，不可混比<span class="tag tag-i">索引</span>。</p>
+  <p><b>开源 / 开放权重进展：</b>Tongyi DeepResearch（30B，HLE 32.9%、GAIA 70.9%，二手报道）与 Kimi-Researcher 表明深度研究能力正在通过 agentic RL 扩散到开放模型。</p>
+
+  <h3 class="sub">3.9 安全、对齐、提示注入、沙箱、权限与治理</h3>
+  <h4 class="sub2">3.9.1 威胁模型：为什么 Agent 安全 ≠ 聊天机器人安全</h4>
+  <p>Agent 把「模型输出」变成「真实动作」，且动作以<strong>用户的权限</strong>执行。致命三要素（lethal trifecta）：<strong>不可信指令源 + 私有数据 + 有副作用的能力</strong>三者交汇。传统应用安全假设「代码是沙箱的单位」；Agent 时代，代码 benign、API 已认证、容器配置正确，Agent 仍可能因被操纵的<strong>动作序列</strong>而泄密或越权<span class="tag tag-i">索引</span>。</p>
+  <div class="fig" role="img" aria-label="致命三要素图：不可信指令源、私有数据、有副作用的能力三者交汇处即高危区">
+    <div class="loop-row">
+      <div class="loop-step" style="border-color:var(--red)"><b>不可信指令源</b><span>网页、邮件、文件、工具返回、记忆、他 Agent 消息</span></div>
+      <div class="loop-step" style="border-color:var(--red)"><b>私有数据</b><span>以用户权限可读的一切数据</span></div>
+      <div class="loop-step" style="border-color:var(--red)"><b>有副作用的能力</b><span>发送、支付、删除、发布、改生产</span></div>
+    </div>
+    <div class="fig-cap">图 5 · Lethal Trifecta：三者同时出现即高危。防御的目标是至少切断其中一条边（隔离输入、最小化数据访问、或给副作用加审批门）。</div>
+  </div>
+
+  <h4 class="sub2">3.9.2 已证实的攻击与事件（必读案例）</h4>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>事件 / 研究</th><th>时间</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td data-l="事件"><b>InjecAgent</b>（ACL Findings 2024）</td><td data-l="时间" class="num">2024</td><td data-l="内容">ReAct + GPT-4 在 1,054 个用例中间接提示注入成功率 24%，强化攻击指令后近翻倍<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="事件"><b>AgentDojo</b>（NeurIPS 2024）</td><td data-l="时间" class="num">2024</td><td data-l="内容">97 个真实任务、629 个安全用例，形式化「不可信数据下的 Agent」评估<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="事件"><b>MCP 工具投毒</b>（Invariant Labs）</td><td data-l="时间" class="num">2025</td><td data-l="内容">恶意 MCP 服务器 + 合法 WhatsApp MCP 组合，零用户批准静默外泄全部聊天记录；隐藏指令窃取 SSH 密钥 / 配置<span class="tag tag-i">索引，二手</span></td></tr>
+      <tr><td data-l="事件"><b>EchoLeak / CVE-2025-32711</b></td><td data-l="时间" class="num">2025</td><td data-l="内容">微软 365 Copilot <b>零点击</b>数据外泄：单封精心构造的邮件、无需用户交互，CVSS 9.3<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="事件"><b>AgentVigil</b>（arXiv 2025）</td><td data-l="时间" class="num">2025</td><td data-l="内容">自动化黑盒 fuzz，在 AgentDojo 上 71%、VWA-adv 上 70% 攻击成功（o3-mini / GPT-4o Agent）<span class="tag tag-i">索引</span></td></tr>
+      <tr><td data-l="事件"><b>BodySnatcher / CVE-2025-12420</b></td><td data-l="时间">2026-01（二手）</td><td data-l="内容">仅凭目标邮箱冒充管理员、操纵 ServiceNow AI Agent 创建后门账户，绕过 MFA / SSO<span class="tag tag-i">索引，二手</span></td></tr>
+      <tr><td data-l="事件"><b>MCP 服务器实现审计</b>（Elastic）</td><td data-l="时间" class="num">2025</td><td data-l="内容">43% 含命令注入缺陷、30% 允许无限制 URL 获取<span class="tag tag-i">索引，二手</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h4 class="sub2">3.9.3 防御分层（没有银弹，只有层叠）</h4>
+  <ol class="tight">
+    <li><b>权限最小化与身份：</b>每个 Agent 独立身份、作用域委托凭证（scoped delegation）、按动作授权；绝不共享人类账户；工具白名单。</li>
+    <li><b>沙箱与隔离：</b>代码 / 浏览器 / 文件操作一律在隔离沙箱（容器 / 微 VM）中执行；网络出口控制（egress allowlist）；敏感目录只读挂载或不可见。</li>
+    <li><b>审批门（Approval gates）：</b>不可逆 / 高影响动作（支付、删除、发送、发布、改生产）必须 HITL；审批界面必须展示<strong>完整动作与参数</strong>，而非模型摘要。</li>
+    <li><b>输入处理：</b>把工具返回、网页、文件、记忆、他 Agent 消息一律视为<strong>数据而非指令</strong>；结构化分隔（角色 / 通道隔离）、对高风险工具结果做净化与来源标注；注意「模型级防御不是安全边界」——分类器护栏均有已发表绕过。</li>
+    <li><b>信息流控制：</b>实验性方向——CaMeL、Fides、SAMOS 等用能力（capability）与信息流标签约束数据跨边界流动；生产上先用「工具代理（broker）+ 策略」近似。</li>
+    <li><b>可观测性与熔断：</b>全轨迹记录、异常动作告警、每任务超时 / 预算熔断、一键 kill switch、事后审计日志不可篡改。</li>
+    <li><b>对抗评估：</b>把 AgentDojo / AgentVigil 式红队纳入 CI；把 Agent 视为「已被攻陷」来设计测试。</li>
+  </ol>
+
+  <h4 class="sub2">3.9.4 标准与法规</h4>
+  <ul class="tight">
+    <li><b>OWASP Top 10 for Agentic Applications（ASI01–ASI10），2025-12-09 发布</b>：Agent 目标劫持、工具误用与利用、身份与权限滥用、Agent 供应链入侵、意外代码执行、记忆与上下文投毒、不安全的 Agent 间通信、级联故障、人-Agent 信任利用、rogue agent<span class="tag tag-i">索引</span>。另有 OWASP LLM Top 10（2025 版；2026 版 2026-08 发布）与 MITRE ATLAS v5.4.0（2026-02，新增 Agent 技术）形成「攻击类—技术」两层词汇。</li>
+    <li><b>EU AI Act（欧盟人工智能法案）：</b>风险分级监管；禁止性实践与 AI 素养义务自 2025-02 起；通用 AI 模型义务自 2025-08 起；透明度义务（第 50 条）自 <b>2026-08-02</b> 起；高风险义务被 2026 年《数字综合法案》（Digital Omnibus，2026-07-27 生效）推迟至 <b>2027-12-02</b>（独立 Annex III 系统）与 <b>2028-08-02</b>（嵌入受监管产品）<span class="tag tag-i">索引，二手法规汇总，引用前请核 EUR-Lex</span>。美国层面：纽约市招聘工具年度偏见审计、科罗拉多 SB 26-189（2027-01-01 起）等州级规则并行。</li>
+    <li><b>治理落地清单：</b>Agent 清单与负责人（owner）、风险分级、数据分类映射、审批矩阵、日志保留、事件响应 playbook、定期红队。微软 2026-04-02 开源的 Agent Governance Toolkit（七包运行时安全框架，映射 OWASP 全部 10 项，二手）是可参考的实现范式之一。</li>
+  </ul>
+</section>
+
+<!-- ================= CH 4 ================= -->
+<section class="chapter" id="ch4">
+  <div class="ch-head"><div class="ch-num">4</div><div><h2>工程实践：技术栈、设计决策、失败模式、可观测性与成本、学习路径</h2><p>把前三章变成能落地的系统：2026 年的生产配方、排障手册，以及一条照着走的 4–8 周路径。</p></div></div>
+
+  <h3 class="sub">4.1 典型技术栈（2026 年生产配方）</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>层</th><th>选件（示例）</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td data-l="层"><b>模型层</b></td><td data-l="选件">旗舰推理模型（Opus / GPT / Gemini 档）+ 快 / 便宜模型（Haiku / Flash / mini 档）+ 本地 / 开放模型（Qwen / Llama via Ollama / vLLM）</td><td data-l="说明">路由：难任务用强模型，分类 / 摘要 / 复核用弱模型</td></tr>
+      <tr><td data-l="层"><b>编排 / Harness</b></td><td data-l="选件">LangGraph / ADK / Agents SDK / Claude Agent SDK / Microsoft Agent Framework（按栈选一）+ 自写薄循环（教学 / 极简场景）</td><td data-l="说明">状态、检查点、中断是必选项</td></tr>
+      <tr><td data-l="层"><b>工具层</b></td><td data-l="选件">MCP 服务器（FastMCP 等）+ 原生函数工具 + 代码执行沙箱（E2B / 容器 / 微 VM）+ 浏览器（Playwright / 专用 Agent 浏览器）</td><td data-l="说明">MCP 网关做鉴权、限流与审计</td></tr>
+      <tr><td data-l="层"><b>检索 / 记忆层</b></td><td data-l="选件">向量库（pgvector / 专用向量库）+ 关键词 / 图混合 + 文档存储 + 记忆服务（Letta / Zep / Mem0 或自建 Postgres + 图）</td><td data-l="说明">检索质量 = 分块 + 重排 + 评估集</td></tr>
+      <tr><td data-l="层"><b>状态 / 持久化</b></td><td data-l="选件">Postgres（检查点 / 任务）+ Redis（队列 / 缓存）+ 对象存储（产物 / 轨迹）</td><td data-l="说明">长时运行必须可断点续跑</td></tr>
+      <tr><td data-l="层"><b>可观测性</b></td><td data-l="选件">LangSmith / Langfuse / Arize Phoenix / Braintrust / Datadog + OpenTelemetry</td><td data-l="说明">轨迹、评估、成本三位一体（§4.3）</td></tr>
+      <tr><td data-l="层"><b>部署</b></td><td data-l="选件">容器 + 编排（K8s / Cloud Run）或托管 Agent 运行时（AgentCore / Foundry / Gemini Enterprise）</td><td data-l="说明">沙箱是部署的一等公民</td></tr>
+      <tr><td data-l="层"><b>评估</b></td><td data-l="选件">离线基准（§2.7）+ 自建任务集 + LLM-as-judge + 人工抽检</td><td data-l="说明">评估集随产品演进，版本化管理</td></tr>
+      <tr><td data-l="层"><b>安全</b></td><td data-l="选件">审批服务、策略引擎、密钥管理、egress 代理、审计日志</td><td data-l="说明">见 §3.9</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sub">4.2 关键设计决策与失败模式</h3>
+  <h4 class="sub2">决策清单（每个决策都要有评估证据支撑）</h4>
+  <ol class="tight">
+    <li><b>Agent vs 工作流 vs 单次调用：</b>任务是否需要多步、环境反馈、错误恢复？不需要就不要用 Agent——单次调用 + 确定性代码更便宜、更可靠。</li>
+    <li><b>自主度（Autonomy）梯度：</b>建议 → 草稿 → 需批准执行 → 自主执行（限作用域）。按动作风险分级，而非按 Agent 一刀切。</li>
+    <li><b>上下文策略：</b>摘要 / 压缩、子 Agent 隔离上下文、按需加载技能、工具结果截断与结构化。1M 上下文不是「全塞进去」的许可证——「迷失中间」与成本随长度增长。</li>
+    <li><b>工具粒度与数量：</b>10 个好工具 &gt; 100 个平庸工具；工具描述即提示词。</li>
+    <li><b>状态建模：</b>显式状态机 / 图（LangGraph）vs 隐式对话历史（简单 SDK）。长时、多分支、需审计的任务选前者。</li>
+    <li><b>失败恢复：</b>幂等工具设计、检查点续跑、死信队列、人工接管路径。</li>
+  </ol>
+  <h4 class="sub2">常见失败模式表（排障手册）</h4>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>失败模式</th><th>症状</th><th>根因</th><th>对策</th></tr></thead>
+    <tbody>
+      <tr><td data-l="模式"><b>无限 / 重复循环</b></td><td data-l="症状">同一动作重试数十次，token 烧光</td><td data-l="根因">无进展检测、无步数上限、错误信息不可行动</td><td data-l="对策">步数 / 预算上限、重复检测、进展评估器</td></tr>
+      <tr><td data-l="模式"><b>工具参数幻觉</b></td><td data-l="症状">参数格式错、编造 ID / 路径</td><td data-l="根因">Schema 不清、缺少示例、无校验</td><td data-l="对策">Pydantic / JSON Schema 校验、参数示例、重试时附错误</td></tr>
+      <tr><td data-l="模式"><b>上下文溢出 / 截断</b></td><td data-l="症状">关键指令或检索文档悄悄丢失</td><td data-l="根因">无压缩策略、无优先级</td><td data-l="对策">分层记忆、摘要、检查点、截断告警</td></tr>
+      <tr><td data-l="模式"><b>检索失败</b></td><td data-l="症状">引用不相关或过时文档</td><td data-l="根因">分块 / 嵌入 / 查询不当、无重排</td><td data-l="对策">混合检索、重排、引用校验、评估集</td></tr>
+      <tr><td data-l="模式"><b>目标漂移</b></td><td data-l="症状">Agent 做了用户没要求的事</td><td data-l="根因">指令层级混乱、被注入内容带偏</td><td data-l="对策">意图契约、审批、轨迹审计</td></tr>
+      <tr><td data-l="模式"><b>静默质量退化</b></td><td data-l="症状">全部返回 200，但答案变差</td><td data-l="根因">提示词 / 模型变更无回归评估</td><td data-l="对策">固定评估集 + 在线采样 + 漂移告警</td></tr>
+      <tr><td data-l="模式"><b>工具级联故障</b></td><td data-l="症状">一个工具挂了，整个多 Agent 系统垮掉</td><td data-l="根因">无超时 / 熔断 / 降级</td><td data-l="对策">超时、重试预算、熔断、降级路径</td></tr>
+      <tr><td data-l="模式"><b>成本爆炸</b></td><td data-l="症状">单会话 $0.01–$5 不等，无归因</td><td data-l="根因">无 per-trace 成本、循环无预算</td><td data-l="对策">预算熔断、模型路由、缓存、采样追踪</td></tr>
+      <tr><td data-l="模式"><b>权限越界</b></td><td data-l="症状">读了不该读的、写了不该写的</td><td data-l="根因">过度授权、共享凭证</td><td data-l="对策">最小权限、独立身份、沙箱</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sub">4.3 可观测性 / 追踪与评估运营</h3>
+  <div class="fig" role="img" aria-label="三层评估模型图：离线评估、在线评估、人工评估三层并行">
+    <div class="loop-row">
+      <div class="loop-step"><b>(1) 离线评估</b><span>基准 + 自建任务集，CI 门禁</span></div>
+      <div class="loop-step"><b>(2) 在线评估</b><span>生产流量采样，LLM-as-judge + 启发式检查</span></div>
+      <div class="loop-step"><b>(3) 人工评估</b><span>标注队列、抽检、红队</span></div>
+    </div>
+    <div class="fig-cap">图 6 · 三层评估模型，三层缺一不可。轨迹（Trace）的数据模型：一次用户请求 → 一棵 span 树（LLM 调用、工具调用、子 Agent、检索步骤），每 span 带输入 / 输出、token、成本、延迟、评分。</div>
+  </div>
+  <ul class="tight">
+    <li><b>工具对比（2026-10 核查）：</b>LangSmith（LangChain 出品，追踪 + 评估 + 告警，Agent Server 运行时，自托管为企业版）；Langfuse（开源 MIT，核心功能可自托管，Postgres + ClickHouse + Redis + S3）；Arize Phoenix（开源，追踪 + 评估）；Braintrust；Datadog Agent Observability（与 APM / 安全工具同处）；Trigger.dev（执行可观测性：尝试、重试、等待、HITL 状态）。</li>
+    <li><b>选型要点：</b>「LLM 调用可观测」与「运行可观测」是两回事——前者解释坏答案，后者解释「好答案之后运行为何死了」；两者都要。</li>
+    <li><b>成本 / 延迟权衡（量化直觉）：</b>① 推理预算调高 → 质量升、延迟与成本同升，语音场景必须调低或双轨；② 长上下文 ≠ 好效果，缓存命中率（prompt caching）是 2026 年成本优化的第一杠杆；③ 模型路由：80% 的步骤用小模型、20% 的关键步骤用大模型，是常见成本结构；④ 并行子 Agent 省墙钟时间、花更多 token，批量工具调用省往返；⑤ 全量追踪成本高，生产用采样 + 错误全采 + 关键用户全采。</li>
+  </ul>
+
+  <h3 class="sub">4.4 学习路径（4 阶段，4–8 周，每周数小时）</h3>
+  <div class="note note-teal"><b>路径原则：</b>先手写循环理解原理，再用框架；先单 Agent 跑通评估，再碰多 Agent；每阶段产出一个可运行、可评估的 Agent，而不是只看视频。</div>
+  <div class="path">
+    <div class="path-step"><div class="ph">STAGE 0 · 1 晚</div><h4>概念</h4><ul><li>读 Anthropic《Building effective agents》（2024-12）与 LangChain 1.0 博文（<code>create_agent</code> 循环定义）<span class="tag tag-i">索引</span>：<a href="https://www.langchain.com/blog/langchain-langgraph-1dot0">langchain.com/blog/langchain-langgraph-1dot0</a></li><li>精读 ReAct 论文摘要与图：<a href="https://arxiv.org/abs/2210.03629v1">arxiv.org/abs/2210.03629v1</a></li></ul></div>
+    <div class="path-step"><div class="ph">STAGE 1 · 第 1–2 周</div><h4>基础 + 手写循环</h4><ul><li><b>Hugging Face AI Agents Course</b>（免费，含免费证书；smolagents、LangGraph、LlamaIndex；最终作业是在基准上建 Agent）：<a href="https://huggingface.co/learn/agents-course/en/unit0/introduction">huggingface.co/learn/agents-course</a></li><li>smolagents 向导：<a href="https://huggingface.co/docs/smolagents/guided_tour">huggingface.co/docs/smolagents/guided_tour</a></li><li><b>动手作业：</b>不用框架，用一个模型 API + 2 个工具手写 §2.1 的 while 循环，亲手踩到循环、解析、重试、预算上限四个坑。</li><li><b>Microsoft AI Agents for Beginners</b>（GitHub，18 课，免费，MIT）：见课程汇总页（第 6 章）。</li></ul></div>
+    <div class="path-step"><div class="ph">STAGE 2 · 第 2–3 周</div><h4>模式与评估</h4><ul><li><b>DeepLearning.AI《Agentic AI》</b>（Andrew Ng，约 10 小时：反思、工具使用、规划、多 Agent、评估）与短课程《AI Agents in LangGraph》《Practical Multi AI Agents with crewAI》<span class="tag tag-i">索引，二手课程对比</span>。</li><li><b>论文精读顺序：</b>ReAct → Reflexion → Generative Agents → SWE-agent → Tree-of-Thoughts → MemGPT → RAG；另读记忆综述（arXiv:2404.13501）与自改进综述站。</li><li><b>动手作业：</b>给第 1 阶段的 Agent 建 20 个任务的评估集 + LLM-as-judge，跑通「改提示词 → 分数变化」的回归闭环。</li></ul></div>
+    <div class="path-step"><div class="ph">STAGE 3+ · 第 3 周起</div><h4>一个生产级 SDK + 持续跟踪</h4><ul><li>按技术栈只选其一，读官方文档与 quickstart 到能部署（下表）。</li><li><b>毕业项目三选一：</b>(a) 编码 Agent：issue → PR + 测试报告，自评人工审查合并率；(b) 研究 Agent：带引用的深度调研，人工核查引用真实性；(c) 企业 Agent：MCP 接入内部 API + 审批门 + 全轨迹可观测，跑 AgentDojo 式注入测试。</li><li><b>基准实操：</b>在 SWE-bench Pro / Terminal-Bench / τ-bench 中至少跑通一个官方 harness。</li><li><b>第 4 阶段（每月 1–2 小时）：</b>跟协议博客、框架 changelog、OWASP Agentic Top 10 更新与仍有区分度的基准榜单。</li></ul></div>
+  </div>
+  <h4 class="sub2">第 3 阶段：按栈选官方入口（本次核实到的 URL）</h4>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>栈</th><th>官方入口（本次核实到的 URL）</th></tr></thead>
+    <tbody>
+      <tr><td data-l="栈"><b>LangChain / LangGraph</b></td><td data-l="入口">博文与 <code>create_agent</code> 定义：<a href="https://www.langchain.com/blog/langchain-langgraph-1dot0">langchain.com/blog/langchain-langgraph-1dot0</a>；LangChain Academy 课程（见课程对比页）</td></tr>
+      <tr><td data-l="栈"><b>Claude / Anthropic</b></td><td data-l="入口">Agent SDK 文档：<a href="https://code.claude.com/docs/en/agent-sdk/claude-code-features">code.claude.com/docs/en/agent-sdk/claude-code-features</a>；MCP 规范：<a href="https://modelcontextprotocol.io/specification/2026-07-28/changelog">modelcontextprotocol.io/specification/2026-07-28/changelog</a></td></tr>
+      <tr><td data-l="栈"><b>OpenAI</b></td><td data-l="入口">Agents API 介绍：<a href="https://openai.com/index/introducing-the-agents-api/?ref=blog.svil.dev">openai.com/index/introducing-the-agents-api</a>；A2A 博客：<a href="https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/">developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability</a></td></tr>
+      <tr><td data-l="栈"><b>Google ADK</b></td><td data-l="入口">ADK 讲解与演进（GitHub）：<a href="https://github.com/2nth-ai/know-2nth/blob/HEAD/google-adk-explainer.md">github.com/2nth-ai/know-2nth — google-adk-explainer.md</a>（非官方，二手）；官方文档请从 Google Cloud 搜索「Agent Development Kit」进入，<b>本次未直接核实官方文档 URL，不在此臆造</b></td></tr>
+      <tr><td data-l="栈"><b>Microsoft</b></td><td data-l="入口">Agent Framework 对比与迁移（2026-11 核查）：<a href="https://www.techitional.com/compare/microsoft-agent-framework-vs-semantic-kernel/">techitional.com/compare/microsoft-agent-framework-vs-semantic-kernel</a>（非官方）；官方文档在 learn.microsoft.com 的 Agent Framework 板块（本次未直接核实深链）</td></tr>
+      <tr><td data-l="栈"><b>Hugging Face / 开源</b></td><td data-l="入口"><a href="https://huggingface.co/docs/smolagents/guided_tour">huggingface.co/docs/smolagents/guided_tour</a></td></tr>
+    </tbody>
+  </table></div>
+  <div class="note note-amber"><b>中文学习者补充：</b>本指南的英文一手来源（论文、官方文档、基准站）是必读的；中文二手综述可作地图，但关键日期、分数与价格必须回查英文原文。建议用「英文术语 + 中文解释」的双语笔记法，避免翻译造成的概念漂移（如 harness、ACI、grounding、pass^k 等术语保留英文）。</div>
+</section>
+
+<!-- ================= CH 5 ================= -->
+<section class="chapter" id="ch5">
+  <div class="ch-head"><div class="ch-num">5</div><div><h2>无法核实 / 不确定事项</h2><p>以下内容在调研中未能核实或存在口径冲突，引用前必须回查一手来源。本章如实保留，不做裁决。</p></div></div>
+  <ol class="tight">
+    <li><b>2026 年 9–10 月前沿模型（GPT-6 Astra、Claude Opus 5.5 / Fable 5.1、Gemini 4 Argon / Carbon）的价格、上下文与基准分</b>：仅见于二手汇总与追踪器（如 <a href="https://www.anshgupta.in/blog/ai-models-for-developers-2026">anshgupta.in/blog/ai-models-for-developers-2026</a>、<a href="https://explainx.ai/blog/gemini-4-carbon-vs-claude-opus-5-5-vs-gpt-6-astra-vs-grok-4-7-comparison-2026">explainx.ai 对比文</a>），本次未打开厂商定价 / 模型卡页面逐项核实。<b>§3.2 的模型表仅作背景，不可直接引用报价。</b>另有 GPT-6.1 Terra、DeepSeek V4.1-Flash Cyber、Muse Spark Open 等 2026-10 中下旬条目被追踪器明确标注「未核实」，本指南未将其作为事实陈述。</li>
+    <li><b>OSWorld 2.0 最高分口径冲突</b>：一处二手榜单称 Opus 4.8 为 20.6%（2026-06 论文，500 步），另一处称 Opus 5 为 31.4%（2026-08 版）。两者版本、模型、日期均不同，本指南并列呈现，未做裁决；引用时须注明版本与日期。</li>
+    <li><b>SWE-bench Verified 停报的具体审计数字</b>（「59.4% 的 138 个受审问题存在缺陷」等）：见于 2026-11 的二手综述（<a href="https://rillor.com/insights/what-agent-benchmarks-measure">rillor.com/insights/what-agent-benchmarks-measure</a>），未核实原始审计报告。定性结论（测试缺陷 + 污染导致停报）有多个二手来源一致，数字本身存疑。</li>
+    <li><b>A2A v1.0（2026-03）与 ADK 2.0 GA（2026-05-19）的确切日期</b>：见于二手框架综述，未对照官方发布博文核实；A2A 的 2025-04-09 发布与 2025-06 捐赠则有 Google 官方博客支撑，置信度高。</li>
+    <li><b>Meta 的 Agent 框架布局</b>：本次检索未发现 Meta 官方的统一 Agent 框架；仅有开放权重模型与零散生态的二手说法。指南中未为 Meta 单列框架，避免臆造。</li>
+    <li><b>Google ADK、Microsoft Agent Framework、OpenAI Agents SDK 的官方文档深层 URL</b>：本次未在实时浏览器中打开这些文档页，故学习路径中未臆造深链，仅给出已核实的博客 / 对比页与「从官网搜索进入」的指引。</li>
+    <li><b>EU AI Act 推迟日期与 OWASP 2026 版细节</b>：引自 2026 年的法规 / 安全汇总页，未对照 EUR-Lex 与 OWASP 官网逐条核实；合规决策前必须由法务复核原文。</li>
+    <li><b>个别 2026 年 11 月极新动态</b>（OpenAI Agents SDK 的 Codex harness alpha、Agent Skills 加入 AAIF 的成员数 305 家等）：距调研日仅数日，二手来源单一，置信度中等，已在正文中标注。</li>
+    <li><b>Harness 换装实验（23%→52%）与「18 个真实 issue 上 38%、15 个 PR 无一可合并」</b>：见于二手综述 / 报告，未核实原始实验；用作「基准 ≠ 生产」的例证时应注明来源性质。</li>
+    <li><b>本指南未做任何基准实跑</b>：所有分数均为文献 / 榜单转述，未独立复现。教学引用时应说明这一点。</li>
+  </ol>
+</section>
+
+<!-- ================= CH 6 ================= -->
+<section class="chapter" id="ch6">
+  <div class="ch-head"><div class="ch-num">6</div><div><h2>来源总表</h2><p>按主题分组；每个 URL 均抄自本次调研搜索结果的原文清单或实时浏览器地址栏，未改写。[实时] = 2026-11-22 在研究浏览器中打开并读到；其余为索引核实。</p></div></div>
+  <div class="src-tools">
+    <input type="search" id="srcSearch" placeholder="筛选来源：输入关键词，如 MCP、SWE、课程…" aria-label="筛选来源链接">
+  </div>
+  <p><small id="srcCount"></small></p>
+
+  <div class="src-group"><h4>6.1 协议与标准</h4><ul>
+    <li><span class="sname">MCP 2026-07-28 规范变更页 [实时]：</span><a href="https://modelcontextprotocol.io/specification/2026-07-28/changelog">modelcontextprotocol.io/specification/2026-07-28/changelog</a></li>
+    <li><span class="sname">MCP 2026-07-28 发布博文：</span><a href="https://blog.modelcontextprotocol.io/posts/2026-07-28/">blog.modelcontextprotocol.io/posts/2026-07-28</a></li>
+    <li><span class="sname">MCP 2026-07-28 RC 博文：</span><a href="https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/">blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate</a></li>
+    <li><span class="sname">MCP TypeScript SDK 协议版本页：</span><a href="https://ts.sdk.modelcontextprotocol.io/v2/protocol-versions">ts.sdk.modelcontextprotocol.io/v2/protocol-versions</a></li>
+    <li><span class="sname">MCP Java SDK 概览：</span><a href="https://java.sdk.modelcontextprotocol.io/2.2.0/overview/">java.sdk.modelcontextprotocol.io/2.2.0/overview</a></li>
+    <li><span class="sname">A2A 发布博文（Google Developers Blog，2025-04-09）：</span><a href="https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/">developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability</a></li>
+    <li><span class="sname">MCP vs A2A 对比：</span><a href="https://atlan.com/know/mcp/mcp-vs-a2a-protocol/">atlan.com/know/mcp/mcp-vs-a2a-protocol</a></li>
+    <li><span class="sname">MCP 维基百科（发布日期、捐赠）：</span><a href="https://en.wikipedia.org/wiki/Model_Context_Protocol">en.wikipedia.org/wiki/Model_Context_Protocol</a></li>
+    <li><span class="sname">MCP 历史时间线：</span><a href="https://www.taskade.com/blog/mcp-protocol-history">taskade.com/blog/mcp-protocol-history</a></li>
+    <li><span class="sname">协议综述（MCP / A2A / ACP / AG-UI / ANP）：</span><a href="https://openstandardagents.org/research/agent-communication-protocol-survey/">openstandardagents.org/research/agent-communication-protocol-survey</a></li>
+    <li><span class="sname">多 Agent 通信协议 2026：</span><a href="https://zylos.ai/research/2026-01-12-multi-agent-communication/">zylos.ai/research/2026-01-12-multi-agent-communication</a></li>
+    <li><span class="sname">协议参考（含 ACP 歧义辨析）：</span><a href="https://github.com/tikazyq/agent-landscape/blob/HEAD/docs/PROTOCOLS.md">github.com/tikazyq/agent-landscape — docs/PROTOCOLS.md</a></li>
+    <li><span class="sname">Agent 基础设施清单（含协议分层）：</span><a href="https://github.com/chgaowei/ai-agent-infra-list/blob/HEAD/ai-agent-infra-list.md">github.com/chgaowei/ai-agent-infra-list</a></li>
+    <li><span class="sname">Agentic AI Foundation（AI Wiki）：</span><a href="https://aiwiki.ai/wiki/agentic_ai_foundation">aiwiki.ai/wiki/agentic_ai_foundation</a></li>
+    <li><span class="sname">Agentic AI Foundation（CloudParts，2026-10-28 核查）：</span><a href="https://cloudparts.dev/foundations/agentic-ai-foundation/">cloudparts.dev/foundations/agentic-ai-foundation</a></li>
+    <li><span class="sname">协议与互操作标准（AI 概念书）：</span><a href="https://github.com/shajibghosh/ai-concept-book/blob/HEAD/book/03-protocols-and-interoperability-standards.md">github.com/shajibghosh/ai-concept-book — 03-protocols</a></li>
+    <li><span class="sname">Agent 协议总览（2026-09-30 复核）：</span><a href="https://ai.noblerworks.com/explainers/ecosystem/agent-protocols/">ai.noblerworks.com/explainers/ecosystem/agent-protocols</a></li>
+  </ul></div>
+
+  <div class="src-group"><h4>6.2 奠基论文（arXiv）</h4><ul>
+    <li><span class="sname">ReAct：</span><a href="https://arxiv.org/abs/2210.03629v1">arxiv.org/abs/2210.03629v1</a>（PDF：<a href="https://arxiv.org/pdf/2210.03629">arxiv.org/pdf/2210.03629</a>）</li>
+    <li><span class="sname">SWE-agent：</span><a href="https://arxiv.org/html/2405.15793">arxiv.org/html/2405.15793</a></li>
+    <li><span class="sname">记忆综述（2022–2026，arXiv 2026）：</span><a href="http://arxiv.org/pdf/2603.07670v1">arxiv.org/pdf/2603.07670v1</a></li>
+    <li><span class="sname">其余 arXiv ID</span>（CoT 2201.11903、自洽 2203.11171、MRKL 2205.00445、Toolformer 2302.04761、Reflexion 2303.11366、Generative Agents 2304.03442、Tree-of-Thoughts 2305.10601、Voyager 2305.16291、RAG 2005.11401、MemGPT 2310.08560、DQN 1312.5602）均以 <code>https://arxiv.org/abs/&lt;id&gt;</code> 访问；论文深读汇总见：<a href="https://ai.zenoagi.com/agent/papers/core-papers">ai.zenoagi.com/agent/papers/core-papers</a></li>
+  </ul></div>
+
+  <div class="src-group"><h4>6.3 历史与综述</h4><ul>
+    <li><span class="sname">Agent 简史（SHRDLU → Agent 循环，2026）：</span><a href="https://www.taskade.com/blog/ai-agents-history">taskade.com/blog/ai-agents-history</a></li>
+    <li><span class="sname">Agent 简史（60 年 + 2023 爆发）：</span><a href="https://ai.zenoagi.com/agent/guide/history">ai.zenoagi.com/agent/guide/history</a></li>
+    <li><span class="sname">Agent 部件演变史（失败驱动）：</span><a href="https://agenticthinking.ai/blog/the-agent-parts-that-outlast-the-model/">agenticthinking.ai/blog/the-agent-parts-that-outlast-the-model</a></li>
+    <li><span class="sname">编码 Agent 史（时间线）：</span><a href="https://agents.anipotts.com/handbook/history/">agents.anipotts.com/handbook/history</a></li>
+    <li><span class="sname">RL 简史：</span><a href="https://rlbook.ai/chapters/intro-to-rl/rl-history/">rlbook.ai/chapters/intro-to-rl/rl-history</a></li>
+    <li><span class="sname">记忆架构综述：</span><a href="https://zylos.ai/research/2026-04-05-ai-agent-memory-architectures-persistent-knowledge/">zylos.ai/research/2026-04-05-ai-agent-memory-architectures-persistent-knowledge</a></li>
+    <li><span class="sname">自改进 Agent 综述站：</span><a href="https://selfimproving-agent.github.io/">selfimproving-agent.github.io</a></li>
+    <li><span class="sname">自改进 Agent 资源库：</span><a href="https://github.com/enhansome/enhansome-awesome-self-improving-agents/blob/HEAD/README.md">github.com/enhansome/enhansome-awesome-self-improving-agents</a></li>
+    <li><span class="sname">递归自改进资源：</span><a href="https://github.com/Picrew/awesome-rsi">github.com/Picrew/awesome-rsi</a></li>
+  </ul></div>
+
+  <div class="src-group"><h4>6.4 基准与评估</h4><ul>
+    <li><span class="sname">基准测量什么、漏掉什么（2026-11-07）：</span><a href="https://rillor.com/insights/what-agent-benchmarks-measure">rillor.com/insights/what-agent-benchmarks-measure</a></li>
+    <li><span class="sname">2026 年 Agent 基准榜单（2026-10-13 复核）：</span><a href="https://decodethefuture.org/en/ai-agent-benchmarks-2026/">decodethefuture.org/en/ai-agent-benchmarks-2026</a></li>
+    <li><span class="sname">基准对比表（10 个基准）：</span><a href="https://indexagentica.com/compare/agent-benchmarks/">indexagentica.com/compare/agent-benchmarks</a></li>
+    <li><span class="sname">2026 年 5 个关键基准（2026-10-09 读榜）：</span><a href="https://gravity.fast/blog/ai-agent-benchmarks-explained/">gravity.fast/blog/ai-agent-benchmarks-explained</a></li>
+    <li><span class="sname">BrowseComp 基准解析：</span><a href="https://personalagentbench.com/benchmarks/browsecomp/">personalagentbench.com/benchmarks/browsecomp</a></li>
+    <li><span class="sname">深度研究工具对比：</span><a href="https://glasp.co/articles/deep-research-tools-compared">glasp.co/articles/deep-research-tools-compared</a></li>
+    <li><span class="sname">SWE-agent（AI Wiki）：</span><a href="https://aiwiki.ai/wiki/swe_agent">aiwiki.ai/wiki/swe_agent</a></li>
+    <li><span class="sname">Harness 现状报告（2026-10）：</span><a href="https://www.harness-hub.org/reports/state-of-harness-2026-10.pdf">harness-hub.org/reports/state-of-harness-2026-10.pdf</a></li>
+  </ul></div>
+
+  <div class="src-group"><h4>6.5 框架、产品与模型</h4><ul>
+    <li><span class="sname">LangChain / LangGraph 1.0 博文：</span><a href="https://www.langchain.com/blog/langchain-langgraph-1dot0">langchain.com/blog/langchain-langgraph-1dot0</a></li>
+    <li><span class="sname">框架对比（LangGraph / CrewAI / AutoGen，2026-08-16 核查）：</span><a href="https://dev.to/avenotech/ai-agent-frameworks-compared-langgraph-vs-crewai-vs-autogen-2l2o">dev.to/avenotech — frameworks compared</a></li>
+    <li><span class="sname">框架对比（2026）：</span><a href="https://www.devopsness.com/blog/best-ai-agent-frameworks">devopsness.com/blog/best-ai-agent-frameworks</a></li>
+    <li><span class="sname">框架对比（Scrimba）：</span><a href="https://scrimba.com/articles/best-ai-agent-frameworks/">scrimba.com/articles/best-ai-agent-frameworks</a></li>
+    <li><span class="sname">Microsoft Agent Framework vs Semantic Kernel：</span><a href="https://www.techitional.com/compare/microsoft-agent-framework-vs-semantic-kernel/">techitional.com/compare/microsoft-agent-framework-vs-semantic-kernel</a></li>
+    <li><span class="sname">Microsoft Agent Framework 指南：</span><a href="https://markaicode.com/tutorial/microsoft-agent-framework-guide/">markaicode.com/tutorial/microsoft-agent-framework-guide</a></li>
+    <li><span class="sname">Google ADK 讲解：</span><a href="https://github.com/2nth-ai/know-2nth/blob/HEAD/google-adk-explainer.md">github.com/2nth-ai/know-2nth — google-adk-explainer.md</a></li>
+    <li><span class="sname">Google ADK（AI Wiki）：</span><a href="https://aiwiki.ai/wiki/google_adk">aiwiki.ai/wiki/google_adk</a></li>
+    <li><span class="sname">Claude Agent SDK 指南（2026-11-11 实测）：</span><a href="https://fastero.com/blog/claude-agent-sdk">fastero.com/blog/claude-agent-sdk</a></li>
+    <li><span class="sname">Claude Agent SDK 讲解：</span><a href="https://dev.to/alexcloudstar/claude-agent-sdk-what-it-is-and-how-to-build-your-first-agent-2026-2m2l">dev.to/alexcloudstar — claude-agent-sdk</a></li>
+    <li><span class="sname">Claude Agent SDK 文档（Claude Code Docs）：</span><a href="https://code.claude.com/docs/en/agent-sdk/claude-code-features">code.claude.com/docs/en/agent-sdk/claude-code-features</a></li>
+    <li><span class="sname">OpenAI Agents API 介绍：</span><a href="https://openai.com/index/introducing-the-agents-api/?ref=blog.svil.dev">openai.com/index/introducing-the-agents-api</a></li>
+    <li><span class="sname">OpenAI DevDay 2025 / Codex GA：</span><a href="https://www.neowin.net/news/openai-codex-hits-general-availability-with-new-slack-integration/">neowin.net — OpenAI Codex GA</a> 与 <a href="https://venturebeat.com/infrastructure/the-most-important-openai-announcement-you-probably-missed-at-devday-2025">venturebeat.com — DevDay 2025</a></li>
+    <li><span class="sname">计算机操作 Agent 术语表：</span><a href="https://www.superteams.ai/glossary/computer-use-agent/">superteams.ai/glossary/computer-use-agent</a></li>
+    <li><span class="sname">计算机操作（AI Wiki）：</span><a href="https://aiwiki.ai/wiki/computer_use">aiwiki.ai/wiki/computer_use</a></li>
+    <li><span class="sname">2026 前沿模型地图：</span><a href="https://www.anshgupta.in/blog/ai-models-for-developers-2026">anshgupta.in/blog/ai-models-for-developers-2026</a></li>
+    <li><span class="sname">Gemini 4 vs GPT-6 vs Opus 5.5 对比：</span><a href="https://pandromeda.com/ai/gemini-4-argon-vs-gpt-6-astra-vs-claude-opus-55-compared">pandromeda.com/ai/gemini-4-argon-vs-gpt-6-astra-vs-claude-opus-55-compared</a></li>
+    <li><span class="sname">Genie 3 官方博文：</span><a href="https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models">deepmind.google/blog/genie-3-a-new-frontier-for-world-models</a></li>
+    <li><span class="sname">Genie 3（AI Wiki）：</span><a href="https://aiwiki.ai/wiki/genie_3">aiwiki.ai/wiki/genie_3</a></li>
+    <li><span class="sname">物理 AI 模型 Top 10（2026）：</span><a href="https://www.marktechpost.com/2026/04/28/top-10-physical-ai-models-powering-real-world-robots-in-2026/">marktechpost.com — Top 10 Physical AI Models 2026</a></li>
+    <li><span class="sname">通用机器人策略：</span><a href="https://robot-wiki.com/manipulation/generalist-policies/">robot-wiki.com/manipulation/generalist-policies</a></li>
+    <li><span class="sname">语音 Agent 文档（2026 栈）：</span><a href="https://docs.masst.dev/ai/edges/voice">docs.masst.dev/ai/edges/voice</a></li>
+    <li><span class="sname">语音三厂商对比（2026-10-06）：</span><a href="https://nextlevel.ai/blog/openai-vs-anthropic-vs-gemini-voice-agent-reasoning/">nextlevel.ai/blog/openai-vs-anthropic-vs-gemini-voice-agent-reasoning</a></li>
+  </ul></div>
+
+  <div class="src-group"><h4>6.6 安全与治理</h4><ul>
+    <li><span class="sname">沙箱与能力控制论文页：</span><a href="https://www.richards.ai/papers/security-sandboxing-and-capability-control-for-tool-using-autonomous-agen">richards.ai/papers/security-sandboxing-and-capability-control</a></li>
+    <li><span class="sname">提示注入主题页（2026-11-21 更新）：</span><a href="https://www.llm-digest.com/topic/prompt-injection">llm-digest.com/topic/prompt-injection</a></li>
+    <li><span class="sname">OWASP AI 治理与风险：</span><a href="https://owasp.github.io/DevSecOpsGuideline/3-Governance/3-4-AI-Governance-and-Risk/">owasp.github.io/DevSecOpsGuideline — AI Governance and Risk</a></li>
+    <li><span class="sname">Agent 治理实践指南：</span><a href="https://fountaincity.tech/resources/blog/ai-agent-governance-practitioners-guide/">fountaincity.tech — AI Agent Governance Practitioners Guide</a></li>
+    <li><span class="sname">OWASP LLM Top 10 安全映射：</span><a href="https://www.yenlo.com/insights/owasp-llm-top-10-ai-security/">yenlo.com/insights/owasp-llm-top-10-ai-security</a></li>
+  </ul></div>
+
+  <div class="src-group"><h4>6.7 可观测性</h4><ul>
+    <li><span class="sname">LangFuse vs LangSmith 对比（2026）：</span><a href="https://openllm.wavise.com/blog/llm-observability-langfuse-langsmith-comparison">openllm.wavise.com/blog/llm-observability-langfuse-langsmith-comparison</a></li>
+    <li><span class="sname">Agent 可观测性工具对比（2026-10-30 核查）：</span><a href="https://trigger.dev/ai-agent-observability-tools-comparison">trigger.dev/ai-agent-observability-tools-comparison</a></li>
+    <li><span class="sname">Agent 可观测性指南：</span><a href="https://www.digitalapplied.com/blog/agent-observability-2026-evals-traces-cost-guide">digitalapplied.com/blog/agent-observability-2026-evals-traces-cost-guide</a></li>
+  </ul></div>
+
+  <div class="src-group"><h4>6.8 课程与学习资源</h4><ul>
+    <li><span class="sname">Hugging Face AI Agents Course：</span><a href="https://huggingface.co/learn/agents-course/en/unit0/introduction">huggingface.co/learn/agents-course/en/unit0/introduction</a></li>
+    <li><span class="sname">smolagents 向导：</span><a href="https://huggingface.co/docs/smolagents/guided_tour">huggingface.co/docs/smolagents/guided_tour</a></li>
+    <li><span class="sname">课程对比（2026-10 核查）：</span><a href="https://taku.ai/blog/ai-agents-courses">taku.ai/blog/ai-agents-courses</a></li>
+    <li><span class="sname">学习资源短名单（2026-10-07 核查）：</span><a href="https://andrew.ooo/answers/best-resources-for-learning-ai-agent-development-2026/">andrew.ooo/answers/best-resources-for-learning-ai-agent-development-2026</a></li>
+    <li><span class="sname">免费课程学习路径（2026-07-10 核查）：</span><a href="https://aiweekly.co/learning-ai/generative-ai/learn-ai-agents">aiweekly.co/learning-ai/generative-ai/learn-ai-agents</a></li>
+  </ul></div>
+
+  <div class="footer">
+    <p>本页内容整理自 2026-11-22 的全网调研报告。所有「2026 年 9–11 月」的一手发布在引用时请以厂商官方页面复核为准；价格、版本号、榜单分数变化极快，一律以标注日期的快照理解。本页的价值在于结构、时间线与批判性框架，而非对易变数字的背书。</p>
+  </div>
+</section>
+
+</div>
+<button class="totop" id="totop" aria-label="回到顶部">↑</button>
+<script>
+(function(){
+  // Active nav highlighting
+  var links = document.querySelectorAll('#topnav a');
+  var secs = [];
+  links.forEach(function(a){ var id = a.getAttribute('href'); var el = document.querySelector(id); if(el) secs.push({a:a, el:el}); });
+  function onScroll(){
+    var y = window.scrollY + 120, cur = null;
+    secs.forEach(function(s){ if(s.el.offsetTop <= y) cur = s; });
+    links.forEach(function(a){ a.classList.remove('active'); });
+    if(cur) cur.a.classList.add('active');
+    var btn = document.getElementById('totop');
+    btn.style.display = window.scrollY > 600 ? 'flex' : 'none';
+  }
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  document.getElementById('totop').addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+  // Source filter
+  var input = document.getElementById('srcSearch');
+  var items = document.querySelectorAll('.src-group li');
+  var groups = document.querySelectorAll('.src-group');
+  var count = document.getElementById('srcCount');
+  function updateCount(n){ count.textContent = n === items.length ? ('共 ' + n + ' 条来源') : ('筛选出 ' + n + ' / ' + items.length + ' 条来源'); }
+  updateCount(items.length);
+  input.addEventListener('input', function(){
+    var q = input.value.trim().toLowerCase(), n = 0;
+    items.forEach(function(li){
+      var hit = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
+      li.style.display = hit ? '' : 'none'; if(hit) n++;
+    });
+    groups.forEach(function(g){
+      var any = false;
+      g.querySelectorAll('li').forEach(function(li){ if(li.style.display !== 'none') any = true; });
+      g.style.display = any ? '' : 'none';
+    });
+    updateCount(n);
+  });
+})();
+</script>
+</body>
+</html>
