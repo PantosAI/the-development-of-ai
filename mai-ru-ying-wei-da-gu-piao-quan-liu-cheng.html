@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>买入英伟达股票全流程 — 从开户到下单</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f7f2; --surface:#ffffff; --surface2:#f0efe8; --ink:#11140f; --muted:#5b6258; --line:#e2e0d6;
+  --green:#76b900; --green-dark:#4a7a00; --green-soft:#eef6d8; --amber:#b77900; --amber-bg:#fff6db; --red:#c0392b; --red-bg:#fdf0ee;
+  --radius:16px;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0f120e; --surface:#181c17; --surface2:#1f241f; --ink:#eef0e8; --muted:#a8ada2; --line:#2a302a; --green-soft:#22300f; --amber-bg:#2b230a; --red-bg:#2b1512; }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans SC",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.75;font-size:16px}
+a{color:var(--green-dark)}
+.wrap{max-width:1020px;margin:0 auto;padding:0 20px 64px}
+.topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--bg) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1020px;margin:0 auto;padding:10px 20px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.topbar-in::-webkit-scrollbar{display:none}
+.topbar a{white-space:nowrap;text-decoration:none;color:var(--ink);font-size:13px;font-weight:500;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.hero{padding:36px 0 8px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;font-size:12px;letter-spacing:.08em;padding:6px 10px;border-radius:999px;font-weight:700}
+.eyebrow i{width:8px;height:8px;background:var(--green);border-radius:50%;display:inline-block}
+h1{font-family:"Noto Serif SC",serif;font-size:clamp(32px,6vw,56px);line-height:1.05;margin:18px 0 14px;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--green-dark);background:linear-gradient(transparent 62%, var(--green-soft) 62%)}
+.lead{font-size:18px;color:var(--muted);max-width:720px;margin:0}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
+.fact b{display:block;font-size:22px;line-height:1.1}
+.fact span{font-size:13px;color:var(--muted)}
+.warn{background:var(--amber-bg);border:1px solid #e8d48a;border-radius:var(--radius);padding:18px 18px 14px;margin:22px 0}
+.warn h3{margin:0 0 6px;font-size:16px}
+.warn p{margin:6px 0;font-size:14.5px}
+h2{font-size:26px;line-height:1.2;margin:42px 0 6px;letter-spacing:-.02em}
+h2 .no{color:var(--green-dark);font-size:14px;letter-spacing:.1em;display:block;margin-bottom:6px}
+.sub{color:var(--muted);margin:0 0 18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.route-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.route-tabs button{min-height:44px;padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:700;cursor:pointer;font-size:14px}
+.route-tabs button.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.route-panel{display:none}
+.route-panel.active{display:block}
+.badge{display:inline-block;font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--green-soft);color:var(--green-dark)}
+.badge.gray{background:var(--surface2);color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:13px;color:var(--muted);font-weight:700;background:var(--surface2)}
+.checklist{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.checklist li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px 14px;display:flex;gap:10px;align-items:flex-start}
+.checklist li::before{content:"✓";width:26px;height:26px;flex:0 0 26px;background:var(--green);color:#fff;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:14px;margin-top:2px}
+.checklist b{display:block;line-height:1.4}
+.checklist span{font-size:13.5px;color:var(--muted);line-height:1.5;display:block}
+.flow-wrap{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;overflow:hidden}
+.flow-wrap svg{width:100%;height:auto;display:block}
+.steps{display:flex;flex-direction:column;gap:14px}
+.step{display:grid;grid-template-columns:52px 1fr;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
+.step-num{width:52px;height:52px;border-radius:14px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:900;font-size:20px}
+.step h3{margin:2px 0 6px;font-size:18px}
+.step p,.step li{font-size:14.5px;color:#2b2f2a}
+@media(prefers-color-scheme:dark){.step p,.step li{color:#d6d9d0}}
+.step ul{margin:8px 0;padding-left:18px}
+.kv{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.kv span{font-size:12.5px;background:var(--surface2);border:1px solid var(--line);padding:5px 8px;border-radius:999px}
+.calc{background:var(--ink);color:#fff;border-radius:18px;padding:20px}
+.calc label{font-size:13px;opacity:.85;display:block;margin-bottom:6px}
+.calc input{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:16px;min-height:48px}
+.calc .out{background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.35);border-radius:12px;padding:14px;margin-top:14px}
+.calc .out b{font-size:24px;color:#c6f06a}
+.faq{border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line);padding:14px 0}
+.faq summary{font-weight:700;cursor:pointer;min-height:36px;display:flex;align-items:center}
+.faq p{color:var(--muted);font-size:14.5px}
+.foot{margin-top:36px;background:var(--red-bg);border:1px solid #eec9c3;border-radius:14px;padding:16px;font-size:13.5px}
+.foot strong{color:var(--red)}
+.small{font-size:13px;color:var(--muted)}
+@media(max-width:760px){
+  .facts{grid-template-columns:1fr 1fr}
+  .grid2,.grid3,.checklist{grid-template-columns:1fr}
+  .step{grid-template-columns:1fr}
+  .step-num{width:44px;height:44px}
+  table{font-size:13px}
+}
+button,[role="button"],summary,input{min-height:36px}
+</style>
+</head>
+<body>
+<nav class="topbar"><div class="topbar-in">
+<a href="#routes">三条路径</a><a href="#equip">需要配备什么</a><a href="#flow">流程图</a><a href="#steps">7步详解</a><a href="#order">怎么下单</a><a href="#fees">费用税务</a><a href="#faq">常见问题</a>
+</div></nav>
+
+<div class="wrap">
+<header class="hero">
+<div class="eyebrow"><i></i> 美股入门 · NVDA 专题 · 非投资建议</div>
+<h1>英伟达涨了 30%<br>现在想买，<em>全流程怎么走？</em></h1>
+<p class="lead">英伟达在纳斯达克上市，代码 <strong>NVDA</strong>。中国内地居民不能直接用 A 股账户买它，必须先选一条合规路径：自己开美股账户直接买，或通过 QDII 基金间接持有。这篇把开户、入金、下单、费用、税务一次讲清。</p>
+<div class="facts">
+<div class="fact"><b>NVDA</b><span>股票代码 · 纳斯达克 NASDAQ</span></div>
+<div class="fact"><b>美东 9:30–16:00</b><span>常规交易时段 · 夏令时北京 21:30–04:00</span></div>
+<div class="fact"><b>1 股起买</b><span>多数券商支持碎股 / 零股交易</span></div>
+<div class="fact"><b>T+1 交收</b><span>美股卖出后资金 T+1 可用</span></div>
+</div>
+<div class="warn">
+<h3>⚠️ 先泼一盆冷水：涨 30% 之后追买，最大的风险不是“买不到”，是“买在高波动里”</h3>
+<p><strong>不要因为涨了才想买。</strong>单月涨 30% 往往伴随财报、指引或行业消息催化，后续波动会显著放大，一天涨跌 5%–8% 对 NVDA 并不罕见。新手更稳妥的做法是：先完成开户和入金，把流程跑通，再用<strong>小仓位 + 限价单 + 分批买入</strong>，而不是一次性满仓追市价单。本文只讲流程，不判断现在是不是好价格——是否买、买多少，请结合你自己的风险承受能力决定，亏损要自己承担。</p>
+</div>
+</header>
+
+<section>
+<h2><span class="no">01 — 先搞懂</span>你买的到底是什么？</h2>
+<p class="sub">NVDA 不是“在国内买美股概念股”，是直接持有美国上市公司股票，计价货币是美元，规则和 A 股完全不同。</p>
+<div class="grid3">
+<div class="card"><strong>🏢 公司与市场</strong><p class="small">NVIDIA Corporation，AI 芯片 / GPU 龙头。在 NASDAQ 上市，和苹果 AAPL、微软 MSFT 同一个市场。没有涨跌幅限制，盘前盘后也能交易（流动性和价差与常规时段不同）。</p></div>
+<div class="card"><strong>💵 计价与结算</strong><p class="small">以美元计价。你需要先把人民币换成美元（或港币经券商换汇）再买。股价你在新闻里看到的涨幅，是美元股价涨幅，实际人民币收益还要叠加汇率变化。</p></div>
+<div class="card"><strong>🕐 交易时间（北京时间）</strong><p class="small">夏令时（3月–11月）：21:30–次日 04:00<br>冬令时（11月–3月）：22:30–次日 05:00<br>盘前 04:00 起、盘后至 20:00（美东）部分券商支持，新手先只做常规时段。</p></div>
+</div>
+</section>
+
+<section id="routes">
+<h2><span class="no">02 — 选路径</span>内地居民买 NVDA 的三条路</h2>
+<p class="sub">没有“最好”，只有适合你资金量、所在地和耐心的那条。先选路，再开户，不要反过来被某个 App 广告牵着走。</p>
+<div class="route-tabs" role="tablist">
+<button class="active" onclick="showRoute(0,this)">A · 直接开美股账户 ⭐ 新手主流</button>
+<button onclick="showRoute(1,this)">B · QDII 基金间接持有</button>
+<button onclick="showRoute(2,this)">C · 已有港股/海外账户</button>
+</div>
+
+<div class="route-panel active card">
+<span class="badge">直接持有 NVDA 本人股东</span> <span class="badge gray">门槛：需境外银行卡配合更顺畅</span>
+<h3 style="margin:10px 0 6px">路径 A：通过支持内地居民开户的互联网券商 / 国际券商直接买</h3>
+<p>代表类型：盈透证券 IBKR 等国际券商，以及富途、老虎等持牌券商（开户资格、内地居民政策近年收紧，以券商 App 内当前审核要求为准，不要轻信“零门槛代开”）。</p>
+<ul>
+<li><strong>优点：</strong>直接持有 NVDA，可买 1 股或碎股，自主选买入价，费用低，可做限价单。</li>
+<li><strong>难点：</strong>入金是最大门槛——内地银行卡直接购汇炒美股不属于个人购汇允许用途，正规做法通常需要<strong>香港银行卡或海外银行卡</strong>做同名转账；仅用内地卡入金的通道时开时关、不稳定。</li>
+<li><strong>适合：</strong>有香港/海外银行账户，或愿意先办一张的人；打算长期持有美股的人。</li>
+</ul>
+</div>
+<div class="route-panel card">
+<span class="badge">不直接持股 · 持有基金份额</span> <span class="badge gray">门槛最低 · 10 元起</span>
+<h3 style="margin:10px 0 6px">路径 B：在支付宝 / 天天基金等买跟踪纳斯达克100的 QDII 基金</h3>
+<p>纳斯达克100指数里 NVDA 是大权重成分股，买纳指100 QDII（如各类纳斯达克100指数基金）等于间接持有一篮子含 NVDA 的股票。</p>
+<ul>
+<li><strong>优点：</strong>人民币直接买，不用开海外账户、不用换汇、不用熬夜盯盘，合规最省心。</li>
+<li><strong>缺点：</strong>不是只买 NVDA（一只基金含100家公司），有申购限额、确认慢（T+2左右）、有管理费，涨跌跟的是指数不是 NVDA 本身。</li>
+<li><strong>适合：</strong>只想参与美股科技行情、资金小、先体验的人。</li>
+</ul>
+</div>
+<div class="route-panel card">
+<span class="badge">已有账户最快</span> <span class="badge gray">需已有港/海外券商账户</span>
+<h3 style="margin:10px 0 6px">路径 C：已有香港券商或海外银行证券账户</h3>
+<p>如果你已经有香港银行 + 香港券商账户，或海外券商账户且已入金，跳过开户环节，在 App 里搜 <strong>NVDA</strong> 直接进入下单流程（见第 5 节）。注意确认账户开通了<strong>美股交易权限</strong>和 <strong>W-8BEN</strong> 表格状态是否有效（每 3 年需更新）。</p>
+</div>
+
+<div class="card" style="margin-top:14px;padding:0;overflow:hidden">
+<table>
+<tr><th>对比</th><th>路径 A 直接买股</th><th>路径 B QDII 基金</th></tr>
+<tr><td><strong>持有的是什么</strong></td><td>NVDA 股票本身</td><td>基金份额，间接含 NVDA</td></tr>
+<tr><td><strong>起投</strong></td><td>1 股或碎股（约十几美元起，视券商）</td><td>通常 10 元人民币起</td></tr>
+<tr><td><strong>需要境外银行卡？</strong></td><td>强烈建议有，否则入金困难</td><td>不需要</td></tr>
+<tr><td><strong>交易时间</strong></td><td>美股时段，北京深夜</td><td>国内交易日 15:00 前申购</td></tr>
+<tr><td><strong>费用</strong></td><td>佣金+平台费+换汇成本</td><td>申购费+管理费+托管费</td></tr>
+<tr><td><strong>税务</strong></td><td>股息预扣 10%（中美税收协定）</td><td>由基金层面处理</td></tr>
+</table>
+</div>
+</section>
+
+<section id="equip">
+<h2><span class="no">03 — 备齐装备</span>需要配备什么？一张清单备齐再动手</h2>
+<p class="sub">90% 的人卡住不是卡在下单，是卡在证件和入金。先备齐下面四类，再去点“开户”。</p>
+<ul class="checklist">
+<li><div><b>身份证（必备）</b><span>内地居民身份证原件，拍照需清晰、无反光，在有效期内。</span></div></li>
+<li><div><b>护照（国际券商常需要）</b><span>盈透等国际券商更认可护照；只有身份证时先看目标券商的证件清单。</span></div></li>
+<li><div><b>地址证明（近 3 个月）</b><span>水电煤账单、银行对账单、信用卡账单等带姓名+住址的文件，富途/盈透开户高频要求。</span></div></li>
+<li><div><b>香港 / 海外银行卡（入金关键）</b><span>同名账户，用于电汇 / FPS / eDDA 入金。没有的话先办卡再开户，顺序别反。内地卡购汇不能用于境外证券投资。</span></div></li>
+<li><div><b>手机号 + 邮箱</b><span>能收国际短信验证码的手机号、常用邮箱（接收对账单和税务文件）。</span></div></li>
+<li><div><b>税务信息</b><span>开户时填 W-8BEN：声明非美国税务居民，才能享受股息 10% 协定税率（否则默认预扣 30%）。填表在券商 App 内完成，不用自己去 IRS 网站。</span></div></li>
+<li><div><b>一部手机 + 稳定网络</b><span>券商 App 完成人脸识别、签名、风险测评。开户审核通常 1–3 个工作日。</span></div></li>
+<li><div><b>一笔“学费仓位”的闲钱</b><span>3–6 个月内用不到的钱。第一次只用计划仓位的 1/3 试单，跑通入金→买入→卖出全流程后再加。</span></div></li>
+</ul>
+<p class="small" style="margin-top:10px">💡 还需要“知识装备”：会看限价单 vs 市价单、知道美股无涨跌停、知道财报日（NVDA 每季度公布财报，当天波动最大，新手避开财报前夜重仓）。</p>
+</section>
+
+<section id="flow">
+<h2><span class="no">04 — 总览</span>全流程图：从零到持有 NVDA</h2>
+<p class="sub">整条链路 7 步，真正花时间的只有第 2 步开户审核和第 3 步入金到账，下单本身只要 1 分钟。</p>
+<div class="flow-wrap" aria-label="买入英伟达流程图">
+<svg viewBox="0 0 720 860" role="img" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4a7a00"/></marker></defs>
+<style>
+.box{fill:#ffffff;stroke:#d8d6c8;stroke-width:1.2} .darkbox{fill:#11140f} .greenbox{fill:#eef6d8;stroke:#76b900}
+.t{font-family:'Noto Sans SC',sans-serif;font-size:15px;font-weight:700;fill:#11140f} .s{font-family:'Noto Sans SC',sans-serif;font-size:12px;fill:#5b6258} .w{fill:#fff} .ws{fill:#cfd3c8}
+.line{stroke:#4a7a00;stroke-width:2;fill:none;marker-end:url(#arr)}
+@media (prefers-color-scheme: dark){.box{fill:#181c17;stroke:#2a302a}.t{fill:#eef0e8}.s{fill:#a8ada2}.greenbox{fill:#22300f}}
+</style>
+<!-- start -->
+<rect x="210" y="10" width="300" height="56" rx="14" class="darkbox"/><text x="360" y="34" text-anchor="middle" class="t w">开始：决定路径 A / B / C</text><text x="360" y="53" text-anchor="middle" class="s ws">先选路，再开户</text>
+<path d="M360 66 V92" class="line"/>
+<rect x="160" y="94" width="400" height="62" rx="12" class="box"/><text x="360" y="118" text-anchor="middle" class="t">① 选券商 + 下载官方 App</text><text x="360" y="138" text-anchor="middle" class="s">只从官网/应用商店下载，警惕假 App 和代开户</text>
+<path d="M360 156 V182" class="line"/>
+<rect x="160" y="184" width="400" height="62" rx="12" class="box"/><text x="360" y="208" text-anchor="middle" class="t">② 提交开户：证件 + 地址证明 + W-8BEN</text><text x="360" y="228" text-anchor="middle" class="s">人脸识别 + 风险测评 · 审核 1–3 个工作日</text>
+<path d="M360 246 V272" class="line"/>
+<!-- diamond -->
+<polygon points="360,274 470,318 360,362 250,318" fill="#fff6db" stroke="#b77900" stroke-width="1.2"/>
+<text x="360" y="313" text-anchor="middle" class="t" font-size="13">审核通过？</text><text x="360" y="332" text-anchor="middle" class="s">未通过→补材料重提</text>
+<path d="M470 318 H610 V215 H562" class="line"/><text x="540" y="306" class="s">否 ↺</text>
+<path d="M360 362 V388" class="line"/><text x="372" y="380" class="s">是 ↓</text>
+<rect x="160" y="390" width="400" height="62" rx="12" class="box"/><text x="360" y="414" text-anchor="middle" class="t">③ 入金：同名银行卡 → 券商账户</text><text x="360" y="434" text-anchor="middle" class="s">电汇 / FPS / eDDA · 港卡通常当天到，电汇 1–3 天</text>
+<path d="M360 452 V478" class="line"/>
+<rect x="160" y="480" width="400" height="62" rx="12" class="box"/><text x="360" y="504" text-anchor="middle" class="t">④ 换汇：港币 / 人民币 → 美元</text><text x="360" y="524" text-anchor="middle" class="s">在券商 App 内货币兑换，留意汇率点差</text>
+<path d="M360 542 V568" class="line"/>
+<rect x="160" y="570" width="400" height="62" rx="12" class="greenbox"/><text x="360" y="594" text-anchor="middle" class="t">⑤ 搜 NVDA → 选限价单 → 输入价格与股数</text><text x="360" y="614" text-anchor="middle" class="s">新手用限价单，不用市价单追高</text>
+<path d="M360 632 V658" class="line"/>
+<rect x="160" y="660" width="400" height="62" rx="12" class="box"/><text x="360" y="684" text-anchor="middle" class="t">⑥ 确认订单 → 成交 → 持仓里核对</text><text x="360" y="704" text-anchor="middle" class="s">核对代码 NVDA、股数、成交价，保存成交单</text>
+<path d="M360 722 V748" class="line"/>
+<rect x="160" y="750" width="400" height="62" rx="12" class="box"/><text x="360" y="774" text-anchor="middle" class="t">⑦ 持有管理：止盈止损纪律 + 财报日历</text><text x="360" y="794" text-anchor="middle" class="s">定期看持仓，年终下载税表备查</text>
+<text x="360" y="838" text-anchor="middle" class="s">路径 B（QDII）可跳过 ①–④：在基金 App 搜“纳斯达克100”→ 申购即可</text>
+</svg>
+</div>
+</section>
+
+<section id="steps">
+<h2><span class="no">05 — 拆解</span>7 步详解：每一步具体点哪里、等多久</h2>
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div><h3>选券商：只看三件事——持牌、能开、费用透明</h3><p>优先选受美国 SEC / FINRA 或香港 SFC 监管的持牌券商，在官网可查牌照号。对比：美股佣金（部分零佣金但收平台费）、碎股是否支持、中文客服、入金方式。不要把钱打给任何“老师”“助理”的个人账户。</p><div class="kv"><span>耗时：半天做功课</span><span>产出：确定 1 家主券商</span></div></div></div>
+<div class="step"><div class="step-num">2</div><div><h3>开户：填资料 + 填 W-8BEN，一次填对</h3><ul><li>按 App 引导上传身份证/护照、地址证明，完成人脸识别和手写签名；</li><li>职业、收入、投资经验如实填，风险测评不要乱选“高风险”去解锁权限，测评结果会影响你能买的产品；</li><li>W-8BEN：姓名拼音与护照一致、填内地税务居民身份和身份证号（即税务识别号），提交后状态显示“有效”再入金。</li></ul><div class="kv"><span>耗时：填写 20 分钟</span><span>审核：1–3 个工作日</span></div></div></div>
+<div class="step"><div class="step-num">3</div><div><h3>入金：全流程最容易卡住的一步</h3><p>券商会给你专属入金账户信息，必须<strong>同名转账</strong>（银行卡户名 = 券商账户名），备注里填券商要求的账户号。香港银行卡 FPS / eDDA 通常最快（当天或实时），跨境电汇 1–3 个工作日且有中间行费用。第一笔先转小额（如 100 美元等值）测试到账，确认无误再转大额。</p><div class="kv"><span>注意：不要用他人卡、不要分拆购汇规避额度</span><span>保留：转账凭证截图</span></div></div></div>
+<div class="step"><div class="step-num">4</div><div><h3>换汇：把钱换成美元购买力</h3><p>账户里如果是港币，进 App 的“货币兑换”把港币换成美元，汇率是券商牌价（比中间价略有价差，属正常成本）。大额换汇可对比银行牌价，但钱必须先在券商账户内才能交易。</p><div class="kv"><span>耗时：即时</span><span>成本：汇率点差</span></div></div></div>
+<div class="step"><div class="step-num">5</div><div><h3>下单前 3 分钟检查</h3><ul><li>确认现在是常规交易时段（北京夏令时 21:30 后），盘前盘后价差大，新手不碰；</li><li>看一眼 NVDA 当日涨跌和财报日历：如果今晚公布财报，仓位减半或等财报落地；</li><li>定好这笔的股数和最高接受价，写下来再打开下单页，避免盘中改主意追价。</li></ul></div></div>
+<div class="step"><div class="step-num">6</div><div><h3>下单：搜 NVDA → 买入 → 限价单（见下一节图解）</h3><p>提交后在“订单”页看状态：已成交 / 部分成交 / 未成交。限价单未成交不是出错，是价格没到，可改价或等下一个交易日，不要连续追高改价。</p><div class="kv"><span>耗时：1 分钟</span><span>核对：代码、方向、股数、价格四项</span></div></div></div>
+<div class="step"><div class="step-num">7</div><div><h3>成交后：你已经是股东，接下来管纪律</h3><p>持仓页会显示成本价、浮动盈亏（美元）。提前定好：跌多少补仓/止损、涨多少止盈、最多占总资产比例。NVDA 有股息但很少（收益率很低），股息到账会自动扣 10% 税后打入现金账户。每年初在券商处下载年度对账单留存。</p></div></div>
+</div>
+</section>
+
+<section id="order">
+<h2><span class="no">06 — 实操</span>下单界面怎么选：市价单 vs 限价单</h2>
+<div class="grid2">
+<div class="card" style="border-color:#e8a09a;background:var(--red-bg)"><strong>❌ 市价单 Market — 新手追高最常见的坑</strong><p class="small">以当前市场最快速度成交，不保证价格。NVDA 波动大时，你看到 150 点下单，实际可能 153 成交。涨 30% 的热门股 + 市价单 = 最容易买在日内高点。只在极少数“必须立刻成交”时用。</p></div>
+<div class="card" style="border-color:var(--green);background:var(--green-soft)"><strong>✅ 限价单 Limit — 本文推荐</strong><p class="small">你设定“最高买入价”，低于或等于才成交。例如现价 150，你挂 147 限价单，跌到才买，没跌到就不买——相当于给追高上了刹车。有效期选“当日有效”即可，碎股订单部分券商只支持市价/特定时段，下单页会提示。</p></div>
+</div>
+
+<div class="calc" style="margin-top:14px">
+<h3 style="margin:0 0 4px">🧮 仓位试算：我这笔钱大约能买多少股？</h3>
+<p style="opacity:.8;font-size:13.5px;margin:0 0 14px">股价实时变动，请打开券商 App 把 NVDA 现价填进来试算，这里不提供实时股价。</p>
+<div class="grid3" style="gap:12px">
+<div><label>计划投入（人民币 ¥）</label><input id="cny" type="number" value="10000" min="0"></div>
+<div><label>汇率（人民币/美元，可改）</label><input id="fx" type="number" value="7.20" step="0.01" min="0"></div>
+<div><label>NVDA 现价（美元 $，看 App 填）</label><input id="px" type="number" value="150" step="0.01" min="0"></div>
+</div>
+<div class="out" id="calcOut"></div>
+<p style="font-size:12px;opacity:.7;margin:10px 0 0">未计佣金、平台费和换汇点差，实际可买股数略少。碎股券商可按金额下单（如买 100 美元等值）。</p>
+</div>
+</section>
+
+<section id="fees">
+<h2><span class="no">07 — 算账</span>费用与税务：买之前就该知道的成本</h2>
+<div class="card" style="padding:0;overflow:hidden">
+<table>
+<tr><th>项目</th><th>说明</th><th>大致水平（以券商公示为准）</th></tr>
+<tr><td><strong>佣金 + 平台费</strong></td><td>按股或按单收，部分券商美股免佣但收平台费</td><td>每单约 0–数美元</td></tr>
+<tr><td><strong>换汇点差</strong></td><td>港币/人民币换美元的价差</td><td>通常 0.1%–0.3% 量级</td></tr>
+<tr><td><strong>入金电汇费</strong></td><td>汇出银行 + 中间行收费，FPS/eDDA 多为免费</td><td>电汇每笔约 100–300 元等值</td></tr>
+<tr><td><strong>股息税</strong></td><td>美国预扣，W-8BEN 有效时中美协定税率</td><td><strong>10%</strong>（无表格则 30%）</td></tr>
+<tr><td><strong>资本利得税</strong></td><td>非美国税务居民卖美股的价差收益，美国一般不征；内地税务居民全球收入纳税义务请咨询税务专业人士</td><td>美国层面一般为 0</td></tr>
+<tr><td><strong>SEC / FINRA 规费</strong></td><td>卖出时收取，金额极小，成交单上列明</td><td>可忽略量级</td></tr>
+</table>
+</div>
+<p class="small" style="margin-top:10px">出金同理：卖出 → T+1 交收 → 申请出金到同名银行卡，一般 1–3 个工作日到账，可能有出金手续费。第一次务必把“入金→买→卖→出金”小额完整跑一遍，确认链路通畅再投入大额。</p>
+</section>
+
+<section>
+<h2><span class="no">08 — 避坑</span>新手最常踩的 5 个坑</h2>
+<div class="grid2">
+<div class="card"><strong>1. 把代码搜错</strong><p class="small">认准 <strong>NVDA</strong>，别买成名字相似的 ETF 或其他公司；下单前核对公司全称 NVIDIA Corporation。</p></div>
+<div class="card"><strong>2. 在盘前用市价追单</strong><p class="small">盘前流动性差、价差大，一笔市价单能差出好几个点。只在常规时段用限价单。</p></div>
+<div class="card"><strong>3. 入金用别人的卡 / 找“代入金”</strong><p class="small">非同名入金会被退回甚至冻结审核；任何代入金、代开户都是高风险，直接拒绝。</p></div>
+<div class="card"><strong>4. 满仓一把梭</strong><p class="small">涨 30% 后回撤 15% 是完全可能的波动。分 2–3 批买，留现金，比一次买满更扛得住波动。</p></div>
+<div class="card"><strong>5. 忘了 W-8BEN 过期</strong><p class="small">表格有效期约 3 年，过期后股息按 30% 预扣。每逢券商提醒及时在 App 内更新签名。</p></div>
+<div class="card"><strong>6. 只看人民币盈亏忽略汇率</strong><p class="small">美元贬值时，股价涨了人民币也可能没赚。持仓页切换美元/人民币口径各看一遍。</p></div>
+</div>
+</section>
+
+<section id="faq">
+<h2><span class="no">09 — 答疑</span>常见问题</h2>
+<div class="faq">
+<details open><summary>没有香港银行卡，还能买吗？</summary><p>可以先走路径 B（QDII 基金）用人民币间接参与，不用等银行卡。同时想直接买股的话，建议先办香港银行卡再开券商账户——顺序反过来，账户开了钱进不去更焦虑。不要用违规购汇或地下渠道入金。</p></details>
+<details><summary>最少多少钱能买 1 股 NVDA？</summary><p>取决于下单时股价：1 股 = 当时股价（美元）。支持碎股的券商可以按金额买，比如 50 美元买到零点几股，分红和涨跌按比例计算。本文试算器填入 App 里的现价即可估算。</p></details>
+<details><summary>买了之后是几点能卖？当天能卖吗？</summary><p>美股支持日内交易（T+0），当天买当天可卖，但频繁日内交易有 Pattern Day Trader 等规则限制且不适合新手。卖出资金 T+1 交收后可再买或出金。</p></details>
+<details><summary>英伟达还会不会继续涨？现在买合适吗？</summary><p>没人能可靠预测，本文也不做这个判断。涨 30% 说明预期已经打得很满，后续取决于财报、指引和整个 AI 板块情绪。流程可以今天就跑通，买入时点和仓位请你自己按风险承受能力决定，或咨询持牌投资顾问。</p></details>
+<details><summary>在富途/老虎/盈透之间怎么选？</summary><p>看三点：① 你所在地和证件能否通过它的当前开户审核；② 你有的银行卡能用哪种方式入金；③ 费用表是否公开透明。三家都是持牌券商，差异主要在门槛和体验，不在“哪家更能赚钱”。</p></details>
+</div>
+</section>
+
+<div class="foot"><strong>风险与合规提示：</strong>本文为操作流程科普，不构成任何投资建议、个股推荐或收益承诺。美股无涨跌幅限制，NVDA 波动大，过往涨幅不代表未来表现，投资可能损失全部本金。个人购汇与跨境证券投资请遵守国家外汇管理规定，通过持牌机构办理；税务事项请咨询专业人士。券商开户政策、费用和税率会变动，办理时以券商官网与 App 内最新公示为准。页面数据整理于 2026 年 11 月，股价请以交易软件实时行情为准。</div>
+<p class="small" style="text-align:center;margin-top:18px">买入英伟达股票全流程 · 一句话总结：选路径 → 备证件和境外卡 → 开户填 W-8BEN → 小额入金测试 → 换美元 → 常规时段限价单分批买</p>
+</div>
+
+<script>
+function showRoute(i,btn){
+  document.querySelectorAll('.route-panel').forEach(function(p,j){p.classList.toggle('active',j===i)});
+  document.querySelectorAll('.route-tabs button').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+}
+function calc(){
+  var cny=parseFloat(document.getElementById('cny').value)||0;
+  var fx=parseFloat(document.getElementById('fx').value)||0;
+  var px=parseFloat(document.getElementById('px').value)||0;
+  var out=document.getElementById('calcOut');
+  if(fx<=0||px<=0){out.innerHTML='请填入有效的汇率和股价';return;}
+  var usd=cny/fx; var shares=usd/px; var whole=Math.floor(shares);
+  out.innerHTML='约合 <b>$'+usd.toFixed(2)+'</b> 美元 · 约可买 <b>'+shares.toFixed(3)+' 股</b>（整股 '+whole+' 股，余下可买碎股或留作现金）';
+}
+['cny','fx','px'].forEach(function(id){document.getElementById(id).addEventListener('input',calc)});
+calc();
+</script>
+</body>
+</html>
