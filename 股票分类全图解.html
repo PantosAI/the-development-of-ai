@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>股票分类全图解：A股、港股、美股与行业地图</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#f4f4f6;color:#26262e;line-height:1.75;font-size:16px}
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px 64px}
+  header.hero{background:linear-gradient(135deg,#14335c,#1f6a8a);color:#fff;padding:44px 28px 36px;border-radius:0 0 18px 18px;margin-bottom:28px}
+  header.hero h1{margin:0 0 10px;font-size:30px;line-height:1.35}
+  header.hero p{margin:6px 0;color:#d7e6f0;font-size:15px}
+  .kicker{font-size:13px;letter-spacing:2px;color:#9fd0e8;font-weight:700}
+  nav.toc{background:#fff;border:1px solid #e3e3ea;border-radius:12px;padding:18px 22px;margin-bottom:28px}
+  nav.toc h2{font-size:16px;margin:0 0 8px}
+  nav.toc ol{margin:0;padding-left:22px}
+  nav.toc a{color:#1f6a8a;text-decoration:none}
+  nav.toc a:hover{text-decoration:underline}
+  h2.sec{font-size:22px;margin:40px 0 12px;padding-bottom:8px;border-bottom:2px solid #14335c}
+  h3{font-size:18px;margin:26px 0 8px;color:#14335c}
+  p{margin:10px 0}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:14.5px;margin:14px 0}
+  th,td{border:1px solid #e0e0e8;padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:#eef3f7;color:#14335c}
+  .card{background:#fff;border:1px solid #e3e3ea;border-radius:12px;padding:18px 20px;margin:16px 0}
+  .fig{background:#fff;border:1px solid #e3e3ea;border-radius:12px;padding:16px;margin:16px 0}
+  .fig h4{margin:0 0 4px;font-size:17px}
+  .fig .sub{font-size:13.5px;color:#6a6a76;margin:0 0 10px}
+  .fig svg{width:100%;height:auto;display:block}
+  .fig .cap{font-size:13.5px;color:#6a6a76;margin:10px 0 0}
+  .tip{background:#eef6fb;border-left:4px solid #1f6a8a;padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0;font-size:15px}
+  .warn{background:#fdf3e7;border-left:4px solid #d98a1f;padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0;font-size:15px}
+  .note{font-size:13.5px;color:#6a6a76}
+  .tag{display:inline-block;background:#eef3f7;color:#14335c;border-radius:999px;padding:2px 10px;font-size:13px;margin-right:6px}
+  .links a{display:inline-block;margin:4px 8px 4px 0;color:#1f6a8a}
+  .num{font-variant-numeric:tabular-nums}
+  .up{color:#d43d2a;font-weight:700}.down{color:#2e9e5b;font-weight:700}
+  footer{margin-top:44px;font-size:13.5px;color:#6a6a76;border-top:1px solid #e0e0e8;padding-top:16px}
+  .flow{overflow-x:auto}
+  .flow svg{min-width:640px;width:100%;height:auto;display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">股票入门 · 分类与地图</div>
+  <h1>股票分类全图解：A股、港股、美股与行业地图</h1>
+  <p>蔬菜、大豆、金属、手表、科技 AI，到底哪些是股票、哪些不是？先把“市场、板块、行业、指数”四个概念分清，再一张图一张图地看。</p>
+  <p>数据截至 2026 年 11 月 24–25 日 · 每张 K 线图下方都标明了数据区间与来源 · 本文不是投资建议</p>
+</header>
+
+<nav class="toc">
+  <h2>目录</h2>
+  <ol>
+    <li><a href="#s1">先分清：市场、板块、行业、指数是四回事</a></li>
+    <li><a href="#s2">A股：三个交易所，五个板块</a></li>
+    <li><a href="#s3">港股：H股、红筹股、蓝筹股</a></li>
+    <li><a href="#s4">美股：纽交所、纳斯达克与四大指数</a></li>
+    <li><a href="#s5">其他主要市场：日本、欧洲、印度……</a></li>
+    <li><a href="#s6">行业地图：11 个大行业，你的例子落在哪</a></li>
+    <li><a href="#s7">怎么读一张 K 线图</a></li>
+    <li><a href="#s8">三市场规则对照总表</a></li>
+    <li><a href="#s9">数据与口径说明</a></li>
+  </ol>
+</nav>
+
+<h2 class="sec" id="s1">一、先分清：市场、板块、行业、指数是四回事</h2>
+<p>“股”有几万只，没法一只只记。定位任何一只股票，只需要回答三个问题：<b>在哪上市</b>（市场）、<b>做什么生意</b>（行业）、<b>多大、什么风格</b>（规模与类型）。“板块”和“指数”是另外两个工具：板块是交易所内部的分组，指数是按规则挑出来的一篮子股票、用来代表整体走势。</p>
+
+<table>
+  <tr><th style="width:18%">概念</th><th style="width:32%">是什么意思</th><th>举例（以宁德时代为例）</th></tr>
+  <tr><td><b>市场</b></td><td>股票在哪里上市交易，决定了货币、交易规则和监管</td><td>A股市场（内地）</td></tr>
+  <tr><td><b>板块</b></td><td>同一交易所内部按定位分的组，门槛和涨跌幅可能不同</td><td>创业板（深交所）</td></tr>
+  <tr><td><b>行业</b></td><td>公司主营业务属于哪个行业，与在哪上市无关</td><td>工业 / 电气设备（电池）</td></tr>
+  <tr><td><b>指数</b></td><td>按规则选出的一篮子股票，反映一类股票的整体走势；指数本身不是股票</td><td>创业板指、沪深 300 的成分股</td></tr>
+</table>
+
+<div class="fig flow">
+  <h4>图 1 · 一只股票的四个标签</h4>
+  <svg viewBox="0 0 880 240" xmlns="http://www.w3.org/2000/svg">
+    <rect x="330" y="18" width="220" height="52" rx="10" fill="#14335c"/>
+    <text x="440" y="50" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">宁德时代 300750.SZ</text>
+    <line x1="440" y1="70" x2="440" y2="96" stroke="#8a8a96" stroke-width="2"/>
+    <line x1="130" y1="96" x2="750" y2="96" stroke="#8a8a96" stroke-width="2"/>
+    <line x1="130" y1="96" x2="130" y2="118" stroke="#8a8a96" stroke-width="2"/>
+    <line x1="340" y1="96" x2="340" y2="118" stroke="#8a8a96" stroke-width="2"/>
+    <line x1="550" y1="96" x2="550" y2="118" stroke="#8a8a96" stroke-width="2"/>
+    <line x1="750" y1="96" x2="750" y2="118" stroke="#8a8a96" stroke-width="2"/>
+    <g font-size="14" fill="#26262e">
+      <rect x="40" y="118" width="180" height="86" rx="10" fill="#eef3f7" stroke="#c9d6e2"/>
+      <text x="130" y="146" text-anchor="middle" font-weight="700" fill="#14335c">市场：A股</text>
+      <text x="130" y="170" text-anchor="middle">人民币交易 · T+1</text>
+      <text x="130" y="192" text-anchor="middle">深交所上市</text>
+      <rect x="250" y="118" width="180" height="86" rx="10" fill="#eef3f7" stroke="#c9d6e2"/>
+      <text x="340" y="146" text-anchor="middle" font-weight="700" fill="#14335c">板块：创业板</text>
+      <text x="340" y="170" text-anchor="middle">成长创新企业</text>
+      <text x="340" y="192" text-anchor="middle">涨跌幅 ±20%</text>
+      <rect x="460" y="118" width="180" height="86" rx="10" fill="#eef6fb" stroke="#c9d6e2"/>
+      <text x="550" y="146" text-anchor="middle" font-weight="700" fill="#14335c">行业：电池 / 工业</text>
+      <text x="550" y="170" text-anchor="middle">动力电池、储能</text>
+      <text x="550" y="192" text-anchor="middle">与上市地无关</text>
+      <rect x="660" y="118" width="180" height="86" rx="10" fill="#fdf3e7" stroke="#e8d5b5"/>
+      <text x="750" y="146" text-anchor="middle" font-weight="700" fill="#8a5a12">指数：成分股</text>
+      <text x="750" y="170" text-anchor="middle">创业板指 · 沪深 300</text>
+      <text x="750" y="192" text-anchor="middle">指数本身不可直接买</text>
+    </g>
+    <text x="440" y="228" text-anchor="middle" font-size="13" fill="#8a8a96">同一家公司可以在不同市场上市（如 A+H），但行业标签只有一个生意逻辑。</text>
+  </svg>
+</div>
+
+<div class="tip"><b>一张表看跨市场指数：</b>沪港深 300 指数同时从沪、深、港三地选股。2026 年 10 月 30 日成分股权重前十：腾讯控股 3.67%、汇丰控股 3.50%、贵州茅台 3.04%、阿里巴巴 2.79%、中际旭创 2.16%、宁德时代 2.15%、中国平安 1.97%、招商银行 1.88%、建设银行 1.85%、紫金矿业 1.59%（中证指数公司 factsheet）。一只指数可以横跨三个市场，这正是“市场”和“指数”不是一回事的证据。</div>
+
+<h2 class="sec" id="s2">二、A股：三个交易所，五个板块</h2>
+<p>A股是在中国内地注册的公司发行的、以人民币计价的普通股，在上海、深圳、北京三个交易所上市。沪深交易所都成立于 1990 年；创业板 2009 年开板，科创板 2019 年开板，北交所 2021 年 11 月开市，2021 年原中小板并入深市主板。</p>
+
+<table>
+  <tr><th>交易所</th><th>板块</th><th>定位</th><th>门槛 / 涨跌幅</th></tr>
+  <tr><td>上交所</td><td>主板</td><td>大型成熟企业、蓝筹集中地</td><td>无资金门槛；涨跌幅 ±10%</td></tr>
+  <tr><td>上交所</td><td>科创板</td><td>硬科技（半导体、生物医药、高端装备等）</td><td>50 万元 + 2 年投资经验；涨跌幅 ±20%</td></tr>
+  <tr><td>深交所</td><td>主板</td><td>成熟企业，含原中小板公司</td><td>无资金门槛；涨跌幅 ±10%</td></tr>
+  <tr><td>深交所</td><td>创业板</td><td>成长型、创新型企业</td><td>10 万元 + 2 年投资经验；涨跌幅 ±20%</td></tr>
+  <tr><td>北交所</td><td>—</td><td>创新型中小企业</td><td>50 万元 + 2 年投资经验；涨跌幅 ±30%</td></tr>
+</table>
+
+<div class="tip"><b>2026 年 7 月 6 日起的新规（上海市委金融办口径）：</b>主板 ST 股票涨跌幅由 5% 放宽到 10%；盘后固定价格交易从科创板、创业板扩展到全部 A 股和 ETF；上交所基金收盘集合竞价统一。开户、交易前以交易所最新规则为准。</div>
+
+<h3>代表性指数</h3>
+<table>
+  <tr><th>指数</th><th>代表什么</th></tr>
+  <tr><td>上证指数</td><td>上交所全部上市股票的整体走势</td></tr>
+  <tr><td>深证成指</td><td>深交所最具代表性的 500 只股票</td></tr>
+  <tr><td>沪深 300</td><td>沪深两市规模最大、流动性最好的 300 只股票</td></tr>
+  <tr><td>创业板指</td><td>创业板规模大、流动性好的 100 只股票</td></tr>
+  <tr><td>科创 50</td><td>科创板市值大、流动性好的 50 只股票</td></tr>
+  <tr><td>北证 50</td><td>北交所规模大、流动性好的 50 只股票</td></tr>
+</table>
+<p class="note">上证指数没有现成的日 K 数据接入本页，走势可用外链查看：<span class="links"><a href="https://owlchart.com/chart/000001SS">上证指数走势（OwlChart）</a><a href="https://finabase.io/symbol/000001.ss/history">上证指数历史行情（Finabase）</a></span><br>2026 年 11 月 25 日收盘：上证指数 3,476.47 点，当日 −2.03%。</p>
+
+<h3>四只代表股的近一年周 K 线</h3>
+
+<div class="fig">
+  <h4>图 2 · 贵州茅台（600519.SS，上交所主板 · 白酒 / 主要消费）</h4>
+  <p class="sub">人民币 · 2025-11-12 至 2026-11-24 · 区间涨跌 <span class="down">−0.35%</span> · 约半年 <span class="up">+10.11%</span></p>
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="贵州茅台 周K线图">
+<rect x="0" y="0" width="880" height="300" fill="#fbfbfd"/>
+<line x1="58" y1="266.0" x2="866" y2="266.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="270.0" text-anchor="end" font-size="11" fill="#8a8a96">1,134.33</text>
+<line x1="58" y1="203.5" x2="866" y2="203.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="207.5" text-anchor="end" font-size="11" fill="#8a8a96">1,246.92</text>
+<line x1="58" y1="141.0" x2="866" y2="141.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="145.0" text-anchor="end" font-size="11" fill="#8a8a96">1,359.51</text>
+<line x1="58" y1="78.5" x2="866" y2="78.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="82.5" text-anchor="end" font-size="11" fill="#8a8a96">1,472.09</text>
+<line x1="58" y1="16.0" x2="866" y2="16.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="20.0" text-anchor="end" font-size="11" fill="#8a8a96">1,584.68</text>
+<line x1="65.5" y1="74.7" x2="65.5" y2="87.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="60.8" y="85.2" width="9.3" height="1.9" fill="#2e9e5b"/>
+<text x="65.5" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年11月</text>
+<line x1="65.5" y1="266" x2="65.5" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="80.4" y1="70.7" x2="80.4" y2="93.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="75.8" y="81.5" width="9.3" height="7.0" fill="#d43d2a"/>
+<line x1="95.4" y1="79.1" x2="95.4" y2="96.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="90.8" y="81.3" width="9.3" height="9.2" fill="#2e9e5b"/>
+<line x1="110.4" y1="84.0" x2="110.4" y2="108.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="105.7" y="90.2" width="9.3" height="11.7" fill="#2e9e5b"/>
+<text x="110.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年12月</text>
+<line x1="110.4" y1="266" x2="110.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="125.3" y1="98.2" x2="125.3" y2="127.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="120.7" y="102.3" width="9.3" height="4.7" fill="#2e9e5b"/>
+<line x1="140.3" y1="96.3" x2="140.3" y2="118.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="135.7" y="96.5" width="9.3" height="16.4" fill="#2e9e5b"/>
+<line x1="155.3" y1="107.7" x2="155.3" y2="120.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="150.6" y="110.7" width="9.3" height="2.3" fill="#d43d2a"/>
+<line x1="170.2" y1="110.7" x2="170.2" y2="131.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="165.6" y="110.7" width="9.3" height="20.5" fill="#2e9e5b"/>
+<line x1="185.2" y1="98.0" x2="185.2" y2="126.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="180.5" y="107.9" width="9.3" height="18.9" fill="#d43d2a"/>
+<text x="185.2" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年1月</text>
+<line x1="185.2" y1="266" x2="185.2" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="200.1" y1="101.3" x2="200.1" y2="129.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="195.5" y="107.9" width="9.3" height="20.6" fill="#2e9e5b"/>
+<line x1="215.1" y1="125.5" x2="215.1" y2="156.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="210.5" y="128.6" width="9.3" height="24.9" fill="#2e9e5b"/>
+<line x1="230.1" y1="93.5" x2="230.1" y2="161.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="225.4" y="118.0" width="9.3" height="33.6" fill="#d43d2a"/>
+<line x1="245.0" y1="25.3" x2="245.0" y2="112.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="240.4" y="54.7" width="9.3" height="50.0" fill="#d43d2a"/>
+<text x="245.0" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年2月</text>
+<line x1="245.0" y1="266" x2="245.0" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="260.0" y1="39.2" x2="260.0" y2="79.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="255.4" y="53.0" width="9.3" height="18.2" fill="#2e9e5b"/>
+<line x1="275.0" y1="49.5" x2="275.0" y2="88.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="270.3" y="51.4" width="9.3" height="36.6" fill="#2e9e5b"/>
+<line x1="289.9" y1="86.9" x2="289.9" y2="125.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="285.3" y="90.8" width="9.3" height="26.6" fill="#2e9e5b"/>
+<text x="289.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年3月</text>
+<line x1="289.9" y1="266" x2="289.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="304.9" y1="108.7" x2="304.9" y2="127.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="300.3" y="110.9" width="9.3" height="13.1" fill="#d43d2a"/>
+<line x1="319.9" y1="64.1" x2="319.9" y2="107.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="315.2" y="93.5" width="9.3" height="13.9" fill="#d43d2a"/>
+<line x1="334.8" y1="99.1" x2="334.8" y2="120.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="330.2" y="100.0" width="9.3" height="9.6" fill="#2e9e5b"/>
+<line x1="349.8" y1="74.1" x2="349.8" y2="117.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="345.1" y="85.2" width="9.3" height="29.4" fill="#d43d2a"/>
+<line x1="364.7" y1="79.7" x2="364.7" y2="99.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="360.1" y="85.2" width="9.3" height="3.4" fill="#2e9e5b"/>
+<text x="364.7" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年4月</text>
+<line x1="364.7" y1="266" x2="364.7" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="379.7" y1="75.5" x2="379.7" y2="118.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="375.1" y="94.1" width="9.3" height="20.4" fill="#2e9e5b"/>
+<line x1="394.7" y1="85.8" x2="394.7" y2="118.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="390.0" y="86.1" width="9.3" height="30.8" fill="#d43d2a"/>
+<line x1="409.6" y1="107.4" x2="409.6" y2="129.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="405.0" y="107.4" width="9.3" height="19.5" fill="#2e9e5b"/>
+<line x1="424.6" y1="125.2" x2="424.6" y2="140.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="420.0" y="133.5" width="9.3" height="4.4" fill="#d43d2a"/>
+<text x="424.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年5月</text>
+<line x1="424.6" y1="266" x2="424.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="439.6" y1="133.6" x2="439.6" y2="159.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="434.9" y="133.6" width="9.3" height="22.2" fill="#2e9e5b"/>
+<line x1="454.5" y1="150.3" x2="454.5" y2="179.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="449.9" y="154.0" width="9.3" height="25.4" fill="#2e9e5b"/>
+<line x1="469.5" y1="157.9" x2="469.5" y2="201.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="464.8" y="159.6" width="9.3" height="21.6" fill="#d43d2a"/>
+<line x1="484.4" y1="159.0" x2="484.4" y2="192.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="479.8" y="159.0" width="9.3" height="30.1" fill="#2e9e5b"/>
+<text x="484.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年6月</text>
+<line x1="484.4" y1="266" x2="484.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="499.4" y1="176.8" x2="499.4" y2="201.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="494.8" y="178.5" width="9.3" height="11.1" fill="#d43d2a"/>
+<line x1="514.4" y1="178.1" x2="514.4" y2="223.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="509.7" y="178.1" width="9.3" height="43.1" fill="#2e9e5b"/>
+<line x1="529.3" y1="194.0" x2="529.3" y2="247.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="524.7" y="221.6" width="9.3" height="25.4" fill="#2e9e5b"/>
+<line x1="544.3" y1="220.9" x2="544.3" y2="256.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="539.7" y="232.6" width="9.3" height="14.1" fill="#d43d2a"/>
+<line x1="559.3" y1="221.2" x2="559.3" y2="246.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="554.6" y="226.8" width="9.3" height="10.5" fill="#d43d2a"/>
+<text x="559.3" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年7月</text>
+<line x1="559.3" y1="266" x2="559.3" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="574.2" y1="191.1" x2="574.2" y2="235.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="569.6" y="200.1" width="9.3" height="31.0" fill="#d43d2a"/>
+<line x1="589.2" y1="149.2" x2="589.2" y2="192.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="584.5" y="175.5" width="9.3" height="15.2" fill="#d43d2a"/>
+<line x1="604.1" y1="139.6" x2="604.1" y2="185.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="599.5" y="145.9" width="9.3" height="23.6" fill="#d43d2a"/>
+<line x1="619.1" y1="138.9" x2="619.1" y2="174.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="614.5" y="145.9" width="9.3" height="23.0" fill="#2e9e5b"/>
+<text x="619.1" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年8月</text>
+<line x1="619.1" y1="266" x2="619.1" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="634.1" y1="140.7" x2="634.1" y2="164.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="629.4" y="150.7" width="9.3" height="9.4" fill="#d43d2a"/>
+<line x1="649.0" y1="169.1" x2="649.0" y2="189.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="644.4" y="176.8" width="9.3" height="12.3" fill="#2e9e5b"/>
+<line x1="664.0" y1="164.6" x2="664.0" y2="190.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="659.4" y="175.5" width="9.3" height="14.6" fill="#d43d2a"/>
+<line x1="679.0" y1="152.5" x2="679.0" y2="181.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="674.3" y="157.4" width="9.3" height="17.8" fill="#d43d2a"/>
+<line x1="693.9" y1="155.4" x2="693.9" y2="194.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="689.3" y="160.7" width="9.3" height="27.1" fill="#2e9e5b"/>
+<text x="693.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年9月</text>
+<line x1="693.9" y1="266" x2="693.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="708.9" y1="182.1" x2="708.9" y2="199.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="704.3" y="186.7" width="9.3" height="11.2" fill="#2e9e5b"/>
+<line x1="723.9" y1="189.9" x2="723.9" y2="212.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="719.2" y="196.8" width="9.3" height="12.2" fill="#2e9e5b"/>
+<line x1="738.8" y1="191.8" x2="738.8" y2="213.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="734.2" y="197.0" width="9.3" height="12.6" fill="#d43d2a"/>
+<line x1="753.8" y1="184.0" x2="753.8" y2="206.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="749.1" y="194.6" width="9.3" height="5.6" fill="#d43d2a"/>
+<text x="753.8" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年10月</text>
+<line x1="753.8" y1="266" x2="753.8" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="768.7" y1="157.4" x2="768.7" y2="195.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="764.1" y="157.9" width="9.3" height="36.7" fill="#d43d2a"/>
+<line x1="783.7" y1="147.1" x2="783.7" y2="176.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="779.1" y="154.6" width="9.3" height="6.9" fill="#d43d2a"/>
+<line x1="798.7" y1="122.2" x2="798.7" y2="161.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="794.0" y="122.9" width="9.3" height="37.0" fill="#d43d2a"/>
+<line x1="813.6" y1="73.8" x2="813.6" y2="121.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="809.0" y="89.1" width="9.3" height="23.9" fill="#d43d2a"/>
+<text x="813.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年11月</text>
+<line x1="813.6" y1="266" x2="813.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="828.6" y1="90.8" x2="828.6" y2="125.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="824.0" y="96.3" width="9.3" height="2.7" fill="#2e9e5b"/>
+<line x1="843.6" y1="69.1" x2="843.6" y2="105.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="838.9" y="70.9" width="9.3" height="33.0" fill="#d43d2a"/>
+<line x1="858.5" y1="75.2" x2="858.5" y2="107.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="853.9" y="76.7" width="9.3" height="8.5" fill="#2e9e5b"/>
+<line x1="58" y1="85.2" x2="866" y2="85.2" stroke="#55556a" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="64" y="79.2" font-size="12" font-weight="700" fill="#33333f">最新收盘 1,460.00 CNY</text>
+<text x="58" y="276" font-size="11" fill="#8a8a96">周K线 · 红涨绿跌（中国惯例） · 每根柱子为一周</text>
+</svg>
+  <p class="cap">区间最高 1,568.00 元，最低 1,151.01 元，最新收盘 1,460.00 元。白酒龙头的走势不等于整个消费行业，个股与行业要分开看。</p>
+</div>
+
+<div class="fig">
+  <h4>图 3 · 宁德时代（300750.SZ，创业板 · 电池 / 工业）</h4>
+  <p class="sub">人民币 · 2025-11-12 至 2026-11-24 · 区间涨跌 <span class="down">−41.15%</span> · 约半年 <span class="down">−46.38%</span></p>
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="宁德时代 周K线图">
+<rect x="0" y="0" width="880" height="300" fill="#fbfbfd"/>
+<line x1="58" y1="266.0" x2="866" y2="266.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="270.0" text-anchor="end" font-size="11" fill="#8a8a96">206.42</text>
+<line x1="58" y1="203.5" x2="866" y2="203.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="207.5" text-anchor="end" font-size="11" fill="#8a8a96">274.53</text>
+<line x1="58" y1="141.0" x2="866" y2="141.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="145.0" text-anchor="end" font-size="11" fill="#8a8a96">342.63</text>
+<line x1="58" y1="78.5" x2="866" y2="78.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="82.5" text-anchor="end" font-size="11" fill="#8a8a96">410.73</text>
+<line x1="58" y1="16.0" x2="866" y2="16.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="20.0" text-anchor="end" font-size="11" fill="#8a8a96">478.84</text>
+<line x1="65.5" y1="68.8" x2="65.5" y2="103.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="60.8" y="84.6" width="9.3" height="12.2" fill="#d43d2a"/>
+<text x="65.5" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年11月</text>
+<line x1="65.5" y1="266" x2="65.5" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="80.4" y1="89.6" x2="80.4" y2="115.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="75.8" y="99.4" width="9.3" height="16.5" fill="#2e9e5b"/>
+<line x1="95.4" y1="107.0" x2="95.4" y2="119.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="90.8" y="112.4" width="9.3" height="1.5" fill="#2e9e5b"/>
+<line x1="110.4" y1="98.2" x2="110.4" y2="112.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="105.7" y="98.4" width="9.3" height="13.2" fill="#d43d2a"/>
+<text x="110.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年12月</text>
+<line x1="110.4" y1="266" x2="110.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="125.3" y1="89.4" x2="125.3" y2="109.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="120.7" y="95.9" width="9.3" height="1.5" fill="#d43d2a"/>
+<line x1="140.3" y1="93.0" x2="140.3" y2="115.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="135.7" y="96.2" width="9.3" height="16.1" fill="#2e9e5b"/>
+<line x1="155.3" y1="106.2" x2="155.3" y2="117.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="150.6" y="110.4" width="9.3" height="1.5" fill="#2e9e5b"/>
+<line x1="170.2" y1="111.8" x2="170.2" y2="119.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="165.6" y="112.2" width="9.3" height="6.2" fill="#2e9e5b"/>
+<line x1="185.2" y1="106.2" x2="185.2" y2="118.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="180.5" y="115.9" width="9.3" height="1.5" fill="#2e9e5b"/>
+<text x="185.2" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年1月</text>
+<line x1="185.2" y1="266" x2="185.2" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="200.1" y1="117.7" x2="200.1" y2="132.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="195.5" y="117.7" width="9.3" height="14.4" fill="#2e9e5b"/>
+<line x1="215.1" y1="127.2" x2="215.1" y2="143.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="210.5" y="132.9" width="9.3" height="4.1" fill="#2e9e5b"/>
+<line x1="230.1" y1="130.8" x2="230.1" y2="149.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="225.4" y="132.4" width="9.3" height="1.9" fill="#2e9e5b"/>
+<line x1="245.0" y1="113.2" x2="245.0" y2="140.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="240.4" y="116.7" width="9.3" height="11.1" fill="#d43d2a"/>
+<text x="245.0" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年2月</text>
+<line x1="245.0" y1="266" x2="245.0" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="260.0" y1="108.7" x2="260.0" y2="122.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="255.4" y="115.4" width="9.3" height="4.7" fill="#2e9e5b"/>
+<line x1="275.0" y1="112.7" x2="275.0" y2="141.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="270.3" y="113.5" width="9.3" height="28.1" fill="#2e9e5b"/>
+<line x1="289.9" y1="127.8" x2="289.9" y2="148.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="285.3" y="129.9" width="9.3" height="12.6" fill="#d43d2a"/>
+<text x="289.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年3月</text>
+<line x1="289.9" y1="266" x2="289.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="304.9" y1="84.7" x2="304.9" y2="138.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="300.3" y="91.1" width="9.3" height="44.2" fill="#d43d2a"/>
+<line x1="319.9" y1="68.1" x2="319.9" y2="91.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="315.2" y="76.4" width="9.3" height="10.3" fill="#d43d2a"/>
+<line x1="334.8" y1="71.5" x2="334.8" y2="99.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="330.2" y="72.4" width="9.3" height="1.5" fill="#2e9e5b"/>
+<line x1="349.8" y1="71.1" x2="349.8" y2="102.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="345.1" y="76.4" width="9.3" height="24.4" fill="#2e9e5b"/>
+<line x1="364.7" y1="70.9" x2="364.7" y2="105.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="360.1" y="73.7" width="9.3" height="23.9" fill="#d43d2a"/>
+<text x="364.7" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年4月</text>
+<line x1="364.7" y1="266" x2="364.7" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="379.7" y1="33.3" x2="379.7" y2="75.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="375.1" y="47.8" width="9.3" height="24.0" fill="#d43d2a"/>
+<line x1="394.7" y1="42.3" x2="394.7" y2="65.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="390.0" y="47.1" width="9.3" height="10.9" fill="#d43d2a"/>
+<line x1="409.6" y1="42.9" x2="409.6" y2="67.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="405.0" y="47.4" width="9.3" height="7.9" fill="#2e9e5b"/>
+<line x1="424.6" y1="25.3" x2="424.6" y2="55.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="420.0" y="35.6" width="9.3" height="18.8" fill="#2e9e5b"/>
+<text x="424.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年5月</text>
+<line x1="424.6" y1="266" x2="424.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="439.6" y1="42.0" x2="439.6" y2="69.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="434.9" y="51.6" width="9.3" height="15.1" fill="#2e9e5b"/>
+<line x1="454.5" y1="63.0" x2="454.5" y2="82.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="449.9" y="69.5" width="9.3" height="8.6" fill="#2e9e5b"/>
+<line x1="469.5" y1="60.0" x2="469.5" y2="88.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="464.8" y="66.3" width="9.3" height="11.7" fill="#d43d2a"/>
+<line x1="484.4" y1="53.3" x2="484.4" y2="85.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="479.8" y="58.9" width="9.3" height="26.7" fill="#2e9e5b"/>
+<text x="484.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年6月</text>
+<line x1="484.4" y1="266" x2="484.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="499.4" y1="85.9" x2="499.4" y2="106.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="494.8" y="92.2" width="9.3" height="1.5" fill="#2e9e5b"/>
+<line x1="514.4" y1="79.3" x2="514.4" y2="97.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="509.7" y="86.5" width="9.3" height="9.6" fill="#2e9e5b"/>
+<line x1="529.3" y1="75.5" x2="529.3" y2="105.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="524.7" y="94.8" width="9.3" height="11.0" fill="#2e9e5b"/>
+<line x1="544.3" y1="86.2" x2="544.3" y2="115.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="539.7" y="100.3" width="9.3" height="6.4" fill="#2e9e5b"/>
+<line x1="559.3" y1="105.0" x2="559.3" y2="137.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="554.6" y="107.4" width="9.3" height="28.0" fill="#2e9e5b"/>
+<text x="559.3" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年7月</text>
+<line x1="559.3" y1="266" x2="559.3" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="574.2" y1="106.7" x2="574.2" y2="136.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="569.6" y="125.1" width="9.3" height="10.1" fill="#d43d2a"/>
+<line x1="589.2" y1="96.6" x2="589.2" y2="130.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="584.5" y="103.9" width="9.3" height="26.6" fill="#d43d2a"/>
+<line x1="604.1" y1="84.9" x2="604.1" y2="105.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="599.5" y="90.2" width="9.3" height="2.5" fill="#2e9e5b"/>
+<line x1="619.1" y1="79.2" x2="619.1" y2="103.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="614.5" y="95.1" width="9.3" height="4.2" fill="#2e9e5b"/>
+<text x="619.1" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年8月</text>
+<line x1="619.1" y1="266" x2="619.1" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="634.1" y1="87.4" x2="634.1" y2="102.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="629.4" y="93.9" width="9.3" height="7.6" fill="#d43d2a"/>
+<line x1="649.0" y1="87.7" x2="649.0" y2="103.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="644.4" y="93.9" width="9.3" height="2.6" fill="#2e9e5b"/>
+<line x1="664.0" y1="93.5" x2="664.0" y2="121.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="659.4" y="96.5" width="9.3" height="20.8" fill="#2e9e5b"/>
+<line x1="679.0" y1="118.3" x2="679.0" y2="136.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="674.3" y="119.0" width="9.3" height="14.3" fill="#2e9e5b"/>
+<line x1="693.9" y1="132.6" x2="693.9" y2="156.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="689.3" y="133.3" width="9.3" height="18.8" fill="#2e9e5b"/>
+<text x="693.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年9月</text>
+<line x1="693.9" y1="266" x2="693.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="708.9" y1="141.8" x2="708.9" y2="181.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="704.3" y="148.5" width="9.3" height="29.9" fill="#2e9e5b"/>
+<line x1="723.9" y1="172.1" x2="723.9" y2="186.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="719.2" y="177.3" width="9.3" height="8.8" fill="#2e9e5b"/>
+<line x1="738.8" y1="186.4" x2="738.8" y2="193.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="734.2" y="188.3" width="9.3" height="1.9" fill="#d43d2a"/>
+<line x1="753.8" y1="178.8" x2="753.8" y2="193.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="749.1" y="182.2" width="9.3" height="5.3" fill="#d43d2a"/>
+<text x="753.8" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年10月</text>
+<line x1="753.8" y1="266" x2="753.8" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="768.7" y1="174.0" x2="768.7" y2="205.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="764.1" y="179.9" width="9.3" height="21.4" fill="#2e9e5b"/>
+<line x1="783.7" y1="203.1" x2="783.7" y2="256.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="779.1" y="203.1" width="9.3" height="34.3" fill="#2e9e5b"/>
+<line x1="798.7" y1="233.7" x2="798.7" y2="248.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="794.0" y="239.8" width="9.3" height="1.9" fill="#2e9e5b"/>
+<line x1="813.6" y1="205.6" x2="813.6" y2="241.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="809.0" y="222.1" width="9.3" height="17.6" fill="#d43d2a"/>
+<text x="813.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年11月</text>
+<line x1="813.6" y1="266" x2="813.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="828.6" y1="217.9" x2="828.6" y2="238.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="824.0" y="217.9" width="9.3" height="19.4" fill="#2e9e5b"/>
+<line x1="843.6" y1="232.2" x2="843.6" y2="248.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="838.9" y="240.7" width="9.3" height="5.7" fill="#2e9e5b"/>
+<line x1="858.5" y1="238.7" x2="858.5" y2="251.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="853.9" y="246.8" width="9.3" height="1.5" fill="#d43d2a"/>
+<line x1="58" y1="246.8" x2="866" y2="246.8" stroke="#55556a" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="64" y="240.8" font-size="12" font-weight="700" fill="#33333f">最新收盘 227.37 CNY</text>
+<text x="58" y="276" font-size="11" fill="#8a8a96">周K线 · 红涨绿跌（中国惯例） · 每根柱子为一周</text>
+</svg>
+  <p class="cap">区间最高 468.75 元，最低 216.51 元，最新收盘 227.37 元。注意：本图截至 11 月 24 日；11 月 25 日该股继续下跌，收于 208.42 元（当日 −8.33%），市值跌破 1 万亿元。看图时要留意数据截止日之后发生了什么。</p>
+</div>
+
+<div class="fig">
+  <h4>图 4 · 紫金矿业（601899.SS，上交所主板 · 金铜矿业 / 原材料）</h4>
+  <p class="sub">人民币 · 2025-11-12 至 2026-11-24 · 区间涨跌 <span class="down">−21.30%</span> · 约半年 <span class="down">−23.75%</span></p>
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="紫金矿业 周K线图">
+<rect x="0" y="0" width="880" height="300" fill="#fbfbfd"/>
+<line x1="58" y1="266.0" x2="866" y2="266.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="270.0" text-anchor="end" font-size="11" fill="#8a8a96">21.66</text>
+<line x1="58" y1="203.5" x2="866" y2="203.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="207.5" text-anchor="end" font-size="11" fill="#8a8a96">27.71</text>
+<line x1="58" y1="141.0" x2="866" y2="141.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="145.0" text-anchor="end" font-size="11" fill="#8a8a96">33.75</text>
+<line x1="58" y1="78.5" x2="866" y2="78.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="82.5" text-anchor="end" font-size="11" fill="#8a8a96">39.79</text>
+<line x1="58" y1="16.0" x2="866" y2="16.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="20.0" text-anchor="end" font-size="11" fill="#8a8a96">45.84</text>
+<line x1="65.5" y1="168.2" x2="65.5" y2="188.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="60.8" y="179.6" width="9.3" height="4.1" fill="#d43d2a"/>
+<text x="65.5" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年11月</text>
+<line x1="65.5" y1="266" x2="65.5" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="80.4" y1="180.6" x2="80.4" y2="200.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="75.8" y="182.6" width="9.3" height="16.4" fill="#2e9e5b"/>
+<line x1="95.4" y1="188.1" x2="95.4" y2="204.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="90.8" y="194.5" width="9.3" height="1.5" fill="#d43d2a"/>
+<line x1="110.4" y1="164.4" x2="110.4" y2="186.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="105.7" y="166.1" width="9.3" height="18.8" fill="#d43d2a"/>
+<text x="110.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年12月</text>
+<line x1="110.4" y1="266" x2="110.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="125.3" y1="159.6" x2="125.3" y2="177.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="120.7" y="162.2" width="9.3" height="3.1" fill="#d43d2a"/>
+<line x1="140.3" y1="160.3" x2="140.3" y2="178.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="135.7" y="166.8" width="9.3" height="1.5" fill="#2e9e5b"/>
+<line x1="155.3" y1="140.8" x2="155.3" y2="162.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="150.6" y="143.3" width="9.3" height="19.0" fill="#d43d2a"/>
+<line x1="170.2" y1="124.3" x2="170.2" y2="164.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="165.6" y="133.6" width="9.3" height="3.2" fill="#d43d2a"/>
+<line x1="185.2" y1="100.1" x2="185.2" y2="135.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="180.5" y="105.1" width="9.3" height="19.9" fill="#d43d2a"/>
+<text x="185.2" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年1月</text>
+<line x1="185.2" y1="266" x2="185.2" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="200.1" y1="77.9" x2="200.1" y2="107.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="195.5" y="94.8" width="9.3" height="7.8" fill="#2e9e5b"/>
+<line x1="215.1" y1="91.9" x2="215.1" y2="115.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="210.5" y="101.0" width="9.3" height="1.5" fill="#2e9e5b"/>
+<line x1="230.1" y1="25.3" x2="230.1" y2="89.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="225.4" y="74.9" width="9.3" height="14.5" fill="#d43d2a"/>
+<line x1="245.0" y1="76.5" x2="245.0" y2="122.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="240.4" y="105.4" width="9.3" height="3.3" fill="#d43d2a"/>
+<text x="245.0" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年2月</text>
+<line x1="245.0" y1="266" x2="245.0" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="260.0" y1="71.9" x2="260.0" y2="100.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="255.4" y="92.0" width="9.3" height="7.3" fill="#2e9e5b"/>
+<line x1="275.0" y1="73.7" x2="275.0" y2="88.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="270.3" y="81.0" width="9.3" height="1.5" fill="#d43d2a"/>
+<line x1="289.9" y1="67.0" x2="289.9" y2="115.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="285.3" y="72.2" width="9.3" height="34.1" fill="#2e9e5b"/>
+<text x="289.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年3月</text>
+<line x1="289.9" y1="266" x2="289.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="304.9" y1="100.8" x2="304.9" y2="129.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="300.3" y="118.5" width="9.3" height="1.7" fill="#2e9e5b"/>
+<line x1="319.9" y1="122.4" x2="319.9" y2="165.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="315.2" y="127.7" width="9.3" height="35.1" fill="#2e9e5b"/>
+<line x1="334.8" y1="138.6" x2="334.8" y2="181.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="330.2" y="154.2" width="9.3" height="23.4" fill="#d43d2a"/>
+<line x1="349.8" y1="132.4" x2="349.8" y2="160.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="345.1" y="149.7" width="9.3" height="7.3" fill="#d43d2a"/>
+<line x1="364.7" y1="130.6" x2="364.7" y2="155.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="360.1" y="141.0" width="9.3" height="9.8" fill="#d43d2a"/>
+<text x="364.7" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年4月</text>
+<line x1="364.7" y1="266" x2="364.7" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="379.7" y1="117.7" x2="379.7" y2="145.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="375.1" y="130.9" width="9.3" height="14.0" fill="#d43d2a"/>
+<line x1="394.7" y1="119.2" x2="394.7" y2="143.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="390.0" y="129.5" width="9.3" height="5.7" fill="#2e9e5b"/>
+<line x1="409.6" y1="135.8" x2="409.6" y2="153.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="405.0" y="138.4" width="9.3" height="7.2" fill="#2e9e5b"/>
+<line x1="424.6" y1="126.3" x2="424.6" y2="146.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="420.0" y="130.1" width="9.3" height="13.4" fill="#d43d2a"/>
+<text x="424.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年5月</text>
+<line x1="424.6" y1="266" x2="424.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="439.6" y1="124.7" x2="439.6" y2="164.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="434.9" y="132.7" width="9.3" height="28.0" fill="#2e9e5b"/>
+<line x1="454.5" y1="165.4" x2="454.5" y2="181.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="449.9" y="169.9" width="9.3" height="1.5" fill="#d43d2a"/>
+<line x1="469.5" y1="149.0" x2="469.5" y2="179.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="464.8" y="162.8" width="9.3" height="12.4" fill="#2e9e5b"/>
+<line x1="484.4" y1="161.0" x2="484.4" y2="184.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="479.8" y="177.5" width="9.3" height="6.1" fill="#2e9e5b"/>
+<text x="484.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年6月</text>
+<line x1="484.4" y1="266" x2="484.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="499.4" y1="182.3" x2="499.4" y2="212.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="494.8" y="189.2" width="9.3" height="8.4" fill="#d43d2a"/>
+<line x1="514.4" y1="165.8" x2="514.4" y2="187.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="509.7" y="174.2" width="9.3" height="8.8" fill="#2e9e5b"/>
+<line x1="529.3" y1="174.6" x2="529.3" y2="233.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="524.7" y="187.5" width="9.3" height="42.9" fill="#2e9e5b"/>
+<line x1="544.3" y1="197.4" x2="544.3" y2="237.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="539.7" y="202.3" width="9.3" height="25.5" fill="#d43d2a"/>
+<line x1="559.3" y1="188.2" x2="559.3" y2="215.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="554.6" y="203.4" width="9.3" height="1.5" fill="#d43d2a"/>
+<text x="559.3" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年7月</text>
+<line x1="559.3" y1="266" x2="559.3" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="574.2" y1="184.0" x2="574.2" y2="213.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="569.6" y="196.8" width="9.3" height="11.7" fill="#d43d2a"/>
+<line x1="589.2" y1="141.7" x2="589.2" y2="197.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="584.5" y="164.2" width="9.3" height="32.6" fill="#d43d2a"/>
+<line x1="604.1" y1="143.8" x2="604.1" y2="169.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="599.5" y="149.3" width="9.3" height="5.2" fill="#d43d2a"/>
+<line x1="619.1" y1="119.8" x2="619.1" y2="162.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="614.5" y="126.5" width="9.3" height="25.3" fill="#d43d2a"/>
+<text x="619.1" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年8月</text>
+<line x1="619.1" y1="266" x2="619.1" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="634.1" y1="120.1" x2="634.1" y2="161.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="629.4" y="126.2" width="9.3" height="27.4" fill="#2e9e5b"/>
+<line x1="649.0" y1="127.2" x2="649.0" y2="155.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="644.4" y="130.8" width="9.3" height="14.6" fill="#d43d2a"/>
+<line x1="664.0" y1="123.2" x2="664.0" y2="144.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="659.4" y="123.9" width="9.3" height="7.8" fill="#2e9e5b"/>
+<line x1="679.0" y1="136.4" x2="679.0" y2="157.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="674.3" y="145.1" width="9.3" height="3.6" fill="#d43d2a"/>
+<line x1="693.9" y1="132.9" x2="693.9" y2="164.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="689.3" y="151.9" width="9.3" height="4.6" fill="#2e9e5b"/>
+<text x="693.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年9月</text>
+<line x1="693.9" y1="266" x2="693.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="708.9" y1="154.0" x2="708.9" y2="174.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="704.3" y="161.4" width="9.3" height="3.8" fill="#2e9e5b"/>
+<line x1="723.9" y1="161.5" x2="723.9" y2="179.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="719.2" y="164.5" width="9.3" height="15.2" fill="#2e9e5b"/>
+<line x1="738.8" y1="180.4" x2="738.8" y2="190.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="734.2" y="182.0" width="9.3" height="2.0" fill="#d43d2a"/>
+<line x1="753.8" y1="168.8" x2="753.8" y2="188.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="749.1" y="171.5" width="9.3" height="11.4" fill="#d43d2a"/>
+<text x="753.8" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年10月</text>
+<line x1="753.8" y1="266" x2="753.8" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="768.7" y1="168.8" x2="768.7" y2="189.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="764.1" y="169.4" width="9.3" height="11.2" fill="#2e9e5b"/>
+<line x1="783.7" y1="178.8" x2="783.7" y2="215.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="779.1" y="182.1" width="9.3" height="10.2" fill="#2e9e5b"/>
+<line x1="798.7" y1="194.2" x2="798.7" y2="213.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="794.0" y="197.6" width="9.3" height="7.0" fill="#2e9e5b"/>
+<line x1="813.6" y1="180.3" x2="813.6" y2="222.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="809.0" y="197.6" width="9.3" height="7.9" fill="#d43d2a"/>
+<text x="813.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年11月</text>
+<line x1="813.6" y1="266" x2="813.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="828.6" y1="191.1" x2="828.6" y2="220.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="824.0" y="195.5" width="9.3" height="21.7" fill="#2e9e5b"/>
+<line x1="843.6" y1="218.7" x2="843.6" y2="256.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="838.9" y="222.4" width="9.3" height="22.2" fill="#2e9e5b"/>
+<line x1="858.5" y1="234.0" x2="858.5" y2="251.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="853.9" y="241.7" width="9.3" height="8.3" fill="#2e9e5b"/>
+<line x1="58" y1="250.0" x2="866" y2="250.0" stroke="#55556a" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="64" y="244.0" font-size="12" font-weight="700" fill="#33333f">最新收盘 23.21 CNY</text>
+<text x="58" y="276" font-size="11" fill="#8a8a96">周K线 · 红涨绿跌（中国惯例） · 每根柱子为一周</text>
+</svg>
+  <p class="cap">区间最高 44.94 元，最低 22.56 元，最新收盘 23.21 元。金矿股的走势不等于金价：金价涨，矿企股价也可能因为成本、产量、估值而跌。</p>
+</div>
+
+<div class="fig">
+  <h4>图 5 · 隆平高科（000998.SZ，深市主板 · 种业 / 主要消费）</h4>
+  <p class="sub">人民币 · 2025-11-12 至 2026-11-24 · 区间涨跌 <span class="down">−21.82%</span> · 约半年 <span class="down">−8.83%</span></p>
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="隆平高科 周K线图">
+<rect x="0" y="0" width="880" height="300" fill="#fbfbfd"/>
+<line x1="58" y1="266.0" x2="866" y2="266.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="270.0" text-anchor="end" font-size="11" fill="#8a8a96">7.20</text>
+<line x1="58" y1="203.5" x2="866" y2="203.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="207.5" text-anchor="end" font-size="11" fill="#8a8a96">8.23</text>
+<line x1="58" y1="141.0" x2="866" y2="141.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="145.0" text-anchor="end" font-size="11" fill="#8a8a96">9.25</text>
+<line x1="58" y1="78.5" x2="866" y2="78.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="82.5" text-anchor="end" font-size="11" fill="#8a8a96">10.28</text>
+<line x1="58" y1="16.0" x2="866" y2="16.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="20.0" text-anchor="end" font-size="11" fill="#8a8a96">11.31</text>
+<line x1="65.5" y1="97.0" x2="65.5" y2="104.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="60.8" y="97.6" width="9.3" height="3.0" fill="#2e9e5b"/>
+<text x="65.5" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年11月</text>
+<line x1="65.5" y1="266" x2="65.5" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="80.4" y1="89.7" x2="80.4" y2="108.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="75.8" y="98.8" width="9.3" height="8.5" fill="#2e9e5b"/>
+<line x1="95.4" y1="101.8" x2="95.4" y2="118.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="90.8" y="112.7" width="9.3" height="2.4" fill="#2e9e5b"/>
+<line x1="110.4" y1="112.7" x2="110.4" y2="127.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="105.7" y="117.6" width="9.3" height="5.5" fill="#2e9e5b"/>
+<text x="110.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年12月</text>
+<line x1="110.4" y1="266" x2="110.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="125.3" y1="120.0" x2="125.3" y2="130.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="120.7" y="123.1" width="9.3" height="5.5" fill="#2e9e5b"/>
+<line x1="140.3" y1="128.5" x2="140.3" y2="146.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="135.7" y="129.2" width="9.3" height="3.0" fill="#2e9e5b"/>
+<line x1="155.3" y1="124.3" x2="155.3" y2="132.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="150.6" y="127.3" width="9.3" height="3.6" fill="#d43d2a"/>
+<line x1="170.2" y1="123.7" x2="170.2" y2="135.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="165.6" y="127.3" width="9.3" height="7.3" fill="#2e9e5b"/>
+<line x1="185.2" y1="121.3" x2="185.2" y2="134.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="180.5" y="123.1" width="9.3" height="10.9" fill="#d43d2a"/>
+<text x="185.2" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年1月</text>
+<line x1="185.2" y1="266" x2="185.2" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="200.1" y1="110.3" x2="200.1" y2="127.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="195.5" y="122.5" width="9.3" height="1.5" fill="#2e9e5b"/>
+<line x1="215.1" y1="114.0" x2="215.1" y2="126.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="210.5" y="118.2" width="9.3" height="1.5" fill="#d43d2a"/>
+<line x1="230.1" y1="51.4" x2="230.1" y2="127.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="225.4" y="64.8" width="9.3" height="54.1" fill="#d43d2a"/>
+<line x1="245.0" y1="70.8" x2="245.0" y2="106.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="240.4" y="70.8" width="9.3" height="31.6" fill="#2e9e5b"/>
+<text x="245.0" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年2月</text>
+<line x1="245.0" y1="266" x2="245.0" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="260.0" y1="100.0" x2="260.0" y2="115.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="255.4" y="101.8" width="9.3" height="10.9" fill="#2e9e5b"/>
+<line x1="275.0" y1="94.5" x2="275.0" y2="111.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="270.3" y="95.7" width="9.3" height="12.8" fill="#d43d2a"/>
+<line x1="289.9" y1="25.3" x2="289.9" y2="95.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="285.3" y="68.4" width="9.3" height="27.3" fill="#d43d2a"/>
+<text x="289.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年3月</text>
+<line x1="289.9" y1="266" x2="289.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="304.9" y1="29.5" x2="304.9" y2="73.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="300.3" y="47.1" width="9.3" height="12.2" fill="#2e9e5b"/>
+<line x1="319.9" y1="31.9" x2="319.9" y2="95.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="315.2" y="59.3" width="9.3" height="31.6" fill="#2e9e5b"/>
+<line x1="334.8" y1="87.8" x2="334.8" y2="126.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="330.2" y="95.7" width="9.3" height="4.3" fill="#2e9e5b"/>
+<line x1="349.8" y1="65.4" x2="349.8" y2="123.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="345.1" y="106.7" width="9.3" height="14.6" fill="#2e9e5b"/>
+<line x1="364.7" y1="101.8" x2="364.7" y2="126.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="360.1" y="111.5" width="9.3" height="10.9" fill="#d43d2a"/>
+<text x="364.7" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年4月</text>
+<line x1="364.7" y1="266" x2="364.7" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="379.7" y1="87.8" x2="379.7" y2="117.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="375.1" y="102.4" width="9.3" height="7.9" fill="#d43d2a"/>
+<line x1="394.7" y1="90.9" x2="394.7" y2="121.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="390.0" y="95.7" width="9.3" height="20.7" fill="#2e9e5b"/>
+<line x1="409.6" y1="110.3" x2="409.6" y2="151.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="405.0" y="118.2" width="9.3" height="29.8" fill="#2e9e5b"/>
+<line x1="424.6" y1="145.6" x2="424.6" y2="151.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="420.0" y="146.2" width="9.3" height="1.5" fill="#2e9e5b"/>
+<text x="424.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年5月</text>
+<line x1="424.6" y1="266" x2="424.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="439.6" y1="140.1" x2="439.6" y2="163.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="434.9" y="144.3" width="9.3" height="14.6" fill="#2e9e5b"/>
+<line x1="454.5" y1="158.9" x2="454.5" y2="202.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="449.9" y="158.9" width="9.3" height="31.6" fill="#2e9e5b"/>
+<line x1="469.5" y1="168.6" x2="469.5" y2="202.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="464.8" y="187.5" width="9.3" height="3.0" fill="#d43d2a"/>
+<line x1="484.4" y1="169.9" x2="484.4" y2="197.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="479.8" y="188.1" width="9.3" height="6.1" fill="#2e9e5b"/>
+<text x="484.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年6月</text>
+<line x1="484.4" y1="266" x2="484.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="499.4" y1="186.9" x2="499.4" y2="216.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="494.8" y="186.9" width="9.3" height="13.4" fill="#d43d2a"/>
+<line x1="514.4" y1="186.3" x2="514.4" y2="217.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="509.7" y="191.7" width="9.3" height="24.3" fill="#2e9e5b"/>
+<line x1="529.3" y1="217.2" x2="529.3" y2="256.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="524.7" y="217.2" width="9.3" height="30.4" fill="#2e9e5b"/>
+<line x1="544.3" y1="224.5" x2="544.3" y2="256.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="539.7" y="232.4" width="9.3" height="18.2" fill="#d43d2a"/>
+<line x1="559.3" y1="222.7" x2="559.3" y2="239.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="554.6" y="227.6" width="9.3" height="4.3" fill="#d43d2a"/>
+<text x="559.3" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年7月</text>
+<line x1="559.3" y1="266" x2="559.3" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="574.2" y1="205.1" x2="574.2" y2="238.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="569.6" y="217.9" width="9.3" height="9.7" fill="#d43d2a"/>
+<line x1="589.2" y1="195.4" x2="589.2" y2="222.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="584.5" y="211.2" width="9.3" height="9.1" fill="#d43d2a"/>
+<line x1="604.1" y1="189.9" x2="604.1" y2="216.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="599.5" y="192.9" width="9.3" height="19.4" fill="#d43d2a"/>
+<line x1="619.1" y1="182.0" x2="619.1" y2="213.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="614.5" y="192.3" width="9.3" height="12.2" fill="#2e9e5b"/>
+<text x="619.1" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年8月</text>
+<line x1="619.1" y1="266" x2="619.1" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="634.1" y1="192.3" x2="634.1" y2="216.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="629.4" y="205.1" width="9.3" height="10.9" fill="#2e9e5b"/>
+<line x1="649.0" y1="101.8" x2="649.0" y2="211.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="644.4" y="196.0" width="9.3" height="15.8" fill="#d43d2a"/>
+<line x1="664.0" y1="131.6" x2="664.0" y2="200.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="659.4" y="141.3" width="9.3" height="56.5" fill="#d43d2a"/>
+<line x1="679.0" y1="97.6" x2="679.0" y2="157.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="674.3" y="132.8" width="9.3" height="1.8" fill="#d43d2a"/>
+<line x1="693.9" y1="59.9" x2="693.9" y2="141.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="689.3" y="132.2" width="9.3" height="3.6" fill="#2e9e5b"/>
+<text x="693.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年9月</text>
+<line x1="693.9" y1="266" x2="693.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="708.9" y1="135.8" x2="708.9" y2="179.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="704.3" y="143.7" width="9.3" height="13.4" fill="#2e9e5b"/>
+<line x1="723.9" y1="145.6" x2="723.9" y2="176.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="719.2" y="162.0" width="9.3" height="14.0" fill="#2e9e5b"/>
+<line x1="738.8" y1="172.3" x2="738.8" y2="198.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="734.2" y="175.3" width="9.3" height="1.8" fill="#2e9e5b"/>
+<line x1="753.8" y1="151.6" x2="753.8" y2="182.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="749.1" y="152.8" width="9.3" height="21.9" fill="#d43d2a"/>
+<text x="753.8" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年10月</text>
+<line x1="753.8" y1="266" x2="753.8" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="768.7" y1="143.1" x2="768.7" y2="211.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="764.1" y="154.1" width="9.3" height="53.5" fill="#2e9e5b"/>
+<line x1="783.7" y1="201.5" x2="783.7" y2="227.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="779.1" y="211.2" width="9.3" height="4.3" fill="#2e9e5b"/>
+<line x1="798.7" y1="206.9" x2="798.7" y2="239.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="794.0" y="216.0" width="9.3" height="17.6" fill="#2e9e5b"/>
+<line x1="813.6" y1="201.5" x2="813.6" y2="233.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="809.0" y="209.4" width="9.3" height="24.3" fill="#d43d2a"/>
+<text x="813.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年11月</text>
+<line x1="813.6" y1="266" x2="813.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="828.6" y1="208.1" x2="828.6" y2="229.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="824.0" y="210.0" width="9.3" height="18.2" fill="#2e9e5b"/>
+<line x1="843.6" y1="225.1" x2="843.6" y2="251.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="838.9" y="228.2" width="9.3" height="14.0" fill="#2e9e5b"/>
+<line x1="858.5" y1="219.7" x2="858.5" y2="247.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="853.9" y="233.0" width="9.3" height="14.6" fill="#d43d2a"/>
+<line x1="58" y1="233.0" x2="866" y2="233.0" stroke="#55556a" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="64" y="227.0" font-size="12" font-weight="700" fill="#33333f">最新收盘 7.74 CNY</text>
+<text x="58" y="276" font-size="11" fill="#8a8a96">周K线 · 红涨绿跌（中国惯例） · 每根柱子为一周</text>
+</svg>
+  <p class="cap">区间最高 11.16 元，最低 7.35 元，最新收盘 7.74 元。这是“蔬菜、大豆”主题在股票市场里最接近的落点之一：种业公司，而不是蔬菜和大豆本身（见第六节）。</p>
+</div>
+
+<h2 class="sec" id="s3">三、港股：H股、红筹股、蓝筹股</h2>
+<p>港股在香港交易所上市，以港币交易，分主板和创业板（GEM）。港股的特殊之处在于上市主体的来源很多，同一个市场里混着本地公司、内地国企和内地民企的境外主体，所以多了一套“身份”叫法：</p>
+<table>
+  <tr><th>叫法</th><th>是什么意思</th><th>例子</th></tr>
+  <tr><td>蓝筹股</td><td>恒生指数成分股，大市值、地位稳的龙头</td><td>汇丰、腾讯、友邦</td></tr>
+  <tr><td>H股</td><td>在内地注册成立、在香港上市的公司</td><td>建设银行、中国平安（同时有 A 股）</td></tr>
+  <tr><td>红筹股</td><td>在境外注册、由内地机构或个人控股，在香港上市</td><td>中国移动、中国联通（部分）</td></tr>
+  <tr><td>中概股（回港）</td><td>原在美股上市、又在香港二次上市的内地公司</td><td>阿里巴巴、京东、百度</td></tr>
+</table>
+<p>港股还有 18A 章（未盈利生物科技公司可上市）、同股不同权（WVR）等特殊上市通道，这些在 A 股主板是没有的。内地投资者可以通过<b>港股通</b>用人民币买卖符合条件的港股，额度与名单以监管公布为准。</p>
+
+<h3>代表性指数</h3>
+<table>
+  <tr><th>指数</th><th>代表什么</th></tr>
+  <tr><td>恒生指数</td><td>港股最具代表性的大中型公司（约 80 余只）</td></tr>
+  <tr><td>恒生科技指数</td><td>港股上市的科技龙头 30 只</td></tr>
+  <tr><td>恒生中国企业指数</td><td>在港上市的内地企业（H股、红筹等）</td></tr>
+</table>
+
+<div class="card">
+  <h3 style="margin-top:0">恒生指数与腾讯：外链图表（本页无日 K 数据）</h3>
+  <p>2026 年 11 月 25 日收盘：恒生指数 <b class="num">21,966.01</b> 点，当日 −1.14%；腾讯控股（0700.HK）<b class="num">337.40</b> 港元，当日 −1.23%。走势用以下外链查看：</p>
+  <p class="links"><a href="https://china-snapshot.com/indicators/hang-seng-index">恒生指数走势（China Snapshot）</a><a href="https://www.dealplexus.com/markets/hang-seng-today">恒生指数行情（Dealplexus）</a><a href="https://stockanalysis.com/quote/hkg/0700/history/?period=daily&amp;page=15">腾讯历史行情（stockanalysis）</a></p>
+  <p class="note">外链为第三方行情页，打开后以该页数据为准；本页不代为核实其实时报价。</p>
+</div>
+
+<h2 class="sec" id="s4">四、美股：纽交所、纳斯达克与四大指数</h2>
+<p>美股在美国上市，以美元交易，最小交易单位是 1 股（还可以买零股），实行 T+0（当天可反复买卖），没有涨跌幅限制，取而代之的是熔断机制（市场大跌时全市场暂停交易）。</p>
+<table>
+  <tr><th>交易所</th><th>特点</th><th>代表公司</th></tr>
+  <tr><td>纽交所（NYSE）</td><td>历史最久，传统蓝筹、大市值公司集中地</td><td>可口可乐、摩根大通、沃尔玛、迪士尼</td></tr>
+  <tr><td>纳斯达克（Nasdaq）</td><td>科技公司集中地，科技股权重约六成</td><td>苹果、微软、英伟达、亚马逊、Meta、特斯拉</td></tr>
+  <tr><td>美交所（NYSE American）</td><td>中小市值公司为主</td><td>中小型上市公司</td></tr>
+</table>
+
+<h3>四大指数</h3>
+<table>
+  <tr><th>指数</th><th>怎么编</th><th>代表什么</th></tr>
+  <tr><td>道琼斯工业平均指数</td><td>30 只蓝筹，股价加权</td><td>美国传统工业与大蓝筹的晴雨表</td></tr>
+  <tr><td>标普 500</td><td>500 家大公司，市值加权，约占美股总市值八成</td><td>最常用的美股整体代表</td></tr>
+  <tr><td>纳斯达克综合指数</td><td>纳斯达克全部 3,000 多只股票</td><td>科技与成长股的整体走势</td></tr>
+  <tr><td>纳斯达克 100</td><td>纳斯达克市值最大的 100 只（除金融）</td><td>科技龙头篮子</td></tr>
+  <tr><td>罗素 2000</td><td>2,000 只小市值公司</td><td>美国小盘股的整体走势</td></tr>
+</table>
+<p>标普 500 的行业结构（2026 年口径）：信息技术约 30%、金融约 13%、医疗保健约 12%、可选消费约 10%、通信服务约 8%；前十大权重合计约 35%，包括英伟达、微软、苹果、亚马逊、Meta、谷歌、伯克希尔、博通、礼来、摩根大通。也就是说，买“标普 500”不等于平均买了 500 家公司，龙头的影响大得多。</p>
+
+<div class="fig">
+  <h4>图 6 · 标普 500（CFD 代理序列 · 走势参考）</h4>
+  <p class="sub">美元 · 2025-11-12 至 2026-11-25 · 区间涨跌 <span class="up">+3.00%</span> · 约半年 <span class="down">−6.84%</span></p>
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="标普500（CFD 代理序列） 周K线图">
+<rect x="0" y="0" width="880" height="300" fill="#fbfbfd"/>
+<line x1="58" y1="266.0" x2="866" y2="266.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="270.0" text-anchor="end" font-size="11" fill="#8a8a96">6,259.11</text>
+<line x1="58" y1="203.5" x2="866" y2="203.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="207.5" text-anchor="end" font-size="11" fill="#8a8a96">6,672.81</text>
+<line x1="58" y1="141.0" x2="866" y2="141.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="145.0" text-anchor="end" font-size="11" fill="#8a8a96">7,086.50</text>
+<line x1="58" y1="78.5" x2="866" y2="78.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="82.5" text-anchor="end" font-size="11" fill="#8a8a96">7,500.19</text>
+<line x1="58" y1="16.0" x2="866" y2="16.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="20.0" text-anchor="end" font-size="11" fill="#8a8a96">7,913.89</text>
+<line x1="65.3" y1="171.7" x2="65.3" y2="206.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="60.8" y="175.6" width="9.1" height="16.5" fill="#2e9e5b"/>
+<text x="65.3" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年11月</text>
+<line x1="65.3" y1="266" x2="65.3" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="80.0" y1="186.6" x2="80.0" y2="228.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="75.5" y="193.8" width="9.1" height="18.3" fill="#2e9e5b"/>
+<line x1="94.7" y1="176.2" x2="94.7" y2="212.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="90.2" y="177.3" width="9.1" height="29.8" fill="#d43d2a"/>
+<line x1="109.4" y1="169.6" x2="109.4" y2="185.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="104.9" y="173.3" width="9.1" height="3.2" fill="#d43d2a"/>
+<text x="109.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年12月</text>
+<line x1="109.4" y1="266" x2="109.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="124.1" y1="165.3" x2="124.1" y2="184.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="119.6" y="173.1" width="9.1" height="6.6" fill="#2e9e5b"/>
+<line x1="138.8" y1="174.0" x2="138.8" y2="195.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="134.2" y="176.6" width="9.1" height="2.7" fill="#d43d2a"/>
+<line x1="153.5" y1="161.1" x2="153.5" y2="175.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="148.9" y="163.5" width="9.1" height="11.3" fill="#d43d2a"/>
+<line x1="168.2" y1="162.3" x2="168.2" y2="179.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="163.6" y="162.8" width="9.1" height="11.7" fill="#2e9e5b"/>
+<line x1="182.9" y1="156.3" x2="182.9" y2="174.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="178.3" y="158.3" width="9.1" height="15.3" fill="#d43d2a"/>
+<text x="182.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年1月</text>
+<line x1="182.9" y1="266" x2="182.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="197.6" y1="153.3" x2="197.6" y2="170.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="193.0" y="159.4" width="9.1" height="2.4" fill="#2e9e5b"/>
+<line x1="212.3" y1="162.6" x2="212.3" y2="185.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="207.7" y="167.8" width="9.1" height="1.5" fill="#d43d2a"/>
+<line x1="226.9" y1="151.0" x2="226.9" y2="175.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="222.4" y="162.7" width="9.1" height="11.9" fill="#d43d2a"/>
+<line x1="241.6" y1="152.8" x2="241.6" y2="194.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="237.1" y="164.6" width="9.1" height="2.2" fill="#d43d2a"/>
+<text x="241.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年2月</text>
+<line x1="241.6" y1="266" x2="241.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="256.3" y1="154.6" x2="256.3" y2="185.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="251.8" y="162.1" width="9.1" height="16.8" fill="#2e9e5b"/>
+<line x1="271.0" y1="166.3" x2="271.0" y2="187.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="266.5" y="167.1" width="9.1" height="10.6" fill="#d43d2a"/>
+<line x1="285.7" y1="158.1" x2="285.7" y2="181.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="281.2" y="167.8" width="9.1" height="6.1" fill="#2e9e5b"/>
+<line x1="300.4" y1="168.8" x2="300.4" y2="197.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="295.8" y="182.1" width="9.1" height="11.6" fill="#2e9e5b"/>
+<text x="300.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年3月</text>
+<line x1="300.4" y1="266" x2="300.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="315.1" y1="177.0" x2="315.1" y2="217.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="310.5" y="205.8" width="9.1" height="5.2" fill="#2e9e5b"/>
+<line x1="329.8" y1="188.8" x2="329.8" y2="232.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="325.2" y="211.7" width="9.1" height="11.1" fill="#2e9e5b"/>
+<line x1="344.5" y1="198.5" x2="344.5" y2="251.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="339.9" y="232.3" width="9.1" height="18.1" fill="#2e9e5b"/>
+<line x1="359.2" y1="211.6" x2="359.2" y2="256.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="354.6" y="219.3" width="9.1" height="33.9" fill="#d43d2a"/>
+<line x1="373.9" y1="176.2" x2="373.9" y2="224.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="369.3" y="179.8" width="9.1" height="43.4" fill="#d43d2a"/>
+<text x="373.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年4月</text>
+<line x1="373.9" y1="266" x2="373.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="388.5" y1="130.6" x2="388.5" y2="194.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="384.0" y="133.8" width="9.1" height="58.2" fill="#d43d2a"/>
+<line x1="403.2" y1="127.7" x2="403.2" y2="146.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="398.7" y="128.4" width="9.1" height="17.3" fill="#d43d2a"/>
+<line x1="417.9" y1="112.0" x2="417.9" y2="137.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="413.4" y="119.9" width="9.1" height="10.5" fill="#d43d2a"/>
+<line x1="432.6" y1="92.3" x2="432.6" y2="126.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="428.1" y="93.5" width="9.1" height="22.4" fill="#d43d2a"/>
+<text x="432.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年5月</text>
+<line x1="432.6" y1="266" x2="432.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="447.3" y1="74.8" x2="447.3" y2="101.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="442.8" y="92.9" width="9.1" height="2.6" fill="#d43d2a"/>
+<line x1="462.0" y1="76.8" x2="462.0" y2="102.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="457.4" y="82.9" width="9.1" height="9.8" fill="#d43d2a"/>
+<line x1="476.7" y1="63.1" x2="476.7" y2="79.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="472.1" y="66.1" width="9.1" height="10.4" fill="#d43d2a"/>
+<line x1="491.4" y1="59.6" x2="491.4" y2="100.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="486.8" y="65.4" width="9.1" height="34.1" fill="#2e9e5b"/>
+<text x="491.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年6月</text>
+<line x1="491.4" y1="266" x2="491.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="506.1" y1="80.6" x2="506.1" y2="119.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="501.5" y="88.3" width="9.1" height="12.8" fill="#d43d2a"/>
+<line x1="520.8" y1="66.2" x2="520.8" y2="90.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="516.2" y="77.4" width="9.1" height="2.5" fill="#d43d2a"/>
+<line x1="535.5" y1="71.1" x2="535.5" y2="106.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="530.9" y="79.6" width="9.1" height="20.4" fill="#2e9e5b"/>
+<line x1="550.1" y1="70.7" x2="550.1" y2="99.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="545.6" y="76.0" width="9.1" height="22.5" fill="#d43d2a"/>
+<line x1="564.8" y1="64.7" x2="564.8" y2="89.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="560.3" y="65.1" width="9.1" height="10.7" fill="#d43d2a"/>
+<text x="564.8" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年7月</text>
+<line x1="564.8" y1="266" x2="564.8" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="579.5" y1="63.7" x2="579.5" y2="87.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="575.0" y="67.4" width="9.1" height="16.7" fill="#2e9e5b"/>
+<line x1="594.2" y1="74.1" x2="594.2" y2="96.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="589.7" y="84.5" width="9.1" height="6.8" fill="#2e9e5b"/>
+<line x1="608.9" y1="75.8" x2="608.9" y2="108.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="604.4" y="81.0" width="9.1" height="1.5" fill="#d43d2a"/>
+<line x1="623.6" y1="33.4" x2="623.6" y2="75.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="619.0" y="39.7" width="9.1" height="34.5" fill="#d43d2a"/>
+<text x="623.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年8月</text>
+<line x1="623.6" y1="266" x2="623.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="638.3" y1="29.9" x2="638.3" y2="45.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="633.7" y="35.3" width="9.1" height="5.0" fill="#d43d2a"/>
+<line x1="653.0" y1="32.1" x2="653.0" y2="56.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="648.4" y="35.0" width="9.1" height="17.2" fill="#2e9e5b"/>
+<line x1="667.7" y1="37.4" x2="667.7" y2="57.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="663.1" y="46.0" width="9.1" height="5.7" fill="#d43d2a"/>
+<line x1="682.4" y1="39.2" x2="682.4" y2="61.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="677.8" y="47.1" width="9.1" height="1.5" fill="#d43d2a"/>
+<line x1="697.1" y1="45.0" x2="697.1" y2="66.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="692.5" y="46.2" width="9.1" height="8.6" fill="#2e9e5b"/>
+<text x="697.1" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年9月</text>
+<line x1="697.1" y1="266" x2="697.1" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="711.7" y1="50.9" x2="711.7" y2="75.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="707.2" y="53.0" width="9.1" height="7.9" fill="#d43d2a"/>
+<line x1="726.4" y1="34.1" x2="726.4" y2="55.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="721.9" y="40.2" width="9.1" height="13.8" fill="#d43d2a"/>
+<line x1="741.1" y1="38.8" x2="741.1" y2="59.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="736.6" y="42.3" width="9.1" height="1.6" fill="#2e9e5b"/>
+<line x1="755.8" y1="25.3" x2="755.8" y2="46.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="751.3" y="29.6" width="9.1" height="13.0" fill="#d43d2a"/>
+<text x="755.8" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年10月</text>
+<line x1="755.8" y1="266" x2="755.8" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="770.5" y1="26.5" x2="770.5" y2="57.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="766.0" y="30.2" width="9.1" height="23.4" fill="#2e9e5b"/>
+<line x1="785.2" y1="36.5" x2="785.2" y2="60.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="780.6" y="53.7" width="9.1" height="3.7" fill="#2e9e5b"/>
+<line x1="799.9" y1="34.5" x2="799.9" y2="73.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="795.3" y="53.5" width="9.1" height="11.8" fill="#2e9e5b"/>
+<line x1="814.6" y1="44.7" x2="814.6" y2="108.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="810.0" y="62.1" width="9.1" height="33.8" fill="#2e9e5b"/>
+<text x="814.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年11月</text>
+<line x1="814.6" y1="266" x2="814.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="829.3" y1="54.7" x2="829.3" y2="100.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="824.7" y="71.9" width="9.1" height="28.7" fill="#d43d2a"/>
+<line x1="844.0" y1="63.9" x2="844.0" y2="171.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="839.4" y="65.8" width="9.1" height="95.1" fill="#2e9e5b"/>
+<line x1="858.7" y1="108.7" x2="858.7" y2="157.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="854.1" y="144.5" width="9.1" height="7.6" fill="#d43d2a"/>
+<line x1="58" y1="144.5" x2="866" y2="144.5" stroke="#55556a" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="64" y="138.5" font-size="12" font-weight="700" fill="#33333f">最新收盘 7,063.20 USD</text>
+<text x="58" y="276" font-size="11" fill="#8a8a96">周K线 · 红涨绿跌（中国惯例） · 每根柱子为一周</text>
+</svg>
+  <p class="cap">本图用的是 OANDA 的 SPX500 差价合约序列，只看走势，数值与现金指数不完全一致：现金标普 500 在 2026 年 11 月 25 日收于 7,182.78 点。区间最高 7,852.60、最低 6,320.40 均为该代理序列数值。</p>
+</div>
+
+<div class="fig">
+  <h4>图 7 · 英伟达（NVDA，纳斯达克 · 芯片 / 信息技术）</h4>
+  <p class="sub">美元 · 2025-11-12 至 2026-11-24 · 区间涨跌 <span class="down">−19.82%</span> · 约半年 <span class="down">−26.41%</span></p>
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="英伟达 周K线图">
+<rect x="0" y="0" width="880" height="300" fill="#fbfbfd"/>
+<line x1="58" y1="266.0" x2="866" y2="266.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="270.0" text-anchor="end" font-size="11" fill="#8a8a96">119.75</text>
+<line x1="58" y1="203.5" x2="866" y2="203.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="207.5" text-anchor="end" font-size="11" fill="#8a8a96">151.84</text>
+<line x1="58" y1="141.0" x2="866" y2="141.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="145.0" text-anchor="end" font-size="11" fill="#8a8a96">183.94</text>
+<line x1="58" y1="78.5" x2="866" y2="78.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="82.5" text-anchor="end" font-size="11" fill="#8a8a96">216.03</text>
+<line x1="58" y1="16.0" x2="866" y2="16.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="20.0" text-anchor="end" font-size="11" fill="#8a8a96">248.12</text>
+<line x1="65.3" y1="117.7" x2="65.3" y2="147.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="60.8" y="118.1" width="9.1" height="10.8" fill="#2e9e5b"/>
+<text x="65.3" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年11月</text>
+<line x1="65.3" y1="266" x2="65.3" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="80.0" y1="117.5" x2="80.0" y2="162.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="75.5" y="137.0" width="9.1" height="13.8" fill="#2e9e5b"/>
+<line x1="94.7" y1="141.8" x2="94.7" y2="169.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="90.2" y="149.7" width="9.1" height="4.8" fill="#2e9e5b"/>
+<line x1="109.4" y1="137.6" x2="109.4" y2="161.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="104.9" y="144.0" width="9.1" height="14.9" fill="#d43d2a"/>
+<text x="109.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年12月</text>
+<line x1="109.4" y1="266" x2="109.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="124.1" y1="133.1" x2="124.1" y2="159.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="119.6" y="143.5" width="9.1" height="14.8" fill="#2e9e5b"/>
+<line x1="138.8" y1="145.8" x2="138.8" y2="167.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="134.2" y="146.7" width="9.1" height="5.9" fill="#d43d2a"/>
+<line x1="153.5" y1="124.0" x2="153.5" y2="144.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="148.9" y="128.2" width="9.1" height="12.9" fill="#d43d2a"/>
+<line x1="168.2" y1="123.5" x2="168.2" y2="137.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="163.6" y="131.4" width="9.1" height="2.2" fill="#d43d2a"/>
+<line x1="182.9" y1="122.1" x2="182.9" y2="141.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="178.3" y="125.8" width="9.1" height="13.4" fill="#2e9e5b"/>
+<text x="182.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年1月</text>
+<line x1="182.9" y1="266" x2="182.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="197.6" y1="128.3" x2="197.6" y2="147.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="193.0" y="136.5" width="9.1" height="5.9" fill="#d43d2a"/>
+<line x1="212.3" y1="130.0" x2="212.3" y2="153.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="207.7" y="133.7" width="9.1" height="11.2" fill="#d43d2a"/>
+<line x1="226.9" y1="120.4" x2="226.9" y2="137.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="222.4" y="127.0" width="9.1" height="7.7" fill="#d43d2a"/>
+<line x1="241.6" y1="128.6" x2="241.6" y2="166.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="237.1" y="134.6" width="9.1" height="3.5" fill="#2e9e5b"/>
+<text x="241.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年2月</text>
+<line x1="241.6" y1="266" x2="241.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="256.3" y1="122.1" x2="256.3" y2="145.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="251.8" y="140.4" width="9.1" height="2.8" fill="#2e9e5b"/>
+<line x1="271.0" y1="128.5" x2="271.0" y2="150.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="266.5" y="129.5" width="9.1" height="15.7" fill="#d43d2a"/>
+<line x1="285.7" y1="114.3" x2="285.7" y2="155.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="281.2" y="126.5" width="9.1" height="27.7" fill="#2e9e5b"/>
+<line x1="300.4" y1="139.5" x2="300.4" y2="159.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="295.8" y="152.9" width="9.1" height="5.5" fill="#d43d2a"/>
+<text x="300.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年3月</text>
+<line x1="300.4" y1="266" x2="300.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="315.1" y1="133.8" x2="315.1" y2="157.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="310.5" y="148.2" width="9.1" height="6.7" fill="#d43d2a"/>
+<line x1="329.8" y1="131.4" x2="329.8" y2="164.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="325.2" y="142.9" width="9.1" height="20.0" fill="#2e9e5b"/>
+<line x1="344.5" y1="146.3" x2="344.5" y2="174.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="339.9" y="154.0" width="9.1" height="19.0" fill="#2e9e5b"/>
+<line x1="359.2" y1="153.6" x2="359.2" y2="179.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="354.6" y="153.7" width="9.1" height="16.8" fill="#d43d2a"/>
+<line x1="373.9" y1="129.2" x2="373.9" y2="161.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="369.3" y="131.9" width="9.1" height="22.3" fill="#d43d2a"/>
+<text x="373.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年4月</text>
+<line x1="373.9" y1="266" x2="373.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="388.5" y1="106.4" x2="388.5" y2="137.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="384.0" y="106.4" width="9.1" height="30.5" fill="#d43d2a"/>
+<line x1="403.2" y1="88.4" x2="403.2" y2="115.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="398.7" y="93.6" width="9.1" height="16.1" fill="#d43d2a"/>
+<line x1="417.9" y1="76.9" x2="417.9" y2="115.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="413.4" y="90.9" width="9.1" height="21.8" fill="#2e9e5b"/>
+<line x1="432.6" y1="75.1" x2="432.6" y2="120.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="428.1" y="80.1" width="9.1" height="30.6" fill="#d43d2a"/>
+<text x="432.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年5月</text>
+<line x1="432.6" y1="266" x2="432.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="447.3" y1="38.6" x2="447.3" y2="82.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="442.8" y="60.4" width="9.1" height="22.0" fill="#d43d2a"/>
+<line x1="462.0" y1="51.3" x2="462.0" y2="80.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="457.4" y="51.5" width="9.1" height="28.3" fill="#2e9e5b"/>
+<line x1="476.7" y1="74.3" x2="476.7" y2="92.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="472.1" y="77.5" width="9.1" height="10.5" fill="#2e9e5b"/>
+<line x1="491.4" y1="46.9" x2="491.4" y2="101.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="486.8" y="79.1" width="9.1" height="20.7" fill="#2e9e5b"/>
+<text x="491.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年6月</text>
+<line x1="491.4" y1="266" x2="491.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="506.1" y1="87.5" x2="506.1" y2="111.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="501.5" y="89.9" width="9.1" height="9.7" fill="#2e9e5b"/>
+<line x1="520.8" y1="85.0" x2="520.8" y2="103.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="516.2" y="88.9" width="9.1" height="3.4" fill="#d43d2a"/>
+<line x1="535.5" y1="82.5" x2="535.5" y2="126.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="530.9" y="87.4" width="9.1" height="36.8" fill="#2e9e5b"/>
+<line x1="550.1" y1="108.5" x2="550.1" y2="129.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="545.6" y="119.8" width="9.1" height="1.9" fill="#d43d2a"/>
+<line x1="564.8" y1="88.3" x2="564.8" y2="127.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="560.3" y="88.4" width="9.1" height="32.2" fill="#d43d2a"/>
+<text x="564.8" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年7月</text>
+<line x1="564.8" y1="266" x2="564.8" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="579.5" y1="82.8" x2="579.5" y2="113.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="575.0" y="93.1" width="9.1" height="11.2" fill="#2e9e5b"/>
+<line x1="594.2" y1="81.7" x2="594.2" y2="105.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="589.7" y="96.4" width="9.1" height="1.9" fill="#d43d2a"/>
+<line x1="608.9" y1="92.7" x2="608.9" y2="129.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="604.4" y="93.7" width="9.1" height="14.5" fill="#2e9e5b"/>
+<line x1="623.6" y1="61.5" x2="623.6" y2="115.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="619.0" y="63.1" width="9.1" height="51.2" fill="#d43d2a"/>
+<text x="623.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年8月</text>
+<line x1="623.6" y1="266" x2="623.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="638.3" y1="56.2" x2="638.3" y2="78.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="633.7" y="60.7" width="9.1" height="3.4" fill="#d43d2a"/>
+<line x1="653.0" y1="55.3" x2="653.0" y2="81.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="648.4" y="59.1" width="9.1" height="21.9" fill="#2e9e5b"/>
+<line x1="667.7" y1="50.4" x2="667.7" y2="95.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="663.1" y="75.5" width="9.1" height="3.9" fill="#d43d2a"/>
+<line x1="682.4" y1="42.0" x2="682.4" y2="80.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="677.8" y="50.6" width="9.1" height="22.4" fill="#d43d2a"/>
+<line x1="697.1" y1="44.1" x2="697.1" y2="76.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="692.5" y="45.2" width="9.1" height="28.9" fill="#2e9e5b"/>
+<text x="697.1" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年9月</text>
+<line x1="697.1" y1="266" x2="697.1" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="711.7" y1="65.5" x2="711.7" y2="92.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="707.2" y="66.3" width="9.1" height="21.5" fill="#d43d2a"/>
+<line x1="726.4" y1="51.3" x2="726.4" y2="68.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="721.9" y="60.9" width="9.1" height="4.2" fill="#d43d2a"/>
+<line x1="741.1" y1="36.0" x2="741.1" y2="57.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="736.6" y="43.6" width="9.1" height="8.2" fill="#d43d2a"/>
+<line x1="755.8" y1="25.3" x2="755.8" y2="53.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="751.3" y="39.4" width="9.1" height="13.3" fill="#2e9e5b"/>
+<text x="755.8" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年10月</text>
+<line x1="755.8" y1="266" x2="755.8" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="770.5" y1="53.5" x2="770.5" y2="84.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="766.0" y="53.8" width="9.1" height="28.4" fill="#2e9e5b"/>
+<line x1="785.2" y1="66.5" x2="785.2" y2="89.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="780.6" y="74.5" width="9.1" height="13.9" fill="#2e9e5b"/>
+<line x1="799.9" y1="70.8" x2="799.9" y2="107.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="795.3" y="84.2" width="9.1" height="16.5" fill="#2e9e5b"/>
+<line x1="814.6" y1="90.3" x2="814.6" y2="145.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="810.0" y="95.1" width="9.1" height="40.7" fill="#2e9e5b"/>
+<text x="814.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年11月</text>
+<line x1="814.6" y1="266" x2="814.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="829.3" y1="148.8" x2="829.3" y2="209.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="824.7" y="162.2" width="9.1" height="19.9" fill="#2e9e5b"/>
+<line x1="844.0" y1="181.4" x2="844.0" y2="256.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="839.4" y="189.5" width="9.1" height="65.2" fill="#2e9e5b"/>
+<line x1="858.7" y1="165.2" x2="858.7" y2="206.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="854.1" y="173.9" width="9.1" height="22.7" fill="#2e9e5b"/>
+<line x1="58" y1="196.6" x2="866" y2="196.6" stroke="#55556a" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="64" y="190.6" font-size="12" font-weight="700" fill="#33333f">最新收盘 155.38 USD</text>
+<text x="58" y="276" font-size="11" fill="#8a8a96">周K线 · 红涨绿跌（中国惯例） · 每根柱子为一周</text>
+</svg>
+  <p class="cap">区间最高 243.37 美元，最低 124.50 美元，最新收盘 155.38 美元。注意图中 11 月 23 日那根长阳线：前一交易日收 125.53 美元，当日收 165.05 美元，单日上涨约 31%——大涨一天之后的三天里，股价并没有站稳。单日涨幅不等于趋势反转。</p>
+</div>
+
+<div class="fig">
+  <h4>图 8 · 苹果（AAPL，纳斯达克 · 消费电子 / 信息技术）</h4>
+  <p class="sub">美元 · 2025-11-12 至 2026-11-24 · 区间涨跌 <span class="up">+29.47%</span> · 约半年 <span class="up">+13.46%</span></p>
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="苹果 周K线图">
+<rect x="0" y="0" width="880" height="300" fill="#fbfbfd"/>
+<line x1="58" y1="266.0" x2="866" y2="266.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="270.0" text-anchor="end" font-size="11" fill="#8a8a96">238.72</text>
+<line x1="58" y1="203.5" x2="866" y2="203.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="207.5" text-anchor="end" font-size="11" fill="#8a8a96">270.42</text>
+<line x1="58" y1="141.0" x2="866" y2="141.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="145.0" text-anchor="end" font-size="11" fill="#8a8a96">302.12</text>
+<line x1="58" y1="78.5" x2="866" y2="78.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="82.5" text-anchor="end" font-size="11" fill="#8a8a96">333.83</text>
+<line x1="58" y1="16.0" x2="866" y2="16.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="20.0" text-anchor="end" font-size="11" fill="#8a8a96">365.53</text>
+<line x1="65.3" y1="191.1" x2="65.3" y2="205.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="60.8" y="194.5" width="9.1" height="5.1" fill="#2e9e5b"/>
+<text x="65.3" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年11月</text>
+<line x1="65.3" y1="266" x2="65.3" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="80.0" y1="193.6" x2="80.0" y2="213.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="75.5" y="201.4" width="9.1" height="5.3" fill="#d43d2a"/>
+<line x1="94.7" y1="183.9" x2="94.7" y2="202.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="90.2" y="186.9" width="9.1" height="15.7" fill="#d43d2a"/>
+<line x1="109.4" y1="167.6" x2="109.4" y2="192.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="104.9" y="187.0" width="9.1" height="1.5" fill="#d43d2a"/>
+<text x="109.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年12月</text>
+<line x1="109.4" y1="266" x2="109.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="124.1" y1="184.6" x2="124.1" y2="196.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="119.6" y="188.0" width="9.1" height="1.5" fill="#d43d2a"/>
+<line x1="138.8" y1="184.3" x2="138.8" y2="210.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="134.2" y="184.3" width="9.1" height="12.8" fill="#2e9e5b"/>
+<line x1="153.5" y1="193.6" x2="153.5" y2="205.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="148.9" y="197.6" width="9.1" height="1.5" fill="#d43d2a"/>
+<line x1="168.2" y1="188.9" x2="168.2" y2="206.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="163.6" y="199.0" width="9.1" height="3.3" fill="#2e9e5b"/>
+<line x1="182.9" y1="201.4" x2="182.9" y2="232.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="178.3" y="203.1" width="9.1" height="22.2" fill="#2e9e5b"/>
+<text x="182.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年1月</text>
+<line x1="182.9" y1="266" x2="182.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="197.6" y1="220.5" x2="197.6" y2="234.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="193.0" y="225.7" width="9.1" height="7.2" fill="#2e9e5b"/>
+<line x1="212.3" y1="234.3" x2="212.3" y2="256.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="207.7" y="238.4" width="9.1" height="9.2" fill="#2e9e5b"/>
+<line x1="226.9" y1="220.2" x2="226.9" y2="244.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="222.4" y="225.1" width="9.1" height="15.8" fill="#d43d2a"/>
+<line x1="241.6" y1="182.8" x2="241.6" y2="225.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="237.1" y="188.3" width="9.1" height="35.7" fill="#d43d2a"/>
+<text x="241.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年2月</text>
+<line x1="241.6" y1="266" x2="241.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="256.3" y1="184.3" x2="256.3" y2="233.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="251.8" y="188.7" width="9.1" height="43.6" fill="#2e9e5b"/>
+<line x1="271.0" y1="210.6" x2="271.0" y2="232.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="266.5" y="215.0" width="9.1" height="12.9" fill="#d43d2a"/>
+<line x1="285.7" y1="192.3" x2="285.7" y2="218.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="281.2" y="215.8" width="9.1" height="1.5" fill="#d43d2a"/>
+<line x1="300.4" y1="211.2" x2="300.4" y2="235.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="295.8" y="219.3" width="9.1" height="9.8" fill="#2e9e5b"/>
+<text x="300.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年3月</text>
+<line x1="300.4" y1="266" x2="300.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="315.1" y1="219.2" x2="315.1" y2="244.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="310.5" y="232.5" width="9.1" height="11.0" fill="#2e9e5b"/>
+<line x1="329.8" y1="233.7" x2="329.8" y2="251.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="325.2" y="239.6" width="9.1" height="8.1" fill="#2e9e5b"/>
+<line x1="344.5" y1="230.0" x2="344.5" y2="247.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="339.9" y="235.9" width="9.1" height="10.2" fill="#2e9e5b"/>
+<line x1="359.2" y1="231.6" x2="359.2" y2="252.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="354.6" y="232.1" width="9.1" height="11.5" fill="#d43d2a"/>
+<line x1="373.9" y1="219.7" x2="373.9" y2="252.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="369.3" y="223.1" width="9.1" height="7.8" fill="#d43d2a"/>
+<text x="373.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年4月</text>
+<line x1="373.9" y1="266" x2="373.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="388.5" y1="199.8" x2="388.5" y2="230.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="384.0" y="203.9" width="9.1" height="20.7" fill="#d43d2a"/>
+<line x1="403.2" y1="193.0" x2="403.2" y2="213.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="398.7" y="202.2" width="9.1" height="1.5" fill="#d43d2a"/>
+<line x1="417.9" y1="170.4" x2="417.9" y2="214.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="413.4" y="184.3" width="9.1" height="27.7" fill="#d43d2a"/>
+<line x1="432.6" y1="155.5" x2="432.6" y2="194.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="428.1" y="158.4" width="9.1" height="26.9" fill="#d43d2a"/>
+<text x="432.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年5月</text>
+<line x1="432.6" y1="266" x2="432.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="447.3" y1="138.9" x2="447.3" y2="164.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="442.8" y="144.7" width="9.1" height="16.3" fill="#d43d2a"/>
+<line x1="462.0" y1="122.7" x2="462.0" y2="155.2" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="457.4" y="127.8" width="9.1" height="16.9" fill="#d43d2a"/>
+<line x1="476.7" y1="115.6" x2="476.7" y2="130.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="472.1" y="121.4" width="9.1" height="4.9" fill="#d43d2a"/>
+<line x1="491.4" y1="111.8" x2="491.4" y2="135.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="486.8" y="126.2" width="9.1" height="4.5" fill="#2e9e5b"/>
+<text x="491.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年6月</text>
+<line x1="491.4" y1="266" x2="491.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="506.1" y1="110.9" x2="506.1" y2="170.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="501.5" y="128.0" width="9.1" height="34.7" fill="#2e9e5b"/>
+<line x1="520.8" y1="141.1" x2="520.8" y2="161.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="516.2" y="149.1" width="9.1" height="7.7" fill="#d43d2a"/>
+<line x1="535.5" y1="140.4" x2="535.5" y2="196.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="530.9" y="150.5" width="9.1" height="26.7" fill="#2e9e5b"/>
+<line x1="550.1" y1="126.6" x2="550.1" y2="184.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="545.6" y="128.2" width="9.1" height="43.2" fill="#d43d2a"/>
+<line x1="564.8" y1="111.9" x2="564.8" y2="131.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="560.3" y="115.0" width="9.1" height="15.7" fill="#d43d2a"/>
+<text x="564.8" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年7月</text>
+<line x1="564.8" y1="266" x2="564.8" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="579.5" y1="76.2" x2="579.5" y2="121.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="575.0" y="78.7" width="9.1" height="33.0" fill="#d43d2a"/>
+<line x1="594.2" y1="77.4" x2="594.2" y2="107.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="589.7" y="79.1" width="9.1" height="1.5" fill="#2e9e5b"/>
+<line x1="608.9" y1="57.3" x2="608.9" y2="145.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="604.4" y="77.1" width="9.1" height="50.5" fill="#2e9e5b"/>
+<line x1="623.6" y1="113.1" x2="623.6" y2="142.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="619.0" y="118.9" width="9.1" height="7.4" fill="#d43d2a"/>
+<text x="623.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年8月</text>
+<line x1="623.6" y1="266" x2="623.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="638.3" y1="125.5" x2="638.3" y2="144.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="633.7" y="131.7" width="9.1" height="1.8" fill="#2e9e5b"/>
+<line x1="653.0" y1="105.2" x2="653.0" y2="139.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="648.4" y="126.8" width="9.1" height="6.2" fill="#d43d2a"/>
+<line x1="667.7" y1="101.1" x2="667.7" y2="129.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="663.1" y="106.3" width="9.1" height="16.2" fill="#d43d2a"/>
+<line x1="682.4" y1="84.4" x2="682.4" y2="120.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="677.8" y="105.8" width="9.1" height="1.5" fill="#d43d2a"/>
+<line x1="697.1" y1="73.8" x2="697.1" y2="125.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="692.5" y="81.6" width="9.1" height="29.9" fill="#d43d2a"/>
+<text x="697.1" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年9月</text>
+<line x1="697.1" y1="266" x2="697.1" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="711.7" y1="69.3" x2="711.7" y2="89.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="707.2" y="74.0" width="9.1" height="2.6" fill="#d43d2a"/>
+<line x1="726.4" y1="55.8" x2="726.4" y2="80.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="721.9" y="64.2" width="9.1" height="11.4" fill="#d43d2a"/>
+<line x1="741.1" y1="60.4" x2="741.1" y2="94.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="736.6" y="65.6" width="9.1" height="13.2" fill="#2e9e5b"/>
+<line x1="755.8" y1="63.2" x2="755.8" y2="84.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="751.3" y="73.0" width="9.1" height="7.5" fill="#d43d2a"/>
+<text x="755.8" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年10月</text>
+<line x1="755.8" y1="266" x2="755.8" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="770.5" y1="50.3" x2="770.5" y2="71.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="766.0" y="59.5" width="9.1" height="10.3" fill="#d43d2a"/>
+<line x1="785.2" y1="43.2" x2="785.2" y2="68.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="780.6" y="51.1" width="9.1" height="13.7" fill="#d43d2a"/>
+<line x1="799.9" y1="43.8" x2="799.9" y2="77.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="795.3" y="57.2" width="9.1" height="1.5" fill="#d43d2a"/>
+<line x1="814.6" y1="36.0" x2="814.6" y2="95.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="810.0" y="61.1" width="9.1" height="1.5" fill="#2e9e5b"/>
+<text x="814.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年11月</text>
+<line x1="814.6" y1="266" x2="814.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="829.3" y1="25.3" x2="829.3" y2="56.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="824.7" y="34.2" width="9.1" height="22.2" fill="#d43d2a"/>
+<line x1="844.0" y1="32.6" x2="844.0" y2="65.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="839.4" y="32.6" width="9.1" height="28.7" fill="#2e9e5b"/>
+<line x1="858.7" y1="37.9" x2="858.7" y2="55.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="854.1" y="38.6" width="9.1" height="12.2" fill="#d43d2a"/>
+<line x1="58" y1="38.6" x2="866" y2="38.6" stroke="#55556a" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="64" y="32.6" font-size="12" font-weight="700" fill="#33333f">最新收盘 354.07 USD</text>
+<text x="58" y="276" font-size="11" fill="#8a8a96">周K线 · 红涨绿跌（中国惯例） · 每根柱子为一周</text>
+</svg>
+  <p class="cap">区间最高 360.83 美元，最低 243.42 美元，最新收盘 354.07 美元。同一年的美股里，龙头之间的分化可以非常大：苹果一年涨近三成，英伟达同期跌约两成。</p>
+</div>
+
+<h2 class="sec" id="s5">五、其他主要市场：日本、欧洲、印度……</h2>
+<table>
+  <tr><th>市场</th><th>主要指数</th><th>代表公司 / 特点</th></tr>
+  <tr><td>日本</td><td>日经 225、东证指数（TOPIX）</td><td>丰田、索尼、软银、任天堂；日经 225 是股价加权</td></tr>
+  <tr><td>英国</td><td>富时 100</td><td>汇丰、壳牌、阿斯利康；以英镑计价</td></tr>
+  <tr><td>德国</td><td>DAX</td><td>西门子、SAP、宝马、大众；40 只成分股</td></tr>
+  <tr><td>法国</td><td>CAC 40</td><td>LVMH、欧莱雅、空客、道达尔能源</td></tr>
+  <tr><td>欧洲整体</td><td>欧洲斯托克 50、斯托克 600</td><td>跨国指数，覆盖欧元区与全欧洲大公司</td></tr>
+  <tr><td>韩国</td><td>KOSPI</td><td>三星电子、SK 海力士、现代汽车</td></tr>
+  <tr><td>印度</td><td>Sensex、Nifty 50</td><td>信实工业、塔塔、HDFC 银行；以卢比计价</td></tr>
+  <tr><td>澳洲</td><td>ASX 200</td><td>必和必拓、联邦银行、CSL；资源股权重高</td></tr>
+  <tr><td>中国台湾</td><td>加权指数</td><td>台积电、联发科、鸿海；半导体权重极高</td></tr>
+</table>
+
+<div class="fig">
+  <h4>图 9 · 日经 225（CFD 代理序列 · 走势参考）</h4>
+  <p class="sub">美元计价代理序列 · 2025-11-12 至 2026-11-25 · 区间涨跌 <span class="up">+9.13%</span> · 约半年 <span class="down">−15.25%</span></p>
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="日经225（CFD 代理序列） 周K线图">
+<rect x="0" y="0" width="880" height="300" fill="#fbfbfd"/>
+<line x1="58" y1="266.0" x2="866" y2="266.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="270.0" text-anchor="end" font-size="11" fill="#8a8a96">47,035.78</text>
+<line x1="58" y1="203.5" x2="866" y2="203.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="207.5" text-anchor="end" font-size="11" fill="#8a8a96">53,974.89</text>
+<line x1="58" y1="141.0" x2="866" y2="141.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="145.0" text-anchor="end" font-size="11" fill="#8a8a96">60,914.00</text>
+<line x1="58" y1="78.5" x2="866" y2="78.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="82.5" text-anchor="end" font-size="11" fill="#8a8a96">67,853.11</text>
+<line x1="58" y1="16.0" x2="866" y2="16.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="20.0" text-anchor="end" font-size="11" fill="#8a8a96">74,792.22</text>
+<line x1="65.3" y1="225.2" x2="65.3" y2="241.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="60.8" y="228.3" width="9.1" height="6.6" fill="#2e9e5b"/>
+<text x="65.3" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年11月</text>
+<line x1="65.3" y1="266" x2="65.3" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="80.0" y1="233.5" x2="80.0" y2="256.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="75.5" y="236.3" width="9.1" height="14.6" fill="#2e9e5b"/>
+<line x1="94.7" y1="236.1" x2="94.7" y2="254.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="90.2" y="237.2" width="9.1" height="11.4" fill="#d43d2a"/>
+<line x1="109.4" y1="229.7" x2="109.4" y2="247.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="104.9" y="233.6" width="9.1" height="2.0" fill="#d43d2a"/>
+<text x="109.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年12月</text>
+<line x1="109.4" y1="266" x2="109.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="124.1" y1="228.3" x2="124.1" y2="240.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="119.6" y="233.5" width="9.1" height="2.9" fill="#2e9e5b"/>
+<line x1="138.8" y1="234.0" x2="138.8" y2="250.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="134.2" y="234.9" width="9.1" height="1.5" fill="#d43d2a"/>
+<line x1="153.5" y1="229.6" x2="153.5" y2="236.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="148.9" y="231.9" width="9.1" height="2.0" fill="#d43d2a"/>
+<line x1="168.2" y1="226.8" x2="168.2" y2="236.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="163.6" y="228.6" width="9.1" height="3.3" fill="#d43d2a"/>
+<line x1="182.9" y1="203.9" x2="182.9" y2="231.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="178.3" y="206.5" width="9.1" height="21.5" fill="#d43d2a"/>
+<text x="182.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年1月</text>
+<line x1="182.9" y1="266" x2="182.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="197.6" y1="197.6" x2="197.6" y2="207.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="193.0" y="205.0" width="9.1" height="1.5" fill="#d43d2a"/>
+<line x1="212.3" y1="201.3" x2="212.3" y2="221.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="207.7" y="206.6" width="9.1" height="6.8" fill="#2e9e5b"/>
+<line x1="226.9" y1="201.5" x2="226.9" y2="219.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="222.4" y="207.4" width="9.1" height="10.6" fill="#d43d2a"/>
+<line x1="241.6" y1="179.9" x2="241.6" y2="215.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="237.1" y="180.3" width="9.1" height="25.6" fill="#d43d2a"/>
+<text x="241.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年2月</text>
+<line x1="241.6" y1="266" x2="241.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="256.3" y1="161.8" x2="256.3" y2="184.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="251.8" y="169.2" width="9.1" height="2.3" fill="#2e9e5b"/>
+<line x1="271.0" y1="169.3" x2="271.0" y2="183.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="266.5" y="171.1" width="9.1" height="4.0" fill="#2e9e5b"/>
+<line x1="285.7" y1="148.4" x2="285.7" y2="180.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="281.2" y="161.4" width="9.1" height="13.9" fill="#d43d2a"/>
+<line x1="300.4" y1="163.7" x2="300.4" y2="206.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="295.8" y="170.0" width="9.1" height="33.1" fill="#2e9e5b"/>
+<text x="300.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年3月</text>
+<line x1="300.4" y1="266" x2="300.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="315.1" y1="187.2" x2="315.1" y2="229.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="310.5" y="209.4" width="9.1" height="2.6" fill="#d43d2a"/>
+<line x1="329.8" y1="190.3" x2="329.8" y2="228.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="325.2" y="210.9" width="9.1" height="16.3" fill="#2e9e5b"/>
+<line x1="344.5" y1="199.5" x2="344.5" y2="233.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="339.9" y="225.7" width="9.1" height="5.8" fill="#d43d2a"/>
+<line x1="359.2" y1="197.4" x2="359.2" y2="235.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="354.6" y="210.5" width="9.1" height="20.6" fill="#d43d2a"/>
+<line x1="373.9" y1="172.5" x2="373.9" y2="215.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="369.3" y="172.6" width="9.1" height="38.8" fill="#d43d2a"/>
+<text x="373.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年4月</text>
+<line x1="373.9" y1="266" x2="373.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="388.5" y1="148.7" x2="388.5" y2="186.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="384.0" y="151.8" width="9.1" height="33.1" fill="#d43d2a"/>
+<line x1="403.2" y1="147.2" x2="403.2" y2="164.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="398.7" y="148.6" width="9.1" height="12.3" fill="#d43d2a"/>
+<line x1="417.9" y1="140.8" x2="417.9" y2="162.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="413.4" y="150.0" width="9.1" height="5.9" fill="#2e9e5b"/>
+<line x1="432.6" y1="115.3" x2="432.6" y2="157.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="428.1" y="115.3" width="9.1" height="37.4" fill="#d43d2a"/>
+<text x="432.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年5月</text>
+<line x1="432.6" y1="266" x2="432.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="447.3" y1="114.6" x2="447.3" y2="140.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="442.8" y="116.2" width="9.1" height="16.9" fill="#2e9e5b"/>
+<line x1="462.0" y1="115.2" x2="462.0" y2="155.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="457.4" y="119.8" width="9.1" height="14.2" fill="#d43d2a"/>
+<line x1="476.7" y1="89.3" x2="476.7" y2="114.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="472.1" y="93.1" width="9.1" height="20.6" fill="#d43d2a"/>
+<line x1="491.4" y1="70.1" x2="491.4" y2="117.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="486.8" y="92.8" width="9.1" height="21.9" fill="#2e9e5b"/>
+<text x="491.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年6月</text>
+<line x1="491.4" y1="266" x2="491.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="506.1" y1="82.0" x2="506.1" y2="128.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="501.5" y="83.1" width="9.1" height="31.5" fill="#d43d2a"/>
+<line x1="520.8" y1="38.3" x2="520.8" y2="76.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="516.2" y="41.3" width="9.1" height="31.7" fill="#d43d2a"/>
+<line x1="535.5" y1="25.3" x2="535.5" y2="73.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="530.9" y="43.7" width="9.1" height="18.2" fill="#2e9e5b"/>
+<line x1="550.1" y1="40.1" x2="550.1" y2="80.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="545.6" y="60.7" width="9.1" height="1.5" fill="#d43d2a"/>
+<line x1="564.8" y1="54.6" x2="564.8" y2="100.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="560.3" y="60.5" width="9.1" height="4.8" fill="#2e9e5b"/>
+<text x="564.8" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年7月</text>
+<line x1="564.8" y1="266" x2="564.8" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="579.5" y1="66.6" x2="579.5" y2="124.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="575.0" y="68.7" width="9.1" height="35.3" fill="#2e9e5b"/>
+<line x1="594.2" y1="80.2" x2="594.2" y2="111.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="589.7" y="104.5" width="9.1" height="5.9" fill="#2e9e5b"/>
+<line x1="608.9" y1="97.8" x2="608.9" y2="144.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="604.4" y="102.9" width="9.1" height="19.4" fill="#2e9e5b"/>
+<line x1="623.6" y1="87.8" x2="623.6" y2="130.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="619.0" y="92.5" width="9.1" height="23.5" fill="#d43d2a"/>
+<text x="623.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年8月</text>
+<line x1="623.6" y1="266" x2="623.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="638.3" y1="62.3" x2="638.3" y2="94.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="633.7" y="70.5" width="9.1" height="22.0" fill="#d43d2a"/>
+<line x1="653.0" y1="63.1" x2="653.0" y2="105.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="648.4" y="70.0" width="9.1" height="25.4" fill="#2e9e5b"/>
+<line x1="667.7" y1="82.8" x2="667.7" y2="107.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="663.1" y="95.4" width="9.1" height="1.5" fill="#2e9e5b"/>
+<line x1="682.4" y1="90.3" x2="682.4" y2="115.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="677.8" y="97.1" width="9.1" height="2.7" fill="#d43d2a"/>
+<line x1="697.1" y1="88.1" x2="697.1" y2="122.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="692.5" y="95.6" width="9.1" height="11.5" fill="#2e9e5b"/>
+<text x="697.1" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年9月</text>
+<line x1="697.1" y1="266" x2="697.1" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="711.7" y1="96.7" x2="711.7" y2="125.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="707.2" y="103.2" width="9.1" height="12.4" fill="#d43d2a"/>
+<line x1="726.4" y1="83.3" x2="726.4" y2="105.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="721.9" y="89.0" width="9.1" height="14.7" fill="#d43d2a"/>
+<line x1="741.1" y1="58.7" x2="741.1" y2="106.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="736.6" y="62.7" width="9.1" height="28.3" fill="#d43d2a"/>
+<line x1="755.8" y1="46.7" x2="755.8" y2="78.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="751.3" y="61.0" width="9.1" height="7.6" fill="#2e9e5b"/>
+<text x="755.8" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年10月</text>
+<line x1="755.8" y1="266" x2="755.8" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="770.5" y1="65.2" x2="770.5" y2="117.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="766.0" y="67.5" width="9.1" height="50.0" fill="#2e9e5b"/>
+<line x1="785.2" y1="100.0" x2="785.2" y2="135.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="780.6" y="116.9" width="9.1" height="9.3" fill="#2e9e5b"/>
+<line x1="799.9" y1="100.2" x2="799.9" y2="133.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="795.3" y="121.5" width="9.1" height="6.3" fill="#2e9e5b"/>
+<line x1="814.6" y1="114.6" x2="814.6" y2="180.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="810.0" y="126.1" width="9.1" height="38.6" fill="#2e9e5b"/>
+<text x="814.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年11月</text>
+<line x1="814.6" y1="266" x2="814.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="829.3" y1="128.4" x2="829.3" y2="169.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="824.7" y="140.5" width="9.1" height="28.6" fill="#d43d2a"/>
+<line x1="844.0" y1="135.0" x2="844.0" y2="200.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="839.4" y="138.0" width="9.1" height="58.1" fill="#2e9e5b"/>
+<line x1="858.7" y1="155.4" x2="858.7" y2="191.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="854.1" y="184.1" width="9.1" height="7.7" fill="#d43d2a"/>
+<line x1="58" y1="184.1" x2="866" y2="184.1" stroke="#55556a" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="64" y="178.1" font-size="12" font-weight="700" fill="#33333f">最新收盘 56,130.50 USD</text>
+<text x="58" y="276" font-size="11" fill="#8a8a96">周K线 · 红涨绿跌（中国惯例） · 每根柱子为一周</text>
+</svg>
+  <p class="cap">本图用的是 OANDA 的 JP225 差价合约序列，只看走势。现金日经 225 指数在 2026 年 11 月 25 日报 57,011.62 点，与代理序列的收盘值（56,130.50）不完全一致。区间最高 73,764.20、最低 48,063.80 均为该代理序列数值——一年里先冲高、再回落近四分之一，波动极大。</p>
+</div>
+
+<h3>2026 年 11 月 25 日主要市场收盘（全球市场行情页）</h3>
+<table class="num">
+  <tr><th>指数</th><th>收盘</th><th>指数</th><th>收盘</th></tr>
+  <tr><td>标普 500</td><td>7,201.09</td><td>上证指数</td><td>3,476.47</td></tr>
+  <tr><td>道琼斯</td><td>50,018.70</td><td>恒生指数</td><td>21,966.01</td></tr>
+  <tr><td>纳斯达克综合</td><td>23,733.54</td><td>富时 100</td><td>10,459.69</td></tr>
+  <tr><td>日经 225</td><td>57,011.62</td><td>德国 DAX</td><td>24,863.95</td></tr>
+  <tr><td>印度 Sensex</td><td>83,938.28</td><td>法国 CAC 40</td><td>8,064.18</td></tr>
+</table>
+<p class="note">各指数点位不可直接比较高低（编制方法与基点不同），只能看各自的涨跌。</p>
+
+<h2 class="sec" id="s6">六、行业地图：11 个大行业，你的例子落在哪</h2>
+<p>国际通用的行业分类（GICS）把全部上市公司分成 11 个大行业。看一只股票，先看它属于哪个行业，再看它在行业里的位置，比只看“涨了还是跌了”有用。</p>
+<table>
+  <tr><th>行业</th><th>包括什么</th><th>代表公司（中 / 美）</th></tr>
+  <tr><td>能源</td><td>石油、天然气、煤炭、可再生能源</td><td>中国石油 / 埃克森美孚</td></tr>
+  <tr><td>原材料</td><td>金属矿采、钢铁、化工、建材、包装</td><td>紫金矿业、宝钢 / 纽蒙特矿业</td></tr>
+  <tr><td>工业</td><td>机械、航空航天、物流、电气设备、军工</td><td>宁德时代、三一重工 / 卡特彼勒、联合包裹</td></tr>
+  <tr><td>可选消费</td><td>汽车、家电、服装、奢侈品、餐饮旅游</td><td>比亚迪、李宁 / 特斯拉、耐克、LVMH（欧股）</td></tr>
+  <tr><td>主要消费</td><td>食品饮料、日用品、烟草、农产品加工</td><td>贵州茅台、伊利 / 可口可乐、宝洁</td></tr>
+  <tr><td>医疗保健</td><td>制药、生物科技、医疗器械、医疗服务</td><td>恒瑞医药、迈瑞 / 礼来、联合健康</td></tr>
+  <tr><td>金融</td><td>银行、保险、券商、交易所、支付</td><td>招商银行、中国平安 / 摩根大通、Visa</td></tr>
+  <tr><td>信息技术</td><td>芯片、软件、硬件、IT 服务</td><td>中芯国际、海光 / 英伟达、微软、苹果</td></tr>
+  <tr><td>通信服务</td><td>电信、互联网平台、媒体、游戏</td><td>腾讯、中国移动 / 谷歌、Meta、奈飞</td></tr>
+  <tr><td>公用事业</td><td>电力、燃气、水务</td><td>长江电力 / 杜克能源</td></tr>
+  <tr><td>房地产</td><td>开发、物业管理、REITs</td><td>万科 / 普洛斯（REITs）</td></tr>
+</table>
+
+<h3>你的四个例子，分别落在哪</h3>
+
+<div class="card">
+  <h3 style="margin-top:0">蔬菜、大豆：本身不是股票，是期货</h3>
+  <p>蔬菜、大豆、玉米、小麦是<b>商品</b>，在期货市场交易：美国芝加哥期货交易所（CBOT）的大豆、玉米、小麦期货，中国大连商品交易所的黄大豆 1 号（代码 A，10 吨/手，以元/吨计价）、黄大豆 2 号，郑州商品交易所的小麦、玉米。期货带杠杆、有到期日，和股票是两套完全不同的游戏规则。</p>
+  <p>想在股票市场里碰这条链，买的是链上的公司：</p>
+  <table>
+    <tr><th>环节</th><th>代表公司</th></tr>
+    <tr><td>种业</td><td>隆平高科（000998）、丰乐种业、敦煌种业、农发种业</td></tr>
+    <tr><td>种植</td><td>北大荒</td></tr>
+    <tr><td>饲料、食品加工</td><td>海大集团、安井食品</td></tr>
+    <tr><td>主题指数</td><td>国证粮食指数（399365），跟踪粮食产业链上市公司</td></tr>
+  </table>
+  <p class="note">隆平高科的 K 线见图 5。大豆期货涨，不等于种业股涨；期货价格、公司业绩、股价是三层传导，每层都可能走反。</p>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">金属：金属是商品，股票是开矿、冶炼的公司</h3>
+  <p>金、铜、铝、锂本身在期货市场交易（上海期货交易所的沪金、沪铜，境外的 COMEX、LME）。股票市场里对应的是矿企和冶炼企业，如紫金矿业（金、铜，图 4）、赣锋锂业（锂）、中国铝业（铝）、宝钢股份（钢）。</p>
+  <p class="note">记住三者的区别：<b>金条</b>是实物，<b>黄金 ETF</b>是跟踪金价的基金，<b>金矿股</b>是公司的股票。金价涨 10%，金矿股可能涨 30%，也可能因为成本上升而跌。</p>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">手表：很多名表品牌自己根本没上市</h3>
+  <p>手表属于可选消费里的奢侈品。但奢侈品行业的上市结构很特殊：最出名的几个牌子恰恰不在股市里。</p>
+  <table>
+    <tr><th>状态</th><th>品牌 / 集团</th><th>怎么碰（如果非要通过股市）</th></tr>
+    <tr><td>已上市的集团</td><td>斯沃琪集团（欧米茄、浪琴、宝玑、宝珀、天梭、汉米尔顿）</td><td>瑞士交易所上市；德交所挂牌品种见图 10</td></tr>
+    <tr><td>已上市的集团</td><td>历峰集团（卡地亚、江诗丹顿、积家、IWC、朗格、沛纳海）</td><td>瑞士交易所上市（CFR）</td></tr>
+    <tr><td>已上市的集团</td><td>LVMH（泰格豪雅、宇舶、真力时、宝格丽、蒂芙尼）</td><td>巴黎泛欧交易所上市（MC）</td></tr>
+    <tr><td>已上市</td><td>普拉达集团（旗下有手表业务）</td><td>港股上市（1913.HK）</td></tr>
+    <tr><td>已上市</td><td>精工、<span>西铁城</span>、爱普生（日本表）</td><td>东京交易所上市</td></tr>
+    <tr><td><b>未上市</b></td><td>劳力士 + 帝舵（汉斯·威尔斯多夫基金会所有，无股东、不公布财报）</td><td>买不到股票，只能买表</td></tr>
+    <tr><td><b>未上市</b></td><td>百达翡丽（Stern 家族）、爱彼、香奈儿（私人控股）</td><td>买不到股票</td></tr>
+  </table>
+</div>
+
+<div class="fig">
+  <h4>图 10 · 斯沃琪集团（UHR.TG，德交所挂牌品种 · 奢侈品 / 可选消费）</h4>
+  <p class="sub">欧元 · 2025-11-12 至 2026-11-23 · 区间涨跌 <span class="up">+6.00%</span> · 约半年 <span class="down">−13.51%</span></p>
+  <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="斯沃琪集团 周K线图">
+<rect x="0" y="0" width="880" height="300" fill="#fbfbfd"/>
+<line x1="58" y1="266.0" x2="866" y2="266.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="270.0" text-anchor="end" font-size="11" fill="#8a8a96">161.93</text>
+<line x1="58" y1="203.5" x2="866" y2="203.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="207.5" text-anchor="end" font-size="11" fill="#8a8a96">183.00</text>
+<line x1="58" y1="141.0" x2="866" y2="141.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="145.0" text-anchor="end" font-size="11" fill="#8a8a96">204.07</text>
+<line x1="58" y1="78.5" x2="866" y2="78.5" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="82.5" text-anchor="end" font-size="11" fill="#8a8a96">225.15</text>
+<line x1="58" y1="16.0" x2="866" y2="16.0" stroke="#e6e6ee" stroke-width="1"/>
+<text x="52" y="20.0" text-anchor="end" font-size="11" fill="#8a8a96">246.22</text>
+<line x1="65.3" y1="162.6" x2="65.3" y2="190.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="60.8" y="174.1" width="9.1" height="13.5" fill="#2e9e5b"/>
+<text x="65.3" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年11月</text>
+<line x1="65.3" y1="266" x2="65.3" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="80.0" y1="182.9" x2="80.0" y2="230.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="75.5" y="182.9" width="9.1" height="27.7" fill="#2e9e5b"/>
+<line x1="94.7" y1="209.4" x2="94.7" y2="231.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="90.2" y="211.4" width="9.1" height="19.1" fill="#2e9e5b"/>
+<line x1="109.4" y1="215.7" x2="109.4" y2="233.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="104.9" y="224.4" width="9.1" height="9.2" fill="#d43d2a"/>
+<text x="109.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2025年12月</text>
+<line x1="109.4" y1="266" x2="109.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="124.1" y1="218.9" x2="124.1" y2="256.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="119.6" y="218.9" width="9.1" height="1.5" fill="#2e9e5b"/>
+<line x1="138.8" y1="208.2" x2="138.8" y2="225.7" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="134.2" y="211.5" width="9.1" height="5.0" fill="#d43d2a"/>
+<line x1="153.5" y1="205.9" x2="153.5" y2="210.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="148.9" y="206.0" width="9.1" height="4.2" fill="#d43d2a"/>
+<line x1="168.2" y1="201.9" x2="168.2" y2="211.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="163.6" y="206.6" width="9.1" height="1.5" fill="#d43d2a"/>
+<line x1="182.9" y1="177.4" x2="182.9" y2="206.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="178.3" y="183.0" width="9.1" height="21.1" fill="#d43d2a"/>
+<text x="182.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年1月</text>
+<line x1="182.9" y1="266" x2="182.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="197.6" y1="152.8" x2="197.6" y2="204.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="193.0" y="188.7" width="9.1" height="13.9" fill="#2e9e5b"/>
+<line x1="212.3" y1="205.0" x2="212.3" y2="222.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="207.7" y="208.7" width="9.1" height="5.2" fill="#2e9e5b"/>
+<line x1="226.9" y1="153.2" x2="226.9" y2="222.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="222.4" y="153.2" width="9.1" height="62.1" fill="#d43d2a"/>
+<line x1="241.6" y1="120.2" x2="241.6" y2="174.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="237.1" y="121.1" width="9.1" height="38.0" fill="#d43d2a"/>
+<text x="241.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年2月</text>
+<line x1="241.6" y1="266" x2="241.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="256.3" y1="93.8" x2="256.3" y2="124.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="251.8" y="108.9" width="9.1" height="10.7" fill="#d43d2a"/>
+<line x1="271.0" y1="97.9" x2="271.0" y2="119.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="266.5" y="101.2" width="9.1" height="4.2" fill="#d43d2a"/>
+<line x1="285.7" y1="83.4" x2="285.7" y2="109.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="281.2" y="106.8" width="9.1" height="2.4" fill="#2e9e5b"/>
+<line x1="300.4" y1="127.6" x2="300.4" y2="190.5" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="295.8" y="127.6" width="9.1" height="57.2" fill="#2e9e5b"/>
+<text x="300.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年3月</text>
+<line x1="300.4" y1="266" x2="300.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="315.1" y1="175.9" x2="315.1" y2="206.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="310.5" y="186.7" width="9.1" height="12.9" fill="#d43d2a"/>
+<line x1="329.8" y1="173.4" x2="329.8" y2="216.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="325.2" y="183.2" width="9.1" height="18.7" fill="#2e9e5b"/>
+<line x1="344.5" y1="179.2" x2="344.5" y2="208.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="339.9" y="195.1" width="9.1" height="13.8" fill="#d43d2a"/>
+<line x1="359.2" y1="173.3" x2="359.2" y2="203.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="354.6" y="175.8" width="9.1" height="23.1" fill="#d43d2a"/>
+<line x1="373.9" y1="141.8" x2="373.9" y2="193.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="369.3" y="146.9" width="9.1" height="34.1" fill="#d43d2a"/>
+<text x="373.9" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年4月</text>
+<line x1="373.9" y1="266" x2="373.9" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="388.5" y1="132.3" x2="388.5" y2="169.1" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="384.0" y="138.0" width="9.1" height="16.3" fill="#d43d2a"/>
+<line x1="403.2" y1="143.3" x2="403.2" y2="166.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="398.7" y="143.6" width="9.1" height="15.3" fill="#2e9e5b"/>
+<line x1="417.9" y1="151.9" x2="417.9" y2="171.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="413.4" y="159.0" width="9.1" height="4.7" fill="#2e9e5b"/>
+<line x1="432.6" y1="47.5" x2="432.6" y2="167.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="428.1" y="52.5" width="9.1" height="112.6" fill="#d43d2a"/>
+<text x="432.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年5月</text>
+<line x1="432.6" y1="266" x2="432.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="447.3" y1="31.5" x2="447.3" y2="126.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="442.8" y="50.2" width="9.1" height="41.2" fill="#2e9e5b"/>
+<line x1="462.0" y1="62.0" x2="462.0" y2="108.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="457.4" y="78.9" width="9.1" height="20.8" fill="#2e9e5b"/>
+<line x1="476.7" y1="28.5" x2="476.7" y2="102.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="472.1" y="46.0" width="9.1" height="42.1" fill="#d43d2a"/>
+<line x1="491.4" y1="25.3" x2="491.4" y2="95.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="486.8" y="46.3" width="9.1" height="46.9" fill="#2e9e5b"/>
+<text x="491.4" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年6月</text>
+<line x1="491.4" y1="266" x2="491.4" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="506.1" y1="69.2" x2="506.1" y2="114.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="501.5" y="71.5" width="9.1" height="24.6" fill="#d43d2a"/>
+<line x1="520.8" y1="49.6" x2="520.8" y2="76.3" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="516.2" y="65.0" width="9.1" height="7.4" fill="#2e9e5b"/>
+<line x1="535.5" y1="70.6" x2="535.5" y2="97.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="530.9" y="75.1" width="9.1" height="20.2" fill="#2e9e5b"/>
+<line x1="550.1" y1="91.1" x2="550.1" y2="124.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="545.6" y="93.8" width="9.1" height="16.9" fill="#2e9e5b"/>
+<line x1="564.8" y1="87.8" x2="564.8" y2="116.6" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="560.3" y="92.3" width="9.1" height="21.1" fill="#d43d2a"/>
+<text x="564.8" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年7月</text>
+<line x1="564.8" y1="266" x2="564.8" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="579.5" y1="72.7" x2="579.5" y2="98.8" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="575.0" y="84.0" width="9.1" height="13.6" fill="#d43d2a"/>
+<line x1="594.2" y1="84.6" x2="594.2" y2="192.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="589.7" y="87.5" width="9.1" height="104.8" fill="#2e9e5b"/>
+<line x1="608.9" y1="169.1" x2="608.9" y2="215.5" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="604.4" y="169.7" width="9.1" height="27.9" fill="#d43d2a"/>
+<line x1="623.6" y1="146.3" x2="623.6" y2="172.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="619.0" y="146.9" width="9.1" height="19.9" fill="#d43d2a"/>
+<text x="623.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年8月</text>
+<line x1="623.6" y1="266" x2="623.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="638.3" y1="124.9" x2="638.3" y2="150.4" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="633.7" y="128.5" width="9.1" height="20.8" fill="#d43d2a"/>
+<line x1="653.0" y1="124.3" x2="653.0" y2="166.9" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="648.4" y="124.3" width="9.1" height="22.8" fill="#2e9e5b"/>
+<line x1="667.7" y1="143.0" x2="667.7" y2="161.4" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="663.1" y="148.0" width="9.1" height="7.4" fill="#2e9e5b"/>
+<line x1="682.4" y1="146.6" x2="682.4" y2="176.8" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="677.8" y="155.8" width="9.1" height="5.8" fill="#2e9e5b"/>
+<line x1="697.1" y1="160.6" x2="697.1" y2="190.2" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="692.5" y="162.4" width="9.1" height="21.4" fill="#2e9e5b"/>
+<text x="697.1" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年9月</text>
+<line x1="697.1" y1="266" x2="697.1" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="711.7" y1="183.6" x2="711.7" y2="207.1" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="707.2" y="186.2" width="9.1" height="5.5" fill="#2e9e5b"/>
+<line x1="726.4" y1="167.9" x2="726.4" y2="190.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="721.9" y="167.9" width="9.1" height="20.9" fill="#d43d2a"/>
+<line x1="741.1" y1="143.9" x2="741.1" y2="171.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="736.6" y="166.3" width="9.1" height="5.0" fill="#d43d2a"/>
+<line x1="755.8" y1="157.5" x2="755.8" y2="181.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="751.3" y="166.4" width="9.1" height="12.6" fill="#2e9e5b"/>
+<text x="755.8" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年10月</text>
+<line x1="755.8" y1="266" x2="755.8" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="770.5" y1="153.4" x2="770.5" y2="190.0" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="766.0" y="163.9" width="9.1" height="16.0" fill="#d43d2a"/>
+<line x1="785.2" y1="150.4" x2="785.2" y2="200.7" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="780.6" y="157.8" width="9.1" height="41.7" fill="#2e9e5b"/>
+<line x1="799.9" y1="179.6" x2="799.9" y2="198.9" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="795.3" y="179.6" width="9.1" height="17.9" fill="#d43d2a"/>
+<line x1="814.6" y1="129.4" x2="814.6" y2="167.0" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="810.0" y="157.4" width="9.1" height="2.1" fill="#2e9e5b"/>
+<text x="814.6" y="288" text-anchor="middle" font-size="11" fill="#8a8a96">2026年11月</text>
+<line x1="814.6" y1="266" x2="814.6" y2="271" stroke="#c9c9d4" stroke-width="1"/>
+<line x1="829.3" y1="109.5" x2="829.3" y2="163.3" stroke="#d43d2a" stroke-width="1.2"/>
+<rect x="824.7" y="118.1" width="9.1" height="41.1" fill="#d43d2a"/>
+<line x1="844.0" y1="118.7" x2="844.0" y2="143.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="839.4" y="124.9" width="9.1" height="18.1" fill="#2e9e5b"/>
+<line x1="858.7" y1="137.4" x2="858.7" y2="140.6" stroke="#2e9e5b" stroke-width="1.2"/>
+<rect x="854.1" y="137.4" width="9.1" height="3.3" fill="#2e9e5b"/>
+<line x1="58" y1="140.6" x2="866" y2="140.6" stroke="#55556a" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="64" y="134.6" font-size="12" font-weight="700" fill="#33333f">最新收盘 204.20 EUR</text>
+<text x="58" y="276" font-size="11" fill="#8a8a96">周K线 · 红涨绿跌（中国惯例） · 每根柱子为一周</text>
+</svg>
+  <p class="cap">最新收盘 204.20 欧元。提醒：这个德交所挂牌品种成交非常清淡（部分交易日成交量只有两位数），日内高低价波动很大，K 线只看大致走势，不要按它估算瑞士主板的真实价格。集团总部在瑞士，主要上市地是瑞士交易所。</p>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">科技、AI：横跨两个行业，别只盯一个名字</h3>
+  <p>“AI 股”不是一个行业。芯片、服务器、云算力在<b>信息技术</b>，平台、搜索、社交、游戏在<b>通信服务</b>，AI 医疗、AI 驾驶又分别落在医疗保健和可选消费/工业。一只标普 500 前十里就有英伟达、微软、苹果、亚马逊、Meta、谷歌六家科技相关公司——“科技”内部的分化（图 7 英伟达跌、图 8 苹果涨）比“科技 vs 非科技”的分化更大。</p>
+</div>
+
+<h2 class="sec" id="s7">七、怎么读一张 K 线图</h2>
+<p>本页的图都是<b>周 K 线</b>：每根柱子代表一周。看 K 线先看三样：柱子的位置（趋势）、柱子的长短（波动）、柱子在历史区间里的位置（贵还是便宜）。</p>
+
+<div class="fig flow">
+  <h4>图 11 · 一根 K 线的解剖</h4>
+  <svg viewBox="0 0 880 260" xmlns="http://www.w3.org/2000/svg">
+    <g font-size="14" fill="#26262e">
+      <line x1="180" y1="30" x2="180" y2="220" stroke="#33333f" stroke-width="2"/>
+      <rect x="150" y="80" width="60" height="90" fill="#d43d2a"/>
+      <text x="180" y="20" text-anchor="middle" font-weight="700">最高价（上影线顶）</text>
+      <text x="180" y="240" text-anchor="middle" font-weight="700">最低价（下影线底）</text>
+      <line x1="210" y1="80" x2="330" y2="80" stroke="#8a8a96" stroke-dasharray="4 3"/>
+      <text x="340" y="85" font-weight="700" fill="#d43d2a">开盘价（红柱底部）</text>
+      <line x1="210" y1="170" x2="330" y2="170" stroke="#8a8a96" stroke-dasharray="4 3"/>
+      <text x="340" y="175" font-weight="700" fill="#d43d2a">收盘价（红柱顶部）</text>
+      <text x="340" y="115" fill="#6a6a76">红色柱子：收盘 &gt; 开盘，这一周涨了</text>
+      <text x="340" y="140" fill="#6a6a76">柱子中间的细线叫影线，代表一周内</text>
+      <text x="340" y="162" fill="#6a6a76">到过的高点和低点</text>
+      <line x1="560" y1="40" x2="560" y2="230" stroke="#33333f" stroke-width="2"/>
+      <rect x="530" y="90" width="60" height="100" fill="#2e9e5b"/>
+      <text x="560" y="252" text-anchor="middle" font-size="13" fill="#6a6a76">绿色柱子：收盘 &lt; 开盘，这一周跌了</text>
+      <text x="640" y="100" font-weight="700" fill="#2e9e5b">开盘价（绿柱顶部）</text>
+      <text x="640" y="195" font-weight="700" fill="#2e9e5b">收盘价（绿柱底部）</text>
+      <text x="640" y="140" fill="#6a6a76">红涨绿跌是中国内地</text>
+      <text x="640" y="162" fill="#6a6a76">和香港的惯例；美股软件</text>
+      <text x="640" y="184" fill="#6a6a76">常反过来（绿涨红跌）。</text>
+    </g>
+  </svg>
+  <p class="cap">本页所有 K 线图统一用红涨绿跌，并在图下标明“红涨绿跌（中国惯例）”，避免混淆。</p>
+</div>
+
+<div class="tip"><b>看图的三句话：</b>一、看趋势不看一天——周 K 连起来是向上、向下还是横盘；二、看波动不看涨跌——柱子越长、影线越长，说明一周里多空分歧越大；三、看位置不看价格——股价本身的高低没有意义，要看它在过去一年区间里的位置（接近最高点还是最低点）。K 线只记录过去的价格，不预测未来。</div>
+
+<h2 class="sec" id="s8">八、三市场规则对照总表</h2>
+<table>
+  <tr><th style="width:22%">项目</th><th style="width:26%">A股</th><th style="width:26%">港股</th><th style="width:26%">美股</th></tr>
+  <tr><td>交易货币</td><td>人民币</td><td>港元（港股通可用人民币）</td><td>美元</td></tr>
+  <tr><td>交易时间（北京时间）</td><td>周一至周五 9:30–11:30、13:00–15:00</td><td>9:30–12:00、13:00–16:00</td><td>21:30–次日 4:00（夏令时；冬令时 22:30–5:00），另有盘前盘后</td></tr>
+  <tr><td>最小单位</td><td>1 手 = 100 股</td><td>每只股票一手股数不同</td><td>1 股，可买零股</td></tr>
+  <tr><td>回转交易</td><td>T+1（今天买，明天才能卖）</td><td>T+2 交收，但当天可反复买卖（T+0 回转）</td><td>T+0</td></tr>
+  <tr><td>涨跌幅限制</td><td>主板 ±10%，创业板/科创板 ±20%，北交所 ±30%</td><td>无统一涨跌幅；有 5 分钟冷静期机制（市调机制）</td><td>无涨跌幅；有熔断机制</td></tr>
+  <tr><td>开户门槛</td><td>主板无资金门槛；创业板 10 万、科创板/北交所 50 万 + 2 年经验</td><td>无统一资金门槛（券商自定）</td><td>无统一资金门槛（券商自定）</td></tr>
+  <tr><td>主要风险提示</td><td>T+1 当天不能止损；ST、退市规则要看清</td><td>无涨跌幅，一天可跌很多；仙股、老千股多</td><td>无涨跌幅，盘前盘后波动大；汇率风险</td></tr>
+</table>
+<p class="note">港股、美股的交易时间与规则以交易所和券商公布为准，夏令时/冬令时切换时美股时间会变。A股 2026 年 7 月 6 日新规见第二节。</p>
+
+<h2 class="sec" id="s9">九、数据与口径说明</h2>
+<ul>
+  <li><b>K 线图数据：</b>Finnhub 日 K 数据，按周聚合为周 K 线。9 张图中，A 股 4 只与美股 2 只截至 2026 年 11 月 24 日，斯沃琪截至 11 月 23 日，标普 500 与日经 225 的 CFD 代理序列截至 11 月 25 日。各图下方标注了各自的起止日期与涨跌幅，涨跌幅按区间首尾收盘价计算。</li>
+  <li><b>无 K 线数据的品种：</b>上证指数、恒生指数、腾讯控股未取得日 K 数据，本页只给出了 11 月 25 日收盘价和第三方行情页外链（见第二节、第三节），没有画图，避免用不完整的数据拼图。</li>
+  <li><b>CFD 代理序列：</b>标普 500 与日经 225 用的是 OANDA 差价合约序列，只反映大致走势，数值与现金指数不同，正文已分别标出现金指数的收盘值。</li>
+  <li><b>斯沃琪：</b>用的是德交所挂牌品种（UHR.TG），成交清淡，只看走势；集团主要上市地为瑞士交易所。</li>
+  <li><b>市场结构与规则：</b>综合交易所公开资料与 2026 年 11 月 26 日的公开报道整理，规则、门槛、费用可能变化，交易前请以交易所与券商最新公布为准。</li>
+  <li><b>手表品牌归属：</b>综合 2026 年的手表行业指南与各集团公开资料，劳力士、百达翡丽等未上市的状态截至本文写作时未变。</li>
+  <li><b>本文不是投资建议。</b>所有涨跌幅都是过去区间的记录，不代表未来。个股、指数、期货、基金的差别很大，动手前请先分清自己买的到底是什么。</li>
+</ul>
+
+<footer>
+  股票分类全图解 · A股、港股、美股与行业地图 · 制作于 2026 年 11 月 26 日 · 数据来源：Finnhub（K 线）、中证指数公司、交易所与行情商公开页面
+</footer>
+
+</div>
+</body>
+</html>
