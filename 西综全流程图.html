@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>西综全流程图 · 从目录裁剪到学习播放器</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F1E8; --bg2:#EFE8D8; --card:#FFFEFB; --ink:#1C2B27; --muted:#5B6B65; --line:#D8CFC0;
+  --teal:#0F766E; --teal-dark:#115E59; --teal-soft:#E0F2F0; --amber:#B45309; --amber-soft:#FEF3C7; --rose:#9F2D20; --rose-soft:#FDECEA;
+  --shadow:0 4px 24px rgba(28,43,39,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#131A17; --bg2:#1A2420; --card:#1E2A26; --ink:#EAF0ED; --muted:#A8B8B2; --line:#33443E; --teal:#2DD4BF; --teal-dark:#5EEAD4; --teal-soft:#173B36; --amber:#FBBF24; --amber-soft:#3A2E12; --rose:#FCA5A5; --rose-soft:#3B1E1B; --shadow:0 4px 24px rgba(0,0,0,.35);}
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans SC",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.65}
+a{color:var(--teal)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px 56px}
+
+/* header */
+.hero{padding:34px 0 10px}
+.hero-top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.pill{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color:var(--bg);font-size:12px;font-weight:700;letter-spacing:.08em;padding:7px 12px;border-radius:999px}
+.pill i{width:7px;height:7px;background:#34D399;border-radius:50%;display:block}
+.date{font-size:13px;color:var(--muted)}
+h1{font-family:"Noto Serif SC",serif;font-size:clamp(32px,6vw,56px);line-height:1.05;margin:18px 0 12px;font-weight:900;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--teal);box-shadow:inset 0 -12px 0 var(--teal-soft)}
+.lede{font-size:17px;color:var(--muted);max-width:720px;margin:0}
+.lede strong{color:var(--ink)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 16px 12px;box-shadow:var(--shadow)}
+.stat b{font-family:"Noto Serif SC",serif;font-size:30px;line-height:1;display:block}
+.stat b span{font-size:15px;color:var(--teal)}
+.stat p{margin:6px 0 0;font-size:13px;color:var(--muted);line-height:1.45}
+@media(max-width:700px){.stats{grid-template-columns:1fr 1fr}}
+
+/* subject strip */
+.subjects{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0 30px;box-shadow:var(--shadow)}
+.subjects h3{margin:0 0 4px;font-size:14px;letter-spacing:.06em}
+.subjects p{margin:0 0 14px;font-size:13px;color:var(--muted)}
+.bar{display:flex;height:38px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.bar div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;padding:0 4px;min-width:0}
+@media(max-width:640px){.bar{height:42px}.bar div{font-size:11px;padding:0 2px;flex:1 1 0 !important}.bar div:last-child{flex:0.7 1 0 !important}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:12px;font-size:12.5px;color:var(--muted)}
+.legend b{color:var(--ink)}
+
+/* flowchart */
+.flow{position:relative;margin-top:10px}
+.flow:before{content:"";position:absolute;left:27px;top:8px;bottom:8px;width:3px;background:linear-gradient(var(--teal),var(--amber));border-radius:99px;opacity:.9}
+@media(max-width:640px){.flow:before{left:21px}}
+.stage{position:relative;padding-left:76px;margin-bottom:18px}
+@media(max-width:640px){.stage{padding-left:58px}}
+.node{position:absolute;left:0;top:18px;width:56px;height:56px;border-radius:50%;background:var(--card);border:2px solid var(--teal);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;box-shadow:var(--shadow)}
+.node b{font-family:"Noto Serif SC",serif;font-size:19px;line-height:1;color:var(--teal-dark)}
+.node span{font-size:9px;letter-spacing:.12em;color:var(--muted);font-weight:700;margin-top:2px}
+@media(max-width:640px){.node{width:44px;height:44px}.node b{font-size:16px}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 20px 16px;box-shadow:var(--shadow)}
+.card-head{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;justify-content:space-between}
+.card h2{font-family:"Noto Serif SC",serif;font-size:21px;line-height:1.25;margin:0}
+.tag{font-size:11px;font-weight:800;letter-spacing:.06em;padding:5px 9px;border-radius:999px;background:var(--teal-soft);color:var(--teal-dark);white-space:nowrap}
+.tag.amber{background:var(--amber-soft);color:var(--amber)} .tag.rose{background:var(--rose-soft);color:var(--rose)}
+.card .what{margin:8px 0 0;color:var(--muted);font-size:14.5px}
+.card .what strong{color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+.mini{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
+.mini b{font-size:13px;display:block} .mini p{margin:3px 0 0;font-size:13px;color:var(--muted)}
+ul.tight{margin:10px 0 0;padding-left:18px;font-size:14px;color:var(--muted)} ul.tight li{margin:4px 0} ul.tight strong{color:var(--ink)}
+.verify{margin-top:12px;display:flex;gap:9px;align-items:flex-start;background:var(--teal-soft);border-radius:12px;padding:11px 12px;font-size:13.5px}
+.verify span:first-child{font-size:16px;line-height:1.2} .verify p{margin:0} .verify b{color:var(--teal-dark)}
+.lesson{margin-top:10px;border-top:1px dashed var(--line);padding-top:10px;font-size:13.5px;color:var(--muted)} .lesson b{color:var(--amber)}
+
+/* convergence diagram */
+.converge{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin-top:14px}
+@media(max-width:640px){.converge{grid-template-columns:1fr}.converge .arrow{transform:rotate(90deg);justify-self:center}}
+.sources{display:grid;gap:8px}
+.src{border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 12px;font-size:13.5px}
+.src b{display:block;font-size:14px} .src span{color:var(--muted);font-size:12.5px}
+.arrow{font-size:26px;color:var(--teal);font-weight:900}
+.hub{background:var(--ink);color:var(--bg);border-radius:14px;padding:16px;text-align:center}
+.hub b{font-family:"Noto Serif SC",serif;font-size:18px;display:block} .hub p{margin:4px 0 0;font-size:12.5px;opacity:.85}
+
+/* two layers */
+.layers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+@media(max-width:640px){.layers{grid-template-columns:1fr}}
+.layer{border-radius:14px;padding:16px;border:1px solid var(--line)}
+.layer.main{background:var(--teal);color:#fff;border-color:var(--teal)} .layer.sub{background:var(--bg)}
+.layer h3{margin:0;font-size:16px} .layer p{margin:6px 0 0;font-size:13.5px;opacity:.92}
+.layer .big{font-family:"Noto Serif SC",serif;font-size:13px;opacity:.85;letter-spacing:.08em}
+
+/* lessons final */
+.final{margin-top:34px;background:var(--ink);color:var(--bg);border-radius:20px;padding:26px 22px}
+.final h2{font-family:"Noto Serif SC",serif;margin:0 0 6px;font-size:24px} .final>p{opacity:.85;margin:0 0 18px;font-size:14.5px;max-width:680px}
+.lessons{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.lessons{grid-template-columns:1fr}}
+.lsn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:15px}
+.lsn b{font-size:15px} .lsn b i{font-style:normal;color:#FBBF24;margin-right:6px} .lsn p{margin:6px 0 0;font-size:13.5px;opacity:.88;line-height:1.6}
+.foot{margin-top:18px;font-size:12.5px;color:var(--muted);text-align:center;line-height:1.7}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 4px}
+.controls button{min-height:40px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;cursor:pointer;font-size:13.5px}
+.controls button.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+details.more{margin-top:10px} details.more summary{min-height:36px;display:flex;align-items:center;cursor:pointer;font-weight:700;font-size:13.5px;color:var(--teal)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-top"><span class="pill"><i></i> 西综 · 全流程复盘</span><span class="date">2026 年 11 月 22 — 24 日 &nbsp;·&nbsp; 五本教材 + 题库</span></div>
+    <h1>从一堆 PDF，<br>到能<em>边听边看</em>的学习系统</h1>
+    <p class="lede">起点是<strong>五本第 10 版教材</strong>和<strong>题库的试题 / 解析</strong>散在各处；目标终点是 <strong>Pantosona 学习播放器</strong>——268 章每章双层音频 + 逐句字幕（试点第 02 章已完成，全量正在后台生成）。这张图把中间每一步做了什么、留下了多少文件、踩过什么坑，按顺序记下来，供你总结经验。</p>
+    <div class="controls" role="group" aria-label="视图切换">
+      <button class="active" data-filter="all">看全流程</button>
+      <button data-filter="lesson">只看经验教训</button>
+    </div>
+  </header>
+
+  <section class="stats" aria-label="总览数字">
+    <div class="stat"><b>268 <span>章</span></b><p>统一编号 01–268，贯穿全部后续步骤的唯一坐标</p></div>
+    <div class="stat"><b>894 <span>份</span></b><p>五本教材按节拆分后的单元总数，页码逐一核对、无缺页</p></div>
+    <div class="stat"><b>907 <span>张</span></b><p>目录裁剪图归位到对应章节文件夹，逐夹核对 0 错位</p></div>
+    <div class="stat"><b>268 <span>份 .md</span></b><p>最终融合稿，一章一份，打包 zip 6.4 MB，Drive 与 zip 一致</p></div>
+  </section>
+
+  <section class="subjects">
+    <h3>268 章的科目分布 —— 全流程都围绕这张编号表转</h3>
+    <p>题库的章节顺序就是总目录：先定编号，后面教材、目录图、培训讲义、题目和音频才能一一对上。</p>
+    <div class="bar" aria-hidden="true">
+      <div style="flex:13;background:#0F766E">生理 13</div>
+      <div style="flex:28;background:#2A7F9E">生化 28</div>
+      <div style="flex:20;background:#7C6AAE">病理 20</div>
+      <div style="flex:130;background:#B45309">内科 130</div>
+      <div style="flex:73;background:#9F2D20">外科 73</div>
+      <div style="flex:10;background:#5B6B65">人文 4</div>
+    </div>
+    <div class="legend">
+      <span><b>生理</b> 01–13</span><span><b>生化</b> 14–41</span><span><b>病理</b> 42–61</span><span><b>内科</b> 62–191</span><span><b>外科</b> 192–264</span><span><b>医学人文</b> 265–268</span>
+    </div>
+  </section>
+
+  <main class="flow" id="flow">
+
+    <!-- 0 -->
+    <article class="stage" data-kind="flow">
+      <div class="node"><b>0</b><span>源头</span></div>
+      <div class="card">
+        <div class="card-head"><h2>原始资料：两套书，两种用途</h2><span class="tag">输入</span></div>
+        <p class="what">教材管<strong>“讲清楚”</strong>，题库管<strong>“练会、记住”</strong>。一开始就分清角色，后面所有加工都是在把这两套东西对齐到同一章上。</p>
+        <div class="grid">
+          <div class="mini"><b>五本第 10 版教材</b><p>生理学 · 生物化学与分子生物学 · 病理学 · 内科学 · 外科学 —— 知识的权威来源</p></div>
+          <div class="mini"><b>题库（试题 + 解析）</b><p>按章编排的题目与解析 —— 决定了 268 章的划分和编号顺序</p></div>
+        </div>
+        <p class="lesson" data-lesson><b>经验 · </b>先定“以谁的目录为准”。这里选了题库的 268 章作主目录，教材反过来往上贴，避免两套目录互相打架。</p>
+      </div>
+    </article>
+
+    <!-- 1 -->
+    <article class="stage" data-kind="flow">
+      <div class="node"><b>1</b><span>裁剪</span></div>
+      <div class="card">
+        <div class="card-head"><h2>目录裁剪：先把每本书的地图切出来</h2><span class="tag">11 月 22–23 日</span></div>
+        <p class="what">把五本书的<strong>目录页逐节裁成图片</strong>，一节一张（跨页的拼接）。目录先行，是因为拆书之前必须先有一份可靠的“节 → 页码”清单。</p>
+        <ul class="tight">
+          <li><strong>生化</strong> 109 节 / 118 张（目录共 14 页）&nbsp;·&nbsp; <strong>生理</strong> 66 节 / 68 张</li>
+          <li><strong>病理</strong> 130 张（绪论 + 127 节 + 推荐阅读 + 索引，7 处跨页拼接）</li>
+          <li><strong>内科</strong> 271 张 &nbsp;·&nbsp; <strong>外科</strong> 334 节 / 338 张</li>
+        </ul>
+        <div class="verify"><span>✓</span><p><b>核对方式：</b>每科生成 index.json + index.md，逐条列出节名与页码，抽查裁图与索引一致才算过。</p></div>
+        <p class="lesson" data-lesson><b>经验 · </b>目录不只是导航，它是后面拆分、归位、查漏的对照表。地图错一张，后面全跟着错。</p>
+      </div>
+    </article>
+
+    <!-- 2 -->
+    <article class="stage" data-kind="flow">
+      <div class="node"><b>2</b><span>拆书</span></div>
+      <div class="card">
+        <div class="card-head"><h2>教材按节拆分：整本书 → 一节一个 PDF</h2><span class="tag">894 个单元</span></div>
+        <p class="what">按目录清单把五本教材<strong>逐节切开</strong>，页码范围逐个核对、首尾相接不留缝。有些节共用一页时整页归入后一节——这个取舍当时明确确认过。</p>
+        <div class="grid">
+          <div class="mini"><b>生理 66 · 生化 109 · 病理 128</b><p>三本基础学科，节数相对少</p></div>
+          <div class="mini"><b>内科 257 · 外科 334</b><p>两本临床学科占了近 2/3，工作量主要在这里</p></div>
+        </div>
+        <p class="lesson" data-lesson><b>经验 · </b>你的要求是“先读完整本书、拆一个样本给你看、确认后再全量拆”——样本先行，避免全量返工。</p>
+      </div>
+    </article>
+
+    <!-- 3 -->
+    <article class="stage" data-kind="flow">
+      <div class="node"><b>3</b><span>拆题</span></div>
+      <div class="card">
+        <div class="card-head"><h2>题库按章拆分：268 个章节文件夹诞生</h2><span class="tag">536 个文件</span></div>
+        <p class="what">题库的试题书和解析书按章拆开，建成 <strong>01–268 编号文件夹</strong>，每夹恰好放该章的<strong>试题 + 解析各一份</strong>。共用页整页同时放入相邻两章，不裁半页。</p>
+        <ul class="tight">
+          <li>少数章只有标题、没有题目（如生化绪论、内科循环篇第 12–15 章），文件就是它所在的那一整页</li>
+          <li>一处标题对不上：内分泌篇第六章试题叫“甲状腺腺瘤”、解析目录叫“甲状旁腺疾病”——<strong>按章号配对</strong>，文件夹用试题标题</li>
+        </ul>
+        <div class="verify"><span>✓</span><p><b>结果：</b>268 章无缺章，每章试题、解析都不缺，编号连续无跳号。</p></div>
+      </div>
+    </article>
+
+    <!-- 4 -->
+    <article class="stage" data-kind="flow">
+      <div class="node"><b>4</b><span>归位</span></div>
+      <div class="card">
+        <div class="card-head"><h2>三路归位：所有资料汇进同一个章节文件夹</h2><span class="tag amber">全流程的枢纽</span></div>
+        <p class="what">268 个文件夹成了每章的“档案袋”。三批资料先后按编号搬进来，从此查任何一章，只需打开一个文件夹。</p>
+        <div class="converge">
+          <div class="sources">
+            <div class="src"><b>目录裁剪图 · 907 张</b><span>264 个非人文文件夹逐夹核对，0 错位；18 张无对应文件夹（绪论 / 索引等）留在本地</span></div>
+            <div class="src"><b>教材拆分 PDF · 893 份</b><span>在 Drive 内直接移动、不重传；894 份中仅内科绪论 1 份无对应章，未搬</span></div>
+            <div class="src"><b>培训讲解 PDF · 611 份</b><span>5 个 zip 共约 1 GB 解开后按节映射：生理 94 · 生化 86 · 病理 102 · 内科 168 · 外科 161</span></div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="hub"><b>268 章文件夹</b><p>试题 + 解析 + 教材节 + 目录图 + 培训讲义<br>168 章收到培训讲义，96 章本身就没有</p></div>
+        </div>
+        <p class="lesson" data-lesson><b>经验 · </b>培训讲义里有 2 份放错位置，靠“翻开第一页看标题”纠正（病理绪论、肺结核病）——文件名会骗人，内容不会。</p>
+      </div>
+    </article>
+
+    <!-- 5 -->
+    <article class="stage" data-kind="flow">
+      <div class="node"><b>5</b><span>纠错</span></div>
+      <div class="card">
+        <div class="card-head"><h2>纠错：医学人文解析错位一章</h2><span class="tag rose">差 2 页的教训</span></div>
+        <p class="what">复查发现 265–268 章的解析<strong>整体错位一章</strong>：265 的文件只有篇章页、0 道解析，后面每章装的都是上一章的内容。</p>
+        <ul class="tight">
+          <li><strong>根因：</strong>下册解析的人文部分页码换算用错了偏移——实际是“PDF 页 = 印刷页 − 265”，当时按 −267 算，差了 2 页（封面 + 空白页未计入印刷页码）</li>
+          <li><strong>修法：</strong>从源书按正确偏移重拆 4 份，原位替换（文件 ID、文件名不变），从 Drive 重新下载与源书逐页 SHA 比对，8/8 页一致</li>
+        </ul>
+        <div class="verify"><span>✓</span><p><b>连带检查：</b>264 章抽查不受影响；4 章的题目覆盖复核为 Q1–Q72 完整无缺。</p></div>
+        <p class="lesson" data-lesson><b>经验 · </b>批量规则在分段处最容易翻车：换册、换篇时页码偏移会变，必须单独验一段，不能默认全书一个公式。</p>
+      </div>
+    </article>
+
+    <!-- 6 -->
+    <article class="stage" data-kind="flow">
+      <div class="node"><b>6</b><span>融合</span></div>
+      <div class="card">
+        <div class="card-head"><h2>题目融合：每章生成一份最终 .md</h2><span class="tag">268 份 · 共约 23 MB 文字</span></div>
+        <p class="what">把同一文件夹里的知识点、口诀、速查表与题目<strong>融合成一份可直接学习的 .md</strong>——这是从“资料整理”跨到“学习材料”的关键一步，后面的音频就是念它。</p>
+        <div class="grid">
+          <div class="mini"><b>真题章 · 176 章 + 人文 4 章</b><p>融合的是真实历年真题，文件里只有真实题号</p></div>
+          <div class="mini"><b>模拟题章 · 88 章</b><p>没有真题可融的章用自编模拟题补齐，题号统一标“模拟 Q”，文件内明确注明，不冒充真题</p></div>
+        </div>
+        <details class="more"><summary>这一步为什么重要？</summary><p style="font-size:14px;color:var(--muted);margin:6px 0 0">在融合之前，每章的知识散在 4–5 个文件里，学的时候要来回翻；融合之后一章只有一个入口文件，播放器、字幕、进度都只需要认这一个文件。汇总 zip（6.4 MB，268 份）也是在这一步定版后打的。</p></details>
+        <p class="lesson" data-lesson><b>经验 · </b>真题和模拟题必须从文件层面就分清楚、标明白。混在一起，将来就分不清自己到底练的是什么。</p>
+      </div>
+    </article>
+
+    <!-- 7 -->
+    <article class="stage" data-kind="flow">
+      <div class="node"><b>7</b><span>定版</span></div>
+      <div class="card">
+        <div class="card-head"><h2>清理定版：一章只留一份最终 .md</h2><span class="tag">268 = 268</span></div>
+        <p class="what">汇总时发现 127、128、194 三章各有 2–4 份同名 v2（修正重传留下的）。按你的要求<strong>不等确认、直接清理</strong>：每章只留打进 zip 的那一份，其余移入回收站（可恢复，本地另有备份），删前逐个核对文件 ID。</p>
+        <div class="verify"><span>✓</span><p><b>定版标准：</b>全量再数一遍——Drive 上正好 268 份 .md，与 zip 内完全一致，每夹一份，不多不少。“可以进入下一阶段”的判断就建立在这个数上。</p></div>
+      </div>
+    </article>
+
+    <!-- 8 -->
+    <article class="stage" data-kind="flow">
+      <div class="node"><b>8</b><span>决策</span></div>
+      <div class="card">
+        <div class="card-head"><h2>学习方式决策：从“眼手口耳心”定框架</h2><span class="tag amber">先定框架，再动手</span></div>
+        <p class="what">问题是：<strong>23 MB、约七八百万字</strong>的 .md 怎么真正记进脑子？先算量——全文朗读约 400+ 小时，所以音频必须<strong>分层、分批</strong>，不可能一口吃完。</p>
+        <ul class="tight">
+          <li><strong>现成 App 路线 ✕</strong> —— 没有哪个 App 能吃 268 份自定义 .md 还做到逐句字幕同步；NotebookLM 有对话音频但没有同步字幕</li>
+          <li><strong>网页播放器路线 ✓</strong> —— 手机点开链接就能学，字幕点哪句跳哪句，还能往上接跟读（口）和速查抽问（手、心）</li>
+          <li><strong>离线</strong> —— 每批 MP3 打包 zip 备份离线听；字幕同步只在联网播放器里有，这是事先说清的取舍</li>
+        </ul>
+        <p class="lesson" data-lesson><b>经验 · </b>框架讨论里最值钱的是先把“总量”算出来。400 小时这个数一出来，分层和分批就不是选择题了。</p>
+      </div>
+    </article>
+
+    <!-- 9 -->
+    <article class="stage" data-kind="flow">
+      <div class="node"><b>9</b><span>试点</span></div>
+      <div class="card">
+        <div class="card-head"><h2>试点一章：生理第 02 章《细胞的基本功能》</h2><span class="tag">先跑通，再铺开</span></div>
+        <p class="what">和拆书时一样，先拿一章把<strong>整套机制验证完</strong>：51 个知识点、73 道题，两层音频都做出来，字幕同步跑通才算数。</p>
+        <div class="layers">
+          <div class="layer sub"><div class="big">第一层 · 对话概览</div><h3>12 分 55 秒 · 双人对话</h3><p>像 NotebookLM 那样把一章讲明白：四节核心机制 + 高频考点，结尾 3 道自测题。定位是“不熟的地方先听它”。</p></div>
+          <div class="layer sub"><div class="big">第二层 · 逐句精听（第 1 节）</div><h3>12 分 48 秒 · 106 句</h3><p>逐句朗读 + 同步字幕，点击任意一句跳到对应时间。提取时混入的 11 条 Markdown 分隔线已剔除重做。</p></div>
+        </div>
+        <ul class="tight">
+          <li>你试用后发现的 <strong>播放 / 暂停图标不切换</strong> bug 已定位修复：手机浏览器上原来的切换方式不生效，改后播时显示双竖条、停时显示三角，两个方向都实测过</li>
+          <li>同时算清了导出账：试点版单个 .html 已 16 MB，全量塞进一个文件约 2.2 GB，手机打不开——所以<strong>在线播放器 + MP3 zip</strong> 才是全量的交付方式</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- 10 -->
+    <article class="stage" data-kind="flow">
+      <div class="node"><b>10</b><span>收尾</span></div>
+      <div class="card" style="border-color:var(--teal);border-width:1.5px">
+        <div class="card-head"><h2>收尾：最后真正交付的只有 L2</h2><span class="tag">最终交付</span></div>
+        <p class="what">试点之后全量走了三条路，最后都收敛到同一点：<strong>真正用得上的只有 L2 的 .html 和音频</strong>。双层播放器、公开链接、音频分包都做过，但终点不是它们。</p>
+        <ul class="tight">
+          <li><strong>双层播放器</strong> —— 69 个双层播放器做出来了（268 章、1,489 节），但 L1 对话概览只是补充，日常学习并不打开它</li>
+          <li><strong>公开链接</strong> —— 分享后台反复报错（“share status couldn't be updated”），能成的 11 个链接最后也按你的决定全部下了，播放器只自用</li>
+          <li><strong>音频交付</strong> —— 音频按科目打包，超过 100 MB 的拆成 106 个分卷才传得上去；文件一大就得拆，拆完还得教怎么合</li>
+          <li><strong>最后定型</strong> —— L2 离线包：每包一个 .html（默认逐句精讲）+ 它的音频文件夹，69 个包、268 章、8.05 GB，Mac 上双击 .html 就能离线学</li>
+          <li><strong>解压这一关</strong> —— 离线包超过 100 MB 的照样拆成两卷（.z01 + .zip）。Mac 自带的归档实用工具打不开分卷包，双击只报“格式不支持”；文件若还存在 iCloud 里（储存空间已满、云朵图标 + 错误），等于还没下到本机。办法：下到本机文件夹（下载，不走 iCloud），用免费的 The Unarchiver 解压；解压完只留文件夹（.html + assets 待在一起），.z01 和 .zip 就可以删了</li>
+        </ul>
+        <p class="lesson" data-lesson><b>收获 · </b>走完 L1/L2、公开链接、音频分包、后台报错、解压打不开这一整圈，才看清真正要交付的东西：L2 的 .html + 音频。别的都是路，不是终点。连最后一步解压也得按对方的工具来——格式、位置、解压工具三样都对了，才算交付完。</p>
+      </div>
+    </article>
+  </main>
+
+  <section class="final" id="lessons">
+    <h2>经验总结：这趟全流程最值得记住的 8 条</h2>
+    <p>如果下次再整理任何一门大科目，这 8 条可以直接照搬——它们每一条都是这 10 步里用返工或核对换来的。</p>
+    <div class="lessons">
+      <div class="lsn"><b><i>01</i>先地图，后动手</b><p>目录裁剪看似多余，却是拆分、归位、查漏的总对照表。任何大工程，先花小成本把“清单”做准。</p></div>
+      <div class="lsn"><b><i>02</i>统一编号是枢纽</b><p>01–268 一个编号串起了教材、目录图、讲义、题目、.md 和音频。没有它，第 4 步的“三路归位”根本无从对齐。</p></div>
+      <div class="lsn"><b><i>03</i>样本先行，再全量</b><p>拆书先拆一个样本、音频先做一章试点（第 02 章）。两次都靠试点提前暴露了问题，全量阶段几乎没返工。</p></div>
+      <div class="lsn"><b><i>04</i>每步都数到对为止</b><p>894、907、611、536、268——每一步结束都用总数复核。 人文解析错位、重复 .md，都是靠“数不对”发现的。</p></div>
+      <div class="lsn"><b><i>05</i>按记忆分层做材料</b><p>理解和背诵是两件事：对话概览管理解、逐句精讲管记忆，主次分明。材料形态要服从记忆规律，而不是反过来。</p></div>
+      <div class="lsn"><b><i>06</i>真假必须标明</b><p>88 章模拟题全部标“模拟 Q”。对自己诚实，复习时才知道哪些是真题手感、哪些只是补位练习。</p></div>
+      <div class="lsn"><b><i>07</i>只交付真正用的东西</b><p>双层播放器、公开链接、音频分包都做过一遍，最后真正用得上的只有 L2 的 .html + 音频。交付物的范围要由“用不用得上”定，不是由“能做多少”定。</p></div>
+      <div class="lsn"><b><i>08</i>交付格式要按对方的工具来</b><p>分卷压缩包 Mac 自带工具打不开，文件放 iCloud 里等于没下到本机。格式、位置、解压工具三样都得按对方电脑的实际情况来，不然东西做出来了，对方还是用不上。</p></div>
+    </div>
+  </section>
+
+  <p class="foot">数据来源：2026 年 11 月 22–26 日各步的实际交付记录（目录索引、拆分清单、Drive 核对结果、播放器与音频交付记录）。<br>第 10 步已按 11 月 26 日的最终状态改写：双层播放器、公开链接、音频分包都走过一遍，最后真正交付的是 L2 的 .html + 音频（69 个离线包，268 章，1,489 节）。</p>
+</div>
+<script>
+(function(){
+  var btns=document.querySelectorAll('[data-filter]');
+  var lessons=document.querySelectorAll('[data-lesson]');
+  var finalSec=document.getElementById('lessons');
+  function setMode(mode){
+    btns.forEach(function(b){b.classList.toggle('active', b.getAttribute('data-filter')===mode);});
+    if(mode==='lesson'){
+      lessons.forEach(function(el){ el.style.background='var(--amber-soft)'; el.style.borderRadius='10px'; el.style.padding='10px 12px'; });
+      finalSec.scrollIntoView({behavior:'smooth',block:'start'});
+    }else{
+      lessons.forEach(function(el){ el.style.background=''; el.style.padding=''; });
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ setMode(b.getAttribute('data-filter')); }); });
+})();
+</script>
+</body>
+</html>
