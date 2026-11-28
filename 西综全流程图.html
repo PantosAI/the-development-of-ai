@@ -102,6 +102,11 @@ ul.tight{margin:10px 0 0;padding-left:18px;font-size:14px;color:var(--muted)} ul
 @media(max-width:640px){.lessons{grid-template-columns:1fr}}
 .lsn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:15px}
 .lsn b{font-size:15px} .lsn b i{font-style:normal;color:#FBBF24;margin-right:6px} .lsn p{margin:6px 0 0;font-size:13.5px;opacity:.88;line-height:1.6}
+.check{margin-top:34px}
+.check-card{background:var(--card);border:1.5px dashed var(--line);border-radius:20px;padding:26px 22px;box-shadow:var(--shadow)}
+.check-card h2{font-family:"Noto Serif SC",serif;margin:0;font-size:24px}
+.check-card .what{margin:8px 0 0;color:var(--muted);font-size:14.5px}
+.check-card .what strong{color:var(--ink)}
 .foot{margin-top:18px;font-size:12.5px;color:var(--muted);text-align:center;line-height:1.7}
 .controls{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 4px}
 .controls button{min-height:40px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;cursor:pointer;font-size:13.5px}
@@ -292,6 +297,7 @@ details.more{margin-top:10px} details.more summary{min-height:36px;display:flex;
           <li>你试用后发现的 <strong>播放 / 暂停图标不切换</strong> bug 已定位修复：手机浏览器上原来的切换方式不生效，改后播时显示双竖条、停时显示三角，两个方向都实测过</li>
           <li>同时算清了导出账：试点版单个 .html 已 16 MB，全量塞进一个文件约 2.2 GB，手机打不开——所以<strong>在线播放器 + MP3 zip</strong> 才是全量的交付方式</li>
         </ul>
+        <p class="lesson" data-lesson><b>经验 · </b>L2 只念知识点，不念选项。政治 L2 的教训：v1 把每道题的选项辨析（逐项分析为什么对、为什么错）也念进了音频；v2/v3 全部去掉，只留知识陈述——选项、选项辨析、题号一律不进 L2。做 L2 先定这条线。</p>
       </div>
     </article>
 
@@ -325,6 +331,20 @@ details.more{margin-top:10px} details.more summary{min-height:36px;display:flex;
       <div class="lsn"><b><i>06</i>真假必须标明</b><p>88 章模拟题全部标“模拟 Q”。对自己诚实，复习时才知道哪些是真题手感、哪些只是补位练习。</p></div>
       <div class="lsn"><b><i>07</i>只交付真正用的东西</b><p>双层播放器、公开链接、音频分包都做过一遍，最后真正用得上的只有 L2 的 .html + 音频。交付物的范围要由“用不用得上”定，不是由“能做多少”定。</p></div>
       <div class="lsn"><b><i>08</i>交付格式要按对方的工具来</b><p>分卷压缩包 Mac 自带工具打不开，文件放 iCloud 里等于没下到本机。格式、位置、解压工具三样都得按对方电脑的实际情况来，不然东西做出来了，对方还是用不上。</p></div>
+    </div>
+  </section>
+
+  <section class="check" id="check">
+    <div class="check-card">
+      <div class="card-head"><h2>检查机制</h2><span class="tag amber">待补充 · 先留空</span></div>
+      <p class="what">这一章的具体形式还没想好，先留一个空白，后续补充。等英语结束后再定。</p>
+      <p class="what"><strong>初步设想（未定）：</strong></p>
+      <ul class="tight">
+        <li>学习过程中，把未掌握的自己记进来</li>
+        <li>可以自主删除已掌握的条目</li>
+        <li>对重要程度或掌握情况进行标注，按星级点击记录</li>
+      </ul>
+      <p class="lesson"><b>注意 · </b>以上只是初步设想，具体形式等英语结束后再定。</p>
     </div>
   </section>
 
