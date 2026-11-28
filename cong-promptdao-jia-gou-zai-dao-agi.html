@@ -1,0 +1,979 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>从 Prompt 到架构，再到 AGI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2.25rem; }
+
+      :root {
+        --bg: #fbfbf9;
+        --bg-raise: #ffffff;
+        --bg-sink: #f1f0ea;
+        --ink: #171a1e;
+        --ink-2: #454b53;
+        --ink-3: #7a8189;
+        --line: #ddd9cd;
+        --line-strong: #171a1e;
+        --accent: #c93a12;
+        --accent-soft: #fbe9e2;
+        --teal: #0e6e6b;
+        --teal-soft: #e0efee;
+        --amber: #9a6206;
+        --amber-soft: #f7ecd4;
+        --good: #1c7a3f;
+        --bad: #b3261e;
+        --shadow: 0 1px 2px rgba(23,26,30,.06), 0 8px 24px rgba(23,26,30,.06);
+        --radius: 10px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #101216;
+          --bg-raise: #171a1f;
+          --bg-sink: #0b0d10;
+          --ink: #ece9e2;
+          --ink-2: #b6bcc4;
+          --ink-3: #828a94;
+          --line: #2c313a;
+          --line-strong: #ece9e2;
+          --accent: #ff7a4d;
+          --accent-soft: #3a2016;
+          --teal: #4fc4c0;
+          --teal-soft: #143231;
+          --amber: #e0aa4e;
+          --amber-soft: #33270f;
+          --good: #5cc47e;
+          --bad: #ff8a80;
+          --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+        }
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+        font-size: 16.5px;
+        line-height: 1.75;
+        -webkit-font-smoothing: antialiased;
+      }
+      .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+      .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+
+      /* ---------- lead ---------- */
+      .lead { padding: 56px 0 8px; }
+      .lead .path {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px; letter-spacing: .04em;
+        color: var(--ink-3);
+        display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+        margin-bottom: 26px;
+      }
+      .lead .path b { color: var(--ink); font-weight: 600; }
+      .lead .path .arr { color: var(--accent); font-weight: 700; }
+      .lead .path .horizon { border: 1.5px dashed var(--ink-3); border-radius: 999px; padding: 1px 10px; color: var(--ink-2); }
+      h1 {
+        font-family: "Noto Serif SC", serif;
+        font-weight: 900;
+        font-size: clamp(34px, 7.2vw, 58px);
+        line-height: 1.18;
+        margin: 0 0 20px;
+        letter-spacing: .01em;
+      }
+      h1 .hl { color: var(--accent); }
+      .thesis {
+        font-size: clamp(17px, 2.6vw, 20px);
+        color: var(--ink-2);
+        max-width: 40em;
+        margin: 0 0 14px;
+      }
+      .thesis strong { color: var(--ink); }
+      .origin {
+        margin: 30px 0 0;
+        border-top: 2px solid var(--line-strong);
+        padding-top: 18px;
+        display: grid; gap: 14px;
+      }
+      .origin .q {
+        font-family: "Noto Serif SC", serif;
+        font-size: 17px; font-weight: 700;
+      }
+      .origin .q span {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11.5px; font-weight: 700;
+        color: var(--accent);
+        border: 1.5px solid var(--accent);
+        border-radius: 4px; padding: 1px 6px;
+        margin-right: 8px; vertical-align: 2px;
+      }
+
+      /* ---------- sections ---------- */
+      section { padding: 52px 0 4px; }
+      .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; }
+      .sec-no {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px; font-weight: 700; color: var(--accent);
+      }
+      h2 {
+        font-family: "Noto Serif SC", serif;
+        font-weight: 900;
+        font-size: clamp(24px, 4.6vw, 32px);
+        line-height: 1.3; margin: 0;
+      }
+      .sec-sub { color: var(--ink-2); margin: 6px 0 24px; max-width: 42em; }
+      h3 { font-family: "Noto Serif SC", serif; font-size: 19px; font-weight: 700; margin: 26px 0 8px; }
+      p { margin: 0 0 14px; }
+      .small { font-size: 14px; color: var(--ink-3); }
+
+      /* ---------- stack explorer ---------- */
+      .stack-layout { display: grid; grid-template-columns: 300px 1fr; gap: 22px; align-items: start; }
+      @media (max-width: 720px) { .stack-layout { grid-template-columns: 1fr; } }
+      .stack { display: flex; flex-direction: column-reverse; gap: 8px; }
+      .layer-btn {
+        appearance: none; text-align: left; cursor: pointer;
+        width: 100%;
+        background: var(--bg-raise);
+        border: 1.5px solid var(--line);
+        border-radius: var(--radius);
+        padding: 12px 14px;
+        font: inherit; color: var(--ink);
+        display: flex; align-items: center; gap: 12px;
+        min-height: 56px;
+        transition: border-color .15s ease, background .15s ease;
+      }
+      .layer-btn:hover { border-color: var(--ink-3); }
+      .layer-btn[aria-selected="true"] { border-color: var(--accent); background: var(--accent-soft); }
+      .layer-btn .lv {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px; font-weight: 700;
+        color: var(--bg); background: var(--ink-3);
+        border-radius: 4px; padding: 2px 6px; flex: none;
+      }
+      .layer-btn[aria-selected="true"] .lv { background: var(--accent); }
+      .layer-btn .nm { font-weight: 700; font-size: 16.5px; }
+      .layer-btn .nm small { display: block; font-weight: 400; font-size: 12.5px; color: var(--ink-3); font-family: "JetBrains Mono", monospace; }
+      .layer-btn.horizon-btn { border-style: dashed; background: transparent; }
+      .layer-btn.horizon-btn[aria-selected="true"] { border-color: var(--teal); background: var(--teal-soft); }
+      .layer-btn.horizon-btn[aria-selected="true"] .lv { background: var(--teal); }
+      .stack-base {
+        text-align: center; font-size: 12.5px; color: var(--ink-3);
+        font-family: "JetBrains Mono", monospace; padding-top: 2px;
+      }
+      .layer-panel {
+        background: var(--bg-raise);
+        border: 1.5px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 22px 22px 10px;
+        min-height: 340px;
+      }
+      .layer-panel h3 { margin-top: 0; font-size: 22px; }
+      .layer-panel h3 .en { font-family: "JetBrains Mono", monospace; font-size: 14px; color: var(--accent); margin-left: 8px; font-weight: 600; }
+      .layer-panel.horizon h3 .en { color: var(--teal); }
+      .kv { display: grid; grid-template-columns: 92px 1fr; gap: 4px 14px; margin: 14px 0; }
+      .kv dt { font-weight: 700; font-size: 14px; color: var(--ink-2); padding-top: 2px; }
+      .kv dd { margin: 0; }
+      .fail {
+        border-top: 1px dashed var(--line);
+        padding: 12px 0 8px; margin-top: 6px;
+        font-size: 15px;
+      }
+      .fail b { color: var(--bad); }
+
+      /* ---------- nesting ---------- */
+      .nest { margin: 8px 0 4px; }
+      .nest-box {
+        border: 1.5px solid var(--line-strong);
+        border-radius: 12px;
+        padding: 14px 14px 14px;
+        background: var(--bg-raise);
+      }
+      .nest-box .tag {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px; font-weight: 700; letter-spacing: .03em;
+        display: inline-block; margin-bottom: 10px;
+      }
+      .nest-box.l4 { border-color: var(--accent); }
+      .nest-box.l4 > .tag { color: var(--accent); }
+      .nest-box.l3 { border-color: var(--ink-3); margin: 0; }
+      .nest-box.l2 { border-style: dashed; }
+      .nest-box.l1 { background: var(--bg-sink); }
+      .nest-note { font-size: 13.5px; color: var(--ink-2); margin: 8px 2px 0; }
+
+      /* ---------- architecture grid ---------- */
+      .arch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      @media (max-width: 720px) { .arch-grid { grid-template-columns: 1fr; } }
+      .arch-card {
+        background: var(--bg-raise);
+        border: 1.5px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px 18px 8px;
+        box-shadow: var(--shadow);
+      }
+      .arch-card.wide { grid-column: 1 / -1; }
+      .arch-card h3 { margin: 0 0 4px; font-size: 18.5px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+      .arch-card h3 .en { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--teal); font-weight: 600; }
+      .arch-card p { font-size: 15px; color: var(--ink-2); }
+      .arch-card p b { color: var(--ink); }
+      .arch-card .without { font-size: 14px; border-top: 1px dashed var(--line); padding-top: 10px; }
+      .arch-card .without b { color: var(--bad); }
+
+      /* ---------- calculator ---------- */
+      .calc {
+        background: var(--bg-raise);
+        border: 1.5px solid var(--line-strong);
+        border-radius: 12px;
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+      .calc-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 28px; margin-bottom: 20px; }
+      @media (max-width: 620px) { .calc-controls { grid-template-columns: 1fr; } }
+      .ctl label { display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+      .ctl label output { font-family: "JetBrains Mono", monospace; color: var(--accent); font-weight: 700; }
+      input[type="range"] { width: 100%; accent-color: var(--accent); min-height: 36px; cursor: pointer; }
+      .bar-row { display: grid; grid-template-columns: 118px 1fr 74px; gap: 12px; align-items: center; margin: 10px 0; font-size: 14.5px; }
+      @media (max-width: 520px) { .bar-row { grid-template-columns: 92px 1fr 62px; font-size: 13.5px; } }
+      .bar-track { height: 20px; background: var(--bg-sink); border-radius: 5px; overflow: hidden; }
+      .bar-fill { height: 100%; border-radius: 5px; transition: width .18s ease; }
+      .bar-fill.raw { background: var(--bad); }
+      .bar-fill.retry { background: var(--teal); }
+      .bar-val { font-family: "JetBrains Mono", monospace; font-weight: 700; text-align: right; }
+      .calc-verdict {
+        margin-top: 16px; padding: 14px 16px;
+        background: var(--amber-soft);
+        border-radius: 8px; font-size: 15px;
+      }
+      .calc-verdict b { color: var(--amber); }
+      @media (prefers-color-scheme: dark) { .calc-verdict b { color: var(--amber); } }
+
+      /* ---------- axes ---------- */
+      .axes-fig { background: var(--bg-raise); border: 1.5px solid var(--line); border-radius: 12px; padding: 10px; box-shadow: var(--shadow); }
+      .axes-fig svg { display: block; width: 100%; height: auto; }
+      .quad-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+      @media (max-width: 620px) { .quad-list { grid-template-columns: 1fr; } }
+      .quad { border: 1.5px solid var(--line); border-radius: var(--radius); padding: 14px 16px 6px; background: var(--bg-raise); }
+      .quad h4 { margin: 0 0 4px; font-size: 15.5px; font-family: "Noto Serif SC", serif; }
+      .quad p { font-size: 14px; color: var(--ink-2); margin-bottom: 8px; }
+      .quad .tagq { font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 700; color: var(--ink-3); }
+
+      /* ---------- positions ---------- */
+      .pos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      @media (max-width: 820px) { .pos-grid { grid-template-columns: 1fr; } }
+      .pos {
+        border-top: 3px solid var(--ink-3);
+        background: var(--bg-raise);
+        border-left: 1.5px solid var(--line); border-right: 1.5px solid var(--line); border-bottom: 1.5px solid var(--line);
+        border-radius: 0 0 var(--radius) var(--radius);
+        padding: 16px 18px 8px;
+      }
+      .pos h3 { margin: 0 0 6px; font-size: 17.5px; }
+      .pos p { font-size: 14.5px; color: var(--ink-2); }
+
+      /* ---------- human table ---------- */
+      .vs { width: 100%; border-collapse: collapse; margin: 6px 0 18px; font-size: 15px; }
+      .vs th, .vs td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+      .vs thead th { font-family: "Noto Serif SC", serif; font-size: 16px; border-bottom: 2px solid var(--line-strong); }
+      .vs td:first-child { color: var(--ink-2); }
+      @media (max-width: 620px) {
+        .vs thead { display: none; }
+        .vs, .vs tbody, .vs tr, .vs td { display: block; width: 100%; }
+        .vs tr { border: 1.5px solid var(--line); border-radius: var(--radius); margin-bottom: 12px; padding: 6px 4px; background: var(--bg-raise); }
+        .vs td { border-bottom: none; padding: 6px 12px; }
+        .vs td::before { content: attr(data-h); display: block; font-size: 12px; font-weight: 700; color: var(--ink-3); font-family: "JetBrains Mono", monospace; margin-bottom: 2px; }
+      }
+      .roles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      @media (max-width: 820px) { .roles { grid-template-columns: 1fr; } }
+      .role {
+        background: var(--bg-raise); border: 1.5px solid var(--line);
+        border-radius: var(--radius); padding: 18px 18px 8px; box-shadow: var(--shadow);
+      }
+      .role .big {
+        font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 30px; line-height: 1.2;
+      }
+      .role h3 { margin: 2px 0 6px; }
+      .role p { font-size: 14.5px; color: var(--ink-2); }
+
+      /* ---------- daily meter ---------- */
+      .meter-toggle { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 16px; }
+      .meter-btn {
+        appearance: none; cursor: pointer; font: inherit;
+        border: 1.5px solid var(--line); background: var(--bg-raise); color: var(--ink);
+        border-radius: 999px; padding: 8px 18px; font-weight: 700; font-size: 15px; min-height: 44px;
+        transition: border-color .15s ease, background .15s ease;
+      }
+      .meter-btn:hover { border-color: var(--ink-3); }
+      .meter-btn[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+      .meter-btn:focus-visible { outline: 2.5px solid var(--accent); outline-offset: 2px; }
+      .day-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      @media (max-width: 720px) { .day-grid { grid-template-columns: 1fr; } }
+      .day-card { background: var(--bg-raise); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 18px 18px 8px; box-shadow: var(--shadow); }
+      .day-card h3 { margin: 0 0 4px; font-size: 17.5px; }
+      .day-card .spend { font-family: "JetBrains Mono", monospace; font-size: 12.5px; color: var(--ink-3); margin-bottom: 8px; }
+      .day-card p { font-size: 14.5px; color: var(--ink-2); }
+      .day-verdict { border-top: 1px dashed var(--line); padding-top: 10px; font-size: 14.5px; color: var(--ink); }
+      .day-verdict .vk { font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 700; color: var(--ink-3); display: block; margin-bottom: 2px; }
+      .review { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+      .review li { background: var(--bg-raise); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 14px 16px; font-size: 15px; display: flex; gap: 12px; align-items: baseline; }
+      .review .rn { font-family: "JetBrains Mono", monospace; font-size: 12px; font-weight: 700; color: var(--teal); flex: none; }
+
+      /* ---------- roadmap ---------- */
+      .road { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+      .road li {
+        position: relative;
+        padding: 0 0 22px 52px;
+      }
+      .road li::before {
+        counter-increment: step;
+        content: counter(step);
+        position: absolute; left: 0; top: 0;
+        width: 34px; height: 34px;
+        border: 2px solid var(--line-strong);
+        border-radius: 50%;
+        font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: 15px;
+        display: flex; align-items: center; justify-content: center;
+        background: var(--bg-raise);
+      }
+      .road li::after {
+        content: ""; position: absolute; left: 17.5px; top: 40px; bottom: 2px;
+        border-left: 2px dashed var(--line);
+      }
+      .road li:last-child::after { display: none; }
+      .road li.current::before { border-color: var(--accent); color: var(--accent); }
+      .road h3 { margin: 2px 0 4px; font-size: 17.5px; }
+      .road h3 .here {
+        font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 700;
+        color: var(--bg); background: var(--accent);
+        border-radius: 4px; padding: 2px 7px; margin-left: 8px; vertical-align: 3px;
+      }
+      .road p { font-size: 15px; color: var(--ink-2); margin-bottom: 4px; }
+
+      /* ---------- quiz ---------- */
+      .quiz-item {
+        border: 1.5px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--bg-raise);
+        margin-bottom: 12px;
+        overflow: hidden;
+      }
+      .quiz-q { padding: 16px 18px 4px; }
+      .quiz-q .qn { font-family: "JetBrains Mono", monospace; font-size: 12px; font-weight: 700; color: var(--accent); }
+      .quiz-q p { font-weight: 500; margin: 4px 0 10px; }
+      .quiz-a {
+        display: none;
+        border-top: 1px dashed var(--line);
+        padding: 12px 18px 6px;
+        font-size: 15px; color: var(--ink-2);
+        background: var(--bg-sink);
+      }
+      .quiz-item.open .quiz-a { display: block; }
+      .quiz-a b { color: var(--ink); }
+      .reveal-btn {
+        appearance: none; cursor: pointer; font: inherit;
+        background: none; border: none; color: var(--accent);
+        font-weight: 700; font-size: 14.5px;
+        padding: 8px 18px 14px; min-height: 44px;
+        display: inline-flex; align-items: center; gap: 6px;
+      }
+      .reveal-btn:focus-visible, .layer-btn:focus-visible, a:focus-visible { outline: 2.5px solid var(--accent); outline-offset: 2px; }
+
+      /* ---------- takeaway / footer ---------- */
+      .takeaway {
+        margin: 54px 0 0;
+        border: 2px solid var(--line-strong);
+        border-radius: 12px;
+        padding: 26px 24px 12px;
+        background: var(--bg-raise);
+      }
+      .takeaway h2 { font-size: 22px; margin-bottom: 12px; }
+      .takeaway ol { margin: 0; padding-left: 22px; }
+      .takeaway li { margin-bottom: 10px; }
+      footer { padding: 34px 0 52px; color: var(--ink-3); font-size: 13.5px; }
+      .endmark { font-family: "JetBrains Mono", monospace; text-align: center; margin-top: 8px; }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+
+      <!-- ================= LEAD ================= -->
+      <header class="lead">
+        <div class="path" aria-label="演进路径">
+          <b>Prompt</b><span class="arr">→</span>
+          <b>Skill</b><span class="arr">→</span>
+          <b>Agent</b><span class="arr">→</span>
+          <b>Architecture</b><span class="arr">→</span>
+          <span class="horizon">AGI ?</span>
+        </div>
+        <h1>从 Prompt 到架构，<br />再到 <span class="hl">AGI</span> 与人</h1>
+        <p class="thesis">
+          <strong>每一层都没有取代上一层，而是把它包了进去</strong>——
+          prompt 没死，藏进了 skill；skill 没死，藏进了 agent；agent 也不会死，会藏进 architecture 里。
+          <strong>价值永远往上一层跑。</strong>架构解决的是可靠性，它之后并不自动通向 AGI；
+          系统越自主，人越要往定目标、做判断、担责任的那一层走。而当 agent 成为日常，
+          token 消耗了多少，说明的只是投入，不是事情推进了多少。
+        </p>
+        <div class="origin">
+          <div class="q"><span>问 一</span>最近是 prompt、skill、agent，接下来是 architecture 吗？</div>
+          <div class="q"><span>问 二</span>接下来还需要人吗？再往下就是 AGI 了吗？</div>
+          <div class="q"><span>问 三</span>天天用 personal agent，哪天不消耗点 token，为什么会觉得像有件事没做？</div>
+        </div>
+      </header>
+
+      <!-- ================= 01 STACK ================= -->
+      <section id="stack">
+        <div class="sec-head"><span class="sec-no">01</span><h2>四层台阶：一层包住一层</h2></div>
+        <p class="sec-sub">
+          点开每一层看它解决了什么、又留下了什么问题——正是那个没解决的问题，把行业推向了上一层。
+          最上面那层画成虚线，是因为它不在同一摞里——它属于另一条轴。
+        </p>
+        <div class="stack-layout">
+          <div>
+            <div class="stack" role="tablist" aria-label="层级选择">
+              <button class="layer-btn" role="tab" data-layer="prompt" aria-selected="false">
+                <span class="lv">L1</span>
+                <span class="nm">Prompt<small>PROMPT · 提示词</small></span>
+              </button>
+              <button class="layer-btn" role="tab" data-layer="skill" aria-selected="false">
+                <span class="lv">L2</span>
+                <span class="nm">Skill<small>SKILL · 技能</small></span>
+              </button>
+              <button class="layer-btn" role="tab" data-layer="agent" aria-selected="false">
+                <span class="lv">L3</span>
+                <span class="nm">Agent<small>AGENT · 智能体</small></span>
+              </button>
+              <button class="layer-btn" role="tab" data-layer="arch" aria-selected="true">
+                <span class="lv">L4</span>
+                <span class="nm">Architecture<small>ARCHITECTURE · 架构</small></span>
+              </button>
+              <button class="layer-btn horizon-btn" role="tab" data-layer="agi" aria-selected="false">
+                <span class="lv">?</span>
+                <span class="nm">AGI<small>通用智能 · 地平线</small></span>
+              </button>
+            </div>
+            <div class="stack-base">▲ 上层包住下层 · 底座是模型本身</div>
+          </div>
+          <div class="layer-panel" id="layerPanel" role="tabpanel" aria-live="polite"></div>
+        </div>
+
+        <h3>套娃结构：打开架构，里面层层都在</h3>
+        <div class="nest" aria-label="嵌套结构示意">
+          <div class="nest-box l4">
+            <span class="tag">ARCHITECTURE — 编排 · 记忆 · 协议 · 评估 · 运维</span>
+            <div class="nest-box l3">
+              <span class="tag">AGENT — 规划、循环、调用工具、看反馈调整</span>
+              <div class="nest-box l2">
+                <span class="tag">SKILL — 打包好的能力：流程 + 工具 + 规范</span>
+                <div class="nest-box l1">
+                  <span class="tag">PROMPT — 仍然是每一次调用的最终形态</span>
+                  <p class="nest-note" style="margin-top:2px;">最里面还是那句被精心写下的话。层级上升不是淘汰，而是把下层的"手艺"变成上层的"零件"。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 02 ARCHITECTURE ================= -->
+      <section id="arch">
+        <div class="sec-head"><span class="sec-no">02</span><h2>Architecture 不是新玩具，是一组系统问题</h2></div>
+        <p class="sec-sub">
+          前三层问的都是"怎么让模型做事"，架构层问的是另一类问题：<strong>一群会自己做事的程序，怎么在生产环境里可靠地跑起来</strong>。
+          它拆开是五个子系统，每一个缺位，都有对应的翻车方式。
+        </p>
+        <div class="arch-grid">
+          <article class="arch-card">
+            <h3>编排 <span class="en">ORCHESTRATION</span></h3>
+            <p>任务怎么拆、谁调度谁、并行还是串行、<b>一个 agent 卡住了整个流程怎么办</b>。这是把"一个聪明的个体"变成"一个能交付的流程"的那一层。</p>
+            <p class="without"><b>缺了它：</b>agent 互相等死、任务悬空、失败无人接手，只能靠人盯着日志手动重启。</p>
+          </article>
+          <article class="arch-card">
+            <h3>记忆与知识 <span class="en">MEMORY</span></h3>
+            <p>长期记忆放哪、怎么写入和更新、多个 agent 之间怎么共享，<b>记错了怎么发现、怎么纠正</b>。记忆不是存得越多越好，而是要能过期、能溯源、能删除。</p>
+            <p class="without"><b>缺了它：</b>每次对话从零开始；或者更糟——把一次错误结论当成事实，永久地、自信地用下去。</p>
+          </article>
+          <article class="arch-card">
+            <h3>协议 <span class="en">PROTOCOLS</span></h3>
+            <p><b>MCP</b> 让 agent 以统一方式接工具和数据，<b>A2A</b> 让 agent 之间能互相发现、对话、交活。有点像当年的 HTTP 之于网站：单点能力再强，没有互联标准也长不成生态。</p>
+            <p class="without"><b>缺了它：</b>每接一个工具写一遍胶水代码，每换一个模型重构一遍，系统被供应商和接口焊死。</p>
+          </article>
+          <article class="arch-card">
+            <h3>评估与可观测 <span class="en">EVAL &amp; OBSERVABILITY</span></h3>
+            <p>跑偏了怎么发现、效果怎么量、每一步的决策能不能回放。<b>没这层，系统再惊艳也不敢上线</b>——因为你不知道它今天和昨天有什么不同。</p>
+            <p class="without"><b>缺了它：</b>改一处 prompt，三处悄悄退化；用户投诉时，你连它当时"想"了什么都查不到。</p>
+          </article>
+          <article class="arch-card wide">
+            <h3>运维与成本 <span class="en">OPS &amp; COST</span></h3>
+            <p>部署、灰度、回滚、权限边界、速率限制、故障演练，还有一本明账：每个任务烧多少 token、值不值。
+            agent 是会自己做决定的程序，失控的循环能在一夜之间烧掉一个月的预算——<b>这正是传统运维的基本功直接迁移过来的地方</b>：
+            监控、告警、熔断、限流、预案，一个都不能少，只是监控对象从服务器变成了"会思考的进程"。</p>
+            <p class="without"><b>缺了它：</b>demo 惊艳，上线三天：账单爆炸、权限越界、故障无法回滚。</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ================= 03 RELIABILITY ================= -->
+      <section id="reliability">
+        <div class="sec-head"><span class="sec-no">03</span><h2>瓶颈已经变了：从"够不够聪明"到"够不够可靠"</h2></div>
+        <p class="sec-sub">
+          为什么架构层偏偏现在浮上来？因为有个乘法躲不过去：一个任务要连续做对很多步，
+          <strong>整体成功率 = 每步成功率的连乘</strong>。单步看着很高的数字，连乘之后会塌得很快。自己拖一拖：
+        </p>
+        <div class="calc">
+          <div class="calc-controls">
+            <div class="ctl">
+              <label for="rateRange">每一步的成功率 <output id="rateOut">99.0%</output></label>
+              <input type="range" id="rateRange" min="90" max="99.9" step="0.1" value="99" />
+            </div>
+            <div class="ctl">
+              <label for="stepRange">任务总步数 <output id="stepOut">100 步</output></label>
+              <input type="range" id="stepRange" min="5" max="300" step="5" value="100" />
+            </div>
+          </div>
+          <div class="bar-row">
+            <span>裸跑到底</span>
+            <div class="bar-track"><div class="bar-fill raw" id="barRaw"></div></div>
+            <span class="bar-val" id="valRaw">—</span>
+          </div>
+          <div class="bar-row">
+            <span>每步可重试一次</span>
+            <div class="bar-track"><div class="bar-fill retry" id="barRetry"></div></div>
+            <span class="bar-val" id="valRetry">—</span>
+          </div>
+          <p class="small" style="margin-top:12px;">
+            裸跑成功率 = p<sup>n</sup>；每步失败后重试一次，等效单步成功率为 1 − (1 − p)²，再连乘。
+            重试、校验、回滚、兜底——这些不是模型的聪明，是架构的活儿。
+          </p>
+          <div class="calc-verdict" id="calcVerdict"></div>
+        </div>
+        <p style="margin-top:18px;">
+          这就是那句判断的算术版：<strong>一个 agent 连续跑一百次不出错，比它某一次跑得多漂亮更值钱。</strong>
+          演示看的是上限，生产看的是下限。谁在为下限负责，谁就站在架构层——这也是运维出身的人做 Agent 的天然优势：
+          别人还在调 prompt，你已经在想它挂了怎么办。
+        </p>
+      </section>
+
+      <!-- ================= 04 AGI ================= -->
+      <section id="agi">
+        <div class="sec-head"><span class="sec-no">04</span><h2>架构的下一步，不是自动等于 AGI</h2></div>
+        <p class="sec-sub">
+          这是两个不同维度的问题，别混成一条线：<strong>架构是工程问题</strong>——怎么把系统组织得可靠；
+          <strong>AGI 是能力问题</strong>——智能有多通用。架构越好，系统越能干，但"通用智能"那道门槛是不是就此跨过去，没人能打包票。
+        </p>
+        <div class="axes-fig" role="img" aria-label="两条轴线示意图：横轴为系统组织与可靠性，纵轴为模型能力。演示型 agent 在左上，可靠的窄系统在右下，右上是两者兼备。">
+          <svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans SC, sans-serif">
+            <defs>
+              <marker id="arrH" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="currentColor"></path>
+              </marker>
+            </defs>
+            <g style="color: var(--ink-3);">
+              <line x1="70" y1="310" x2="610" y2="310" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrH)"></line>
+              <line x1="70" y1="310" x2="70" y2="26" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrH)"></line>
+            </g>
+            <line x1="340" y1="40" x2="340" y2="310" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="5 5"></line>
+            <line x1="70" y1="175" x2="596" y2="175" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="5 5"></line>
+            <text x="612" y="334" text-anchor="end" font-size="13.5" fill="var(--ink-2)" font-weight="700">系统组织与可靠性（架构轴）→</text>
+            <text x="78" y="20" text-anchor="start" font-size="13.5" fill="var(--ink-2)" font-weight="700">模型能力（能力轴）↑</text>
+            <circle cx="185" cy="95" r="7" fill="var(--amber)"></circle>
+            <text x="185" y="76" text-anchor="middle" font-size="13" fill="var(--ink)">惊艳的 demo</text>
+            <circle cx="480" cy="245" r="7" fill="var(--teal)"></circle>
+            <text x="480" y="272" text-anchor="middle" font-size="13" fill="var(--ink)">可靠的窄系统</text>
+            <circle cx="492" cy="88" r="8" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"></circle>
+            <text x="492" y="66" text-anchor="middle" font-size="13" fill="var(--accent)" font-weight="700">两者兼备：真正的生产力</text>
+            <circle cx="150" cy="262" r="7" fill="var(--ink-3)"></circle>
+            <text x="150" y="288" text-anchor="middle" font-size="13" fill="var(--ink-2)">玩具与闲聊</text>
+          </svg>
+        </div>
+        <div class="quad-list">
+          <div class="quad"><span class="tagq">能力高 · 组织低</span><h4>惊艳但不敢用</h4><p>演示时惊为天人，长任务就漂移、出错没人兜底。今天大多数"哇塞"型 agent 住在这里。</p></div>
+          <div class="quad"><span class="tagq">能力低 · 组织高</span><h4>可靠但天花板低</h4><p>流程稳、账算得清，但任务稍复杂就做不了。传统自动化和 RPA 是这一格的居民。</p></div>
+          <div class="quad"><span class="tagq">两轴都高</span><h4>目标格</h4><p>行业真金白银正在往这里流：不是等一个更强的模型，而是把现有能力组织成可交付的系统。</p></div>
+          <div class="quad"><span class="tagq">关于 AGI</span><h4>它在纵轴的远端</h4><p>AGI 是能力轴尽头的问题，和横轴的工程进度互相促进、但不互相替代。发动机再强，整车工程也不会消失。</p></div>
+        </div>
+
+        <h3>AGI 何时到来：三种声音，尚无共识</h3>
+        <div class="pos-grid">
+          <div class="pos">
+            <h3>近在眼前派</h3>
+            <p>认为靠规模、数据和现有路线的迭代，通用能力会在可预见的几年内涌现，架构工程就是在为它铺跑道。</p>
+          </div>
+          <div class="pos">
+            <h3>还差突破派</h3>
+            <p>认为当前路线缺了某些根本性的东西——比如真正的持续学习、因果理解或样本效率——补上之前，能力轴会先进入平台期。</p>
+          </div>
+          <div class="pos">
+            <h3>定义存疑派</h3>
+            <p>认为"通用智能"本身没有公认的验收标准，争论一部分是词义之争；与其等定义，不如盯住一个个具体能力被逐个攻克的事实。</p>
+          </div>
+        </div>
+        <p style="margin-top:16px;">
+          诚实的说法是<strong>不知道</strong>——而且不用等这个答案再行动。无论哪派是对的，横轴（架构与可靠性）的工作都不会白做：
+          AGI 若来，需要架构来约束和部署它；AGI 若不来，现有系统离"可靠"还差得远，活儿只多不少。
+        </p>
+      </section>
+
+      <!-- ================= 05 HUMAN ================= -->
+      <section id="human">
+        <div class="sec-head"><span class="sec-no">05</span><h2>还需要人吗：需要，但人往上移</h2></div>
+        <p class="sec-sub">
+          历史上的自动化每次都走同一条曲线：机器接手执行层，人走到定义问题、做判断、担责任的那一层。
+          岗位的名字会变，"被全自动掉"的从来是任务，不是责任。
+        </p>
+        <table class="vs">
+          <thead>
+            <tr><th style="width:50%;">正被机器接手的（执行层）</th><th>留在人身上的（判断层）</th></tr>
+          </thead>
+          <tbody>
+            <tr><td data-h="机器接手">按既定流程执行多步任务、调用工具、整理信息</td><td data-h="人保留"><b>定目标</b>：什么叫"做好"、什么值得做</td></tr>
+            <tr><td data-h="机器接手">生成初稿、写样板代码、做常规巡检和报表</td><td data-h="人保留"><b>断模糊</b>：需求不清、两边都有道理时拍板</td></tr>
+            <tr><td data-h="机器接手">在明确规则内做分类、匹配、调度</td><td data-h="人保留"><b>担责任</b>：出了事谁负责、谁签字、谁叫停</td></tr>
+            <tr><td data-h="机器接手">7×24 盯着指标，异常时先自愈或先告警</td><td data-h="人保留"><b>守系统</b>：设计它、评估它、它失控时修得了、停得下</td></tr>
+          </tbody>
+        </table>
+        <div class="roles">
+          <div class="role">
+            <div class="big">定</div>
+            <h3>目标是人定的</h3>
+            <p>机器可以优化一个被给定的目标，但不会替你选目标。"把客服成本降三成"还是"把满意度做到第一"，这是价值排序，不是计算题。</p>
+          </div>
+          <div class="role">
+            <div class="big">断</div>
+            <h3>模糊是人断的</h3>
+            <p>真实世界的需求永远写不全：两条规则冲突、客户话里有话、数据在撒谎。这些没有标准答案的时刻，需要有人权衡并承担判断的后果。</p>
+          </div>
+          <div class="role">
+            <div class="big">守</div>
+            <h3>系统是人守的</h3>
+            <p>架构越复杂，越需要有人能看懂它、评估它、出问题能修、能拍板。系统越自主，这双"能踩刹车的手"反而越值钱。</p>
+          </div>
+        </div>
+        <p style="margin-top:18px;">
+          所以结论并不悲观：<strong>agent 是干活的，architecture 是干活的组织方式，人是决定"干什么、干成什么样、出了事算谁的"的那一层。</strong>
+          这层不是执行问题，是责任问题——自动化不掉。
+        </p>
+      </section>
+
+      <!-- ================= 06 DAILY USE ================= -->
+      <section id="daily">
+        <div class="sec-head"><span class="sec-no">06</span><h2>当 Agent 成为日常：Token 是油，不是目的地</h2></div>
+        <p class="sec-sub">
+          天天用 personal agent 之后，哪天没消耗点 token，心里就像有件事没做完。
+          这个感觉一半是错觉，一半是信号，值得认真拆一拆。
+        </p>
+
+        <h3>这种感觉是从哪来的</h3>
+        <p>
+          Agent 把"想做"和"做到"之间的摩擦几乎清零了：以前一件事要自己查、自己写、自己跑流程，
+          现在开口就有回音、有产出。久而久之，大脑会给"今天干没干活"找一个最容易看见的刻度，
+          而 token 恰好是整条链路里<strong>唯一实时跳动、人人看得懂的数字</strong>：对话轮数、消耗量、连续使用天数，全在明面上。
+          于是"仪表在动"被悄悄等同于"事情在推进"——这和看步数判断锻炼、看提交记录判断写代码是同一种心理：
+          不是人在骗自己，是<strong>可测量的东西天然会挤走不可测量的东西，成为默认的记分牌</strong>。
+        </p>
+
+        <h3>错位在哪：投入被当成了产出</h3>
+        <p>
+          Token 是<strong>投入</strong>，不是产出。它只证明 agent 被调用过，不证明任何一件事往前挪了。
+          空转同样烧 token：反复改一版没人看的文案、让 agent 做本来不需要做的事、为了"用一下"而找事给它做——
+          仪表一样热闹，事情原地不动。下面是同样平常的两天，换一把尺子量，结论正好相反：
+        </p>
+        <div class="meter-toggle" role="group" aria-label="选择评价刻度">
+          <button class="meter-btn" type="button" data-meter="token" aria-pressed="true">按 Token 刻度看</button>
+          <button class="meter-btn" type="button" data-meter="progress" aria-pressed="false">按推进刻度看</button>
+        </div>
+        <div class="day-grid">
+          <article class="day-card">
+            <h3>某一天 · 甲</h3>
+            <p class="spend">TOKEN 消耗：很高 · 对话几十轮</p>
+            <p>让 agent 改了五版文案、查了一圈资料、生成了三份草稿。每一份的结局都是"先放着"——没有一份发出去，也没有一个决定做下来。</p>
+            <p class="day-verdict"><span class="vk">这个刻度说</span><span id="verdictA"></span></p>
+          </article>
+          <article class="day-card">
+            <h3>某一天 · 乙</h3>
+            <p class="spend">TOKEN 消耗：很低 · 只聊了十分钟</p>
+            <p>只问了一件事：一个卡了三天的选择题，把利弊摆开，当场拍了板。之后一整天的工作，都顺着这个决定往下走。</p>
+            <p class="day-verdict"><span class="vk">这个刻度说</span><span id="verdictB"></span></p>
+          </article>
+        </div>
+        <p style="margin-top:16px;">
+          甲日并不少见，甚至很典型：<strong>忙的是 agent，停住的是事情</strong>。
+          乙日提醒的是另一件事：agent 最大的价值常常不在"生成了多少"，而在某一次调用帮你卸掉了一个卡点——
+          这种价值和 token 消耗几乎不相关。用油量评价一趟行程，只能得出"开得多"，得不出"到了没"。
+        </p>
+
+        <h3>但这感觉也不全是错觉</h3>
+        <p>
+          先别急着否定它。每天惦记着用一下，说明工具真的融进了工作流，而不是躺在收藏夹里吃灰——
+          这是任何新习惯最难的一关，已经过了。而且日常使用有实打实的复利：<strong>手感</strong>（知道什么活适合派给它）、
+          <strong>边界感</strong>（知道它在哪类问题上会自信地胡说）、<strong>问题意识</strong>（遇到事第一反应是"这能不能拆给 agent"）。
+          这些都是在真实使用里长出来的，读多少文章都替代不了。需要警惕的只有一步：别让习惯反过来指挥人——
+          从"我有事，所以用它"，滑到"我要用它，所以找事"。前一句里 agent 是工具，后一句里人成了给仪表打卡的工具。
+        </p>
+
+        <h3>这其实是你自己的"评估子系统"</h3>
+        <p>
+          架构层缺了评估与可观测，系统就会悄悄退化。个人使用是同一个道理，只是被评估的对象换成了你自己。
+          管理学里有句老话常被引作<strong>古德哈特定律</strong>：一个指标一旦变成目标，它就不再是个好指标。
+          你拿 token 当记分牌，就会不自觉地优化 token——多聊、多生成、多开会话；
+          你拿"推进"当记分牌，优化的才是事情本身。<strong>给系统装什么仪表，系统就往哪儿长；给自己装，同样如此。</strong>
+          所以要换的不是习惯，是仪表。
+        </p>
+
+        <h3>换个刻度：睡前一分钟，只问三句</h3>
+        <ul class="review">
+          <li><span class="rn">Q1</span><span>今天哪件事<strong>因为 agent 往前挪了</strong>？挪了多少——一个决定、一份成稿、一个卡点被卸掉，都算。</span></li>
+          <li><span class="rn">Q2</span><span>今天的消耗里，有多少是<strong>空转</strong>？重复问、无目的地生成、为用而用——认出来就行，不必自责，认出来下次就少了。</span></li>
+          <li><span class="rn">Q3</span><span>如果明天<strong>只能用一次</strong> agent，我会把这一次用在哪？这一问逼出来的答案，通常就是明天最该推进的那件事。</span></li>
+        </ul>
+        <p style="margin-top:16px;">
+          最后留一句给"零 token 的日子"：想清楚一个问题、陪人好好吃顿饭、睡个午觉把状态回满——
+          这些推进都不经过对话框，仪表上一个数字都不会跳，但它们可能比哪天都重要。
+          <strong>Agent 是杠杆，项目是支点，而日子本身，才是要撬动的那个东西。</strong>
+          哪天没烧 token，先别急着觉得缺了点什么——问一句"今天有事推进了吗"，有，就不缺。
+        </p>
+      </section>
+
+      <!-- ================= 07 ROADMAP + QUIZ ================= -->
+      <section id="road">
+        <div class="sec-head"><span class="sec-no">07</span><h2>站在运维这一侧，往架构走的路</h2></div>
+        <p class="sec-sub">
+          架构层的五块拼图里，运维与成本、可观测、故障处理本来就是运维的基本功——这条路线不是转行，是把已有功夫接到新对象上。
+        </p>
+        <ol class="road">
+          <li>
+            <h3>单机与系统基本功</h3>
+            <p>进程、内存、磁盘、网络、权限——先能回答"这台机器现在怎么样、为什么"。</p>
+          </li>
+          <li>
+            <h3>服务与部署</h3>
+            <p>把程序变成服务：部署、配置、日志、开机自启、坏了能回滚到上一版。</p>
+          </li>
+          <li class="current">
+            <h3>可观测与故障处理<span class="here">架构层的入场券</span></h3>
+            <p>监控、告警、定位、恢复、复盘。这套"发现问题—止损—根因—防复发"的肌肉，正是评估与可观测子系统的原型。</p>
+          </li>
+          <li>
+            <h3>Agent 运行时</h3>
+            <p>把 agent 当成一种特殊的服务来运维：它的"进程状态"是上下文，它的"故障"是跑偏和幻觉，它的"账单"按 token 计。</p>
+          </li>
+          <li>
+            <h3>多 Agent 编排与评估</h3>
+            <p>调度、协议、共享记忆、效果评估——到了这一级，你做的已经是 architecture 本身。</p>
+          </li>
+        </ol>
+
+        <h3 style="margin-top:34px;">自测六问（先想，再看答案）</h3>
+        <div id="quiz">
+          <div class="quiz-item">
+            <div class="quiz-q"><span class="qn">Q1</span><p>一个 agent 每步成功率 98%，连续跑 50 步，整体成功率大约是多少？这说明了什么？</p></div>
+            <div class="quiz-a"><p>0.98<sup>50</sup> ≈ <b>36%</b>。单步看很优秀的数字，连乘之后只剩三分之一强——这就是为什么长任务必须靠重试、校验和兜底等架构手段，而不是指望模型"再仔细一点"。在可靠性计算器里拖一下就能验证。</p></div>
+            <button class="reveal-btn" type="button">看答案 ↓</button>
+          </div>
+          <div class="quiz-item">
+            <div class="quiz-q"><span class="qn">Q2</span><p>用一句话说清 Skill 和 Agent 的区别。</p></div>
+            <div class="quiz-a"><p><b>Skill 是"能力"，Agent 是"会自己决定何时、按什么顺序使用能力的主体"。</b>技能是被打包的流程和工具；智能体多了规划、循环和根据反馈调整的自主性。</p></div>
+            <button class="reveal-btn" type="button">看答案 ↓</button>
+          </div>
+          <div class="quiz-item">
+            <div class="quiz-q"><span class="qn">Q3</span><p>为什么说协议之于 Agent，有点像 HTTP 之于网站？</p></div>
+            <div class="quiz-a"><p>HTTP 的价值不在某个网站，而在于<b>任何浏览器能打开任何网站</b>。MCP、A2A 同理：工具和 agent 按同一标准说话，生态才能自由组合，而不是每家各写一套私有接口、彼此焊死。</p></div>
+            <button class="reveal-btn" type="button">看答案 ↓</button>
+          </div>
+          <div class="quiz-item">
+            <div class="quiz-q"><span class="qn">Q4</span><p>一个演示效果惊艳的 agent，为什么通常不能直接上线？</p></div>
+            <div class="quiz-a"><p>因为演示只证明了"上限存在"，上线需要的是<b>下限有保障</b>：评估（知道它多准）、可观测（出事能查）、兜底（失败有退路）、权限（不能越界）、成本（烧钱有上限）。这五样正是架构层。</p></div>
+            <button class="reveal-btn" type="button">看答案 ↓</button>
+          </div>
+          <div class="quiz-item">
+            <div class="quiz-q"><span class="qn">Q5</span><p>假如 AGI 明天就到来，架构层会消失吗？人的"守系统"角色呢？</p></div>
+            <div class="quiz-a"><p>都不会。能力再强，也要被部署、被约束、被评估、被审计，出了事要有人叫停和负责——<b>发动机再强，整车工程和交通规则也不会消失</b>。能力轴冲得越高，横轴反而越重要。</p></div>
+            <button class="reveal-btn" type="button">看答案 ↓</button>
+          </div>
+          <div class="quiz-item">
+            <div class="quiz-q"><span class="qn">Q6</span><p>今天 token 消耗是昨天的三倍，能说明今天 agent 用得更好吗？该用什么刻度替代？</p></div>
+            <div class="quiz-a"><p>不能。token 是<b>投入指标</b>，空转和真推进烧得一样多。用它当记分牌，人就会不自觉地优化消耗本身（古德哈特定律）。替代刻度是<b>"推进"</b>：今天有哪件事因为 agent 往前挪了——决定做下了、成稿交付了、卡点卸掉了，哪怕只挪一小步，也比满格的仪表更算数。</p></div>
+            <button class="reveal-btn" type="button">看答案 ↓</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAKEAWAY ================= -->
+      <div class="takeaway">
+        <h2>要点回顾</h2>
+        <ol>
+          <li><strong>层级是嵌套，不是替代。</strong>prompt → skill → agent → architecture，下层永远在上层里面活着，价值往上跑。</li>
+          <li><strong>架构 = 编排 + 记忆 + 协议 + 评估 + 运维。</strong>它回答的不是"能不能做"，而是"能不能可靠地、规模化地一直做"。</li>
+          <li><strong>可靠性是乘法。</strong>单步 99%、连跑 100 步只剩约 37%——瓶颈已从聪明移到可靠。</li>
+          <li><strong>架构 ≠ AGI 的下一站。</strong>一个是工程轴，一个是能力轴；互相促进，不互相替代，时间表无人能打包票。</li>
+          <li><strong>人往上移，不出局。</strong>定目标、断模糊、守系统、担责任——这一层自动化不掉。</li>
+          <li><strong>Token 是油，不是目的地。</strong>它量的是投入，不是产出；评估自己用 agent 用得好不好，别看消耗，看推进——你用什么刻度量自己，就会不自觉地优化什么。</li>
+        </ol>
+      </div>
+
+      <footer>
+        <p>可靠性一节的数字按 p<sup>n</sup> 现场计算；关于 AGI 何时到来，三种立场都只是讨论框架，不是预测。</p>
+        <p class="endmark">PROMPT → SKILL → AGENT → ARCHITECTURE → ?</p>
+      </footer>
+    </main>
+
+    <script>
+      (function () {
+        "use strict";
+
+        /* ---------- layer explorer ---------- */
+        var LAYERS = {
+          prompt: {
+            title: "Prompt", en: "提示词", horizon: false,
+            era: "主战场时期：大模型刚走进大众视野的那几年",
+            solves: "如何向单个模型表达一次任务：角色、上下文、示例、格式，一次调用就要拿到想要的输出。",
+            wraps: "它直接面对模型本身，是所有上层的最内层——直到今天，每一次 agent 调用落到底，仍然是一段 prompt。",
+            gives: "提示词模板、few-shot 示例、结构化输出约定。",
+            fail: "换个说法就翻车、经验锁在个人手里、无法复用和版本管理。任务一复杂，光靠'把话说好'就不够了——于是有了 Skill。"
+          },
+          skill: {
+            title: "Skill", en: "技能", horizon: false,
+            era: "主战场时期：prompt 经验开始沉淀、复用的阶段",
+            solves: "把反复要用的 prompt、工具调用和操作流程打包成一个可复用、可分发的能力单元，写一次，处处调用。",
+            wraps: "包住了 prompt：技能内部仍然靠提示词工作，只是使用者不必每次从零写起。",
+            gives: "技能库、标准作业流程（SOP）的机器可执行版、领域知识包。",
+            fail: "技能彼此孤立：不会自己决定先用哪个、失败了换哪个。一个技能再强，也不会'做事'——于是有了 Agent。"
+          },
+          agent: {
+            title: "Agent", en: "智能体", horizon: false,
+            era: "主战场时期：模型 + 循环 + 工具的阶段",
+            solves: "从'回答问题'变成'完成任务'：自己拆步骤、调用工具、看反馈、调整下一步，直到把活干完。",
+            wraps: "包住了 skill：技能变成 agent 手里的工具箱，prompt 变成它每一步的内部独白。",
+            gives: "能独立跑完多步任务的数字员工：写代码、查资料、订流程、做报表。",
+            fail: "单 agent 跑长任务会漂移——每步成功率连乘之后衰减得很快——出错无人兜底、记忆不跨会话、成本没人管。个体再强也需要组织——于是有了 Architecture。"
+          },
+          arch: {
+            title: "Architecture", en: "架构", horizon: false,
+            era: "主战场时期：现在，正在成为前沿",
+            solves: "让一群 agent 在生产环境里可靠地协作：编排、记忆、协议、评估、运维，五件事一起回答'能不能一直稳定交付'。",
+            wraps: "包住了 agent：单个 agent 变成架构里的一个节点，强不强重要，但不再是唯一变量。",
+            gives: "可上线、可观测、可回滚的多 agent 系统；以及围绕它的评估体系和运维规范。",
+            fail: "它本身就是当前的未解题：没有标准答案，行业还在摸索最佳实践。这也是为什么这一层现在最值钱——稀缺的不是会用的人，是会建的人。"
+          },
+          agi: {
+            title: "AGI", en: "通用智能", horizon: true,
+            solves: "它想解决的不是'怎么组织系统'，而是'智能本身能有多通用'：一个系统能否像人一样，把能力迁移到从未见过的领域。",
+            wraps: "它不包住架构——它在另一条轴上。就算能力轴走到尽头，部署、约束、评估、责任这些工程问题一个都不会消失。",
+            gives: "未知。这正是它被画成虚线的原因：定义尚有争议，时间表无人能打包票。",
+            fail: "把它当成'下一层台阶'是范畴错误：等 AGI 不等于不用建架构，就像等更强的发动机不等于不用造车。"
+          }
+        };
+
+        var panel = document.getElementById("layerPanel");
+        var buttons = Array.prototype.slice.call(document.querySelectorAll(".layer-btn"));
+
+        function renderLayer(key) {
+          var d = LAYERS[key];
+          panel.className = "layer-panel" + (d.horizon ? " horizon" : "");
+          panel.innerHTML =
+            "<h3>" + d.title + "<span class=\"en\">" + d.en + "</span></h3>" +
+            "<p class=\"small\" style=\"margin-bottom:4px;\">" + d.era + "</p>" +
+            "<dl class=\"kv\">" +
+            "<dt>解决什么</dt><dd>" + d.solves + "</dd>" +
+            "<dt>包住了谁</dt><dd>" + d.wraps + "</dd>" +
+            "<dt>典型产物</dt><dd>" + d.gives + "</dd>" +
+            "</dl>" +
+            "<div class=\"fail\"><b>它的边界：</b>" + d.fail + "</div>";
+          buttons.forEach(function (b) {
+            b.setAttribute("aria-selected", b.getAttribute("data-layer") === key ? "true" : "false");
+          });
+        }
+        buttons.forEach(function (b) {
+          b.addEventListener("click", function () { renderLayer(b.getAttribute("data-layer")); });
+        });
+        renderLayer("arch");
+
+        /* ---------- reliability calculator ---------- */
+        var rateRange = document.getElementById("rateRange");
+        var stepRange = document.getElementById("stepRange");
+        var rateOut = document.getElementById("rateOut");
+        var stepOut = document.getElementById("stepOut");
+        var barRaw = document.getElementById("barRaw");
+        var barRetry = document.getElementById("barRetry");
+        var valRaw = document.getElementById("valRaw");
+        var valRetry = document.getElementById("valRetry");
+        var verdict = document.getElementById("calcVerdict");
+
+        function fmt(x) {
+          if (x >= 0.995) return (x * 100).toFixed(1) + "%";
+          if (x >= 0.01) return (x * 100).toFixed(1) + "%";
+          if (x >= 0.0001) return (x * 100).toFixed(2) + "%";
+          return "< 0.01%";
+        }
+        function updateCalc() {
+          var p = parseFloat(rateRange.value) / 100;
+          var n = parseInt(stepRange.value, 10);
+          rateOut.textContent = (p * 100).toFixed(1) + "%";
+          stepOut.textContent = n + " 步";
+          var raw = Math.pow(p, n);
+          var pRetry = 1 - Math.pow(1 - p, 2);
+          var retry = Math.pow(pRetry, n);
+          barRaw.style.width = Math.max(raw * 100, 0.6) + "%";
+          barRetry.style.width = Math.max(retry * 100, 0.6) + "%";
+          valRaw.textContent = fmt(raw);
+          valRetry.textContent = fmt(retry);
+          var msg;
+          if (raw >= 0.9) {
+            msg = "<b>这个区间还撑得住。</b>步数不多、单步够稳时，裸跑也能交付——很多内部小工具就活在这一格。但步数再往上拖，看看曲线怎么塌。";
+          } else if (raw >= 0.5) {
+            msg = "<b>已经过半数翻车了。</b>单步 " + (p * 100).toFixed(1) + "% 听起来很稳，连乘 " + n + " 步之后，每两次任务就有一次到不了终点。靠重试能救回大半——这就是架构在花钱买的东西。";
+          } else if (raw >= 0.1) {
+            msg = "<b>这就是长任务的现实。</b>不是模型笨，是乘法狠。生产系统和 demo 的差距不在模型，在重试、校验、检查点、回滚这些'不聪明但救命'的机制上。";
+          } else {
+            msg = "<b>裸跑基本等于抛硬币都不如。</b>到了这个量级，问题已经不是'让模型更仔细'，而是必须把任务切短、加验证、留检查点——纯粹的架构问题。";
+          }
+          verdict.innerHTML = msg;
+        }
+        rateRange.addEventListener("input", updateCalc);
+        stepRange.addEventListener("input", updateCalc);
+        updateCalc();
+
+        /* ---------- daily meter toggle ---------- */
+        var METERS = {
+          token: {
+            a: "满格的一天，仪表很热闹——干活了，没错。",
+            b: "几乎没动静——看着像什么都没干，心里发空。"
+          },
+          progress: {
+            a: "推进为零：热闹是 agent 的，事情还停在原地，五版文案一份都没落地。",
+            b: "推进最大的一天：一个决定解锁了后面所有工作，十分钟顶一整天。"
+          }
+        };
+        var verdictA = document.getElementById("verdictA");
+        var verdictB = document.getElementById("verdictB");
+        var meterBtns = Array.prototype.slice.call(document.querySelectorAll(".meter-btn"));
+        function renderMeter(key) {
+          verdictA.textContent = METERS[key].a;
+          verdictB.textContent = METERS[key].b;
+          meterBtns.forEach(function (b) {
+            b.setAttribute("aria-pressed", b.getAttribute("data-meter") === key ? "true" : "false");
+          });
+        }
+        meterBtns.forEach(function (b) {
+          b.addEventListener("click", function () { renderMeter(b.getAttribute("data-meter")); });
+        });
+        renderMeter("token");
+
+        /* ---------- quiz ---------- */
+        Array.prototype.forEach.call(document.querySelectorAll(".quiz-item"), function (item) {
+          var btn = item.querySelector(".reveal-btn");
+          btn.addEventListener("click", function () {
+            var open = item.classList.toggle("open");
+            btn.textContent = open ? "收起答案 ↑" : "看答案 ↓";
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
